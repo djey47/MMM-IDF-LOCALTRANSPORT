@@ -1,8 +1,8 @@
-# MMM-Paris-RATP-PG
+# MMM-IDF-STIF-NAVITIA
 
-MagicMirror MichMich module to display next buses and RERs for a configured list of stations/ destinations.
+MichMich's MagicMirror2 module to display next transportation means for a configured list of stations/ destinations:
 
-Forked from MMM-HH-LocalTransport see more detailed information on gerog90 [blog](https://lane6.de).
+Forked from MMM-Paris-RATP-PG see more detailed information on [github](https://github.com/da4throux/MMM-Paris-RATP-PG).
 
 # Presentation
 A module to display:
@@ -21,11 +21,11 @@ It also use the Paris Open Data for the velib: https://opendata.paris.fr/explore
 # Install
 
 1. Clone repository into `../modules/` inside your MagicMirror folder.
-2. Run `npm install` inside `../modules/MMM-Paris-RATP-PG/` folder
+2. Run `npm install` inside `../modules/MMM-IDF-STIF-NAVITIA/` folder
 3. Add the module to the MagicMirror config
 ```
 		{
-	        module: 'MMM-Paris-RATP-PG',
+	        module: 'MMM-IDF-STIF-NAVITIA',
 	        position: 'bottom_right',
 	        header: 'Connections',
 	        config: {

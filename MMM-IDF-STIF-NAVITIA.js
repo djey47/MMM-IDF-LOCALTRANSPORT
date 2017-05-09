@@ -1,7 +1,7 @@
 /* Timetable for Paris local transport Module */
 
 /* Magic Mirror
- * Module: MMM-Paris-RATP-PG
+ * Module: MMM-IDF-STIF-NAVITIA
  *
  * By da4throux 
  * based on a script from Georg Peters (https://lane6.de)
@@ -9,7 +9,7 @@
  * MIT Licensed.
  */
  
-Module.register("MMM-Paris-RATP-PG",{
+Module.register("MMM-IDF-STIF-NAVITIA",{
  
   // Define module defaults
   defaults: {

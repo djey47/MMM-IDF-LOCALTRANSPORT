@@ -1,10 +1,10 @@
 {
-  "name": "MMM-Paris-RATP-PG",
+  "name": "MMM-IDF-STIF-NAVITIA",
   "version": "1.0.0",
-  "description": "RATP Local transport in Paris based on Pierre Grimaud API module for MagicMirror",
+  "description": "Local transport in IDF based on Navitia.io API module for MagicMirror",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/da4throux/MMM-Paris-RATP-PG"
+    "url": "git+https://github.com/djey47/MMM-IDF-STIFF-NAVITIA"
   },
   "keywords": [
     "magic mirror",
@@ -12,17 +12,24 @@
     "localtransport",
     "module",
     "paris",
-    "RATP"
+    "STIF",
+    "navitia.io"
   ],
-  "author": "da4throux",
-  "contributors": "https://github.com/da4throux/MMM-Paris-RATP-PG/graphs/contributors",
+  "author": "djey47",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/da4throux/MMM-Paris-RATP-PG/issues"
+    "url": "https://github.com/djey47/MMM-IDF-STIFF-NAVITIA/issues"
   },
-  "homepage": "https://github.com/da4throux/MMM-Paris-RATP-PG#readme",
+  "homepage": "https://github.com/djey47/MMM-IDF-STIFF-NAVITIA#readme",
   "dependencies": {
-    "unirest": "latest",
-    "node-forge": "latest"
-    }
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-flowtype": "^2.32.1",
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "node-forge": "latest",
+    "unirest": "latest"
+  },
+  "devDependencies": {
+    "babel-eslint": "^7.2.3",
+    "eslint": "^3.19.0"
+  }
 }
