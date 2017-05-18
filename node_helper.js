@@ -5,18 +5,18 @@
  * MIT Licensed.
  */
 
-const NodeHelper = require("node_helper");
+const NodeHelper = require('node_helper');
 const unirest = require('unirest');
 
 module.exports = NodeHelper.create({
   start: function () {
     this.started = false;
   },
-  
+
   socketNotificationReceived: function(notification, payload) {
     const self = this;
     if (notification === 'SET_CONFIG' && this.started == false) {
-      this.config = payload;	     
+      this.config = payload;
       if (this.config.debug) {
         console.log (' *** config set in node_helper: ');
         console.log ( payload );
@@ -32,7 +32,7 @@ module.exports = NodeHelper.create({
   */
   scheduleUpdate: function(delay) {
     var nextLoad = this.config.updateInterval;
-    if (typeof delay !== "undefined" && delay >= 0) {
+    if (typeof delay !== 'undefined' && delay >= 0) {
       nextLoad = delay;
     }
     var self = this;
@@ -47,30 +47,30 @@ module.exports = NodeHelper.create({
     var self = this;
     var retry = true;
     if (this.config.debug) { console.log (' *** fetching: ' + _url);}
-      unirest.get(_url)
-        .header({
-          'Accept': 'application/json;charset=utf-8'
-        })
-        .end(function(response){
-          if (response && response.body) {
-            if (self.config.debug) {
-              console.log (' *** received answer for: ' + _url);
-              console.log (_stopConfig);
-            }
-            _processFunction(response.body, _stopConfig);
-          } else {
-            if (self.config.debug) {
-              if (response) {
-                console.log (' *** partial response received');
-                console.log (response);
-              } else {
-                console.log (' *** no response received');
-              }
+    unirest.get(_url)
+      .header({
+        'Accept': 'application/json;charset=utf-8'
+      })
+      .end(function(response){
+        if (response && response.body) {
+          if (self.config.debug) {
+            console.log (' *** received answer for: ' + _url);
+            console.log (_stopConfig);
+          }
+          _processFunction(response.body, _stopConfig);
+        } else {
+          if (self.config.debug) {
+            if (response) {
+              console.log (' *** partial response received');
+              console.log (response);
+            } else {
+              console.log (' *** no response received');
             }
           }
-          if (retry) {
-            self.scheduleUpdate((self.loaded) ? -1 : this.config.retryDelay);
-          }
+        }
+        if (retry) {
+          self.scheduleUpdate((self.loaded) ? -1 : this.config.retryDelay);
+        }
       })
   },
 
@@ -81,7 +81,7 @@ module.exports = NodeHelper.create({
     var self = this;
     var url, stopConfig;
     if (this.config.debug) { console.log (' *** fetching update');}
-    self.sendSocketNotification("UPDATE", { lastUpdate : new Date()});
+    self.sendSocketNotification('UPDATE', { lastUpdate : new Date()});
     for (var index in self.config.busStations) {
       stopConfig = self.config.busStations[index];
       switch (stopConfig.type) {
@@ -96,7 +96,7 @@ module.exports = NodeHelper.create({
           }
           self.getResponse(url, self.processBus.bind(this), stopConfig);
           break;
-        case "velib":
+        case 'velib':
           url = self.config.apiVelib + '&q=' + stopConfig.stations;
           self.getResponse(url, self.processVelib.bind(this));
           break;
@@ -120,7 +120,10 @@ module.exports = NodeHelper.create({
 
   processVelib: function(data) {
     this.velib = {};
-    //fields: {"status": "OPEN", "contract_name": "Paris", "name": "14111 - DENFERT-ROCHEREAU CASSINI", "bonus": "False", "bike_stands": 24, "number": 14111, "last_update": "2017-04-15T12:14:25+00:00", "available_bike_stands": 24, "banking": "True", "available_bikes": 0, "address": "18 RUE CASSINI - 75014 PARIS", "position": [48.8375492922, 2.33598303047]}
+    //fields: {"status": "OPEN", "contract_name": "Paris", "name": "14111 - DENFERT-ROCHEREAU CASSINI",
+    //"bonus": "False", "bike_stands": 24, "number": 14111, "last_update": "2017-04-15T12:14:25+00:00",
+    //"available_bike_stands": 24, "banking": "True", "available_bikes": 0, "address": "18 RUE CASSINI - 75014 PARIS",
+    //"position": [48.8375492922, 2.33598303047]}
     var record = data.records[0].fields;
     this.velib.id = record.number;
     this.velib.name = record.name;
@@ -129,7 +132,7 @@ module.exports = NodeHelper.create({
     this.velib.bike = record.available_bikes;
     this.velib.lastUpdate = record.last_update;
     this.velib.loaded = true;
-    this.sendSocketNotification("VELIB", this.velib);
+    this.sendSocketNotification('VELIB', this.velib);
   },
 
   processBus: function(data, stopConfig) {
@@ -146,7 +149,7 @@ module.exports = NodeHelper.create({
     this.schedule.schedules = data.response ? data.response.schedules : data.result.schedules;
     this.schedule.lastUpdate = new Date();
     this.loaded = true;
-    this.sendSocketNotification("BUS", this.schedule);
+    this.sendSocketNotification('BUS', this.schedule);
   },
 
   processTraffic: function (data, stopConfig) {
@@ -164,7 +167,7 @@ module.exports = NodeHelper.create({
     result.id = idMaker[idMaker.length - 3].toString().toLowerCase() + '/' + idMaker[idMaker.length - 2].toString().toLowerCase() + '/' + idMaker[idMaker.length - 1].toString().toLowerCase();
     result.lastUpdate = new Date();
     result.loaded = true;
-    this.sendSocketNotification("TRAFFIC", result);
+    this.sendSocketNotification('TRAFFIC', result);
   }
 
 });

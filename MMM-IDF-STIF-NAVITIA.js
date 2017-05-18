@@ -3,12 +3,12 @@
 /* Magic Mirror
  * Module: MMM-IDF-STIF-NAVITIA
  *
- * Based on script by da4throux 
+ * Based on script by da4throux
  * MIT Licensed.
  */
- 
-Module.register("MMM-IDF-STIF-NAVITIA",{
- 
+
+Module.register('MMM-IDF-STIF-NAVITIA',{
+
   // Define module defaults
   defaults: {
     maximumEntries: 2, //if the APIs sends several results for the incoming transport how many should be displayed
@@ -32,15 +32,15 @@ Module.register("MMM-IDF-STIF-NAVITIA",{
     apiAutolib: 'https://opendata.paris.fr/explore/dataset/stations_et_espaces_autolib_de_la_metropole_parisienne/api/', ///add '?q=' mais pas d'info temps réel... pour l'instant
     conversion: { "Trafic normal sur l'ensemble de la ligne." : 'Traffic OK'},
   },
-  
+
   // Define required scripts.
   getStyles: function() {
-    return ["MMM-Paris-RATP-Transport.css", "font-awesome.css"];
+    return ['MMM-Paris-RATP-Transport.css', 'font-awesome.css'];
   },
-  
+
   // Define start sequence.
   start: function() {
-    Log.info("Starting module: " + this.name);
+    Log.info('Starting module: ' + this.name);
     this.sendSocketNotification('SET_CONFIG', this.config);
     this.busSchedules = {};
     this.ratpTraffic = {};
@@ -72,57 +72,57 @@ Module.register("MMM-IDF-STIF-NAVITIA",{
     }
     return header;
   },
-  
+
   // Override dom generator.
   getDom: function() {
     var now = new Date();
-    var wrapper = document.createElement("div");
-    
+    var wrapper = document.createElement('div');
+
     if (!this.loaded) {
-      wrapper.innerHTML = "Loading connections ...";
-      wrapper.className = "dimmed light small";
+      wrapper.innerHTML = 'Loading connections ...';
+      wrapper.className = 'dimmed light small';
       return wrapper;
     } else {
-      wrapper.className = "paristransport";
+      wrapper.className = 'paristransport';
     }
-    
-    var table = document.createElement("table");
+
+    var table = document.createElement('table');
     var stopIndex;
     var previousRow, previousDestination, previousMessage, row, comingBus;
     var firstCell, secondCell;
     wrapper.appendChild(table);
-    table.className = "small";
+    table.className = 'small';
 
-    for (var busIndex = 0; busIndex < this.config.busStations.length; busIndex++) {      
+    for (var busIndex = 0; busIndex < this.config.busStations.length; busIndex++) {
       var firstLine = true;
       var stop = this.config.busStations[busIndex];
       switch (stop.type) {
-        case "traffic":
+        case 'traffic':
           stopIndex = 'traffic' + '/' + stop.line[0].toString().toLowerCase() + '/' + stop.line[1].toString().toLowerCase();
-          row = document.createElement("tr");
-          firstCell = document.createElement("td");
-          firstCell.className = "align-right bright";
+          row = document.createElement('tr');
+          firstCell = document.createElement('td');
+          firstCell.className = 'align-right bright';
           firstCell.innerHTML = stop.label || stop.line[1];
           row.appendChild(firstCell);
-          secondCell = document.createElement("td");
-          secondCell.className = "align-left";
+          secondCell = document.createElement('td');
+          secondCell.className = 'align-left';
           secondCell.innerHTML = this.ratpTraffic[stopIndex] ? this.config.conversion[this.ratpTraffic[stopIndex].message] || this.ratpTraffic[stopIndex].message : 'N/A';
           secondCell.colSpan = 2;
           row.appendChild(secondCell);
           table.appendChild(row);
           break;
-        case "bus":
-        case "metros":
-        case "tramways":
-        case "rers":
+        case 'bus':
+        case 'metros':
+        case 'tramways':
+        case 'rers':
           stopIndex = stop.line.toString().toLowerCase() + '/' + stop.stations + '/' + stop.destination;
           var comingBuses = this.busSchedules[stopIndex] || [{message: 'N/A', destination: 'N/A'}];
           var comingBusLastUpdate = this.busLastUpdate[stopIndex];
           for (var comingIndex = 0; (comingIndex < this.config.maximumEntries) && (comingIndex < comingBuses.length); comingIndex++) {
-            row = document.createElement("tr");
+            row = document.createElement('tr');
             comingBus = comingBuses[comingIndex];
-            var busNameCell = document.createElement("td");
-            busNameCell.className = "align-right bright";
+            var busNameCell = document.createElement('td');
+            busNameCell.className = 'align-right bright';
             if (firstLine) {
               busNameCell.innerHTML = stop.label || stop.line;
             } else {
@@ -130,15 +130,15 @@ Module.register("MMM-IDF-STIF-NAVITIA",{
             }
             row.appendChild(busNameCell);
 
-            var busDestination = document.createElement("td");
+            var busDestination = document.createElement('td');
             busDestination.innerHTML = comingBus.destination.substr(0, this.config.maxLettersForDestination);
-            busDestination.className = "align-left";
+            busDestination.className = 'align-left';
             row.appendChild(busDestination);
 
-            var depCell = document.createElement("td");
-            depCell.className = "bright";
+            var depCell = document.createElement('td');
+            depCell.className = 'bright';
             if (!this.busSchedules[stopIndex]) {
-              depCell.innerHTML = "N/A ";
+              depCell.innerHTML = 'N/A ';
             } else {
               if (this.config.convertToWaitingTime && /^\d{1,2}[:][0-5][0-9]$/.test(comingBus.message)) {
                 var transportTime = comingBus.message.split(':');
@@ -173,27 +173,27 @@ Module.register("MMM-IDF-STIF-NAVITIA",{
           }
           break;
         case 'velib':
-          row = document.createElement("tr");
+          row = document.createElement('tr');
           if (this.velibHistory[stop.stations]) {
             var station = this.velibHistory[stop.stations].slice(-1)[0];
             if (this.config.trendGraphOff) {
-              var velibStation = document.createElement("td");
-              velibStation.className = "align-left";
+              var velibStation = document.createElement('td');
+              velibStation.className = 'align-left';
               velibStation.innerHTML = station.total;
               row.appendChild(velibStation);
-              var velibStatus = document.createElement("td");
-              velibStatus.className = "bright";
+              var velibStatus = document.createElement('td');
+              velibStatus.className = 'bright';
               velibStatus.innerHTML = station.bike + ' velibs ' + station.empty + ' spaces';
               row.appendChild(velibStatus);
-              var velibName = document.createElement("td");
-              velibName.className = "align-right";
+              var velibName = document.createElement('td');
+              velibName.className = 'align-right';
               velibName.innerHTML = stop.label || station.name;
               row.appendChild(velibName);
             } else {
-              var rowTrend = document.createElement("tr");
-              var cellTrend = document.createElement("td");
+              var rowTrend = document.createElement('tr');
+              var cellTrend = document.createElement('td');
               var trendGraph = document.createElement('canvas');
-              trendGraph.className = "velibTrendGraph";
+              trendGraph.className = 'velibTrendGraph';
               trendGraph.width  = this.config.velibTrendWidth || 400;
               trendGraph.height = this.config.velibTrendHeight || 100;
               trendGraph.timeScale = this.config.velibTrendDay ? 24 * 60 * 60 : this.config.velibTrendTimeScale || 60 * 60; // in nb of seconds, the previous hour
@@ -266,8 +266,8 @@ Module.register("MMM-IDF-STIF-NAVITIA",{
               table.appendChild(rowTrend);
             }
           } else {
-            var message = document.createElement("td");
-            message.className = "bright";
+            var message = document.createElement('td');
+            message.className = 'bright';
             message.innerHTML = (stop.label || stop.stations) + ' no info yet';
             row.appendChild(message);
           }
@@ -277,17 +277,17 @@ Module.register("MMM-IDF-STIF-NAVITIA",{
     }
     return wrapper;
   },
-  
+
   socketNotificationReceived: function(notification, payload) {
     this.caller = notification;
     switch (notification) {
-      case "BUS":
+      case 'BUS':
         this.busSchedules[payload.id] = payload.schedules;
         this.busLastUpdate[payload.id] = payload.lastUpdate;
         this.loaded = true;
         this.updateDom();
         break;
-      case "VELIB":
+      case 'VELIB':
         if (!this.velibHistory[payload.id]) {
           this.velibHistory[payload.id] = localStorage[payload.id] ? JSON.parse(localStorage[payload.id]) : [];
           this.velibHistory[payload.id].push(payload);
@@ -309,7 +309,7 @@ Module.register("MMM-IDF-STIF-NAVITIA",{
         }
         this.loaded = true;
         break;
-      case "TRAFFIC":
+      case 'TRAFFIC':
         if (this.config.debug) {
           console.log(' *** received traffic information for: ' + payload.id);
           console.log(payload);
@@ -319,7 +319,7 @@ Module.register("MMM-IDF-STIF-NAVITIA",{
         this.loaded = true;
         this.updateDom();
         break;
-      case "UPDATE":
+      case 'UPDATE':
         this.config.lastUpdate = payload.lastUpdate;
         this.updateDom();
         break;

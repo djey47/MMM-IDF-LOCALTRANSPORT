@@ -4,6 +4,8 @@
     "flowtype"
   ],  
   "rules": {
-    "strict": 2
+    "strict": 2,
+    "indent": ["error", 2, { "SwitchCase": 1 }],
+    "quotes": [2, "single", "avoid-escape"]
   }
 }
