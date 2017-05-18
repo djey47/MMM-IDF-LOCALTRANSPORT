@@ -1,12 +1,8 @@
 /* Magic Mirror
- * Module: MMM-Paris_RATP-PG
+ * Module: MMM-IDF-STIF-NAVITIA
  *
- * script from da4throux
- * based on a Script from  Georg Peters (https://lane6.de)
- * band a Script from Benjamin Angst http://www.beny.ch
+ * based on a Script from from da4throux
  * MIT Licensed.
- *
- * For the time being just the first bus from the config file
  */
 
 const NodeHelper = require("node_helper");

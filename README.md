@@ -7,16 +7,16 @@ Forked from MMM-Paris-RATP-PG see more detailed information on [github](https://
 # Presentation
 A module to display:
 * the different buses, metros, rers & tramways, in order to avoid waiting too much for them when leaving home. 
-* general traffic information for lines of metros, rers & tramways (only using v3 API)
+* general traffic information for lines of metros, rers & tramways
 * available docks & bikes in selected Velib stations, along with the trend over the last day (configurable).
 
 # Screenshot
+(obsolete)
 ![screenshot](https://github.com/da4throux/MMM-Paris-RATP-PG/blob/master/MMM-Paris-RATP-PG2.png)
 
 # API
-
-It is based on the open REST API from Pierre Grimaud https://github.com/pgrimaud/horaires-ratp-api, which does not require any configuration / registration. Immediate use. Support v2 & v3.
-It also use the Paris Open Data for the velib: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/ (use it to get the 5 digits stations you will need for the configuration).
+* It is based on the REST API provided by NAVITIA.io
+* It also use the Paris Open Data for the velib: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/ (use it to get the 5 digits stations you will need for the configuration).
 
 # Install
 
@@ -83,4 +83,3 @@ busStations: [
 	{api: 'v3', type: 'metros', line: '6', stations: 'raspail', destination: 'A'},
 	{type: 'velib', stations: 05029, destination: 'leaving', label 'RER'}]
 ```
-# v1.5

@@ -3,9 +3,7 @@
 /* Magic Mirror
  * Module: MMM-IDF-STIF-NAVITIA
  *
- * By da4throux 
- * based on a script from Georg Peters (https://lane6.de)
- * and a script from Benjamin Angst http://www.beny.ch
+ * Based on script by da4throux 
  * MIT Licensed.
  */
  

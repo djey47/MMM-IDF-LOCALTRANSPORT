@@ -21,15 +21,17 @@
     "url": "https://github.com/djey47/MMM-IDF-STIFF-NAVITIA/issues"
   },
   "homepage": "https://github.com/djey47/MMM-IDF-STIFF-NAVITIA#readme",
+  "scripts": {
+    "lint": "yarn lint:scripts",
+    "lint:scripts": "eslint ."
+  },
   "dependencies": {
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-flowtype": "^2.32.1",
-    "eslint-plugin-jsx-a11y": "^5.0.1",
     "node-forge": "latest",
     "unirest": "latest"
   },
   "devDependencies": {
     "babel-eslint": "^7.2.3",
-    "eslint": "^3.19.0"
+    "eslint": "^3.19.0",
+    "eslint-plugin-flowtype": "^2.33.0"
   }
 }
