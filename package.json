@@ -23,15 +23,20 @@
   "homepage": "https://github.com/djey47/MMM-IDF-STIFF-NAVITIA#readme",
   "scripts": {
     "lint": "yarn lint:scripts",
-    "lint:scripts": "eslint ."
+    "lint:scripts": "eslint .",
+    "test": "yarn jest"
   },
   "dependencies": {
     "node-forge": "latest",
     "unirest": "latest"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",
+    "babel-preset-flow": "^6.23.0",
     "eslint": "^3.19.0",
-    "eslint-plugin-flowtype": "^2.33.0"
+    "eslint-plugin-flowtype": "^2.33.0",
+    "flow-bin": "^0.47.0",
+    "jest": "^20.0.4"
   }
 }

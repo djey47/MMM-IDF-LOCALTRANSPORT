@@ -1,3 +1,5 @@
+/* @flow */
+
 /* Magic Mirror
  * Module: MMM-IDF-STIF-NAVITIA
  *

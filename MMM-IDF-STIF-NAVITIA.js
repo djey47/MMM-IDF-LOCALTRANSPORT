@@ -1,3 +1,5 @@
+/* @flow */
+
 /* Timetable for Paris local transport Module */
 
 /* Magic Mirror
@@ -35,7 +37,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
 
   // Define required scripts.
   getStyles: function() {
-    return ['MMM-Paris-RATP-Transport.css', 'font-awesome.css'];
+    return ['css/MMM-IDF-STIF-NAVITIA.css', 'font-awesome.css'];
   },
 
   // Define start sequence.
