@@ -1,4 +1,5 @@
 # MMM-IDF-STIF-NAVITIA
+[ ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](http://choosealicense.com/licenses/mit)
 [ ![Codeship Status for djey47/MMM-IDF-STIF-NAVITIA](https://app.codeship.com/projects/323491f0-25bd-0135-db38-2a42d49cc1d5/status?branch=master)](https://app.codeship.com/projects/222476)
 
 MichMich's MagicMirror2 module to display next transportation means for a configured list of stations/ destinations:
