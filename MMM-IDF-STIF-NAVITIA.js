@@ -37,7 +37,10 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
 
   // Define required scripts.
   getStyles: function() {
-    return ['css/MMM-IDF-STIF-NAVITIA.css', 'font-awesome.css'];
+    return [
+      this.file('css/MMM-IDF-STIF-NAVITIA.css'),
+      'font-awesome.css',
+    ];
   },
 
   // Define start sequence.
@@ -164,7 +167,9 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
             }
             if (this.config.concatenateArrivals && !firstLine && (comingBus.destination == previousDestination)) {
               previousMessage += ' / ' + comingBus.message;
-              previousRow.getElementsByTagName('td')[2].innerHTML = previousMessage;
+              if (previousRow) {
+                previousRow.getElementsByTagName('td')[2].innerHTML = previousMessage;
+              }
             } else {
               table.appendChild(row);
               previousRow = row;
@@ -198,74 +203,80 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
               trendGraph.className = 'velibTrendGraph';
               trendGraph.width  = this.config.velibTrendWidth || 400;
               trendGraph.height = this.config.velibTrendHeight || 100;
-              trendGraph.timeScale = this.config.velibTrendDay ? 24 * 60 * 60 : this.config.velibTrendTimeScale || 60 * 60; // in nb of seconds, the previous hour
+
+              const timeScale = this.config.velibTrendDay ? 24 * 60 * 60 : this.config.velibTrendTimeScale || 60 * 60; // in nb of seconds, the previous hour
+              // $FlowFixMe
+              trendGraph.timeScale = timeScale;
+
               this.config.velibTrendZoom = this.config.velibTrendZoom || 30 * 60; //default zoom windows is 30 minutes for velibTrendDay
               var ctx = trendGraph.getContext('2d');
-              var currentStation = this.velibHistory[stop.stations];
-              var previousX = trendGraph.width;
-              var inTime = false;
-              for (var dataIndex = currentStation.length - 1; dataIndex >= 0 ; dataIndex--) { //start from most recent
-                var dataTimeStamp = (now - new Date(currentStation[dataIndex].lastUpdate)) / 1000; // time of the event in seconds ago
-                if (dataTimeStamp < trendGraph.timeScale || inTime) {
-                  inTime = dataTimeStamp < trendGraph.timeScale; // compute the last one outside of the time window
-                  if (dataTimeStamp - trendGraph.timeScale < 10 * 60) { //takes it only if it is within 10 minutes of the closing windows
-                    dataTimeStamp = Math.min(dataTimeStamp, trendGraph.timeScale); //to be sure it does not exit the graph
-                    var x, y;
-                    if (this.config.velibTrendDay) {
-                      if ( dataTimeStamp  < this.config.velibTrendZoom ) { //1st third in zoom mode
-                        x = (1 - dataTimeStamp / this.config.velibTrendZoom / 3) * trendGraph.width;
-                      } else if (dataTimeStamp < trendGraph.timeScale - this.config.velibTrendZoom) { //middle in compressed mode
-                        x = (2/3 - (dataTimeStamp - this.config.velibTrendZoom) / (trendGraph.timeScale - 2 * this.config.velibTrendZoom)/ 3) * trendGraph.width;
+              if(ctx) {
+                var currentStation = this.velibHistory[stop.stations];
+                var previousX = trendGraph.width;
+                var inTime = false;
+                for (var dataIndex = currentStation.length - 1; dataIndex >= 0 ; dataIndex--) { //start from most recent
+                  var dataTimeStamp = (now - new Date(currentStation[dataIndex].lastUpdate)) / 1000; // time of the event in seconds ago
+                  if (dataTimeStamp < timeScale || inTime) {
+                    inTime = dataTimeStamp < timeScale; // compute the last one outside of the time window
+                    if (dataTimeStamp - timeScale < 10 * 60) { //takes it only if it is within 10 minutes of the closing windows
+                      dataTimeStamp = Math.min(dataTimeStamp, timeScale); //to be sure it does not exit the graph
+                      var x, y;
+                      if (this.config.velibTrendDay) {
+                        if ( dataTimeStamp  < this.config.velibTrendZoom ) { //1st third in zoom mode
+                          x = (1 - dataTimeStamp / this.config.velibTrendZoom / 3) * trendGraph.width;
+                        } else if (dataTimeStamp < timeScale - this.config.velibTrendZoom) { //middle in compressed mode
+                          x = (2/3 - (dataTimeStamp - this.config.velibTrendZoom) / (timeScale - 2 * this.config.velibTrendZoom)/ 3) * trendGraph.width;
+                        } else {
+                          x = (1 / 3 - (dataTimeStamp - timeScale + this.config.velibTrendZoom)/ this.config.velibTrendZoom / 3) * trendGraph.width;
+                        }
                       } else {
-                        x = (1 / 3 - (dataTimeStamp - trendGraph.timeScale + this.config.velibTrendZoom)/ this.config.velibTrendZoom / 3) * trendGraph.width;
+                        x = (1 - dataTimeStamp / timeScale) * trendGraph.width;
                       }
-                    } else {
-                      x = (1 - dataTimeStamp / trendGraph.timeScale) * trendGraph.width;
+                      y = currentStation[dataIndex].bike / currentStation[dataIndex].total * trendGraph.height * 4 / 5;
+                      ctx.fillStyle = 'white';
+                      ctx.fillRect(x, trendGraph.height - y - 1, previousX - x, Math.max(y, 1)); //a thin line even if it's zero
+                      previousX = x;
                     }
-                    y = currentStation[dataIndex].bike / currentStation[dataIndex].total * trendGraph.height * 4 / 5;
-                    ctx.fillStyle = 'white';
-                    ctx.fillRect(x, trendGraph.height - y - 1, previousX - x, Math.max(y, 1)); //a thin line even if it's zero
-                    previousX = x;
                   }
                 }
-              }
-//              var bodyStyle = window.getComputedStyle(document.getElementsByTagName('body')[0], null);
-//              ctx.font = bodyStyle.getPropertyValue(('font-size')) + ' ' + ctx.font.split(' ').slice(-1)[0]; //00px sans-serif
-              ctx.font = Math.round(trendGraph.height / 5) + 'px ' + ctx.font.split(' ').slice(-1)[0];
-              ctx.fillStyle = 'grey';
-              ctx.textAlign = 'center';
-              ctx.fillText(stop.label || station.name, trendGraph.width / 2, Math.round(trendGraph.height / 5));
-              ctx.textAlign = 'left';
-              ctx.fillText(station.bike, 10, trendGraph.height - 10);
-              ctx.fillText(station.empty, 10, Math.round(trendGraph.height / 5) + 10);
-              if (this.config.velibTrendDay) {
-                ctx.font = Math.round(trendGraph.height / 10) + 'px ' + ctx.font.split(' ').slice(-1)[0];
-                ctx.fillText(Math.round(this.config.velibTrendZoom / 60) + 'mn', trendGraph.width * 5 / 6, trendGraph.height / 2);
-                ctx.fillText(Math.round(this.config.velibTrendZoom / 60) + 'mn', trendGraph.width / 6, trendGraph.height / 2);
-                ctx.strokeStyle = 'grey';
-                ctx.setLineDash([5, 15]);
-                ctx.beginPath();
-                ctx.moveTo(2/3 * trendGraph.width, 0);
-                ctx.lineTo(2/3 * trendGraph.width, 100);
-                ctx.stroke();
-                ctx.moveTo(trendGraph.width / 3, 0);
-                ctx.lineTo(trendGraph.width / 3, 100);
-                ctx.stroke();
-                var hourMark = new Date(); var alpha;
-                hourMark.setMinutes(0); hourMark.setSeconds(0);
-                alpha = (hourMark - now + 24 * 60 * 60 * 1000 - this.config.velibTrendZoom * 1000) / (24 * 60 * 60 * 1000 - 2 * this.config.velibTrendZoom * 1000);
-                alpha = (hourMark - now + this.config.velibTrendZoom * 1000) / (24 * 60 * 60 * 1000) * trendGraph.width;
-                for (var h = 0; h < 24; h = h + 2) {
-                  ctx.fillStyle = 'red';
-                  ctx.textAlign = 'center';
-                  ctx.font = Math.round(trendGraph.height / 12) + 'px';
-                  ctx.fillText((hourMark.getHours() + 24 - h) % 24, (2 - h / 24) * trendGraph.width / 3 + alpha, h % 12 * trendGraph.height / 12 / 3 + trendGraph.height / 3);
+  //              var bodyStyle = window.getComputedStyle(document.getElementsByTagName('body')[0], null);
+  //              ctx.font = bodyStyle.getPropertyValue(('font-size')) + ' ' + ctx.font.split(' ').slice(-1)[0]; //00px sans-serif
+                ctx.font = Math.round(trendGraph.height / 5) + 'px ' + ctx.font.split(' ').slice(-1)[0];
+                ctx.fillStyle = 'grey';
+                ctx.textAlign = 'center';
+                ctx.fillText(stop.label || station.name, trendGraph.width / 2, Math.round(trendGraph.height / 5));
+                ctx.textAlign = 'left';
+                ctx.fillText(station.bike, 10, trendGraph.height - 10);
+                ctx.fillText(station.empty, 10, Math.round(trendGraph.height / 5) + 10);
+                if (this.config.velibTrendDay) {
+                  ctx.font = Math.round(trendGraph.height / 10) + 'px ' + ctx.font.split(' ').slice(-1)[0];
+                  ctx.fillText(Math.round(this.config.velibTrendZoom / 60) + 'mn', trendGraph.width * 5 / 6, trendGraph.height / 2);
+                  ctx.fillText(Math.round(this.config.velibTrendZoom / 60) + 'mn', trendGraph.width / 6, trendGraph.height / 2);
+                  ctx.strokeStyle = 'grey';
+                  ctx.setLineDash([5, 15]);
+                  ctx.beginPath();
+                  ctx.moveTo(2/3 * trendGraph.width, 0);
+                  ctx.lineTo(2/3 * trendGraph.width, 100);
+                  ctx.stroke();
+                  ctx.moveTo(trendGraph.width / 3, 0);
+                  ctx.lineTo(trendGraph.width / 3, 100);
+                  ctx.stroke();
+                  var hourMark = new Date(); var alpha;
+                  hourMark.setMinutes(0); hourMark.setSeconds(0);
+                  alpha = (hourMark - now + 24 * 60 * 60 * 1000 - this.config.velibTrendZoom * 1000) / (24 * 60 * 60 * 1000 - 2 * this.config.velibTrendZoom * 1000);
+                  alpha = (hourMark - now + this.config.velibTrendZoom * 1000) / (24 * 60 * 60 * 1000) * trendGraph.width;
+                  for (var h = 0; h < 24; h = h + 2) {
+                    ctx.fillStyle = 'red';
+                    ctx.textAlign = 'center';
+                    ctx.font = Math.round(trendGraph.height / 12) + 'px';
+                    ctx.fillText(`${(hourMark.getHours() + 24 - h) % 24}`, (2 - h / 24) * trendGraph.width / 3 + alpha, h % 12 * trendGraph.height / 12 / 3 + trendGraph.height / 3);
+                  }
                 }
+                cellTrend.colSpan = 3; //so that it takes the whole row
+                cellTrend.appendChild(trendGraph);
+                rowTrend.appendChild(cellTrend);
+                table.appendChild(rowTrend);
               }
-              cellTrend.colSpan = '3'; //so that it takes the whole row
-              cellTrend.appendChild(trendGraph);
-              rowTrend.appendChild(cellTrend);
-              table.appendChild(rowTrend);
             }
           } else {
             var message = document.createElement('td');

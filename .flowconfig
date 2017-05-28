@@ -4,4 +4,7 @@
 
 [libs]
 
+# Custom definitions.
+tools/flow/
+
 [options]
