@@ -24,7 +24,8 @@
   "scripts": {
     "lint": "yarn lint:scripts",
     "lint:scripts": "eslint .",
-    "test": "yarn jest"
+    "test": "yarn jest",
+    "jest:watch": "yarn jest -- --watch"
   },
   "dependencies": {
     "node-forge": "latest",
