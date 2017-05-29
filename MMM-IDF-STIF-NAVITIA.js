@@ -9,7 +9,12 @@
  * MIT Licensed.
  */
 
+const Notifications = require('./src/support/notifications.js');
+
+
 Module.register('MMM-IDF-STIF-NAVITIA',{
+
+  renderer: require('./src/dom/renderer.js'),
 
   // Define module defaults
   defaults: {
@@ -46,7 +51,9 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   // Define start sequence.
   start: function() {
     Log.info('Starting module: ' + this.name);
-    this.sendSocketNotification('SET_CONFIG', this.config);
+
+    this.sendSocketNotification(Notifications.NOTIF_SET_CONFIG, this.config);
+
     this.busSchedules = {};
     this.ratpTraffic = {};
     this.ratpTrafficLastUpdate = {};
@@ -54,27 +61,17 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     this.busLastUpdate = {};
     this.loaded = false;
     this.updateTimer = null;
-    var self = this;
-    setInterval(function () {
-      self.caller = 'updateInterval';
-      self.updateDom();
-    }, 1000);
+
+    const updateCallback = (() => {
+      this.caller = 'updateInterval';
+      this.updateDom();
+    }).bind(this);
+    setInterval(updateCallback, 1000);
   },
 
   getHeader: function () {
-    var header = this.data.header;
-    if (this.config.showSecondsToNextUpdate) {
-      var timeDifference = Math.round((this.config.updateInterval - new Date() + Date.parse(this.config.lastUpdate)) / 1000);
-      if (timeDifference > 0) {
-        header += ', next update in ' + timeDifference + 's';
-      } else {
-        header += ', update requested ' + Math.abs(timeDifference) + 's ago';
-      }
-    }
-    if (this.config.showLastUpdateTime) {
-      var now = this.config.lastUpdate;
-      header += (now ? (' @ ' + now.getHours() + ':' + (now.getMinutes() > 9 ? '' : '0') + now.getMinutes() + ':' + (now.getSeconds() > 9 ? '' : '0') + now.getSeconds()) : '');
-    }
+    let header = this.data.header;
+    header += this.renderer.renderHeader(this.config);
     return header;
   },
 
@@ -103,18 +100,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
       var stop = this.config.busStations[busIndex];
       switch (stop.type) {
         case 'traffic':
-          stopIndex = 'traffic' + '/' + stop.line[0].toString().toLowerCase() + '/' + stop.line[1].toString().toLowerCase();
-          row = document.createElement('tr');
-          firstCell = document.createElement('td');
-          firstCell.className = 'align-right bright';
-          firstCell.innerHTML = stop.label || stop.line[1];
-          row.appendChild(firstCell);
-          secondCell = document.createElement('td');
-          secondCell.className = 'align-left';
-          secondCell.innerHTML = this.ratpTraffic[stopIndex] ? this.config.conversion[this.ratpTraffic[stopIndex].message] || this.ratpTraffic[stopIndex].message : 'N/A';
-          secondCell.colSpan = 2;
-          row.appendChild(secondCell);
-          table.appendChild(row);
+          table.appendChild(this.renderer.renderTraffic(stop, this.ratpTraffic, this.config));
           break;
         case 'bus':
         case 'metros':
@@ -239,8 +225,6 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
                     }
                   }
                 }
-  //              var bodyStyle = window.getComputedStyle(document.getElementsByTagName('body')[0], null);
-  //              ctx.font = bodyStyle.getPropertyValue(('font-size')) + ' ' + ctx.font.split(' ').slice(-1)[0]; //00px sans-serif
                 ctx.font = Math.round(trendGraph.height / 5) + 'px ' + ctx.font.split(' ').slice(-1)[0];
                 ctx.fillStyle = 'grey';
                 ctx.textAlign = 'center';
@@ -294,13 +278,13 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   socketNotificationReceived: function(notification, payload) {
     this.caller = notification;
     switch (notification) {
-      case 'BUS':
+      case Notifications.NOTIF_BUS:
         this.busSchedules[payload.id] = payload.schedules;
         this.busLastUpdate[payload.id] = payload.lastUpdate;
         this.loaded = true;
         this.updateDom();
         break;
-      case 'VELIB':
+      case Notifications.NOTIF_VELIB:
         if (!this.velibHistory[payload.id]) {
           this.velibHistory[payload.id] = localStorage[payload.id] ? JSON.parse(localStorage[payload.id]) : [];
           this.velibHistory[payload.id].push(payload);
@@ -322,7 +306,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
         }
         this.loaded = true;
         break;
-      case 'TRAFFIC':
+      case Notifications.NOTIF_TRAFFIC:
         if (this.config.debug) {
           console.log(' *** received traffic information for: ' + payload.id);
           console.log(payload);
@@ -332,7 +316,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
         this.loaded = true;
         this.updateDom();
         break;
-      case 'UPDATE':
+      case Notifications.NOTIF_UPDATE:
         this.config.lastUpdate = payload.lastUpdate;
         this.updateDom();
         break;
