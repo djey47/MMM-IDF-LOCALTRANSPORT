@@ -1,6 +1,6 @@
 /* @flow */
 
-const { renderHeader, renderTraffic } = require('./renderer.js');
+import { renderHeader, renderTraffic } from './renderer.js';
 
 describe('renderHeader function', () => {
   const baseConfig = {

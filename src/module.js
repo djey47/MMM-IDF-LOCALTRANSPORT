@@ -9,12 +9,19 @@
  * MIT Licensed.
  */
 
-const Notifications = require('./src/support/notifications.js');
-
+import {
+ NOTIF_UPDATE,
+ NOTIF_TRAFFIC,
+ NOTIF_SET_CONFIG,
+ NOTIF_VELIB,
+ NOTIF_BUS,
+} from './support/notifications';
+import {
+  renderHeader,
+  renderTraffic,
+} from './dom/renderer';
 
 Module.register('MMM-IDF-STIF-NAVITIA',{
-
-  renderer: require('./src/dom/renderer.js'),
 
   // Define module defaults
   defaults: {
@@ -52,7 +59,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   start: function() {
     Log.info('Starting module: ' + this.name);
 
-    this.sendSocketNotification(Notifications.NOTIF_SET_CONFIG, this.config);
+    this.sendSocketNotification(NOTIF_SET_CONFIG, this.config);
 
     this.busSchedules = {};
     this.ratpTraffic = {};
@@ -71,7 +78,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
 
   getHeader: function () {
     let header = this.data.header;
-    header += this.renderer.renderHeader(this.config);
+    header += renderHeader(this.config);
     return header;
   },
 
@@ -100,7 +107,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
       var stop = this.config.busStations[busIndex];
       switch (stop.type) {
         case 'traffic':
-          table.appendChild(this.renderer.renderTraffic(stop, this.ratpTraffic, this.config));
+          table.appendChild(renderTraffic(stop, this.ratpTraffic, this.config));
           break;
         case 'bus':
         case 'metros':
@@ -278,13 +285,13 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   socketNotificationReceived: function(notification, payload) {
     this.caller = notification;
     switch (notification) {
-      case Notifications.NOTIF_BUS:
+      case NOTIF_BUS:
         this.busSchedules[payload.id] = payload.schedules;
         this.busLastUpdate[payload.id] = payload.lastUpdate;
         this.loaded = true;
         this.updateDom();
         break;
-      case Notifications.NOTIF_VELIB:
+      case NOTIF_VELIB:
         if (!this.velibHistory[payload.id]) {
           this.velibHistory[payload.id] = localStorage[payload.id] ? JSON.parse(localStorage[payload.id]) : [];
           this.velibHistory[payload.id].push(payload);
@@ -306,7 +313,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
         }
         this.loaded = true;
         break;
-      case Notifications.NOTIF_TRAFFIC:
+      case NOTIF_TRAFFIC:
         if (this.config.debug) {
           console.log(' *** received traffic information for: ' + payload.id);
           console.log(payload);
@@ -316,10 +323,10 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
         this.loaded = true;
         this.updateDom();
         break;
-      case Notifications.NOTIF_UPDATE:
+      case NOTIF_UPDATE:
         this.config.lastUpdate = payload.lastUpdate;
         this.updateDom();
         break;
     }
-  }
+  },
 });

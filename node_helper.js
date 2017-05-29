@@ -10,7 +10,6 @@
 // $FlowFixMe
 const NodeHelper = require('node_helper');
 const unirest = require('unirest');
-const Notifications = require('./src/support/notifications.js');
 
 module.exports = NodeHelper.create({
   start: function () {
@@ -18,7 +17,7 @@ module.exports = NodeHelper.create({
   },
 
   socketNotificationReceived: function(notification, payload) {
-    if (notification === Notifications.NOTIF_SET_CONFIG && !this.started) {
+    if (notification === 'SET_CONFIG' && !this.started) {
       this.config = payload;
       if (this.config.debug) {
         console.log (' *** config set in node_helper: ');
@@ -52,7 +51,7 @@ module.exports = NodeHelper.create({
     if (this.config.debug) { console.log (' *** fetching: ' + _url);}
     unirest.get(_url)
       .header({
-        'Accept': 'application/json;charset=utf-8'
+        'Accept': 'application/json;charset=utf-8',
       })
       .end(function(response){
         if (response && response.body) {
@@ -84,7 +83,7 @@ module.exports = NodeHelper.create({
     var self = this;
     var url, stopConfig;
     if (this.config.debug) { console.log (' *** fetching update');}
-    self.sendSocketNotification(Notifications.NOTIF_UPDATE, { lastUpdate : new Date()});
+    self.sendSocketNotification('UPDATE', { lastUpdate : new Date()});
     for (var index in self.config.busStations) {
       stopConfig = self.config.busStations[index];
       switch (stopConfig.type) {
@@ -173,5 +172,5 @@ module.exports = NodeHelper.create({
     result.lastUpdate = new Date();
     result.loaded = true;
     this.sendSocketNotification('TRAFFIC', result);
-  }
+  },
 });

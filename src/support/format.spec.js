@@ -1,6 +1,6 @@
 /* @flow */
 
-const { formatDateFull } = require('./format.js');
+import { formatDateFull } from './format';
 
 describe('formatDateFull function', () => {
   it('should return empty string when undefined date', () => {
