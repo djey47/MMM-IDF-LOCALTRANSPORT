@@ -17,14 +17,17 @@ A module to display:
 ![screenshot](https://github.com/da4throux/MMM-Paris-RATP-PG/blob/master/MMM-Paris-RATP-PG2.png)
 
 # API
-* It is based on the REST API provided by NAVITIA.io
-* It also use the Paris Open Data for the velib: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/ (use it to get the 5 digits stations you will need for the configuration).
+* It is based on the REST API provided by [NAVITIA](NAVITIA.io)
+* It also uses [Paris Open Data for Velib](https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/) (use it to get the 5 digits stations you will need for the configuration).
 
 # Install
 
-1. Clone repository into `../modules/` inside your MagicMirror folder.
-2. Run `npm install` inside `../modules/MMM-IDF-STIF-NAVITIA/` folder
-3. Add the module to the MagicMirror config
+1. Clone repository into `/modules/` inside your MagicMirror folder.
+2. Install [yarn](https://yarnpkg.com/en/docs/install)
+3. Run `yarn install` inside `/modules/MMM-IDF-STIF-NAVITIA/` folder
+4. Run `yarn build` inside `/modules/MMM-IDF-STIF-NAVITIA/` folder
+5. Check that `/modules/MMM-IDF-STIF-NAVITIA/MMM-IDF-STIF-NAVITIA.js` script has been created
+6. Add the module to the MagicMirror config
 ```
 		{
 	        module: 'MMM-IDF-STIF-NAVITIA',
@@ -75,7 +78,7 @@ Example:
 busStations: [
 	{type: 'bus', line: 38, stations: 2758, destination: 183, label: 'bus vers le Nord'},
 	{api: 'v3', type: 'bus', line: 38, stations: 'observatoire+++port+royal', destination: 'A'},
-        {type: 'rers', line: 'B', stations: 62, destination: 4},
+  {type: 'rers', line: 'B', stations: 62, destination: 4},
 	{api: 'v3', type: 'rers', line: 'B', stations: 'port+royal', destination: 'A'},
 	{api: 'v3', type: 'traffic', line: ['rers', 'B']},
 	{api: 'v3', type: 'traffic', line: ['tramways', 1], label: 'T1'}, //label to avoid confusion with metros line 1
@@ -83,5 +86,5 @@ busStations: [
 	{api: 'v3', type: 'tramways', line: '3a', stations: 'georges+brassens', destination: 'R'},
 	{type: 'metros', line: '6', stations: 145, destination: 17},	
 	{api: 'v3', type: 'metros', line: '6', stations: 'raspail', destination: 'A'},
-	{type: 'velib', stations: 05029, destination: 'leaving', label 'RER'}]
+	{type: 'velib', stations: 5029, destination: 'leaving', label: 'RER'}]
 ```
