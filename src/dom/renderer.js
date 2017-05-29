@@ -34,8 +34,6 @@ export const renderHeader = (config: Object): string => {
  * @returns HTML for traffic status
  */
 export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): any => {
-  console.log(stop.line);
-
   const stopIndex = `traffic/${stop.line[0].toString().toLowerCase()}/${stop.line[1].toString().toLowerCase()}`;
   const row = document.createElement('tr');
 

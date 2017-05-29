@@ -8,6 +8,7 @@
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "quotes": [2, "single", "avoid-escape"],
     "semi": ["error", "always"],
-    "comma-dangle": ["error", "always-multiline"]    
+    "comma-dangle": ["error", "always-multiline"],
+    "no-console": ["warn", { "allow": ["warn", "error"] }]    
   }
 }
