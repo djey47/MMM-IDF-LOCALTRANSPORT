@@ -61,11 +61,11 @@ describe('renderTraffic function', () => {
   it('should return correct HTML for table row', () => {
     // given
     const stop = {
-      line: ['A', 'B'],
+      line: ['BUS', 275],
       label: 'Ulbach',
     };
     const ratpTraffic = {
-      'traffic/a/b': {
+      'traffic/bus/275': {
         message: 'fluid',
       },
     };

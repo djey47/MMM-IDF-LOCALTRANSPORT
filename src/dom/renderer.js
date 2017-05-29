@@ -3,7 +3,7 @@
 import { formatDateFull } from '../support/format';
 
 type Stop = {
-  line: string[],
+  line: (number|string)[],
   label: string,
 };
 
@@ -34,12 +34,14 @@ export const renderHeader = (config: Object): string => {
  * @returns HTML for traffic status
  */
 export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): any => {
-  const stopIndex = `traffic/${stop.line[0].toLowerCase()}/${stop.line[1].toLowerCase()}`;
+  console.log(stop.line);
+
+  const stopIndex = `traffic/${stop.line[0].toString().toLowerCase()}/${stop.line[1].toString().toLowerCase()}`;
   const row = document.createElement('tr');
 
   const firstCell = document.createElement('td');
   firstCell.className = 'align-right bright';
-  firstCell.innerHTML = stop.label || stop.line[1];
+  firstCell.innerHTML = stop.label || stop.line[1].toString();
   row.appendChild(firstCell);
 
   const { message } = ratpTraffic[stopIndex] ? ratpTraffic[stopIndex] : { message: 'N/A' };
