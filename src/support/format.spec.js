@@ -18,7 +18,7 @@ describe('formatDateFull function', () => {
 
   it('should return correctly formatted date', () => {
     // given
-    const currentDate = new Date(1496068588);
+    const currentDate = new Date(2017, 5, 29, 8, 34, 28);
     // when
     const actual = formatDateFull(currentDate);
     // then
