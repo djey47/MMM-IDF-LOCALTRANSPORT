@@ -1,3 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`renderNoInfoVelib function should return correct HTML for table cell when no label 1`] = `"<tr><td class=\\"bright\\">Stations no info yet</td></tr>"`;
+
+exports[`renderNoInfoVelib function should return correct HTML for table row when label 1`] = `"<tr><td class=\\"bright\\">Ulbach no info yet</td></tr>"`;
+
 exports[`renderTraffic function should return correct HTML for table row 1`] = `"<tr><td class=\\"align-right bright\\">Ulbach</td><td class=\\"align-left\\" colspan=\\"2\\">fluide</td></tr>"`;
+
+exports[`renderVelib function should return correct HTML when history with trend 1`] = `"<tr></tr>"`;
+
+exports[`renderVelib function should return correct HTML when history without trend 1`] = `"<tr><td class=\\"align-left\\">10</td><td class=\\"bright\\">2 velibs 8 spaces</td><td class=\\"align-right\\">Opera</td></tr>"`;
+
+exports[`renderVelib function should return correct HTML when no history 1`] = `"<tr><td class=\\"bright\\">Ulbach no info yet</td></tr>"`;
+
+exports[`renderWrapper function should return correct HTML when loaded 1`] = `"<div class=\\"paristransport\\"></div>"`;
+
+exports[`renderWrapper function should return correct HTML when not loaded 1`] = `"<div class=\\"dimmed light small\\">Loading connections ...</div>"`;

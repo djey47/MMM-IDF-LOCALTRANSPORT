@@ -17,8 +17,11 @@ import {
  NOTIF_BUS,
 } from './support/notifications';
 import {
+  renderWrapper,
   renderHeader,
   renderTraffic,
+  renderVelib,
+  renderNoInfoVelib,
 } from './dom/renderer';
 
 Module.register('MMM-IDF-STIF-NAVITIA',{
@@ -84,24 +87,16 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
 
   // Override dom generator.
   getDom: function() {
-    var now = new Date();
-    var wrapper = document.createElement('div');
+    const now = new Date();
 
-    if (!this.loaded) {
-      wrapper.innerHTML = 'Loading connections ...';
-      wrapper.className = 'dimmed light small';
-      return wrapper;
-    } else {
-      wrapper.className = 'paristransport';
-    }
-
-    var table = document.createElement('table');
-    var stopIndex;
-    var previousRow, previousDestination, previousMessage, row, comingBus;
-    var firstCell, secondCell;
-    wrapper.appendChild(table);
+    const wrapper = renderWrapper(this.loaded);
+    const table = document.createElement('table');
     table.className = 'small';
+    wrapper.appendChild(table);
 
+    let stopIndex;
+    let previousRow, previousDestination, previousMessage, row, comingBus;
+    let firstCell, secondCell;
     for (var busIndex = 0; busIndex < this.config.busStations.length; busIndex++) {
       var firstLine = true;
       var stop = this.config.busStations[busIndex];
@@ -113,7 +108,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
         case 'metros':
         case 'tramways':
         case 'rers':
-          stopIndex = stop.line.toString().toLowerCase() + '/' + stop.stations + '/' + stop.destination;
+          stopIndex = `${stop.line.toString().toLowerCase()}/${stop.stations}/${stop.destination}`;
           var comingBuses = this.busSchedules[stopIndex] || [{message: 'N/A', destination: 'N/A'}];
           var comingBusLastUpdate = this.busLastUpdate[stopIndex];
           for (var comingIndex = 0; (comingIndex < this.config.maximumEntries) && (comingIndex < comingBuses.length); comingIndex++) {
@@ -173,109 +168,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
           }
           break;
         case 'velib':
-          row = document.createElement('tr');
-          if (this.velibHistory[stop.stations]) {
-            var station = this.velibHistory[stop.stations].slice(-1)[0];
-            if (this.config.trendGraphOff) {
-              var velibStation = document.createElement('td');
-              velibStation.className = 'align-left';
-              velibStation.innerHTML = station.total;
-              row.appendChild(velibStation);
-              var velibStatus = document.createElement('td');
-              velibStatus.className = 'bright';
-              velibStatus.innerHTML = station.bike + ' velibs ' + station.empty + ' spaces';
-              row.appendChild(velibStatus);
-              var velibName = document.createElement('td');
-              velibName.className = 'align-right';
-              velibName.innerHTML = stop.label || station.name;
-              row.appendChild(velibName);
-            } else {
-              var rowTrend = document.createElement('tr');
-              var cellTrend = document.createElement('td');
-              var trendGraph = document.createElement('canvas');
-              trendGraph.className = 'velibTrendGraph';
-              trendGraph.width  = this.config.velibTrendWidth || 400;
-              trendGraph.height = this.config.velibTrendHeight || 100;
-
-              const timeScale = this.config.velibTrendDay ? 24 * 60 * 60 : this.config.velibTrendTimeScale || 60 * 60; // in nb of seconds, the previous hour
-              // $FlowFixMe
-              trendGraph.timeScale = timeScale;
-
-              this.config.velibTrendZoom = this.config.velibTrendZoom || 30 * 60; //default zoom windows is 30 minutes for velibTrendDay
-              var ctx = trendGraph.getContext('2d');
-              if(ctx) {
-                var currentStation = this.velibHistory[stop.stations];
-                var previousX = trendGraph.width;
-                var inTime = false;
-                for (var dataIndex = currentStation.length - 1; dataIndex >= 0 ; dataIndex--) { //start from most recent
-                  var dataTimeStamp = (now - new Date(currentStation[dataIndex].lastUpdate)) / 1000; // time of the event in seconds ago
-                  if (dataTimeStamp < timeScale || inTime) {
-                    inTime = dataTimeStamp < timeScale; // compute the last one outside of the time window
-                    if (dataTimeStamp - timeScale < 10 * 60) { //takes it only if it is within 10 minutes of the closing windows
-                      dataTimeStamp = Math.min(dataTimeStamp, timeScale); //to be sure it does not exit the graph
-                      var x, y;
-                      if (this.config.velibTrendDay) {
-                        if ( dataTimeStamp  < this.config.velibTrendZoom ) { //1st third in zoom mode
-                          x = (1 - dataTimeStamp / this.config.velibTrendZoom / 3) * trendGraph.width;
-                        } else if (dataTimeStamp < timeScale - this.config.velibTrendZoom) { //middle in compressed mode
-                          x = (2/3 - (dataTimeStamp - this.config.velibTrendZoom) / (timeScale - 2 * this.config.velibTrendZoom)/ 3) * trendGraph.width;
-                        } else {
-                          x = (1 / 3 - (dataTimeStamp - timeScale + this.config.velibTrendZoom)/ this.config.velibTrendZoom / 3) * trendGraph.width;
-                        }
-                      } else {
-                        x = (1 - dataTimeStamp / timeScale) * trendGraph.width;
-                      }
-                      y = currentStation[dataIndex].bike / currentStation[dataIndex].total * trendGraph.height * 4 / 5;
-                      ctx.fillStyle = 'white';
-                      ctx.fillRect(x, trendGraph.height - y - 1, previousX - x, Math.max(y, 1)); //a thin line even if it's zero
-                      previousX = x;
-                    }
-                  }
-                }
-                ctx.font = Math.round(trendGraph.height / 5) + 'px ' + ctx.font.split(' ').slice(-1)[0];
-                ctx.fillStyle = 'grey';
-                ctx.textAlign = 'center';
-                ctx.fillText(stop.label || station.name, trendGraph.width / 2, Math.round(trendGraph.height / 5));
-                ctx.textAlign = 'left';
-                ctx.fillText(station.bike, 10, trendGraph.height - 10);
-                ctx.fillText(station.empty, 10, Math.round(trendGraph.height / 5) + 10);
-                if (this.config.velibTrendDay) {
-                  ctx.font = Math.round(trendGraph.height / 10) + 'px ' + ctx.font.split(' ').slice(-1)[0];
-                  ctx.fillText(Math.round(this.config.velibTrendZoom / 60) + 'mn', trendGraph.width * 5 / 6, trendGraph.height / 2);
-                  ctx.fillText(Math.round(this.config.velibTrendZoom / 60) + 'mn', trendGraph.width / 6, trendGraph.height / 2);
-                  ctx.strokeStyle = 'grey';
-                  ctx.setLineDash([5, 15]);
-                  ctx.beginPath();
-                  ctx.moveTo(2/3 * trendGraph.width, 0);
-                  ctx.lineTo(2/3 * trendGraph.width, 100);
-                  ctx.stroke();
-                  ctx.moveTo(trendGraph.width / 3, 0);
-                  ctx.lineTo(trendGraph.width / 3, 100);
-                  ctx.stroke();
-                  var hourMark = new Date(); var alpha;
-                  hourMark.setMinutes(0); hourMark.setSeconds(0);
-                  alpha = (hourMark - now + 24 * 60 * 60 * 1000 - this.config.velibTrendZoom * 1000) / (24 * 60 * 60 * 1000 - 2 * this.config.velibTrendZoom * 1000);
-                  alpha = (hourMark - now + this.config.velibTrendZoom * 1000) / (24 * 60 * 60 * 1000) * trendGraph.width;
-                  for (var h = 0; h < 24; h = h + 2) {
-                    ctx.fillStyle = 'red';
-                    ctx.textAlign = 'center';
-                    ctx.font = Math.round(trendGraph.height / 12) + 'px';
-                    ctx.fillText(`${(hourMark.getHours() + 24 - h) % 24}`, (2 - h / 24) * trendGraph.width / 3 + alpha, h % 12 * trendGraph.height / 12 / 3 + trendGraph.height / 3);
-                  }
-                }
-                cellTrend.colSpan = 3; //so that it takes the whole row
-                cellTrend.appendChild(trendGraph);
-                rowTrend.appendChild(cellTrend);
-                table.appendChild(rowTrend);
-              }
-            }
-          } else {
-            var message = document.createElement('td');
-            message.className = 'bright';
-            message.innerHTML = (stop.label || stop.stations) + ' no info yet';
-            row.appendChild(message);
-          }
-          table.appendChild(row);
+          table.appendChild(renderVelib(stop, this.velibHistory, this.config, now));
           break;
       }
     }
@@ -283,6 +176,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   },
 
   socketNotificationReceived: function(notification, payload) {
+    const { debug } = this.config;
     this.caller = notification;
     switch (notification) {
       case NOTIF_BUS:
@@ -296,25 +190,25 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
           this.velibHistory[payload.id] = localStorage[payload.id] ? JSON.parse(localStorage[payload.id]) : [];
           this.velibHistory[payload.id].push(payload);
           localStorage[payload.id] = JSON.stringify(this.velibHistory[payload.id]);
-          if (this.config.debug) {console.log (' *** size of velib History for ' + payload.id + ' is: ' + this.velibHistory[payload.id].length);}
+          if (debug) {console.log (' *** size of velib History for ' + payload.id + ' is: ' + this.velibHistory[payload.id].length);}
           this.updateDom();
         } else if (this.velibHistory[payload.id][this.velibHistory[payload.id].length - 1].lastUpdate != payload.lastUpdate) {
           this.velibHistory[payload.id].push(payload);
           localStorage[payload.id] = JSON.stringify(this.velibHistory[payload.id]);
           this.updateDom();
-          if (this.config.debug) {
+          if (debug) {
             console.log (' *** size of velib History for ' + payload.id + ' is: ' + this.velibHistory[payload.id].length);
             console.log (this.velibHistory[payload.id]);
           }
         } else {
-          if (this.config.debug) {
+          if (debug) {
             console.log(' *** redundant velib payload for ' + payload.id + ' with time ' + payload.lastUpdate + ' && ' + this.velibHistory[payload.id][this.velibHistory[payload.id].length - 1].lastUpdate);
           }
         }
         this.loaded = true;
         break;
       case NOTIF_TRAFFIC:
-        if (this.config.debug) {
+        if (debug) {
           console.log(' *** received traffic information for: ' + payload.id);
           console.log(payload);
         }

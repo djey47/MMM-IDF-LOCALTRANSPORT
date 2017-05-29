@@ -1,6 +1,28 @@
 /* @flow */
 
-import { renderHeader, renderTraffic } from './renderer.js';
+import {
+  renderWrapper,
+  renderHeader,
+  renderTraffic,
+  renderNoInfoVelib,
+  renderVelib,
+} from './renderer.js';
+
+describe('renderWrapper function', () => {
+  it('should return correct HTML when not loaded', () => {
+    // given-when
+    const actual = renderWrapper(false);
+    // then
+    expect(actual.outerHTML).toMatchSnapshot();
+  });
+
+  it('should return correct HTML when loaded', () => {
+    // given-when
+    const actual = renderWrapper(true);
+    // then
+    expect(actual.outerHTML).toMatchSnapshot();
+  });
+});
 
 describe('renderHeader function', () => {
   const baseConfig = {
@@ -63,6 +85,7 @@ describe('renderTraffic function', () => {
     const stop = {
       line: ['BUS', 275],
       label: 'Ulbach',
+      stations: '',
     };
     const ratpTraffic = {
       'traffic/bus/275': {
@@ -76,6 +99,98 @@ describe('renderTraffic function', () => {
     };
     // when
     const actual = renderTraffic(stop, ratpTraffic, config);
+    // then
+    expect(actual.outerHTML).toMatchSnapshot();
+  });
+});
+
+describe('renderNoInfoVelib function', () => {
+  it('should return correct HTML for table row when label', () => {
+    // given
+    const stop = {
+      line: ['VELIB', 68],
+      label: 'Ulbach',
+      stations: '',
+    };
+    // when
+    const actual = renderNoInfoVelib(stop);
+    // then
+    expect(actual.outerHTML).toMatchSnapshot();
+  });
+
+  it('should return correct HTML for table cell when no label', () => {
+    // given
+    const stop = {
+      line: ['VELIB', 68],
+      stations: 'Stations',
+    };
+    // when
+    const actual = renderNoInfoVelib(stop);
+    // then
+    expect(actual.outerHTML).toMatchSnapshot();
+  });
+});
+
+describe('renderVelib function', () => {
+
+  it('should return correct HTML when no history', () => {
+    // given
+    const stop = {
+      line: ['VELIB', 68],
+      label: 'Ulbach',
+      stations: '',
+    };
+    const velibHistory = {};
+    const config = {};
+    const now = new Date();
+    // when
+    const actual = renderVelib(stop, velibHistory, config, now);
+    // then
+    expect(actual.outerHTML).toMatchSnapshot();
+  });
+
+  it('should return correct HTML when history without trend', () => {
+    // given
+    const stop = {
+      line: ['VELIB', 68],
+      stations: 'Stations',
+    };
+    const velibHistory = {
+      Stations: [{
+        total: 10,
+        bike: 2,
+        empty: 8,
+        name: 'Opera',
+      }],
+    };
+    const config = {
+      trendGraphOff: true,
+    };
+    const now = new Date(2017, 5, 29, 8, 34, 28);
+    // when
+    const actual = renderVelib(stop, velibHistory, config, now);
+    // then
+    expect(actual.outerHTML).toMatchSnapshot();
+  });
+
+  it('should return correct HTML when history with trend', () => {
+    // given
+    const stop = {
+      line: ['VELIB', 68],
+      stations: 'Stations',
+    };
+    const velibHistory = {
+      Stations: [{
+        total: 10,
+        bike: 2,
+        empty: 8,
+        name: 'Opera',
+      }],
+    };
+    const config = {};
+    const now = new Date(2017, 5, 29, 8, 34, 28);
+    // when
+    const actual = renderVelib(stop, velibHistory, config, now);
     // then
     expect(actual.outerHTML).toMatchSnapshot();
   });
