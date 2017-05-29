@@ -17,7 +17,7 @@ A module to display:
 ![screenshot](https://github.com/da4throux/MMM-Paris-RATP-PG/blob/master/MMM-Paris-RATP-PG2.png)
 
 # API
-* It is based on the REST API provided by [NAVITIA](NAVITIA.io)
+* It is based on the REST API provided by [NAVITIA](https://www.navitia.io/)
 * It also uses [Paris Open Data for Velib](https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/) (use it to get the 5 digits stations you will need for the configuration).
 
 # Install
