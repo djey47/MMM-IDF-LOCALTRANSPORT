@@ -59,7 +59,7 @@ module.exports = NodeHelper.create({
             console.log (' *** received answer for: ' + _url);
             console.log (_stopConfig);
           }
-          _processFunction(response.body, _stopConfig);
+          _processFunction(response.body);
         } else {
           if (self.config.debug) {
             if (response) {
@@ -137,7 +137,7 @@ module.exports = NodeHelper.create({
     this.sendSocketNotification('VELIB', this.velib);
   },
 
-  processBus: function(data, stopConfig) {
+  processBus: function(data) {
     var idMaker;
     if (this.config.debug) { console.log (' *** processBus data'); console.log (data); }
     this.schedule = {};
@@ -154,7 +154,7 @@ module.exports = NodeHelper.create({
     this.sendSocketNotification('BUS', this.schedule);
   },
 
-  processTraffic: function (data, stopConfig) {
+  processTraffic: function (data) {
     var result, idMaker;
     if (this.config.debug) {
       console.log('response receive: ');
