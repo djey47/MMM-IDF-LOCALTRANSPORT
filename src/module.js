@@ -64,12 +64,11 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
 
     this.sendSocketNotification(NOTIF_SET_CONFIG, this.config);
 
-    // TODO rename to schedules
-    this.busSchedules = {};
+    this.transportSchedules = {};
+    this.transportLastUpdate = {};
     this.ratpTraffic = {};
     this.ratpTrafficLastUpdate = {};
     this.velibHistory = {};
-    this.busLastUpdate = {};
     this.loaded = false;
     this.updateTimer = null;
 
@@ -103,7 +102,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
         case 'metros':
         case 'tramways':
         case 'rers':
-          renderPublicTransport(stop, this.busSchedules, this.busLastUpdate, this.config, now)
+          renderPublicTransport(stop, this.transportSchedules, this.transportLastUpdate, this.config, now)
             .forEach((row) => table.appendChild(row));
           break;
         case 'velib':
@@ -116,48 +115,49 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
 
   socketNotificationReceived: function(notification, payload) {
     const { debug } = this.config;
+    const { id, lastUpdate, schedules } = payload;
     this.caller = notification;
     switch (notification) {
       case NOTIF_BUS:
-        this.busSchedules[payload.id] = payload.schedules;
-        this.busLastUpdate[payload.id] = payload.lastUpdate;
+        this.transportSchedules[id] = schedules;
+        this.transportLastUpdate[id] = lastUpdate;
         this.loaded = true;
         this.updateDom();
         break;
       case NOTIF_VELIB:
-        if (!this.velibHistory[payload.id]) {
-          this.velibHistory[payload.id] = localStorage[payload.id] ? JSON.parse(localStorage[payload.id]) : [];
-          this.velibHistory[payload.id].push(payload);
-          localStorage[payload.id] = JSON.stringify(this.velibHistory[payload.id]);
-          if (debug) {console.log (' *** size of velib History for ' + payload.id + ' is: ' + this.velibHistory[payload.id].length);}
+        if (!this.velibHistory[id]) {
+          this.velibHistory[id] = localStorage[id] ? JSON.parse(localStorage[id]) : [];
+          this.velibHistory[id].push(payload);
+          localStorage[id] = JSON.stringify(this.velibHistory[id]);
+          if (debug) {console.log (' *** size of velib History for ' + id + ' is: ' + this.velibHistory[id].length);}
           this.updateDom();
-        } else if (this.velibHistory[payload.id][this.velibHistory[payload.id].length - 1].lastUpdate != payload.lastUpdate) {
-          this.velibHistory[payload.id].push(payload);
-          localStorage[payload.id] = JSON.stringify(this.velibHistory[payload.id]);
+        } else if (this.velibHistory[id][this.velibHistory[id].length - 1].lastUpdate != lastUpdate) {
+          this.velibHistory[id].push(payload);
+          localStorage[id] = JSON.stringify(this.velibHistory[id]);
           this.updateDom();
           if (debug) {
-            console.log (' *** size of velib History for ' + payload.id + ' is: ' + this.velibHistory[payload.id].length);
-            console.log (this.velibHistory[payload.id]);
+            console.log (' *** size of velib History for ' + id + ' is: ' + this.velibHistory[id].length);
+            console.log (this.velibHistory[id]);
           }
         } else {
           if (debug) {
-            console.log(' *** redundant velib payload for ' + payload.id + ' with time ' + payload.lastUpdate + ' && ' + this.velibHistory[payload.id][this.velibHistory[payload.id].length - 1].lastUpdate);
+            console.log(' *** redundant velib payload for ' + id + ' with time ' + lastUpdate + ' && ' + this.velibHistory[id][this.velibHistory[id].length - 1].lastUpdate);
           }
         }
         this.loaded = true;
         break;
       case NOTIF_TRAFFIC:
         if (debug) {
-          console.log(' *** received traffic information for: ' + payload.id);
+          console.log(' *** received traffic information for: ' + id);
           console.log(payload);
         }
-        this.ratpTraffic[payload.id] = payload;
-        this.ratpTrafficLastUpdate[payload.id] = payload.lastUpdate;
+        this.ratpTraffic[id] = payload;
+        this.ratpTrafficLastUpdate[id] = lastUpdate;
         this.loaded = true;
         this.updateDom();
         break;
       case NOTIF_UPDATE:
-        this.config.lastUpdate = payload.lastUpdate;
+        this.config.lastUpdate = lastUpdate;
         this.updateDom();
         break;
     }

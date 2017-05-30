@@ -158,20 +158,20 @@ export const renderComingTransport = (firstLine: boolean, stop: Stop, comingTran
 /**
  * @returns HTML for public transport items (rows)
  */
-export const renderPublicTransport = (stop: Stop, busSchedules: Object, busLastUpdate: Object, config: Object, now: Date): any[] => {
+export const renderPublicTransport = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
   const { line, stations, destination } = stop;
   const rows = [];
   const stopIndex = `${line.toString().toLowerCase()}/${stations}/${destination || ''}`;
-  const comingBuses: Schedule[] = busSchedules[stopIndex] || [ { message: 'N/A', destination: 'N/A' } ];
-  const comingBusLastUpdate: string = busLastUpdate[stopIndex];
+  const coming: Schedule[] = schedules[stopIndex] || [ { message: 'N/A', destination: 'N/A' } ];
+  const comingLastUpdate: string = lastUpdate[stopIndex];
   const previous = {
     previousRow: null,
     previousDestination: null,
     previousMessage: '',
   };
   let firstLine = true;
-  for (let comingIndex = 0; (comingIndex < config.maximumEntries) && (comingIndex < comingBuses.length); comingIndex++) {
-    const row = renderComingTransport(firstLine, stop, comingBuses[comingIndex], comingBusLastUpdate, previous, config, now);
+  for (let comingIndex = 0; (comingIndex < config.maximumEntries) && (comingIndex < coming.length); comingIndex++) {
+    const row = renderComingTransport(firstLine, stop, coming[comingIndex], comingLastUpdate, previous, config, now);
     if (row) rows.push(row);
     firstLine = false;
   }
