@@ -80,41 +80,43 @@ module.exports = NodeHelper.create({
    * Calls processTrains on successful response.
   */
   updateTimetable: function() {
-    var self = this;
     var url, stopConfig;
-    if (this.config.debug) { console.log (' *** fetching update');}
-    self.sendSocketNotification('UPDATE', { lastUpdate : new Date()});
-    for (var index in self.config.busStations) {
-      stopConfig = self.config.busStations[index];
-      switch (stopConfig.type) {
+    const { debug, busStations, apiBase, apiBaseV3, apiVelib } = this.config;
+    if (debug) { console.log (' *** fetching update');}
+    this.sendSocketNotification('UPDATE', { lastUpdate : new Date()});
+
+    for (var index in busStations) {
+      stopConfig = busStations[index];
+      const { api, type, line, stations, destination } = stopConfig;
+      switch (type) {
         case 'tramways':
         case 'bus':
         case 'rers':
         case 'metros':
-          if (stopConfig.api == 'v3') {
-            url = self.config.apiBaseV3 + 'schedules/' + stopConfig.type + '/' + stopConfig.line.toString().toLowerCase() + '/' + stopConfig.stations + '/' + stopConfig.destination; // get schedule for that bus
+          if (api == 'v3') {
+            url = apiBaseV3 + 'schedules/' + type + '/' + line.toString().toLowerCase() + '/' + stations + '/' + destination; // get schedule for that bus
           } else {
-            url = self.config.apiBase + stopConfig.type + '/' + stopConfig.line.toString().toLowerCase() + '/stations/' + stopConfig.stations + '?destination=' + stopConfig.destination; // get schedule for that bus
+            url = apiBase + type + '/' + line.toString().toLowerCase() + '/stations/' + stations + '?destination=' + destination; // get schedule for that bus
           }
-          self.getResponse(url, self.processBus.bind(this), stopConfig);
+          this.getResponse(url, this.processBus.bind(this), stopConfig);
           break;
         case 'velib':
-          url = self.config.apiVelib + '&q=' + stopConfig.stations;
-          self.getResponse(url, self.processVelib.bind(this));
+          url = apiVelib + '&q=' + stations;
+          this.getResponse(url, this.processVelib.bind(this));
           break;
         case 'traffic':
-          if (stopConfig.api == 'v3') {
-            url = self.config.apiBaseV3 + 'traffic/' + stopConfig.line[0] + '/' + stopConfig.line[1];
-            self.getResponse(url, self.processTraffic.bind(this), stopConfig);
+          if (api == 'v3') {
+            url = apiBaseV3 + 'traffic/' + line[0] + '/' + line[1];
+            this.getResponse(url, this.processTraffic.bind(this), stopConfig);
           } else {
-            if (this.config.debug) {
-              console.log(' *** API version not handled for: ' + stopConfig.type + ' type, version: ' + stopConfig.api);
+            if (debug) {
+              console.log(' *** API version not handled for: ' + type + ' type, version: ' + api);
             }
           }
           break;
         default:
-          if (this.config.debug) {
-            console.log(' *** unknown request: ' + stopConfig.type);
+          if (debug) {
+            console.log(' *** unknown request: ' + type);
           }
       }
     }
