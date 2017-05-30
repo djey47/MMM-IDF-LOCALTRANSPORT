@@ -20,8 +20,8 @@ import {
   renderWrapper,
   renderHeader,
   renderTraffic,
+  renderPublicTransport,
   renderVelib,
-  renderNoInfoVelib,
 } from './dom/renderer';
 
 Module.register('MMM-IDF-STIF-NAVITIA',{
@@ -64,6 +64,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
 
     this.sendSocketNotification(NOTIF_SET_CONFIG, this.config);
 
+    // TODO rename to schedules
     this.busSchedules = {};
     this.ratpTraffic = {};
     this.ratpTrafficLastUpdate = {};
@@ -92,12 +93,8 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     table.className = 'small';
     wrapper.appendChild(table);
 
-    let stopIndex;
-    let previousRow, previousDestination, previousMessage, row, comingBus;
-    let firstCell, secondCell;
     for (var busIndex = 0; busIndex < this.config.busStations.length; busIndex++) {
-      var firstLine = true;
-      var stop = this.config.busStations[busIndex];
+      const stop = this.config.busStations[busIndex];
       switch (stop.type) {
         case 'traffic':
           table.appendChild(renderTraffic(stop, this.ratpTraffic, this.config));
@@ -106,64 +103,8 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
         case 'metros':
         case 'tramways':
         case 'rers':
-          stopIndex = `${stop.line.toString().toLowerCase()}/${stop.stations}/${stop.destination}`;
-          var comingBuses = this.busSchedules[stopIndex] || [{message: 'N/A', destination: 'N/A'}];
-          var comingBusLastUpdate = this.busLastUpdate[stopIndex];
-          for (var comingIndex = 0; (comingIndex < this.config.maximumEntries) && (comingIndex < comingBuses.length); comingIndex++) {
-            row = document.createElement('tr');
-            comingBus = comingBuses[comingIndex];
-            var busNameCell = document.createElement('td');
-            busNameCell.className = 'align-right bright';
-            if (firstLine) {
-              busNameCell.innerHTML = stop.label || stop.line;
-            } else {
-              busNameCell.innerHTML = ' ';
-            }
-            row.appendChild(busNameCell);
-
-            var busDestination = document.createElement('td');
-            busDestination.innerHTML = comingBus.destination.substr(0, this.config.maxLettersForDestination);
-            busDestination.className = 'align-left';
-            row.appendChild(busDestination);
-
-            var depCell = document.createElement('td');
-            depCell.className = 'bright';
-            if (!this.busSchedules[stopIndex]) {
-              depCell.innerHTML = 'N/A ';
-            } else {
-              if (this.config.convertToWaitingTime && /^\d{1,2}[:][0-5][0-9]$/.test(comingBus.message)) {
-                var transportTime = comingBus.message.split(':');
-                var endDate = new Date(0, 0, 0, transportTime[0], transportTime[1]);
-                var startDate = new Date(0, 0, 0, now.getHours(), now.getMinutes(), now.getSeconds());
-                var waitingTime = endDate - startDate;
-                if (startDate > endDate) {
-                  waitingTime += 1000 * 60 * 60 * 24;
-                }
-                waitingTime = Math.floor(waitingTime / 1000 / 60);
-                depCell.innerHTML = waitingTime + ' mn';
-              } else {
-                depCell.innerHTML = comingBus.message;
-              }
-            }
-            depCell.innerHTML = depCell.innerHTML.substr(0, this.config.maxLettersForTime);
-            row.appendChild(depCell);
-            if ((new Date() - Date.parse(comingBusLastUpdate)) > (this.config.oldUpdateThreshold ? this.config.oldUpdateThreshold : (this.config.updateInterval * (1 + this.config.oldThreshold)) )) {
-              busDestination.style.opacity = this.config.oldUpdateOpacity;
-              depCell.style.opacity = this.config.oldUpdateOpacity;
-            }
-            if (this.config.concatenateArrivals && !firstLine && (comingBus.destination == previousDestination)) {
-              previousMessage += ' / ' + comingBus.message;
-              if (previousRow) {
-                previousRow.getElementsByTagName('td')[2].innerHTML = previousMessage;
-              }
-            } else {
-              table.appendChild(row);
-              previousRow = row;
-              previousMessage = comingBus.message;
-              previousDestination = comingBus.destination;
-            }
-            firstLine = false;
-          }
+          renderPublicTransport(stop, this.busSchedules, this.busLastUpdate, this.config, now)
+            .forEach((row) => table.appendChild(row));
           break;
         case 'velib':
           table.appendChild(renderVelib(stop, this.velibHistory, this.config, now));

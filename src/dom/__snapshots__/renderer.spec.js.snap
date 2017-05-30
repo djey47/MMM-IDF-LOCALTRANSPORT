@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`renderLocalTransport function should return correct HTML when no schedule 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">N/A</td><td class=\\"bright\\">N/A</td></tr>"`;
+
+exports[`renderLocalTransport function should return correct HTML when schedule 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">15:00</td></tr><tr><td class=\\"align-right bright\\"> </td><td class=\\"align-left\\">Place Charras</td><td class=\\"bright\\">15:05</td></tr>"`;
+
+exports[`renderLocalTransport function should return correct HTML when schedule and concatenate arrivals 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">Place Charras</td><td class=\\"bright\\">15:00</td></tr><tr><td class=\\"align-right bright\\"> </td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">15:15 / 15:30</td></tr>"`;
+
+exports[`renderLocalTransport function should return correct HTML when schedule and convert to waiting time 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">15 mn</td></tr><tr><td class=\\"align-right bright\\"> </td><td class=\\"align-left\\">Place Charras</td><td class=\\"bright\\">30 mn</td></tr>"`;
+
 exports[`renderNoInfoVelib function should return correct HTML for table cell when no label 1`] = `"<tr><td class=\\"bright\\">Stations no info yet</td></tr>"`;
 
 exports[`renderNoInfoVelib function should return correct HTML for table row when label 1`] = `"<tr><td class=\\"bright\\">Ulbach no info yet</td></tr>"`;

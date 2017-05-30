@@ -4,6 +4,7 @@ import {
   renderWrapper,
   renderHeader,
   renderTraffic,
+  renderPublicTransport,
   renderNoInfoVelib,
   renderVelib,
 } from './renderer.js';
@@ -80,6 +81,124 @@ describe('renderHeader function', () => {
   });
 });
 
+describe('renderLocalTransport function', () => {
+  const now = new Date('2017/05/30 14:45:00');
+
+  it('should return correct HTML when schedule', () => {
+    // given
+    const stopIndex = 'bus,275/Ulbach/La+Defense';
+    const stop = {
+      line: ['BUS', 275],
+      stations: 'Ulbach',
+      destination: 'La+Defense',
+    };
+    const busSchedules = {
+      [stopIndex]: [{
+        message: '15:00',
+        destination: 'La Défense',
+      },{
+        message: '15:05',
+        destination: 'Place Charras',       
+      }],
+    };
+    const busLastUpdate = {
+      [stopIndex]: '2017/05/30 15:00:00',
+    };
+    const config = {
+      maximumEntries: 2,
+      maxLettersForDestination: 256,
+    };
+    const now = new Date();
+    // when
+    const actual = renderPublicTransport(stop, busSchedules, busLastUpdate, config, now);
+    // then
+    expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
+  });
+
+  it('should return correct HTML when schedule and convert to waiting time', () => {
+    // given
+    const stopIndex = 'bus,275/Ulbach/La+Defense';
+    const stop = {
+      line: ['BUS', 275],
+      stations: 'Ulbach',
+      destination: 'La+Defense',
+    };
+    const busSchedules = {
+      [stopIndex]: [{
+        message: '15:00',
+        destination: 'La Défense',
+      },{
+        message: '15:15',
+        destination: 'Place Charras',       
+      }],
+    };
+    const busLastUpdate = {
+      [stopIndex]: '2017/05/30 15:00:00',
+    };
+    const config = {
+      maximumEntries: 2,
+      maxLettersForDestination: 256,
+      convertToWaitingTime: true,
+    };
+    // when
+    const actual = renderPublicTransport(stop, busSchedules, busLastUpdate, config, now);
+    // then
+    expect(actual.length).toEqual(2);
+    expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
+  });
+
+  it('should return correct HTML when schedule and concatenate arrivals', () => {
+    // given
+    const stopIndex = 'bus,275/Ulbach/La+Defense';
+    const stop = {
+      line: ['BUS', 275],
+      stations: 'Ulbach',
+      destination: 'La+Defense',
+    };
+    const busSchedules = {
+      [stopIndex]: [{
+        message: '15:00',
+        destination: 'Place Charras',
+      },{
+        message: '15:15',
+        destination: 'La Défense',       
+      },{
+        message: '15:30',
+        destination: 'La Défense',       
+      }],
+    };
+    const busLastUpdate = {
+      [stopIndex]: '2017/05/30 15:00:00',
+    };
+    const config = {
+      maximumEntries: 3,
+      maxLettersForDestination: 256,
+      concatenateArrivals: true,
+    };
+    // when
+    const actual = renderPublicTransport(stop, busSchedules, busLastUpdate, config, now);
+    // then
+    expect(actual.length).toEqual(2);
+    expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
+  });
+
+  it('should return correct HTML when no schedule', () => {
+    // given
+    const stop = {
+      line: ['BUS', 275],
+      stations: '',
+    };
+    const busSchedules = {};
+    const config = {
+      maximumEntries: 1,
+    };
+    // when
+    const actual = renderPublicTransport(stop, busSchedules, {}, config, now);
+    // then
+    expect(actual[0].outerHTML).toMatchSnapshot();    
+  });
+});
+
 describe('renderTraffic function', () => {
   it('should return correct HTML for table row', () => {
     // given
@@ -133,7 +252,6 @@ describe('renderNoInfoVelib function', () => {
 });
 
 describe('renderVelib function', () => {
-
   it('should return correct HTML when no history', () => {
     // given
     const stop = {
