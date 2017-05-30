@@ -34,10 +34,10 @@ export const renderWrapper = (loaded: boolean): any => {
 /**
  * @returns module header contents
  */
-export const renderHeader = (config: Object): string => {
+export const renderHeader = (data: Object, config: Object): string => {
   const { updateInterval, showLastUpdateTime, lastUpdate, showSecondsToNextUpdate } = config;
 
-  let contents = '';
+  let contents = data.header;
   if (showSecondsToNextUpdate) {
     const timeDifference = Math.round((updateInterval - new Date() + Date.parse(lastUpdate)) / 1000);
     if (timeDifference > 0) {

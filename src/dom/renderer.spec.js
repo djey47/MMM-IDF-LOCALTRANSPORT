@@ -31,21 +31,22 @@ describe('renderHeader function', () => {
     showLastUpdateTime: false,
     showSecondsToNextUpdate: false,
   };
+  const data = {
+    header: 'Connections',
+  };
 
-  it('should return empty string when empty configuration', () => {
-    // given
-    const config = {};
-    // when
-    const actual = renderHeader(config);
+  it('should return correctly when empty configuration', () => {
+    // given-when
+    const actual = renderHeader(data, {});
     // then
-    expect(actual).toEqual('');
+    expect(actual).toEqual('Connections');
   });
 
   it('should return correct header when complete configuration', () => {
     // given
     const config = Object.assign({}, baseConfig, { showLastUpdateTime: true, showSecondsToNextUpdate: true });
     // when
-    const actual = renderHeader(config);
+    const actual = renderHeader(data, config);
     // then
     expect(actual).toContain(', next update in ');
     expect(actual).toContain('@');
@@ -55,7 +56,7 @@ describe('renderHeader function', () => {
     // given
     const config = Object.assign({}, baseConfig, { showSecondsToNextUpdate: true });
     // when
-    const actual = renderHeader(config);
+    const actual = renderHeader(data, config);
     // then
     expect(actual).toContain(', next update in ');
     expect(actual).not.toContain('@');
@@ -65,17 +66,17 @@ describe('renderHeader function', () => {
     // given
     const config = Object.assign({}, baseConfig, { showLastUpdateTime: true });
     // when
-    const actual = renderHeader(config);
+    const actual = renderHeader(data, config);
     // then
     expect(actual).not.toContain(', next update in ');
     expect(actual).toContain('@');
   });
 
-  it('should return empty string when silent configuration', () => {
+  it('should return simple string when silent configuration', () => {
     // given-when
-    const actual = renderHeader(baseConfig);
+    const actual = renderHeader(data, baseConfig);
     // then
-    expect(actual).toEqual('');
+    expect(actual).toEqual('Connections');
   });
 });
 

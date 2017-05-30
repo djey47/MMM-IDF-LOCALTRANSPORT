@@ -80,9 +80,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   },
 
   getHeader: function () {
-    let header = this.data.header;
-    header += renderHeader(this.config);
-    return header;
+    return renderHeader(this.data, this.config);
   },
 
   // Override dom generator.
