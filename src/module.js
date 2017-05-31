@@ -16,6 +16,7 @@ import {
  NOTIF_VELIB,
  NOTIF_TRANSPORT,
 } from './support/notifications';
+import { defaults } from './support/configuration';
 import {
   renderWrapper,
   renderHeader,
@@ -27,28 +28,7 @@ import {
 Module.register('MMM-IDF-STIF-NAVITIA',{
 
   // Define module defaults
-  defaults: {
-    maximumEntries: 2, //if the APIs sends several results for the incoming transport how many should be displayed
-    maxTimeOffset: 200, // Max time in the future for entries
-    useRealtime: true,
-    updateInterval: 1 * 60 * 1000, //time in ms between pulling request for new times (update request)
-    animationSpeed: 2000,
-    convertToWaitingTime: true, // messages received from API can be 'hh:mm' in that case convert it in the waiting time 'x mn'
-    initialLoadDelay: 0, // start delay seconds.
-    apiBase: 'https://api-ratp.pierre-grimaud.fr/v2/',
-    apiBaseV3: 'https://api-ratp.pierre-grimaud.fr/v3/',
-    maxLettersForDestination: 22, //will limit the length of the destination string
-    concatenateArrivals: true, //if for a transport there is the same destination and several times, they will be displayed on one line
-    showSecondsToNextUpdate: true,  // display a countdown to the next update pull (should I wait for a refresh before going ?)
-    showLastUpdateTime: false,  //display the time when the last pulled occured (taste & color...)
-    oldUpdateOpacity: 0.5, //when a displayed time age has reached a threshold their display turns darker (i.e. less reliable)
-    oldThreshold: 0.1, //if (1+x) of the updateInterval has passed since the last refresh... then the oldUpdateOpacity is applied
-    debug: false, //console.log more things to help debugging
-    apiVelib: 'https://opendata.paris.fr/api/records/1.0/search/?dataset=stations-velib-disponibilites-en-temps-reel', // add &q=141111 to get info of that station
-    velibGraphWidth: 400, //Height will follow
-    apiAutolib: 'https://opendata.paris.fr/explore/dataset/stations_et_espaces_autolib_de_la_metropole_parisienne/api/', ///add '?q=' mais pas d'info temps réel... pour l'instant
-    conversion: { "Trafic normal sur l'ensemble de la ligne." : 'Traffic OK'},
-  },
+  defaults,
 
   // Define required scripts.
   getStyles: function() {
@@ -79,6 +59,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     setInterval(updateCallback, 1000);
   },
 
+  // What's being written on top
   getHeader: function () {
     return renderHeader(this.data, this.config);
   },
@@ -113,6 +94,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     return wrapper;
   },
 
+  // Intercepts server side events
   socketNotificationReceived: function(notification, payload) {
     const { debug } = this.config;
     const { id, lastUpdate, schedules } = payload;
@@ -125,8 +107,6 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
         this.updateDom();
         break;
       case NOTIF_VELIB:
-        console.log(this.velibHistory);
-        
         if (!this.velibHistory[id]) {
           this.velibHistory[id] = localStorage[id] ? JSON.parse(localStorage[id]) : [];
           this.velibHistory[id].push(payload);
