@@ -50,21 +50,17 @@ A module to display:
 * oldUpdateOpacity: 0.5, //when a displayed time age has reached a threshold their display turns darker (i.e. less reliable)
 * oldThreshold: 0.1, //if (1+x) of the updateInterval has passed since the last refresh... then the oldUpdateOpacity is applied
 * debug: false, //console.log more things to help debugging
-* busStations: [] // the list of stations/directions to monitor (bus and RERs, probably works also for Subways)
-* busStations is an array of objects with different properties:
-  - 'api': Optional: needs to be set to 'v3' if the v3 of the API is to be used for the pierre-grimaud interface. If missing, v2 is assumed for backward compatibility (ignore for velib). Mandatory 'v3' for 'traffic'
+* stations: [] // the list of stations/directions to monitor (bus, RERs, tramways and subways)
+* stations is an array of objects with different properties:
   - 'type': Mandatory: Possible value:['bus', 'rers', 'tramways', 'velib', 'traffic']
   - 'line': Mandatory for 'bus', 'rers' & 'tramways']: Value such as:[28, 'B'] -> typically the official name but you can check through: 
-   . v2 - bus-metros-rers-tramways: https://api-ratp.pierre-grimaud.fr/v2/bus, https://api-ratp.pierre-grimaud.fr/v2/rers, https://api-ratp.pierre-grimaud.fr/v2/tramways, https://api-ratp.pierre-grimaud.fr/v2/metros
-   . v3 - bus-metros-rers-tramways: https://api-ratp.pierre-grimaud.fr/v3/lines/bus, https://api-ratp.pierre-grimaud.fr/v3/lines/rers, https://api-ratp.pierre-grimaud.fr/v3/lines/tramways, https://api-ratp.pierre-grimaud.fr/v3/lines/metros
-   . v3 - traffic: https://api-ratp.pierre-grimaud.fr/v3/traffic set the line as: [type, line], such as: ['metros', 6], ['rers', 'A']...
-  - 'stations': Mandatory: [digits of the station in v2, name of the station in v3] ->
-    . v2 for bus/rers/tramways/metros, the station id, look it up with the url, typically: https://api-ratp.pierre-grimaud.fr/v2/{type}/{line}
-    . v3 for bus/rers/tramways/metros, https://api-ratp.pierre-grimaud.fr/v3/stations/{type}/{line}
+   . bus-metros-rers-tramways: https://api-ratp.pierre-grimaud.fr/v3/lines/bus, https://api-ratp.pierre-grimaud.fr/v3/lines/rers, https://api-ratp.pierre-grimaud.fr/v3/lines/tramways, https://api-ratp.pierre-grimaud.fr/v3/lines/metros
+   . traffic: https://api-ratp.pierre-grimaud.fr/v3/traffic set the line as: [type, line], such as: ['metros', 6], ['rers', 'A']...
+  - 'station': Mandatory: [name of the station] ->
+    . for bus/rers/tramways/metros, https://api-ratp.pierre-grimaud.fr/v3/stations/{type}/{line}
     . for velib, you can search here: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/
     . not required for traffic
   - 'destination': 
-    . v2: Mandatory for 'metros', 'bus', 'rers' & 'tramways': [the destination id] (indicated in the same look up url)
     . v3: Mandatory for 'metros', 'bus', 'rers' & tramways: either 'A' or 'R'
     . Optional for 'velib': ['leaving', 'arriving', '']: indicate if only one value is needed //not in use yet
     . not required for traffic.
@@ -75,16 +71,16 @@ A module to display:
 
 Example:
 ```javascript
-busStations: [
+stations: [
 	{type: 'bus', line: 38, stations: 2758, destination: 183, label: 'bus vers le Nord'},
-	{api: 'v3', type: 'bus', line: 38, stations: 'observatoire+++port+royal', destination: 'A'},
+	{type: 'bus', line: 38, stations: 'observatoire+++port+royal', destination: 'A'},
   {type: 'rers', line: 'B', stations: 62, destination: 4},
-	{api: 'v3', type: 'rers', line: 'B', stations: 'port+royal', destination: 'A'},
-	{api: 'v3', type: 'traffic', line: ['rers', 'B']},
-	{api: 'v3', type: 'traffic', line: ['tramways', 1], label: 'T1'}, //label to avoid confusion with metros line 1
+	{type: 'rers', line: 'B', stations: 'port+royal', destination: 'A'},
+	{type: 'traffic', line: ['rers', 'B']},
+	{type: 'traffic', line: ['tramways', 1], label: 'T1'}, //label to avoid confusion with metros line 1
 	{type: 'tramways', line: '3a', stations: 464, destination: 41},	
-	{api: 'v3', type: 'tramways', line: '3a', stations: 'georges+brassens', destination: 'R'},
+	{type: 'tramways', line: '3a', stations: 'georges+brassens', destination: 'R'},
 	{type: 'metros', line: '6', stations: 145, destination: 17},	
-	{api: 'v3', type: 'metros', line: '6', stations: 'raspail', destination: 'A'},
+	{type: 'metros', line: '6', stations: 'raspail', destination: 'A'},
 	{type: 'velib', stations: 5029, destination: 'leaving', label: 'RER'}]
 ```

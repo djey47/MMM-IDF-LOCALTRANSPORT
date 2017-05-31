@@ -49,7 +49,7 @@ describe('renderHeader function', () => {
     // when
     const actual = renderHeader(data, config);
     // then
-    expect(actual).toContain(', next update in ');
+    expect(actual).toContain('Connections, next update in ');
     expect(actual).toContain('@');
   });
 
@@ -59,7 +59,7 @@ describe('renderHeader function', () => {
     // when
     const actual = renderHeader(data, config);
     // then
-    expect(actual).toContain(', next update in ');
+    expect(actual).toContain('Connections, next update in ');
     expect(actual).not.toContain('@');
   });
 
@@ -69,6 +69,7 @@ describe('renderHeader function', () => {
     // when
     const actual = renderHeader(data, config);
     // then
+    expect(actual).toContain('Connections');
     expect(actual).not.toContain(', next update in ');
     expect(actual).toContain('@');
   });

@@ -14,7 +14,7 @@ import {
  NOTIF_TRAFFIC,
  NOTIF_SET_CONFIG,
  NOTIF_VELIB,
- NOTIF_BUS,
+ NOTIF_TRANSPORT,
 } from './support/notifications';
 import {
   renderWrapper,
@@ -92,8 +92,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     table.className = 'small';
     wrapper.appendChild(table);
 
-    for (var busIndex = 0; busIndex < this.config.busStations.length; busIndex++) {
-      const stop = this.config.busStations[busIndex];
+    this.config.stations.forEach((stop) => {
       switch (stop.type) {
         case 'traffic':
           table.appendChild(renderTraffic(stop, this.ratpTraffic, this.config));
@@ -109,7 +108,8 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
           table.appendChild(renderVelib(stop, this.velibHistory, this.config, now));
           break;
       }
-    }
+    });
+
     return wrapper;
   },
 
@@ -118,13 +118,15 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     const { id, lastUpdate, schedules } = payload;
     this.caller = notification;
     switch (notification) {
-      case NOTIF_BUS:
+      case NOTIF_TRANSPORT:
         this.transportSchedules[id] = schedules;
         this.transportLastUpdate[id] = lastUpdate;
         this.loaded = true;
         this.updateDom();
         break;
       case NOTIF_VELIB:
+        console.log(this.velibHistory);
+        
         if (!this.velibHistory[id]) {
           this.velibHistory[id] = localStorage[id] ? JSON.parse(localStorage[id]) : [];
           this.velibHistory[id].push(payload);
@@ -139,10 +141,8 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
             console.log (' *** size of velib History for ' + id + ' is: ' + this.velibHistory[id].length);
             console.log (this.velibHistory[id]);
           }
-        } else {
-          if (debug) {
-            console.log(' *** redundant velib payload for ' + id + ' with time ' + lastUpdate + ' && ' + this.velibHistory[id][this.velibHistory[id].length - 1].lastUpdate);
-          }
+        } else if (debug) {
+          console.log(' *** redundant velib payload for ' + id + ' with time ' + lastUpdate + ' && ' + this.velibHistory[id][this.velibHistory[id].length - 1].lastUpdate);
         }
         this.loaded = true;
         break;

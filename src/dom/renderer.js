@@ -53,9 +53,9 @@ export const renderHeader = (data: Object, config: Object): string => {
   if (showSecondsToNextUpdate) {
     const timeDifference = Math.round((updateInterval - new Date() + Date.parse(lastUpdate)) / 1000);
     if (timeDifference > 0) {
-      contents = `, next update in ${timeDifference}s`;
+      contents += `, next update in ${timeDifference}s`;
     } else {
-      contents = `, update requested ${Math.abs(timeDifference)}s ago`;
+      contents += `, update requested ${Math.abs(timeDifference)}s ago`;
     }
   }
 
