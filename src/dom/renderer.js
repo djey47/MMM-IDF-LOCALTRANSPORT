@@ -5,7 +5,7 @@ import { formatDateFull } from '../support/format';
 type Stop = {
   line: (number|string)[],
   label?: string,
-  stations: string,
+  station: number|string,
   destination?: string,
 };
 
@@ -71,7 +71,7 @@ export const renderHeader = (data: Object, config: Object): string => {
  */
 export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): any => {
   const { line, label } = stop;
-  const stopIndex = `traffic/${line[0].toString().toLowerCase()}/${line[1].toString().toLowerCase()}`;
+  const stopIndex = `traffic/${line[0].toString()}/${line[1].toString()}`.toLowerCase();
   const row = document.createElement('tr');
 
   const firstCell = document.createElement('td');
@@ -79,7 +79,8 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
   firstCell.innerHTML = label || line[1].toString();
   row.appendChild(firstCell);
 
-  const { message } = ratpTraffic[stopIndex] ? ratpTraffic[stopIndex] : { message: 'N/A' };
+  const trafficAtStop = ratpTraffic[stopIndex];
+  const { message } = trafficAtStop ? trafficAtStop : { message: 'N/A' };
   const secondCell = document.createElement('td');
   secondCell.className = 'align-left';
   secondCell.innerHTML = config.conversion[message] || message;
@@ -91,26 +92,25 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
 
 /**
  * @private
- * @param {*} rows 
  */
 export const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: Object, now: Date): ?any => {
   const { line, label } = stop;
   const { message, destination } = comingTransport ;
   const row = document.createElement('tr');
 
-  const busNameCell = document.createElement('td');
-  busNameCell.className = 'align-right bright';
+  const nameCell = document.createElement('td');
+  nameCell.className = 'align-right bright';
   if (firstLine) {
-    busNameCell.innerHTML = label || line.toString();
+    nameCell.innerHTML = label || line.toString();
   } else {
-    busNameCell.innerHTML = ' ';
+    nameCell.innerHTML = ' ';
   }
-  row.appendChild(busNameCell);
+  row.appendChild(nameCell);
 
-  const busDestinationCell = document.createElement('td');
-  busDestinationCell.innerHTML = destination.substr(0, config.maxLettersForDestination);
-  busDestinationCell.className = 'align-left';
-  row.appendChild(busDestinationCell);
+  const destinationCell = document.createElement('td');
+  destinationCell.innerHTML = destination.substr(0, config.maxLettersForDestination);
+  destinationCell.className = 'align-left';
+  row.appendChild(destinationCell);
 
   const depCell = document.createElement('td');
   depCell.className = 'bright';
@@ -135,7 +135,7 @@ export const renderComingTransport = (firstLine: boolean, stop: Stop, comingTran
   row.appendChild(depCell);
 
   if ((now - Date.parse(comingLastUpdate)) > (config.oldUpdateThreshold ? config.oldUpdateThreshold : (config.updateInterval * (1 + config.oldThreshold)) )) {
-    busDestinationCell.style.opacity = depCell.style.opacity = config.oldUpdateOpacity;
+    destinationCell.style.opacity = depCell.style.opacity = config.oldUpdateOpacity;
   }
 
   const { previousDestination, previousRow } = previous;
@@ -159,9 +159,9 @@ export const renderComingTransport = (firstLine: boolean, stop: Stop, comingTran
  * @returns HTML for public transport items (rows)
  */
 export const renderPublicTransport = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
-  const { line, stations, destination } = stop;
+  const { line, station, destination } = stop;
   const rows = [];
-  const stopIndex = `${line.toString().toLowerCase()}/${stations}/${destination || ''}`;
+  const stopIndex = `${line.toString().toLowerCase()}/${station}/${destination || ''}`;
   const coming: Schedule[] = schedules[stopIndex] || [ { message: 'N/A', destination: 'N/A' } ];
   const comingLastUpdate: string = lastUpdate[stopIndex];
   const previous = {
@@ -180,14 +180,14 @@ export const renderPublicTransport = (stop: Stop, schedules: Object, lastUpdate:
 
 /**
  * @private
- * @returns HTML for no info received for Velib
  */
 export const renderNoInfoVelib = (stop: Stop): any => {
-  const { label, stations } = stop;
+  const { label, station } = stop;
   const row = document.createElement('tr');
   const messageCell = document.createElement('td');
+
   messageCell.className = 'bright';
-  messageCell.innerHTML = `${label || stations} no info yet`;
+  messageCell.innerHTML = `${label || station} no info yet`;
   row.appendChild(messageCell);
 
   return row;
@@ -241,8 +241,8 @@ export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHis
   const ctx = trendGraph.getContext('2d');
   if (!ctx) { return rowTrend; }
 
-  const { label, stations } = stop;
-  const currentStation = velibHistory[stations];
+  const { label } = stop;
+  const currentStation = velibHistory[stop.station];
   const { height, width } = trendGraph;
   let previousX = width;
   let inTime = false;
@@ -313,17 +313,16 @@ export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHis
  * @returns HTML for info received for Velib
  */
 export const renderVelib = (stop: Stop, velibHistory: Object, config: Object, now: Date): any => {
-  const { stations } = stop;
-  const velibStationHistory = velibHistory[stations];
+  const velibStationHistory = velibHistory[stop.station];
 
   if (!velibStationHistory) {
     return renderNoInfoVelib(stop);
   }
 
-  const station = velibStationHistory.slice(-1)[0];
+  const stationInfo = velibStationHistory.slice(-1)[0];
   if (config.trendGraphOff) {
-    return renderSimpleInfoVelib(stop, station);
+    return renderSimpleInfoVelib(stop, stationInfo);
   }
 
-  return renderTrendInfoVelib(stop, station, velibHistory, config, now);
+  return renderTrendInfoVelib(stop, stationInfo, velibHistory, config, now);
 };

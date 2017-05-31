@@ -84,15 +84,15 @@ describe('renderHeader function', () => {
 
 describe('renderLocalTransport function', () => {
   const now = new Date('2017/05/30 14:45:00');
+  const stop = {
+    line: ['BUS', 275],
+    station: 'Ulbach',
+    destination: 'La+Defense',
+  };
+  const stopIndex = 'bus,275/Ulbach/La+Defense';
 
   it('should return correct HTML when schedule', () => {
     // given
-    const stopIndex = 'bus,275/Ulbach/La+Defense';
-    const stop = {
-      line: ['BUS', 275],
-      stations: 'Ulbach',
-      destination: 'La+Defense',
-    };
     const busSchedules = {
       [stopIndex]: [{
         message: '15:00',
@@ -118,12 +118,6 @@ describe('renderLocalTransport function', () => {
 
   it('should return correct HTML when schedule and convert to waiting time', () => {
     // given
-    const stopIndex = 'bus,275/Ulbach/La+Defense';
-    const stop = {
-      line: ['BUS', 275],
-      stations: 'Ulbach',
-      destination: 'La+Defense',
-    };
     const busSchedules = {
       [stopIndex]: [{
         message: '15:00',
@@ -150,12 +144,6 @@ describe('renderLocalTransport function', () => {
 
   it('should return correct HTML when schedule and concatenate arrivals', () => {
     // given
-    const stopIndex = 'bus,275/Ulbach/La+Defense';
-    const stop = {
-      line: ['BUS', 275],
-      stations: 'Ulbach',
-      destination: 'La+Defense',
-    };
     const busSchedules = {
       [stopIndex]: [{
         message: '15:00',
@@ -187,7 +175,7 @@ describe('renderLocalTransport function', () => {
     // given
     const stop = {
       line: ['BUS', 275],
-      stations: '',
+      station: '',
     };
     const busSchedules = {};
     const config = {
@@ -205,8 +193,8 @@ describe('renderTraffic function', () => {
     // given
     const stop = {
       line: ['BUS', 275],
-      label: 'Ulbach',
-      stations: '',
+      label: 'Ulbach Label',
+      station: 'Ulbach',
     };
     const ratpTraffic = {
       'traffic/bus/275': {
@@ -231,7 +219,7 @@ describe('renderNoInfoVelib function', () => {
     const stop = {
       line: ['VELIB', 68],
       label: 'Ulbach',
-      stations: '',
+      station: '',
     };
     // when
     const actual = renderNoInfoVelib(stop);
@@ -243,7 +231,7 @@ describe('renderNoInfoVelib function', () => {
     // given
     const stop = {
       line: ['VELIB', 68],
-      stations: 'Stations',
+      station: 'Stations',
     };
     // when
     const actual = renderNoInfoVelib(stop);
@@ -257,8 +245,8 @@ describe('renderVelib function', () => {
     // given
     const stop = {
       line: ['VELIB', 68],
-      label: 'Ulbach',
-      stations: '',
+      label: 'Opera Bis',
+      station: '',
     };
     const velibHistory = {};
     const config = {};
@@ -273,10 +261,10 @@ describe('renderVelib function', () => {
     // given
     const stop = {
       line: ['VELIB', 68],
-      stations: 'Stations',
+      station: 2209,
     };
     const velibHistory = {
-      Stations: [{
+      '2209': [{
         total: 10,
         bike: 2,
         empty: 8,
@@ -297,10 +285,10 @@ describe('renderVelib function', () => {
     // given
     const stop = {
       line: ['VELIB', 68],
-      stations: 'Stations',
+      station: 2209,
     };
     const velibHistory = {
-      Stations: [{
+      '2209': [{
         total: 10,
         bike: 2,
         empty: 8,
