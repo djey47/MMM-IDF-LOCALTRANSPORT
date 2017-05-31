@@ -1,0 +1,62 @@
+{
+	"variables": [],
+	"info": {
+		"name": "NAVITIA",
+		"_postman_id": "5230627d-c34a-02da-b2a4-6999316c7cba",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "COORD",
+			"request": {
+				"url": "https://api.navitia.io/v1/coord/2.377310;48.847002",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - datasets",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/datasets/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
