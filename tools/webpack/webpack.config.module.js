@@ -2,7 +2,7 @@ var path = require('path');
 var appRootPath = require('app-root-dir').get();
 
 module.exports = {
-  entry: './src/module.js',
+  entry: './src/client/module.js',
   output: {
     filename: 'MMM-IDF-STIF-NAVITIA.js',
     path: path.resolve(appRootPath),

@@ -15,15 +15,15 @@ import {
  NOTIF_SET_CONFIG,
  NOTIF_VELIB,
  NOTIF_TRANSPORT,
-} from './support/notifications';
-import { defaults } from './support/configuration';
+} from '../support/notifications';
+import { defaults } from '../support/configuration';
 import {
   renderWrapper,
   renderHeader,
   renderTraffic,
   renderPublicTransport,
   renderVelib,
-} from './dom/renderer';
+} from '../dom/renderer';
 
 Module.register('MMM-IDF-STIF-NAVITIA',{
 
