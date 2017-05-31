@@ -1,0 +1,44 @@
+{
+	"variables": [],
+	"info": {
+		"name": "GRIMAUD",
+		"_postman_id": "8efd37a4-f87d-272f-4df0-e5a623f0b5a1",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ALL TRAFFIC",
+			"request": {
+				"url": "https://api-ratp.pierre-grimaud.fr/v3/traffic",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "TRAFFIC Metro 3",
+			"request": {
+				"url": "https://api-ratp.pierre-grimaud.fr/v3/traffic/metros/3",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "SCHEDULE Metro 3 Pereire",
+			"request": {
+				"url": "https://api-ratp.pierre-grimaud.fr/v3/schedules/metros/3/Pereire/A",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

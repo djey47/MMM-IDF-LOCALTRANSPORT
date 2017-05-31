@@ -1,0 +1,125 @@
+{
+	"variables": [],
+	"info": {
+		"name": "VELIB",
+		"_postman_id": "8efd5721-093f-8207-6876-0c0817b6f281",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "10000 STATIONS",
+			"request": {
+				"url": {
+					"raw": "https://opendata.paris.fr/api/records/1.0/search/?dataset=stations-velib-disponibilites-en-temps-reel&rows=10000&sort=-number&facet=banking&facet=bonus&facet=status&facet=contract_name",
+					"protocol": "https",
+					"auth": {},
+					"host": [
+						"opendata",
+						"paris",
+						"fr"
+					],
+					"path": [
+						"api",
+						"records",
+						"1.0",
+						"search",
+						""
+					],
+					"query": [
+						{
+							"key": "dataset",
+							"value": "stations-velib-disponibilites-en-temps-reel",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "rows",
+							"value": "10000",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "sort",
+							"value": "-number",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "facet",
+							"value": "banking",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "facet",
+							"value": "bonus",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "facet",
+							"value": "status",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "facet",
+							"value": "contract_name",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "AVAILABILITY PER STATION",
+			"request": {
+				"url": {
+					"raw": "https://opendata.paris.fr/api/records/1.0/search/?dataset=stations-velib-disponibilites-en-temps-reel&q=901",
+					"protocol": "https",
+					"auth": {},
+					"host": [
+						"opendata",
+						"paris",
+						"fr"
+					],
+					"path": [
+						"api",
+						"records",
+						"1.0",
+						"search",
+						""
+					],
+					"query": [
+						{
+							"key": "dataset",
+							"value": "stations-velib-disponibilites-en-temps-reel",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "q",
+							"value": "901",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

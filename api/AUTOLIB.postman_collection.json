@@ -1,0 +1,125 @@
+{
+	"variables": [],
+	"info": {
+		"name": "AUTOLIB",
+		"_postman_id": "d0041f4f-d36f-2183-76a6-1ffa02a2f058",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ALL STATIONS",
+			"request": {
+				"url": {
+					"raw": "https://opendata.paris.fr/api/records/1.0/search/?dataset=stations_et_espaces_autolib_de_la_metropole_parisienne&facet=ville&facet=cp&facet=type",
+					"protocol": "https",
+					"auth": {},
+					"host": [
+						"opendata",
+						"paris",
+						"fr"
+					],
+					"path": [
+						"api",
+						"records",
+						"1.0",
+						"search",
+						""
+					],
+					"query": [
+						{
+							"key": "dataset",
+							"value": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "facet",
+							"value": "ville",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "facet",
+							"value": "cp",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "facet",
+							"value": "type",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "1 STATION",
+			"request": {
+				"url": {
+					"raw": "https://opendata.paris.fr/api/records/1.0/search/?dataset=stations_et_espaces_autolib_de_la_metropole_parisienne&facet=ville&facet=cp&facet=type&q=94028-11",
+					"protocol": "https",
+					"auth": {},
+					"host": [
+						"opendata",
+						"paris",
+						"fr"
+					],
+					"path": [
+						"api",
+						"records",
+						"1.0",
+						"search",
+						""
+					],
+					"query": [
+						{
+							"key": "dataset",
+							"value": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "facet",
+							"value": "ville",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "facet",
+							"value": "cp",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "facet",
+							"value": "type",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "q",
+							"value": "94028-11",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
