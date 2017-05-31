@@ -1,3 +1,5 @@
+/* @flow */
+
 const NodeHelper = require('./node_helper_impl.js');
 
 const scheduleUpdate = NodeHelper.scheduleUpdate;
