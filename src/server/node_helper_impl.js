@@ -35,22 +35,23 @@ module.exports = {
   },
 
   getResponse: function(_url, _processFunction) {
-    var self = this;
-    var retry = true;
+    const self = this;
     if (this.config.debug) console.log (` *** fetching: ${_url}`);
     unirest.get(_url)
       .header({
         'Accept': 'application/json;charset=utf-8',
       })
-      .end(function(response){
+      .end(function(response) {
+        const { debug, retryDelay } = self.config;
+        let retry = false;
         if (response && response.body) {
-          if (self.config.debug) {
+          if (debug) {
             console.log (` *** received answer for: ${_url}`);
             console.log (response.body);
           }
           _processFunction(response.body);
         } else {
-          if (self.config.debug) {
+          if (debug) {
             if (response) {
               console.log (' *** partial response received');
               console.log (response);
@@ -58,15 +59,16 @@ module.exports = {
               console.log (' *** no response received');
             }
           }
+          retry = true;
         }
         if (retry) {
-          self.scheduleUpdate(self.loaded ? -1 : this.config.retryDelay);
+          self.scheduleUpdate(self.loaded ? -1 : retryDelay);
         }
       });
   },
 
   /* updateTimetable(transports)
-   * Calls processTrains on successful response.
+   * Calls corresponding process function on successful response.
   */
   updateTimetable: function() {
     const { debug, stations, apiBaseV3, apiVelib } = this.config;
