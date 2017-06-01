@@ -41,7 +41,7 @@ A module to display:
 ```
 
 # Specific configuration
-* [name]: [default value], //information
+* [`name`]: [default value], //information
 * `maximumEntries`: 2, //if the APIs sends several results for the incoming transport how many should be displayed
 * `updateInterval`: 60000, //time in ms between pulling request for new times (update request)
 * `converToWaitingTime`: true, // messages received from API can be 'hh:mm' in that case convert it in the waiting time 'x mn'
@@ -52,24 +52,24 @@ A module to display:
 * `oldUpdateOpacity`: 0.5, //when a displayed time age has reached a threshold their display turns darker (i.e. less reliable)
 * `oldThreshold`: 0.1, //if (1+x) of the updateInterval has passed since the last refresh... then the oldUpdateOpacity is applied
 * `debug`: false, //console.log more things to help debugging
-* `stations``: [] // the list of stations/directions to monitor (bus, RERs, tramways and subways)
-* `stations` is an array of objects with different properties:
-  - 'type': Mandatory: Possible value:['bus', 'rers', 'tramways', 'velib', 'traffic']
-  - 'line': Mandatory for 'bus', 'rers' & 'tramways']: Value such as:[28, 'B'] -> typically the official name but you can check through: 
-   . bus-metros-rers-tramways: https://api-ratp.pierre-grimaud.fr/v3/lines/bus, https://api-ratp.pierre-grimaud.fr/v3/lines/rers, https://api-ratp.pierre-grimaud.fr/v3/lines/tramways, https://api-ratp.pierre-grimaud.fr/v3/lines/metros
-   . traffic: https://api-ratp.pierre-grimaud.fr/v3/traffic set the line as: [type, line], such as: ['metros', 6], ['rers', 'A']...
-  - 'station': Mandatory: [name of the station] ->
-    . for bus/rers/tramways/metros, https://api-ratp.pierre-grimaud.fr/v3/stations/{type}/{line}
-    . for velib, you can search here: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/
-    . not required for traffic
-  - 'destination': 
-    . v3: Mandatory for 'metros', 'bus', 'rers' & tramways: either 'A' or 'R'
-    . Optional for 'velib': ['leaving', 'arriving', '']: indicate if only one value is needed //not in use yet
-    . not required for traffic.
-  - 'label': Optional: to rename the line differently if needed
+* `stations`: [] // stations/directions to monitor (bus, RERs, tramways and subways), as an array of objects with different properties (see example below):
+  - `type`: Mandatory: Possible value:['bus', 'rers', 'tramways', 'velib', 'traffic']
+  - `line`: Mandatory for 'bus', 'rers' & 'tramways']: Value such as:[28, 'B'] -> typically the official name but you can check through:
+    - bus-metros-rers-tramways: https://api-ratp.pierre-grimaud.fr/v3/lines/bus, https://api-ratp.pierre-grimaud.fr/v3/lines/rers, https://api-ratp.pierre-grimaud.fr/v3/lines/tramways, https://api-ratp.pierre-grimaud.fr/v3/lines/metros
+    - traffic: https://api-ratp.pierre-grimaud.fr/v3/traffic set the line as: [type, line], such as: ['metros', 6], ['rers', 'A']...
+  - `station`: Mandatory: [name of the station] ->
+    - for bus/rers/tramways/metros, https://api-ratp.pierre-grimaud.fr/v3/stations/{type}/{line}
+    - for velib, you can search here: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/
+    - not required for traffic.
+  - `destination`: 
+    - v3: Mandatory for 'metros', 'bus', 'rers' & tramways: either 'A' or 'R'
+    - Optional for 'velib': ['leaving', 'arriving', '']: indicate if only one value is needed //not in use yet
+    - not required for traffic.
+  - `label`: Optional: to rename the line differently if needed
 * `conversion`: object of key/ values to convert traffic message. Those message can be very long, and it might worth to convert them in a simpler text. by default:
   - conversion: {"Trafic normal sur l'ensemble de la ligne." : 'Traffic normal'}
   - don't hesitate to add more when there's works on a specific line or others...
+* `navitiaToken`: '00000000-0000-0000-000000000000' // Mandatory to access navitia.io API (account required)
 
 Example:
 ```javascript
