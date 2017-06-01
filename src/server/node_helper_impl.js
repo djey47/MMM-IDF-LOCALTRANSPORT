@@ -1,5 +1,8 @@
 const unirest = require('unirest');
 
+/**
+ * Custom NodeHelper implementation
+ */
 module.exports = {
   start: function () {
     this.started = false;
@@ -8,10 +11,12 @@ module.exports = {
   socketNotificationReceived: function(notification, payload) {
     if (notification === 'SET_CONFIG' && !this.started) {
       this.config = payload;
+
       if (this.config.debug) {
         console.log (' *** config set in node_helper: ');
         console.log ( payload );
       }
+
       this.started = true;
       this.scheduleUpdate(this.config.initialLoadDelay);
     }
@@ -26,31 +31,37 @@ module.exports = {
     if (typeof delay !== 'undefined' && delay >= 0) {
       nextLoad = delay;
     }
-    const self = this;
     clearTimeout(this.updateTimer);
-    if (this.config.debug) { console.log (' *** scheduleUpdate set next update in ' + nextLoad);}
-    this.updateTimer = setTimeout(function() {
-      self.updateTimetable();
-    }, nextLoad);
+
+    if (this.config.debug) console.log (' *** scheduleUpdate set next update in ' + nextLoad);
+
+    const updateCallback = function() {
+      this.updateTimetable();
+    }.bind(this);
+    this.updateTimer = setTimeout(updateCallback, nextLoad);
   },
 
   getResponse: function(_url, _processFunction) {
-    const self = this;
     if (this.config.debug) console.log (` *** fetching: ${_url}`);
+
+    const context = this;
     unirest.get(_url)
       .header({
         'Accept': 'application/json;charset=utf-8',
       })
       .end(function(response) {
-        const { debug, retryDelay } = self.config;
+        const { debug, retryDelay } = context.config;
         let retry = false;
         if (response && response.body) {
+
           if (debug) {
             console.log (` *** received answer for: ${_url}`);
             console.log (response.body);
           }
-          _processFunction(response.body);
+
+          _processFunction(response.body, context);
         } else {
+
           if (debug) {
             if (response) {
               console.log (' *** partial response received');
@@ -59,10 +70,11 @@ module.exports = {
               console.log (' *** no response received');
             }
           }
+
           retry = true;
         }
         if (retry) {
-          self.scheduleUpdate(self.loaded ? -1 : retryDelay);
+          context.scheduleUpdate(context.loaded ? -1 : retryDelay);
         }
       });
   },
@@ -72,7 +84,9 @@ module.exports = {
   */
   updateTimetable: function() {
     const { debug, stations, apiBaseV3, apiVelib } = this.config;
+    
     if (debug) { console.log (' *** fetching update');}
+    
     this.sendSocketNotification('UPDATE', { lastUpdate : new Date()});
 
     stations.forEach((stopConfig) => {
@@ -84,25 +98,27 @@ module.exports = {
         case 'rers':
         case 'metros':
           url = `${apiBaseV3}schedules/${type}/${line.toString().toLowerCase()}/${station}/${destination}`;
-          this.getResponse(url, this.processTransport.bind(this), stopConfig);
+          this.getResponse(url, this.processTransport, stopConfig);
           break;
         case 'velib':
           url = `${apiVelib}&q=${station}`;
-          this.getResponse(url, this.processVelib.bind(this), stopConfig);
+          this.getResponse(url, this.processVelib, stopConfig);
           break;
         case 'traffic':
           url = `${apiBaseV3}traffic/${line[0]}/${line[1]}`;
-          this.getResponse(url, this.processTraffic.bind(this), stopConfig);
+          this.getResponse(url, this.processTraffic, stopConfig);
           break;
         default:
+
           if (debug) {
             console.log(` *** unknown request: ${type}`);
           }
+
       }
     });
   },
 
-  processVelib: function(data) {
+  processVelib: (data, context) => {
     const { number, name, bike_stands, available_bike_stands, available_bikes, last_update } = data.records[0].fields;
     const velibInfo = {
       id: number,
@@ -113,11 +129,11 @@ module.exports = {
       last_update: last_update,
       loaded: true,
     };
-    this.sendSocketNotification('VELIB', velibInfo);
+    context.sendSocketNotification('VELIB', velibInfo);
   },
 
-  processTransport: function(data) {
-    if (this.config.debug) {
+  processTransport: (data, context) => {
+    if (context.debug) {
       console.log (' *** processTransport data');
       console.log (data);
     }
@@ -128,16 +144,17 @@ module.exports = {
       schedules: data.result.schedules,
       lastUpdate: new Date(),
     };
-    this.loaded = true;
-    this.sendSocketNotification('TRANSPORT', schedule);
+    context.loaded = true;
+    context.sendSocketNotification('TRANSPORT', schedule);
   },
 
-  processTraffic: function (data) {
-    if (this.config.debug) {
+  processTraffic: (data, context) => {
+    if (context.config.debug) {
       console.log('response receive: ');
       console.log(data.result); //line, title, message
       console.log('___');
     }
+
     const id = data._metadata.call.split('/').slice(-3).join('/').toLowerCase();
     const result = {};
     Object.assign(result, data.result, {
@@ -145,6 +162,6 @@ module.exports = {
       lastUpdate: new Date(),
       loaded: true,
     });
-    this.sendSocketNotification('TRAFFIC', result);
+    context.sendSocketNotification('TRAFFIC', result);
   },
 };

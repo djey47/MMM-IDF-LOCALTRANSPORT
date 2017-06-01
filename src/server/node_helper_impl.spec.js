@@ -101,10 +101,9 @@ describe('updateTimetable function', () => {
     // then
     expect(sendSocketNotificationMock).toHaveBeenCalled();
     expect(getResponseMock).toHaveBeenCalledTimes(3);
-    // TODO find a way to assert fixed params only
-    // expect(getResponseMock).toHaveBeenCalledWith('http://apiVelib/search?ds=stations&q=2099', NodeHelper.processVelib, { station: 2099, type: 'velib' });
-    // expect(getResponseMock).toHaveBeenCalledWith('http://api/traffic/tramways/1', NodeHelper.processTraffic, { line: ['tramways', 1], type: 'traffic' });
-    // expect(getResponseMock).toHaveBeenCalledWith('http://api/schedules/bus/275/Ulbach/A', NodeHelper.processTransport, { destination: 'A', line: 275, station: 'Ulbach', type: 'bus' });
+    expect(getResponseMock).toHaveBeenCalledWith('http://apiVelib/search?ds=stations&q=2099', NodeHelper.processVelib, { station: 2099, type: 'velib' });
+    expect(getResponseMock).toHaveBeenCalledWith('http://api/traffic/tramways/1', NodeHelper.processTraffic, { line: ['tramways', 1], type: 'traffic' });
+    expect(getResponseMock).toHaveBeenCalledWith('http://api/schedules/bus/275/Ulbach/A', NodeHelper.processTransport, { destination: 'A', line: 275, station: 'Ulbach', type: 'bus' });
   });
 });
 
@@ -129,7 +128,7 @@ describe('processVelib function', () => {
       records: [ { fields } ],
     };
     // when
-    NodeHelper.processVelib(data);
+    NodeHelper.processVelib(data, NodeHelper);
     // then
     const expected = {
       bike: 0,
@@ -161,7 +160,7 @@ describe('processTransport function', () => {
       },
     };
     // when
-    NodeHelper.processTransport(data);
+    NodeHelper.processTransport(data, NodeHelper);
     // then
     expect(sendSocketNotificationMock).toHaveBeenCalled();
   });
@@ -184,7 +183,7 @@ describe('processTraffic function', () => {
       },
     };
     // when
-    NodeHelper.processTraffic(data);
+    NodeHelper.processTraffic(data, NodeHelper);
     // then
     expect(sendSocketNotificationMock).toHaveBeenCalled();
   });
