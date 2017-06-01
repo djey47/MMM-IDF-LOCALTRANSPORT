@@ -57,6 +57,230 @@
 				"description": ""
 			},
 			"response": []
+		},
+		{
+			"name": "COVERAGE - all lines",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/lines/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - networks",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/networks/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - physical modes",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/physical_modes/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - RER lines (A..E)",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/networks/network:RER/lines",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - transilien/RER lines",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/physical_modes/physical_mode:RapidTransit/lines",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - transilien L Becon Stop schedules",
+			"request": {
+				"url": {
+					"raw": "https://api.navitia.io/v1/coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_points/stop_point:OIF:SP:8738200:800:L/stop_schedules?items_per_schedule=3",
+					"protocol": "https",
+					"auth": {},
+					"host": [
+						"api",
+						"navitia",
+						"io"
+					],
+					"path": [
+						"v1",
+						"coverage",
+						"fr-idf",
+						"physical_modes",
+						"physical_mode:RapidTransit",
+						"stop_points",
+						"stop_point:OIF:SP:8738200:800:L",
+						"stop_schedules"
+					],
+					"query": [
+						{
+							"key": "items_per_schedule",
+							"value": "3",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - SNCF lines (???)",
+			"request": {
+				"url": {
+					"raw": "https://api.navitia.io/v1/coverage/fr-idf/networks/network:sncf/lines?start_page=1",
+					"protocol": "https",
+					"auth": {},
+					"host": [
+						"api",
+						"navitia",
+						"io"
+					],
+					"path": [
+						"v1",
+						"coverage",
+						"fr-idf",
+						"networks",
+						"network:sncf",
+						"lines"
+					],
+					"query": [
+						{
+							"key": "start_page",
+							"value": "1",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - Tramway lines",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/networks/network:TRAM/lines",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - Subway lines",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/networks/network:OIF:439/lines",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - traffic reports (alpha?)",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/traffic_reports",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
 		}
 	]
 }
