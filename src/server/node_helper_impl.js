@@ -1,4 +1,5 @@
 const unirest = require('unirest');
+const NavitiaResponseProcessor = require('./navitia/ResponseProcessor.js');
 
 /**
  * Custom NodeHelper implementation
@@ -41,13 +42,14 @@ module.exports = {
     this.updateTimer = setTimeout(updateCallback, nextLoad);
   },
 
-  getResponse: function(_url, _processFunction) {
+  getResponse: function(_url, _processFunction, authToken) {
     if (this.config.debug) console.log (` *** fetching: ${_url}`);
 
     const context = this;
     unirest.get(_url)
       .header({
         'Accept': 'application/json;charset=utf-8',
+        'Authorization': authToken || '',
       })
       .end(function(response) {
         const { debug, retryDelay } = context.config;
@@ -83,7 +85,7 @@ module.exports = {
    * Calls corresponding process function on successful response.
   */
   updateTimetable: function() {
-    const { debug, stations, apiBaseV3, apiVelib } = this.config;
+    const { debug, stations, apiBaseV3, apiVelib, apiNavitia, navitiaToken } = this.config;
     
     if (debug) { console.log (' *** fetching update');}
     
@@ -98,16 +100,20 @@ module.exports = {
         case 'rers':
         case 'metros':
           url = `${apiBaseV3}schedules/${type}/${line.toString().toLowerCase()}/${station}/${destination}`;
-          this.getResponse(url, this.processTransport, stopConfig);
+          this.getResponse(url, this.processTransport);
           break;
         case 'velib':
           url = `${apiVelib}&q=${station}`;
-          this.getResponse(url, this.processVelib, stopConfig);
+          this.getResponse(url, this.processVelib);
           break;
         case 'traffic':
           url = `${apiBaseV3}traffic/${line[0]}/${line[1]}`;
-          this.getResponse(url, this.processTraffic, stopConfig);
+          this.getResponse(url, this.processTraffic);
           break;
+        case 'transiliens':
+          url = `${apiNavitia}coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_points/stop_point:${station}/stop_schedules`;
+          this.getResponse(url, NavitiaResponseProcessor.processTransportNavitia, navitiaToken);
+          break;        
         default:
 
           if (debug) {

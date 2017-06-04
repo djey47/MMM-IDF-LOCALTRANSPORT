@@ -31,6 +31,7 @@
     "prepush": "yarn jest"
   },
   "dependencies": {
+    "moment": "^2.18.1",
     "node-forge": "latest",
     "unirest": "latest"
   },

@@ -101,9 +101,9 @@ describe('updateTimetable function', () => {
     // then
     expect(sendSocketNotificationMock).toHaveBeenCalled();
     expect(getResponseMock).toHaveBeenCalledTimes(3);
-    expect(getResponseMock).toHaveBeenCalledWith('http://apiVelib/search?ds=stations&q=2099', NodeHelper.processVelib, { station: 2099, type: 'velib' });
-    expect(getResponseMock).toHaveBeenCalledWith('http://api/traffic/tramways/1', NodeHelper.processTraffic, { line: ['tramways', 1], type: 'traffic' });
-    expect(getResponseMock).toHaveBeenCalledWith('http://api/schedules/bus/275/Ulbach/A', NodeHelper.processTransport, { destination: 'A', line: 275, station: 'Ulbach', type: 'bus' });
+    expect(getResponseMock).toHaveBeenCalledWith('http://apiVelib/search?ds=stations&q=2099', NodeHelper.processVelib);
+    expect(getResponseMock).toHaveBeenCalledWith('http://api/traffic/tramways/1', NodeHelper.processTraffic);
+    expect(getResponseMock).toHaveBeenCalledWith('http://api/schedules/bus/275/Ulbach/A', NodeHelper.processTransport);
   });
 });
 

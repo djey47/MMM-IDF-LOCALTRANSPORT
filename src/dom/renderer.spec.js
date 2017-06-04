@@ -93,7 +93,7 @@ describe('renderLocalTransport function', () => {
 
   it('should return correct HTML when schedule', () => {
     // given
-    const busSchedules = {
+    const schedules = {
       [stopIndex]: [{
         message: '15:00',
         destination: 'La Défense',
@@ -102,7 +102,7 @@ describe('renderLocalTransport function', () => {
         destination: 'Place Charras',       
       }],
     };
-    const busLastUpdate = {
+    const lastUpdate = {
       [stopIndex]: '2017/05/30 15:00:00',
     };
     const config = {
@@ -111,14 +111,14 @@ describe('renderLocalTransport function', () => {
     };
     const now = new Date();
     // when
-    const actual = renderPublicTransport(stop, busSchedules, busLastUpdate, config, now);
+    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
     // then
     expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
   });
 
   it('should return correct HTML when schedule and convert to waiting time', () => {
     // given
-    const busSchedules = {
+    const schedules = {
       [stopIndex]: [{
         message: '15:00',
         destination: 'La Défense',
@@ -127,7 +127,7 @@ describe('renderLocalTransport function', () => {
         destination: 'Place Charras',       
       }],
     };
-    const busLastUpdate = {
+    const lastUpdate = {
       [stopIndex]: '2017/05/30 15:00:00',
     };
     const config = {
@@ -136,7 +136,7 @@ describe('renderLocalTransport function', () => {
       convertToWaitingTime: true,
     };
     // when
-    const actual = renderPublicTransport(stop, busSchedules, busLastUpdate, config, now);
+    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
     // then
     expect(actual.length).toEqual(2);
     expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
@@ -144,7 +144,7 @@ describe('renderLocalTransport function', () => {
 
   it('should return correct HTML when schedule and concatenate arrivals', () => {
     // given
-    const busSchedules = {
+    const schedules = {
       [stopIndex]: [{
         message: '15:00',
         destination: 'Place Charras',
@@ -156,7 +156,7 @@ describe('renderLocalTransport function', () => {
         destination: 'La Défense',       
       }],
     };
-    const busLastUpdate = {
+    const lastUpdate = {
       [stopIndex]: '2017/05/30 15:00:00',
     };
     const config = {
@@ -165,7 +165,7 @@ describe('renderLocalTransport function', () => {
       concatenateArrivals: true,
     };
     // when
-    const actual = renderPublicTransport(stop, busSchedules, busLastUpdate, config, now);
+    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
     // then
     expect(actual.length).toEqual(2);
     expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
@@ -177,12 +177,12 @@ describe('renderLocalTransport function', () => {
       line: ['BUS', 275],
       station: '',
     };
-    const busSchedules = {};
+    const schedules = {};
     const config = {
       maximumEntries: 1,
     };
     // when
-    const actual = renderPublicTransport(stop, busSchedules, {}, config, now);
+    const actual = renderPublicTransport(stop, stopIndex, schedules, {}, config, now);
     // then
     expect(actual[0].outerHTML).toMatchSnapshot();    
   });

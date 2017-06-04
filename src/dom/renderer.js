@@ -1,6 +1,7 @@
 /* @flow */
 
 import { formatDateFull } from '../support/format';
+import Navitia  from '../support/navitia';
 
 type Stop = {
   line: (number|string)[],
@@ -156,12 +157,19 @@ export const renderComingTransport = (firstLine: boolean, stop: Stop, comingTran
 };
 
 /**
- * @returns HTML for public transport items (rows)
+ * @private
  */
-export const renderPublicTransport = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
-  const { line, station, destination } = stop;
+export const createStopIndexFromStopConfig = (config: Object) => {
+  const { line, station, destination } = config;
+  
+  return `${line.toString().toLowerCase()}/${station}/${destination || ''}`;
+};
+
+/**
+ * @private
+ */
+export const renderPublicTransport = (stopConfig: Object, stopIndex: string, schedules: Object, lastUpdate: Object, config: Object, now: Date) => {
   const rows = [];
-  const stopIndex = `${line.toString().toLowerCase()}/${station}/${destination || ''}`;
   const coming: Schedule[] = schedules[stopIndex] || [ { message: 'N/A', destination: 'N/A' } ];
   const comingLastUpdate: string = lastUpdate[stopIndex];
   const previous = {
@@ -171,11 +179,29 @@ export const renderPublicTransport = (stop: Stop, schedules: Object, lastUpdate:
   };
   let firstLine = true;
   for (let comingIndex = 0; (comingIndex < config.maximumEntries) && (comingIndex < coming.length); comingIndex++) {
-    const row = renderComingTransport(firstLine, stop, coming[comingIndex], comingLastUpdate, previous, config, now);
+    const row = renderComingTransport(firstLine, stopConfig, coming[comingIndex], comingLastUpdate, previous, config, now);
     if (row) rows.push(row);
     firstLine = false;
   }
   return rows;
+};
+
+/**
+ * @returns HTML for public transport items (rows) via classical API (Grimaud v3)
+ */
+export const renderPublicTransportLegacy = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
+  const stopIndex = createStopIndexFromStopConfig(stop);
+
+  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
+};
+
+/**
+ * @returns HTML for public transport items (rows) via Navitia API
+ */
+export const renderPublicTransportNavitia = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
+  const stopIndex = Navitia.createIndexFromStopConfig(stop);
+
+  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);  
 };
 
 /**

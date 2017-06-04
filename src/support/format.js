@@ -1,11 +1,21 @@
 /* @flow */
 
+import moment from 'moment';
+
+/**
+ * @returns time with format H:MM:SS from date
+ */
 export const formatDateFull = (date?: Date) => {
-  if (!date) {return '';}
+  if (!date) return '';
 
-  const hours = date.getHours();
-  const min = date.getMinutes();
-  const sec = date.getSeconds();
+  return moment(date).format('HH:mm:ss');
+};
 
-  return `${hours}:${min > 9 ? '' : '0'}${min}:${sec > 9 ? '' : '0'}${sec}`;
+/**
+ * @return time with format HH:MM from YYYYMMDDTHHMMSS string
+ */
+export const toHoursMinutes = (date?: string) => {
+  if (!date) return '';
+
+  return moment(date).format('HH:mm');
 };

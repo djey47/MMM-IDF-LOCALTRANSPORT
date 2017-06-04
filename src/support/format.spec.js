@@ -1,6 +1,6 @@
 /* @flow */
 
-import { formatDateFull } from './format';
+import { formatDateFull, toHoursMinutes } from './format';
 
 describe('formatDateFull function', () => {
   it('should return empty string when undefined date', () => {
@@ -13,7 +13,7 @@ describe('formatDateFull function', () => {
     // when
     const actual = formatDateFull(currentDate);
     // then
-    expect(actual).toEqual('0:00:00');
+    expect(actual).toEqual('00:00:00');
   });
 
   it('should return correctly formatted date', () => {
@@ -22,6 +22,21 @@ describe('formatDateFull function', () => {
     // when
     const actual = formatDateFull(currentDate);
     // then
-    expect(actual).toEqual('8:34:28');
+    expect(actual).toEqual('08:34:28');
+  });
+});
+
+describe('toHoursMinutes function', () => {
+  it('should return empty string when undefined date', () => {
+    expect(toHoursMinutes()).toEqual('');
+  });
+
+  it('should return correctly formatted time', () => {
+    // given
+    const currentDate = '20170604T204300';
+    // when
+    const actual = toHoursMinutes(currentDate);
+    // then
+    expect(actual).toEqual('20:43');
   });
 });
