@@ -5,15 +5,15 @@ const Navitia = {
    * @returns index for results storage (server side)
    */
   createIndexFromURL: function (url) {
-    return url.split('/').slice(-4).join('/');
+    return url.split('/').slice(-6).join('/');
   },
 
   /**
    * @returns indexfor results access (client side)
    */
   createIndexFromStopConfig: function (config) {
-    const { station  } = config;    
-    return `physical_mode:RapidTransit/stop_points/stop_point:${station}/stop_schedules`;
+    const { station, line  } = config;    
+    return `physical_mode:RapidTransit/stop_areas/stop_area:${station}/lines/line:${line}/stop_schedules`;
   },
 };
 

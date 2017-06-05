@@ -111,7 +111,7 @@ module.exports = {
           this.getResponse(url, this.processTraffic);
           break;
         case 'transiliens':
-          url = `${apiNavitia}coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_points/stop_point:${station}/stop_schedules`;
+          url = `${apiNavitia}coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_areas/stop_area:${station}/lines/line:${line}/stop_schedules`;
           this.getResponse(url, NavitiaResponseProcessor.processTransportNavitia, navitiaToken);
           break;        
         default:

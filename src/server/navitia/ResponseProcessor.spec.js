@@ -19,14 +19,14 @@ describe('dataToSchedule function', () => {
         },
       }],
       links: [{
-        href: 'https://api.navitia.io/v1/coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_points/stop_point:OIF:SP:8738200:800:L/stop_schedules',
+        href: 'https://api.navitia.io/v1/coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_points/stop_point:OIF:SP:8738200:800:L/lines/line:OIF:800:LOIF742/stop_schedules',
       }],
     };
     // when
     const actual = ResponseProcessor.dataToSchedule(data);
     // then
     const expected = {
-      id: 'physical_mode:RapidTransit/stop_points/stop_point:OIF:SP:8738200:800:L/stop_schedules',
+      id: 'physical_mode:RapidTransit/stop_points/stop_point:OIF:SP:8738200:800:L/lines/line:OIF:800:LOIF742/stop_schedules',
       lastUpdate: new Date('2017-06-04T20:10:01.938Z'),
       schedules: [{
         destination: 'Gare de Versailles Rive Droite (Versailles)',
