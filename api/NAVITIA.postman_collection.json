@@ -144,37 +144,26 @@
 			"response": []
 		},
 		{
-			"name": "COVERAGE - transilien L Becon Stop schedules",
+			"name": "COVERAGE - transilien Becon Stop schedules",
 			"request": {
-				"url": {
-					"raw": "https://api.navitia.io/v1/coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_points/stop_point:OIF:SP:8738200:800:L/stop_schedules?items_per_schedule=3",
-					"protocol": "https",
-					"auth": {},
-					"host": [
-						"api",
-						"navitia",
-						"io"
-					],
-					"path": [
-						"v1",
-						"coverage",
-						"fr-idf",
-						"physical_modes",
-						"physical_mode:RapidTransit",
-						"stop_points",
-						"stop_point:OIF:SP:8738200:800:L",
-						"stop_schedules"
-					],
-					"query": [
-						{
-							"key": "items_per_schedule",
-							"value": "3",
-							"equals": true,
-							"description": ""
-						}
-					],
-					"variable": []
-				},
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_areas/stop_area:OIF:SA:8738200/stop_schedules",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "COVERAGE - transilien L Becon Lines",
+			"request": {
+				"url": "https://api.navitia.io/v1/coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_areas/stop_area:OIF:SA:8738200/lines",
 				"method": "GET",
 				"header": [
 					{
@@ -269,6 +258,94 @@
 			"name": "COVERAGE - traffic reports (alpha?)",
 			"request": {
 				"url": "https://api.navitia.io/v1/coverage/fr-idf/traffic_reports",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PLACES  - autocomplete",
+			"request": {
+				"url": {
+					"raw": "https://api.navitia.io/v1/coverage/fr-idf/places?q=bécon",
+					"protocol": "https",
+					"auth": {},
+					"host": [
+						"api",
+						"navitia",
+						"io"
+					],
+					"path": [
+						"v1",
+						"coverage",
+						"fr-idf",
+						"places"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "bécon",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "abecd6ff-402b-4edd-8fa4-627801c2cc0b",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "PT_OBJECTS - autocomplete",
+			"request": {
+				"url": {
+					"raw": "https://api.navitia.io/v1/coverage/fr-idf/pt_objects?q=bécon&type=lines",
+					"protocol": "https",
+					"auth": {},
+					"host": [
+						"api",
+						"navitia",
+						"io"
+					],
+					"path": [
+						"v1",
+						"coverage",
+						"fr-idf",
+						"pt_objects"
+					],
+					"query": [
+						{
+							"key": "q",
+							"value": "bécon",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "type",
+							"value": "lines",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
 				"method": "GET",
 				"header": [
 					{
