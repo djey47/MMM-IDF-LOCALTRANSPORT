@@ -1,6 +1,11 @@
 const unirest = require('unirest');
 const NavitiaResponseProcessor = require('./navitia/ResponseProcessor.js');
-
+const {
+ NOTIF_UPDATE,
+ NOTIF_TRAFFIC,
+ NOTIF_VELIB,
+ NOTIF_TRANSPORT,
+} = require('../support/notifications.js');
 /**
  * Custom NodeHelper implementation
  */
@@ -89,7 +94,7 @@ module.exports = {
     
     if (debug) { console.log (' *** fetching update');}
     
-    this.sendSocketNotification('UPDATE', { lastUpdate : new Date()});
+    this.sendSocketNotification(NOTIF_UPDATE, { lastUpdate : new Date()});
 
     stations.forEach((stopConfig) => {
       let url;
@@ -135,7 +140,7 @@ module.exports = {
       last_update: last_update,
       loaded: true,
     };
-    context.sendSocketNotification('VELIB', velibInfo);
+    context.sendSocketNotification(NOTIF_VELIB, velibInfo);
   },
 
   processTransport: (data, context) => {
@@ -151,7 +156,7 @@ module.exports = {
       lastUpdate: new Date(),
     };
     context.loaded = true;
-    context.sendSocketNotification('TRANSPORT', schedule);
+    context.sendSocketNotification(NOTIF_TRANSPORT, schedule);
   },
 
   processTraffic: (data, context) => {
@@ -168,6 +173,6 @@ module.exports = {
       lastUpdate: new Date(),
       loaded: true,
     });
-    context.sendSocketNotification('TRAFFIC', result);
+    context.sendSocketNotification(NOTIF_TRAFFIC, result);
   },
 };
