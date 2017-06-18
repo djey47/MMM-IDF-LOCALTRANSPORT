@@ -5,6 +5,7 @@ const {
  NOTIF_TRAFFIC,
  NOTIF_VELIB,
  NOTIF_TRANSPORT,
+ NOTIF_SET_CONFIG,
 } = require('../support/notifications.js');
 /**
  * Custom NodeHelper implementation
@@ -15,7 +16,7 @@ module.exports = {
   },
 
   socketNotificationReceived: function(notification, payload) {
-    if (notification === 'SET_CONFIG' && !this.started) {
+    if (notification === NOTIF_SET_CONFIG && !this.started) {
       this.config = payload;
 
       if (this.config.debug) {
