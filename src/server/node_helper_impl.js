@@ -29,9 +29,9 @@ module.exports = {
     }
   },
 
-  /* scheduleUpdate()
+  /**
    * Schedule next update.
-   * argument delay number - Milliseconds before next update. If empty, this.config.updateInterval is used.
+   * @param delay Milliseconds before next update. If empty, this.config.updateInterval is used.
   */
   scheduleUpdate: function(delay) {
     let nextLoad = this.config.updateInterval;
@@ -40,51 +40,58 @@ module.exports = {
     }
     clearTimeout(this.updateTimer);
 
-    if (this.config.debug) console.log (' *** scheduleUpdate set next update in ' + nextLoad);
+    if (this.config.debug) {
+      console.log (' *** scheduleUpdate set next update in ' + nextLoad);
+    }
 
-    const updateCallback = function() {
-      this.updateTimetable();
-    }.bind(this);
-    this.updateTimer = setTimeout(updateCallback, nextLoad);
+    this.updateTimer = setTimeout(this.updateTimetable.bind(this), nextLoad);
+  },
+
+  handleAPIResponse: function(url, processFunction, response) {
+    const { debug } = this.config;
+    if (response && response.body) {
+
+      if (debug) {
+        console.log (` *** received answer for: ${url}`);
+        console.log (response.body);
+      }
+
+      processFunction(response.body, this);
+    } else {
+
+      if (debug) {
+        if (response) {
+          console.log (' *** partial response received');
+          console.log (response);
+        } else {
+          console.log (' *** no response received');
+        }
+      }
+    
+    }
+
+    // Schedule retry
+    if (this.loaded) {
+      this.scheduleUpdate();
+    } else {
+      this.scheduleUpdate(this.retryDelay);
+    }
   },
 
   getResponse: function(_url, _processFunction, authToken) {
-    if (this.config.debug) console.log (` *** fetching: ${_url}`);
+    const { debug } = this.config.debug;
+    if (debug) {
+      console.log (` *** fetching: ${_url}`);
+    }
 
-    const context = this;
     unirest.get(_url)
       .header({
         'Accept': 'application/json;charset=utf-8',
         'Authorization': authToken || '',
       })
       .end(function(response) {
-        const { debug, retryDelay } = context.config;
-        let retry = false;
-        if (response && response.body) {
-
-          if (debug) {
-            console.log (` *** received answer for: ${_url}`);
-            console.log (response.body);
-          }
-
-          _processFunction(response.body, context);
-        } else {
-
-          if (debug) {
-            if (response) {
-              console.log (' *** partial response received');
-              console.log (response);
-            } else {
-              console.log (' *** no response received');
-            }
-          }
-
-          retry = true;
-        }
-        if (retry) {
-          context.scheduleUpdate(context.loaded ? -1 : retryDelay);
-        }
-      });
+        this.handleAPIResponse(_url, _processFunction, response);
+      }.bind(this));
   },
 
   /* updateTimetable(transports)
@@ -92,8 +99,9 @@ module.exports = {
   */
   updateTimetable: function() {
     const { debug, stations, apiBaseV3, apiVelib, apiNavitia, navitiaToken } = this.config;
-    
-    if (debug) { console.log (' *** fetching update');}
+    if (debug) {
+      console.log (' *** fetching update');
+    }
     
     this.sendSocketNotification(NOTIF_UPDATE, { lastUpdate : new Date()});
 

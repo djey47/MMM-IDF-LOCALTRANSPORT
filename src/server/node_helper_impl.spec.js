@@ -6,13 +6,22 @@ const scheduleUpdate = NodeHelper.scheduleUpdate;
 const scheduleUpdateMock = jest.fn();
 const sendSocketNotificationMock = jest.fn();
 const getResponseMock = jest.fn();
+const processFunctionMock = jest.fn();
 
 beforeEach(() => {
   delete(NodeHelper.started);
-  delete(NodeHelper.config);
+  NodeHelper.config = {};
+  NodeHelper.retryDelay = 5000;
+  NodeHelper.loaded = false;
+
   NodeHelper.scheduleUpdate = scheduleUpdate;
   NodeHelper.sendSocketNotification = sendSocketNotificationMock;
   NodeHelper.getResponse = getResponseMock;
+
+  scheduleUpdateMock.mockReset();
+  sendSocketNotificationMock.mockReset();
+  getResponseMock.mockReset();
+  processFunctionMock.mockReset();
 });
 
 describe('start function', () => {
@@ -28,7 +37,9 @@ describe('start function', () => {
 
 describe('socketNotificationReceived function', () => {
   it('should keep started to false if unexpected notification', () => {
-    // given-when
+    // given
+    delete(NodeHelper.config);    
+    // when
     NodeHelper.socketNotificationReceived('HELLO');
     // then
     expect(NodeHelper.started).toBeFalsy();
@@ -104,6 +115,45 @@ describe('updateTimetable function', () => {
     expect(getResponseMock).toHaveBeenCalledWith('http://apiVelib/search?ds=stations&q=2099', NodeHelper.processVelib);
     expect(getResponseMock).toHaveBeenCalledWith('http://api/traffic/tramways/1', NodeHelper.processTraffic);
     expect(getResponseMock).toHaveBeenCalledWith('http://api/schedules/bus/275/Ulbach/A', NodeHelper.processTransport);
+  });
+});
+
+describe('handleApiResponse function', () => {
+  it('should not invoke processFunction but schedule next update when response KO', () => {
+    // given
+    NodeHelper.scheduleUpdate = scheduleUpdateMock;    
+    // when
+    NodeHelper.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, null);
+    // then
+    expect(processFunctionMock).not.toHaveBeenCalled();
+    expect(scheduleUpdateMock).toHaveBeenCalledWith(5000);
+  });
+
+  it('should invoke processFunction and schedule next update when response OK and module loaded', () => {
+    // given
+    NodeHelper.scheduleUpdate = scheduleUpdateMock;    
+    NodeHelper.loaded = true;
+    const response = {
+      body: 'body',
+    };
+    // when
+    NodeHelper.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, response);
+    // then
+    expect(processFunctionMock).toHaveBeenCalled();
+    expect(scheduleUpdateMock).toHaveBeenCalledWith();
+  });
+
+  it('should invoke processFunction and schedule next update when response OK and module not loaded', () => {
+    // given
+    NodeHelper.scheduleUpdate = scheduleUpdateMock;    
+    const response = {
+      body: 'body',
+    };
+    // when
+    NodeHelper.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, response);
+    // then
+    expect(processFunctionMock).toHaveBeenCalled();
+    expect(scheduleUpdateMock).toHaveBeenCalledWith(5000);
   });
 });
 
