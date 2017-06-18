@@ -1,7 +1,7 @@
 /* @flow */
 
-import { formatDateFull } from '../support/format';
-import Navitia  from '../support/navitia';
+import { formatDateFull } from '../../support/format';
+import Navitia  from '../../support/navitia';
 
 type Stop = {
   line: (number|string)[],

@@ -24,7 +24,7 @@ import {
   renderPublicTransportLegacy,
   renderPublicTransportNavitia,
   renderVelib,
-} from '../dom/renderer';
+} from './dom/renderer';
 
 Module.register('MMM-IDF-STIF-NAVITIA',{
 
