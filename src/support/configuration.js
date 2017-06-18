@@ -52,4 +52,10 @@ export const defaults: ModuleConfiguration = {
   apiVelib: 'https://opendata.paris.fr/api/records/1.0/search/?dataset=stations-velib-disponibilites-en-temps-reel',
   apiAutolib: 'https://opendata.paris.fr/explore/dataset/stations_et_espaces_autolib_de_la_metropole_parisienne/api/',
 
+  messages: {
+    status: {
+      approaching: 'Approaching',
+    },
+  },
+
 };

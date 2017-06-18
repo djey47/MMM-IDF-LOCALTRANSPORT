@@ -43,9 +43,10 @@ A module to display:
 # Specific configuration
 * [`name`]: [default value], //information
 * `maximumEntries`: 2, //if the APIs sends several results for the incoming transport how many should be displayed
+* `initialLoadDelay`: 0, //time in ms before first request
 * `updateInterval`: 60000, //time in ms between pulling request for new times (update request)
-* `converToWaitingTime`: true, // messages received from API can be 'hh:mm' in that case convert it in the waiting time 'x mn'
-* `maxLeterrsForDestination`: 22, //will limit the length of the destination string
+* `convertToWaitingTime`: true, // messages received from API can be 'hh:mm' in that case convert it in the waiting time 'x mn'
+* `maxLettersForDestination`: 22, //will limit the length of the destination string
 * `concatenateArrivals`: true, //if for a transport there is the same destination and several times, they will be displayed on one line
 * `showSecondsToNextUpdate`: true, // display a countdown to the next update pull (should I wait for a refresh before going ?)
 * `showLastUpdateTime`: false, //display the time when the last pulled occured (taste & color...)
@@ -72,6 +73,7 @@ A module to display:
   - `conversion: {"Trafic normal sur l'ensemble de la ligne." : "Traffic normal"}`
   - don't hesitate to add more when there's works on a specific line or others...
 * `navitiaToken`: '00000000-0000-0000-000000000000' // Mandatory to access navitia.io API (account required)
+* `messages`: see example below // key-values to convert generic messages to your preferred language
 
 Example:
 ```javascript
@@ -88,5 +90,10 @@ stations: [
   {type: 'metros', line: '6', station: 'raspail', destination: 'A'},
   {type: 'velib', station: 5029, destination: 'leaving', label: 'RER'},
   {type: 'transiliens', station: 'OIF:SA:8738200', line: 'OIF:800:LOIF742', label: 'Becon L'},
-]
+],
+messages: {
+  status: {
+    approaching: 'Approaching'
+  }
+}
 ```

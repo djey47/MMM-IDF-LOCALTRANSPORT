@@ -1,5 +1,6 @@
 const moment = require('moment');
 const Navitia = require('../../support/navitia.js');
+const { MessageKeys } = require('../../support/messages.js');
 
 const ResponseProcessor = {
   /**
@@ -10,9 +11,13 @@ const ResponseProcessor = {
     const schedules = stop_schedules
       .map((schedule) => {
         const { route, date_times } = schedule;
-        const time = moment(date_times[0].date_time).format('HH:mm');
+
+        const departureTime = moment(date_times[0].date_time);
+        const delta = Math.abs(moment().diff(departureTime));
+        const message = delta >= 60000 ? departureTime.format('HH:mm') : MessageKeys.STATUS_APPROACHING;
+
         return {
-          message: time,
+          message,
           destination: route.direction.name,
         };
       });

@@ -2,6 +2,7 @@
 
 import { formatDateFull } from '../../support/format';
 import Navitia  from '../../support/navitia';
+import { translate } from '../../support/messages';
 
 type Stop = {
   line: (number|string)[],
@@ -115,8 +116,10 @@ export const renderComingTransport = (firstLine: boolean, stop: Stop, comingTran
 
   const depCell = document.createElement('td');
   depCell.className = 'bright';
+  let depInfo = 'N/A';
   if (comingTransport) {
     if (config.convertToWaitingTime && /^\d{1,2}[:][0-5][0-9]$/.test(message)) {
+      // TODO: extract to format.js
       const transportTime = message.split(':');
       const endDate = new Date(0, 0, 0, Number.parseInt(transportTime[0]), Number.parseInt(transportTime[1]));
       const startDate = new Date(0, 0, 0, now.getHours(), now.getMinutes(), now.getSeconds());
@@ -125,18 +128,17 @@ export const renderComingTransport = (firstLine: boolean, stop: Stop, comingTran
         waitingTime += 1000 * 60 * 60 * 24;
       }
       waitingTime = Math.floor(waitingTime / 1000 / 60);
-      depCell.innerHTML = waitingTime + ' mn';
+      depInfo = waitingTime + ' mn';
     } else {
-      depCell.innerHTML = message;
+      depInfo = translate(message, config.messages);
     }      
-  } else {
-    depCell.innerHTML = 'N/A ';
   }
-  depCell.innerHTML = depCell.innerHTML.substr(0, config.maxLettersForTime);
+  depCell.innerHTML = depInfo.substr(0, config.maxLettersForTime);
   row.appendChild(depCell);
 
-  if ((now - Date.parse(comingLastUpdate)) > (config.oldUpdateThreshold ? config.oldUpdateThreshold : (config.updateInterval * (1 + config.oldThreshold)) )) {
-    destinationCell.style.opacity = depCell.style.opacity = config.oldUpdateOpacity;
+  const {oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity} = config;
+  if ((now - Date.parse(comingLastUpdate)) > (oldUpdateThreshold ? oldUpdateThreshold : (updateInterval * (1 + oldThreshold)) )) {
+    destinationCell.style.opacity = depCell.style.opacity = oldUpdateOpacity;
   }
 
   const { previousDestination, previousRow } = previous;

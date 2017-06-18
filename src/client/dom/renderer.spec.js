@@ -171,6 +171,37 @@ describe('renderLocalTransport function', () => {
     expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
   });
 
+  it('should return correct HTML when message to be translated', () => {
+    // given
+    const schedules = {
+      [stopIndex]: [{
+        message: '{status.approaching}',
+        destination: 'La Défense',
+      },{
+        message: '15:05',
+        destination: 'Place Charras',       
+      }],
+    };
+    const lastUpdate = {
+      [stopIndex]: '2017/05/30 15:00:00',
+    };
+    const config = {
+      maximumEntries: 2,
+      maxLettersForDestination: 256,
+      messages: {
+        status: {
+          approaching: 'A l`approche',
+        },
+      },
+    };
+    const now = new Date();
+    // when
+    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
+    // then
+    expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
+  });
+  
+
   it('should return correct HTML when no schedule', () => {
     // given
     const stop = {
