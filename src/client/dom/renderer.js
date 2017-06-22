@@ -1,6 +1,6 @@
 /* @flow */
 
-import { formatDateFull } from '../../support/format';
+import { formatDateFull, toWaitingTime } from '../../support/format';
 import Navitia  from '../../support/navitia';
 import { translate } from '../../support/messages';
 
@@ -118,19 +118,11 @@ export const renderComingTransport = (firstLine: boolean, stop: Stop, comingTran
   depCell.className = 'bright';
   let depInfo = 'N/A';
   if (comingTransport) {
-    if (config.convertToWaitingTime && /^\d{1,2}[:][0-5][0-9]$/.test(message)) {
-      // TODO: extract to format.js
-      const transportTime = message.split(':');
-      const endDate = new Date(0, 0, 0, Number.parseInt(transportTime[0]), Number.parseInt(transportTime[1]));
-      const startDate = new Date(0, 0, 0, now.getHours(), now.getMinutes(), now.getSeconds());
-      let waitingTime = endDate - startDate;
-      if (startDate > endDate) {
-        waitingTime += 1000 * 60 * 60 * 24;
-      }
-      waitingTime = Math.floor(waitingTime / 1000 / 60);
-      depInfo = waitingTime + ' mn';
+    const { messages } = config;
+    if (config.convertToWaitingTime) {
+      depInfo = toWaitingTime(message, now, messages);
     } else {
-      depInfo = translate(message, config.messages);
+      depInfo = translate(message, messages);
     }      
   }
   depCell.innerHTML = depInfo.substr(0, config.maxLettersForTime);

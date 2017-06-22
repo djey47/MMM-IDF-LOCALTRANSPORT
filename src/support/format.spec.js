@@ -1,6 +1,6 @@
 /* @flow */
 
-import { formatDateFull, toHoursMinutes } from './format';
+import { formatDateFull, toHoursMinutes, toWaitingTime } from './format';
 
 describe('formatDateFull function', () => {
   it('should return empty string when undefined date', () => {
@@ -38,5 +38,25 @@ describe('toHoursMinutes function', () => {
     const actual = toHoursMinutes(currentDate);
     // then
     expect(actual).toEqual('20:43');
+  });
+});
+
+describe('toWaitingTime function', () => {
+  it('should return duration in minutes when proper time given', () => {
+    // given
+    const now = new Date(0, 0, 0, 22, 0, 0, 0);
+    // when
+    const actual = toWaitingTime('23:08', now, {});
+    // then
+    expect(actual).toEqual('68 {units.minutes}');
+  });
+
+  it('should return initial time when unproper time given', () => {
+    // given
+    const now = new Date(0, 0, 0, 22, 0, 0, 0);
+    // when
+    const actual = toWaitingTime('blabli', now, {});
+    // then
+    expect(actual).toEqual('blabli');
   });
 });

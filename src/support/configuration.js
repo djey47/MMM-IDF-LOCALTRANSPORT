@@ -56,6 +56,9 @@ export const defaults: ModuleConfiguration = {
     status: {
       approaching: 'Approaching',
     },
+    units: {
+      minutes: 'mn',
+    },
   },
 
 };

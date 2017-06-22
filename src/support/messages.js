@@ -5,6 +5,7 @@ const _get = require('lodash/get');
  */
 const MessageKeys = {
   STATUS_APPROACHING: '{status.approaching}',
+  UNITS_MINUTES: '{units.minutes}',
 };
 
 /**
