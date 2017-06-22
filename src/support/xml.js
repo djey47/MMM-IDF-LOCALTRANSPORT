@@ -9,7 +9,7 @@ function xmlToJson(xml) {
 
   if (xml.nodeType == 1) { // element
 		// do attributes
-    if (xml.attributes.length > 0) {
+    if (xml.attributes.length) {
       obj['@attributes'] = {};
       for (let j = 0; j < xml.attributes.length; j++) {
         const attribute = xml.attributes.item(j);
@@ -26,16 +26,22 @@ function xmlToJson(xml) {
   if (xml.hasChildNodes()
     && xml.childNodes.length === 1
     && xml.childNodes[0].nodeType === 3) {
-    obj = xml.childNodes[0].nodeValue;
+    const [ childNode ] = xml.childNodes; 
+    // Text node with attributes?
+    if (obj['@attributes']) {
+      obj['@attributes'].text = childNode.nodeValue;
+    } else {
+      obj = childNode.nodeValue;
+    }    
   }
   else if (xml.hasChildNodes()) {
     for(let i = 0; i < xml.childNodes.length; i++) {
       const item = xml.childNodes.item(i);
       const { nodeName } = item;
-      if (typeof(obj[nodeName]) == 'undefined') {
+      if (typeof(obj[nodeName]) === 'undefined') {
         obj[nodeName] = xmlToJson(item);
       } else {
-        if (typeof(obj[nodeName].push) == 'undefined') {
+        if (typeof(obj[nodeName].push) === 'undefined') {
           const old = obj[nodeName];
           obj[nodeName] = [];
           obj[nodeName].push(old);

@@ -31,157 +31,332 @@ describe('xmlToJson function', () => {
     const actual = xmlToJson(xmlDoc);
     // then
     expect(actual).toEqual({
-      passages: {
-        '@attributes': {
-          gare: '87382002',
+      passages:{
+        '@attributes':{
+          gare:'87382002',
         },
-        train: [{
-          date: '20/06/2017 12:46',
-          etat: 'Retardé',
-          miss: 'POPI',
-          num: '135140',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 13:41',
-          miss: 'PEBU',
-          num: '134626',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 13:41',
-          miss: 'NOPE',
-          num: '135183',
-          term: '87386318',
-        }, {
-          date: '20/06/2017 13:45',
-          miss: 'POPI',
-          num: '135162',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 13:50',
-          miss: 'SEBU',
-          num: '134625',
-          term: '87382481',
-        }, {
-          date: '20/06/2017 13:51',
-          miss: 'NOPE',
-          num: '135189',
-          term: '87386318',
-        }, {
-          date: '20/06/2017 13:53',
-          miss: 'POPI',
-          num: '135164',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 13:56',
-          miss: 'PEBU',
-          num: '134630',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 14:01',
-          miss: 'NOPE',
-          num: '135193',
-          term: '87386318',
-        }, {
-          date: '20/06/2017 14:03',
-          miss: 'POPI',
-          num: '135168',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 14:05',
-          miss: 'SEBU',
-          num: '134629',
-          term: '87382481',
-        }, {
-          date: '20/06/2017 14:11',
-          miss: 'PEBU',
-          num: '134632',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 14:11',
-          miss: 'NOPE',
-          num: '135195',
-          term: '87386318',
-        }, {
-          date: '20/06/2017 14:13',
-          miss: 'POPI',
-          num: '135172',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 14:20',
-          miss: 'SEBU',
-          num: '134631',
-          term: '87382481',
-        }, {
-          date: '20/06/2017 14:21',
-          miss: 'NOPE',
-          num: '135203',
-          term: '87386318',
-        }, {
-          date: '20/06/2017 14:23',
-          miss: 'POPI',
-          num: '135174',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 14:26',
-          miss: 'PEBU',
-          num: '134636',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 14:31',
-          miss: 'NOPE',
-          num: '135205',
-          term: '87386318',
-        }, {
-          date: '20/06/2017 14:33',
-          miss: 'POPI',
-          num: '135182',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 14:35',
-          miss: 'SEBU',
-          num: '134635',
-          term: '87382481',
-        }, {
-          date: '20/06/2017 14:41',
-          miss: 'PEBU',
-          num: '134638',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 14:41',
-          miss: 'NOPE',
-          num: '135209',
-          term: '87386318',
-        }, {
-          date: '20/06/2017 14:43',
-          miss: 'POPI',
-          num: '135184',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 14:50',
-          miss: 'SEBU',
-          num: '134637',
-          term: '87382481',
-        }, {
-          date: '20/06/2017 14:51',
-          miss: 'NOPE',
-          num: '135213',
-          term: '87386318',
-        }, {
-          date: '20/06/2017 14:53',
-          miss: 'POPI',
-          num: '135188',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 14:56',
-          miss: 'PEBU',
-          num: '134642',
-          term: '87384008',
-        }, {
-          date: '20/06/2017 15:01',
-          miss: 'NOPE',
-          num: '135219',
-          term: '87386318',
-        }],
+        train:[
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 12:46',
+              },
+            },
+            etat:'Retardé',
+            miss:'POPI',
+            num:'135140',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 13:41',
+              },
+            },
+            miss:'PEBU',
+            num:'134626',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 13:41',
+              },
+            },
+            miss:'NOPE',
+            num:'135183',
+            term:'87386318',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 13:45',
+              },
+            },
+            miss:'POPI',
+            num:'135162',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 13:50',
+              },
+            },
+            miss:'SEBU',
+            num:'134625',
+            term:'87382481',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 13:51',
+              },
+            },
+            miss:'NOPE',
+            num:'135189',
+            term:'87386318',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 13:53',
+              },
+            },
+            miss:'POPI',
+            num:'135164',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 13:56',
+              },
+            },
+            miss:'PEBU',
+            num:'134630',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:01',
+              },
+            },
+            miss:'NOPE',
+            num:'135193',
+            term:'87386318',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:03',
+              },
+            },
+            miss:'POPI',
+            num:'135168',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:05',
+              },
+            },
+            miss:'SEBU',
+            num:'134629',
+            term:'87382481',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:11',
+              },
+            },
+            miss:'PEBU',
+            num:'134632',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:11',
+              },
+            },
+            miss:'NOPE',
+            num:'135195',
+            term:'87386318',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:13',
+              },
+            },
+            miss:'POPI',
+            num:'135172',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:20',
+              },
+            },
+            miss:'SEBU',
+            num:'134631',
+            term:'87382481',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:21',
+              },
+            },
+            miss:'NOPE',
+            num:'135203',
+            term:'87386318',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:23',
+              },
+            },
+            miss:'POPI',
+            num:'135174',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:26',
+              },
+            },
+            miss:'PEBU',
+            num:'134636',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:31',
+              },
+            },
+            miss:'NOPE',
+            num:'135205',
+            term:'87386318',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:33',
+              },
+            },
+            miss:'POPI',
+            num:'135182',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:35',
+              },
+            },
+            miss:'SEBU',
+            num:'134635',
+            term:'87382481',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:41',
+              },
+            },
+            miss:'PEBU',
+            num:'134638',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:41',
+              },
+            },
+            miss:'NOPE',
+            num:'135209',
+            term:'87386318',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:43',
+              },
+            },
+            miss:'POPI',
+            num:'135184',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:50',
+              },
+            },
+            miss:'SEBU',
+            num:'134637',
+            term:'87382481',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:51',
+              },
+            },
+            miss:'NOPE',
+            num:'135213',
+            term:'87386318',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:53',
+              },
+            },
+            miss:'POPI',
+            num:'135188',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 14:56',
+              },
+            },
+            miss:'PEBU',
+            num:'134642',
+            term:'87384008',
+          },
+          {
+            date:{
+              '@attributes':{
+                mode:'R',
+                text:'20/06/2017 15:01',
+              },
+            },
+            miss:'NOPE',
+            num:'135219',
+            term:'87386318',
+          },
+        ],
       },
     });
   });
