@@ -24,6 +24,7 @@ type ModuleConfiguration = {
   navitiaToken: string, // get it from own account @navitia.io
   apiVelib: string,     // add &q=141111 to get info of that station
   apiAutolib: string,   // add '?q=' but no realtime info... for now
+  apiSncfData: string,
 
 };
 
@@ -51,7 +52,7 @@ export const defaults: ModuleConfiguration = {
   navitiaToken: '00000000-0000-0000-000000000000',
   apiVelib: 'https://opendata.paris.fr/api/records/1.0/search/?dataset=stations-velib-disponibilites-en-temps-reel',
   apiAutolib: 'https://opendata.paris.fr/explore/dataset/stations_et_espaces_autolib_de_la_metropole_parisienne/api/',
-
+  apiSncfData: 'https://ressources.data.sncf.com/api/records/1.0/',
   messages: {
     status: {
       approaching: 'Approaching',
