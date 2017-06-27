@@ -19,8 +19,10 @@ type VelibStation = {
 };
 
 type Schedule = {
-  message: string,
-  destination: string
+  message?: string, // Deprecated
+  destination: string,
+  status?: string,
+  time?: Object, // moment Object
 };
 
 type ComingContext = {
@@ -95,9 +97,18 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
 /**
  * @private
  */
-export const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: Object, now: Date): ?any => {
+export const createStopIndexFromStopConfig = (config: Object) => {
+  const { line, station, destination } = config;
+  
+  return `${line.toString().toLowerCase()}/${station}/${destination || ''}`;
+};
+
+/**
+ * @private
+ */
+const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: Object, now: Date): ?any => {
   const { line, label } = stop;
-  const { message, destination } = comingTransport ;
+  const { message = '', destination } = comingTransport ;
   const row = document.createElement('tr');
 
   const nameCell = document.createElement('td');
@@ -151,16 +162,7 @@ export const renderComingTransport = (firstLine: boolean, stop: Stop, comingTran
 };
 
 /**
- * @private
- */
-export const createStopIndexFromStopConfig = (config: Object) => {
-  const { line, station, destination } = config;
-  
-  return `${line.toString().toLowerCase()}/${station}/${destination || ''}`;
-};
-
-/**
- * @private
+ * @returns HTML for public transport items (rows) for any API
  */
 export const renderPublicTransport = (stopConfig: Object, stopIndex: string, schedules: Object, lastUpdate: Object, config: Object, now: Date) => {
   const rows = [];
