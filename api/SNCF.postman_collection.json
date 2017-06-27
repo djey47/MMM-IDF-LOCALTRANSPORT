@@ -1,0 +1,53 @@
+{
+	"variables": [],
+	"info": {
+		"name": "SNCF",
+		"_postman_id": "3e0317d2-c181-bac1-a5f2-69f9ee4b3953",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Station info by UIC",
+			"request": {
+				"url": {
+					"raw": "https://ressources.data.sncf.com/api/records/1.0/search/?dataset=sncf-gares-et-arrets-transilien-ile-de-france&q=87382002",
+					"protocol": "https",
+					"host": [
+						"ressources",
+						"data",
+						"sncf",
+						"com"
+					],
+					"path": [
+						"api",
+						"records",
+						"1.0",
+						"search",
+						""
+					],
+					"query": [
+						{
+							"key": "dataset",
+							"value": "sncf-gares-et-arrets-transilien-ile-de-france",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "q",
+							"value": "87382002",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
