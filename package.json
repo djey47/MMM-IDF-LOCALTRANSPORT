@@ -13,6 +13,8 @@
     "module",
     "paris",
     "STIF",
+    "transilien",
+    "SNCF",
     "navitia.io"
   ],
   "author": "djey47",
@@ -24,10 +26,11 @@
   "scripts": {
     "build": "webpack --config tools/webpack/webpack.config.module.js",
     "lint": "yarn lint:scripts",
-    "lint:scripts": "eslint .",
+    "lint:scripts": "eslint src && yarn flow:typings && yarn flow",
+    "flow:typings": "yarn flow-typed update",
     "test": "yarn jest",
     "jest:watch": "yarn jest -- --watch",
-    "precommit": "yarn lint && yarn flow",
+    "precommit": "yarn lint",
     "prepush": "yarn jest"
   },
   "dependencies": {
@@ -50,6 +53,7 @@
     "eslint": "^3.19.0",
     "eslint-plugin-flowtype": "^2.33.0",
     "flow-bin": "^0.47.0",
+    "flow-typed": "^2.1.2",
     "husky": "^0.13.4",
     "jest": "^20.0.4",
     "webpack": "^2.6.1"
