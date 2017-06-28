@@ -1,6 +1,7 @@
 const moment = require('moment');
 const Navitia = require('../../support/navitia.js');
 const { MessageKeys } = require('../../support/messages.js');
+const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
 
 const ResponseProcessor = {
   /**
@@ -38,13 +39,13 @@ const ResponseProcessor = {
    * @param {any} context 
    */
   processTransportNavitia: function(data, context) {
-    if (context.debug) {
+    if (context.config.debug) {
       console.log (' *** processTransportNavitia data');
       console.log (data);
     }
 
     context.loaded = true;
-    context.sendSocketNotification('TRANSPORT', ResponseProcessor.dataToSchedule(data));
+    context.sendSocketNotification(NOTIF_TRANSPORT, ResponseProcessor.dataToSchedule(data));
   },
 };
 
