@@ -1,4 +1,4 @@
-import { parseString } from 'xml2js';
+const { parseString } = require('xml2js');
 
 const options = { explicitArray: false }; 
 
