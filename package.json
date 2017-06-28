@@ -37,7 +37,8 @@
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "node-forge": "latest",
-    "unirest": "latest"
+    "unirest": "latest",
+    "xml2js": "^0.4.17"
   },
   "devDependencies": {
     "app-root-dir": "^1.0.2",
