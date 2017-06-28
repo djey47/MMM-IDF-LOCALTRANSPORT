@@ -1,5 +1,6 @@
 const unirest = require('unirest');
 const NavitiaResponseProcessor = require('./navitia/ResponseProcessor.js');
+const TransilienResponseProcessor = require('./transilien/ResponseProcessor.js');
 const {
  NOTIF_UPDATE,
  NOTIF_TRAFFIC,
@@ -98,7 +99,7 @@ module.exports = {
    * Calls corresponding process function on successful response.
   */
   updateTimetable: function() {
-    const { debug, stations, apiBaseV3, apiVelib, apiNavitia, navitiaToken } = this.config;
+    const { debug, stations, apiBaseV3, apiVelib, apiNavitia, apiTransilien, navitiaToken, transilienToken } = this.config;
     if (debug) {
       console.log (' *** fetching update');
     }
@@ -124,9 +125,13 @@ module.exports = {
           url = `${apiBaseV3}traffic/${line[0]}/${line[1]}`;
           this.getResponse(url, this.processTraffic);
           break;
-        case 'transiliens':
+        case 'transiliensNavitia':
           url = `${apiNavitia}coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_areas/stop_area:${station}/lines/line:${line}/stop_schedules`;
           this.getResponse(url, NavitiaResponseProcessor.processTransportNavitia, navitiaToken);
+          break;        
+        case 'transiliens':
+          url = `${apiTransilien}gare/${station}/depart`;
+          this.getResponse(url, TransilienResponseProcessor.processTransportTransilien, transilienToken);
           break;        
         default:
 
