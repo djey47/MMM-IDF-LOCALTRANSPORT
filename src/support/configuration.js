@@ -21,7 +21,9 @@ type ModuleConfiguration = {
 
   apiBaseV3: string,  
   apiNavitia: string,
+  apiTransilien: string,
   navitiaToken: string, // get it from own account @navitia.io
+  transilienToken: string, // get it from own account @transilien SNCF
   apiVelib: string,     // add &q=141111 to get info of that station
   apiAutolib: string,   // add '?q=' but no realtime info... for now
   apiSncfData: string,
@@ -49,7 +51,9 @@ export const defaults: ModuleConfiguration = {
 
   apiBaseV3: 'https://api-ratp.pierre-grimaud.fr/v3/',
   apiNavitia: 'https://api.navitia.io/v1/',
+  apiTransilien: 'http://api.transilien.com/',
   navitiaToken: '00000000-0000-0000-000000000000',
+  transilienToken: 'Basic',
   apiVelib: 'https://opendata.paris.fr/api/records/1.0/search/?dataset=stations-velib-disponibilites-en-temps-reel',
   apiAutolib: 'https://opendata.paris.fr/explore/dataset/stations_et_espaces_autolib_de_la_metropole_parisienne/api/',
   apiSncfData: 'https://ressources.data.sncf.com/api/records/1.0/',
