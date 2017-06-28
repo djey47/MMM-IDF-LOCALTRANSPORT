@@ -2,6 +2,7 @@
 
 import { formatDateFull, toWaitingTime } from '../../support/format';
 import Navitia  from '../../support/navitia';
+import Transilien  from '../../support/transilien';
 import { translate } from '../../support/messages';
 
 type Stop = {
@@ -196,6 +197,15 @@ export const renderPublicTransportLegacy = (stop: Stop, schedules: Object, lastU
  */
 export const renderPublicTransportNavitia = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
   const stopIndex = Navitia.createIndexFromStopConfig(stop);
+
+  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);  
+};
+
+/**
+ * @returns HTML for public transport items (rows) via Transilien API
+ */
+export const renderPublicTransportTransilien = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
+  const stopIndex = Transilien.createIndexFromStopConfig(stop);
 
   return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);  
 };

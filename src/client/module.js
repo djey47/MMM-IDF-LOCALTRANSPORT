@@ -23,6 +23,7 @@ import {
   renderTraffic,
   renderPublicTransportLegacy,
   renderPublicTransportNavitia,
+  renderPublicTransportTransilien,
   renderVelib,
 } from './dom/renderer';
 
@@ -86,8 +87,12 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
           renderPublicTransportLegacy(stop, this.transportSchedules, this.transportLastUpdate, this.config, now)
             .forEach((row) => table.appendChild(row));
           break;
-        case 'transiliens':
+        case 'transiliensNavitia':
           renderPublicTransportNavitia(stop, this.transportSchedules, this.transportLastUpdate, this.config, now)
+            .forEach((row) => table.appendChild(row));
+          break;
+        case 'transiliens':
+          renderPublicTransportTransilien(stop, this.transportSchedules, this.transportLastUpdate, this.config, now)
             .forEach((row) => table.appendChild(row));
           break;
         case 'velib':
