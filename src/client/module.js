@@ -16,7 +16,7 @@ import {
  NOTIF_VELIB,
  NOTIF_TRANSPORT,
 } from '../support/notifications';
-import { defaults } from '../support/configuration';
+import { defaults, enhanceConfiguration } from '../support/configuration';
 import {
   renderWrapper,
   renderHeader,
@@ -43,6 +43,8 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   // Define start sequence.
   start: function() {
     Log.info('Starting module: ' + this.name);
+
+    enhanceConfiguration(this.config);
 
     this.sendSocketNotification(NOTIF_SET_CONFIG, this.config);
 
