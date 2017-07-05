@@ -4,7 +4,8 @@ import { getStationInfo } from './railwayRepository';
 
 describe('getStationInfo function', () => {
   const config = {
-    sncfApiUrl: 'https://url/',
+    sncfApiUrl: 'https://ressources.data.sncf.com/api/records/1.0/',
+    debug: true,
   };
 
   it('should return null in test context', () => {

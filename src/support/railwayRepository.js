@@ -1,4 +1,10 @@
-const unirest = require('unirest');
+const axios = require('axios');
+
+const axiosConfig = {
+  headers: {
+    Accept: 'application/json;charset=utf-8',
+  },
+};
 
 /**
  * @returns first station info matching provided query (label or UIC), or null if it does not exist
@@ -7,30 +13,39 @@ const getStationInfo = function(query, config) {
   const { sncfApiUrl, debug } = config;
   const url = encodeURI(`${sncfApiUrl}search?q=${query}&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle`);
 
-  const callPromise = (url) => new Promise((resolve, reject) => unirest.get(url)
-    .header({
-      'Accept': 'application/json;charset=utf-8',
-    })
-    .end((response) => {
-      if (response && response.body && response.body.records.length) {
-        if (debug) {
-          console.log(`** Station info found for '${query}'`);
-          console.dir(stationInfo);
-        }        
-        resolve(response.body.records[0].fields);
-      } else {
-        if (debug) {
-          console.log(`** No station info found for '${query}'`);
-        }
-        reject();
-      }
-    }));
+  const callPromise = function*(url, axiosConfig){
+    const promise = axios.get(url, axiosConfig)
+      .then((response) => {
 
-  let stationInfo = null;
-  callPromise(url)
-    .then(value => stationInfo = value);
+        if (debug) console.log(response.data);
 
-  return stationInfo;  
+        if (response && response.data && response.data.records.length) {
+          if (debug) {
+            console.log(`** Station info found for '${query}'`);
+          }
+
+          return response.data.records[0].fields;
+        } 
+        
+        if (debug) console.log(`** No station info found for '${query}'`);
+          
+        return null;
+      },
+      (error) => {
+        console.error(`** Error invoking API for '${query}'`);
+        console.error(error);
+
+        return error;
+      });
+
+    yield promise;
+  };
+
+  const stationInfo = callPromise(url, axiosConfig).next();
+
+  console.log(stationInfo);
+
+  return stationInfo;
 };
 
 module.exports = {

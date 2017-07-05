@@ -28,16 +28,16 @@
     "lint": "yarn lint:scripts",
     "lint:scripts": "eslint src && yarn flow:typings && yarn flow",
     "flow:typings": "yarn flow-typed update",
-    "test": "yarn jest",
-    "jest:watch": "yarn jest -- --watch",
+    "test": "yarn jest -- --config ./tools/test/jest.default.json",
+    "jest:watch": "yarn jest -- --config ./tools/test/jest.default.json --watch",
     "precommit": "yarn lint",
     "prepush": "yarn jest"
   },
   "dependencies": {
+    "axios": "^0.16.2",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "node-forge": "latest",
-    "unirest": "latest",
     "xml2js": "^0.4.17"
   },
   "devDependencies": {

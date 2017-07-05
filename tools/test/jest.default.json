@@ -1,0 +1,7 @@
+{
+  "rootDir": "../..",
+  "testEnvironment": "node",
+  "roots": [
+    "<rootDir>/src"
+  ]
+}
