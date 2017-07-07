@@ -13,37 +13,27 @@ const getStationInfo = function(query, config) {
   const { sncfApiUrl, debug } = config;
   const url = encodeURI(`${sncfApiUrl}search?q=${query}&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle`);
 
-  const callPromise = function*(url, axiosConfig){
-    const promise = axios.get(url, axiosConfig)
-      .then((response) => {
+  let stationInfo = null;
+  axios.get(url, axiosConfig)
+    .then((response) => {
 
-        if (debug) console.log(response.data);
+      if (debug) console.log(response.data);
 
-        if (response && response.data && response.data.records.length) {
-          if (debug) {
-            console.log(`** Station info found for '${query}'`);
-          }
-
-          return response.data.records[0].fields;
-        } 
+      if (response && response.data && response.data.records.length) {
         
-        if (debug) console.log(`** No station info found for '${query}'`);
-          
-        return null;
-      },
-      (error) => {
-        console.error(`** Error invoking API for '${query}'`);
-        console.error(error);
+        if (debug) console.log(`** Station info found for '${query}'`);
 
-        return error;
-      });
+        stationInfo = response.data.records[0].fields;
+      } 
+      
+      if (debug) console.log(`** No station info found for '${query}'`);
+    },
+    (error) => {
+      console.error(`** Error invoking API for '${query}'`);
+      console.error(error);
+    });
 
-    yield promise;
-  };
-
-  const stationInfo = callPromise(url, axiosConfig).next();
-
-  console.log(stationInfo);
+  if (debug) console.log(`** Obtained station info: ${stationInfo}`);
 
   return stationInfo;
 };
