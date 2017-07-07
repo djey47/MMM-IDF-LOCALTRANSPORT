@@ -1,4 +1,4 @@
-const unirest = require('unirest');
+const axios = require('axios');
 const NavitiaResponseProcessor = require('./navitia/ResponseProcessor.js');
 const TransilienResponseProcessor = require('./transilien/ResponseProcessor.js');
 const {
@@ -81,16 +81,17 @@ module.exports = {
 
   getResponse: function(_url, _processFunction, authToken) {
     const { debug } = this.config.debug;
-    if (debug) {
-      console.log (` *** fetching: ${_url}`);
-    }
+    const config = {
+      headers: {
+        Accept: 'application/json;charset=utf-8',
+        Authorization: authToken || '',
+      },
+    };
 
-    unirest.get(_url)
-      .header({
-        'Accept': 'application/json;charset=utf-8',
-        'Authorization': authToken || '',
-      })
-      .end(function(response) {
+    if (debug) console.log (` *** fetching: ${_url}`);
+
+    axios.get(_url, config )
+      .then(function(response) {
         this.handleAPIResponse(_url, _processFunction, response);
       }.bind(this));
   },
