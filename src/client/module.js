@@ -12,7 +12,6 @@
 import {
  NOTIF_UPDATE,
  NOTIF_TRAFFIC,
- NOTIF_SET_CONFIG,
  NOTIF_VELIB,
  NOTIF_TRANSPORT,
 } from '../support/notifications';
@@ -44,9 +43,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   start: function() {
     Log.info('Starting module: ' + this.name);
 
-    enhanceConfiguration(this.config);
-
-    this.sendSocketNotification(NOTIF_SET_CONFIG, this.config);
+    enhanceConfiguration(this.config, this.sendSocketNotification);
 
     this.transportSchedules = {};
     this.transportLastUpdate = {};

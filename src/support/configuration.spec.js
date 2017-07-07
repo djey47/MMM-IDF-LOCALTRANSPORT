@@ -2,6 +2,7 @@
 
 import { defaults, enhanceConfiguration } from './configuration';
 
+const mockSendSocketNotification = jest.fn();
 const mockStationInfo = {
   code_uic: '87382002',
 };
@@ -16,7 +17,7 @@ describe('enhanceConfiguration function', () => {
     const currentConfig = Object.assign({}, defaults);
     const previousConfig = Object.assign({}, defaults);
     // when
-    enhanceConfiguration(currentConfig);
+    enhanceConfiguration(currentConfig, mockSendSocketNotification);
     // then
     expect(currentConfig).toEqual(previousConfig);
   });
@@ -30,7 +31,7 @@ describe('enhanceConfiguration function', () => {
     }];
     const currentConfig = Object.assign({}, defaults, { stations });
     // when
-    enhanceConfiguration(currentConfig);
+    enhanceConfiguration(currentConfig, mockSendSocketNotification);
     // then
     const expected = {
       destination: {

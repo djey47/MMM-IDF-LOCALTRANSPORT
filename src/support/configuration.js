@@ -1,6 +1,8 @@
 /* @flow */
 
 import { getStationInfo } from './railwayRepository';
+import { NOTIF_SET_CONFIG } from '../support/notifications';
+
 import type { ModuleConfiguration } from '../types/Configuration';
 
 const TYPE_TRANSILIEN = 'transiliens';
@@ -53,9 +55,12 @@ function extractStationCode(stationLabel?: string): ?string {
 
 /**
  * Resolves useful information from module configuration (station UIC ...)
+ * Sends configuration to server-side via sockets.
  * @param {Object} configuration configuration to be enhanced
+ * @param {Function} sendSocketNotification callback to notification handler
  */
-export function enhanceConfiguration(configuration: ModuleConfiguration) {
+export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: Function) {
+  // TODO make it async
   // Stations for transilien: retrieve UIC
   configuration.stations
     .filter(stationConfig => stationConfig.type === TYPE_TRANSILIEN)
@@ -74,5 +79,7 @@ export function enhanceConfiguration(configuration: ModuleConfiguration) {
         console.log(stationConfig.uic);
       }
     });
+
+  sendSocketNotification(NOTIF_SET_CONFIG, configuration);
 }
 
