@@ -28,8 +28,9 @@
     "lint": "yarn lint:scripts",
     "lint:scripts": "eslint src && yarn flow:typings && yarn flow",
     "flow:typings": "yarn flow-typed update",
-    "test": "yarn jest -- --config ./tools/test/jest.default.json",
-    "jest:watch": "yarn jest -- --config ./tools/test/jest.default.json --watch",
+    "test": "yarn jest -- --config ./tools/test/jest.client.json && yarn jest -- --config ./tools/test/jest.server.json",
+    "jest:watch-client": "yarn jest -- --config ./tools/test/jest.client.json --watch",
+    "jest:watch-server": "yarn jest -- --config ./tools/test/jest.server.json --watch",
     "precommit": "yarn lint",
     "prepush": "yarn jest"
   },

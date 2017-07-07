@@ -2,6 +2,7 @@
   "rootDir": "../..",
   "testEnvironment": "node",
   "roots": [
-    "<rootDir>/src"
+    "<rootDir>/src/server",
+    "<rootDir>/src/support"
   ]
 }
