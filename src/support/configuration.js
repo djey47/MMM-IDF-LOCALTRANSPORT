@@ -1,6 +1,6 @@
 /* @flow */
 
-import { getStationInfo } from './railwayRepository';
+import { getAllStationInfo } from './railwayRepository';
 import { NOTIF_SET_CONFIG } from '../support/notifications';
 
 import type { ModuleConfiguration } from '../types/Configuration';
@@ -46,40 +46,42 @@ export const defaults: ModuleConfiguration = {
 };
 
 /**
- * @private
- */
-function extractStationCode(stationLabel?: string): ?string {
-  if (!stationLabel) return null;
-  return getStationInfo(stationLabel);
-}
-
-/**
  * Resolves useful information from module configuration (station UIC ...)
  * Sends configuration to server-side via sockets.
  * @param {Object} configuration configuration to be enhanced
  * @param {Function} sendSocketNotification callback to notification handler
  */
 export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: Function) {
-  // TODO make it async
+  // const { debug } = configuration;
+  
   // Stations for transilien: retrieve UIC
-  configuration.stations
+  const queries = configuration.stations
     .filter(stationConfig => stationConfig.type === TYPE_TRANSILIEN)
-    .forEach(stationConfig => {
+    .map((stationConfig, index) => {
       const { station, destination } = stationConfig;
-      const stationCode = extractStationCode(station);
-      const destinationCode = extractStationCode(destination);
-
-      stationConfig.uic = {
-        station: stationCode,
-        destination: destinationCode,
+      return {
+        index,
+        stationValue: station,
+        destinationValue: destination,
       };
-
-      if (configuration.debug) {
-        console.log('** Resolved UIC codes');
-        console.log(stationConfig.uic);
-      }
     });
 
-  sendSocketNotification(NOTIF_SET_CONFIG, configuration);
+  // if (debug) console.log(`** Queries: ${queries}`);
+
+  getAllStationInfo(queries, configuration)
+    .then(responses => {
+      responses.forEach(response => {
+        const { index, value: { stationValue, destinationValue } } = response;
+        if (!configuration.stations[index].uic) configuration.stations[index].uic = {};
+        configuration.stations[index].uic.station = stationValue;
+        configuration.stations[index].uic.destination = destinationValue;
+
+        if (configuration.debug) {
+          console.log('** Resolved UIC codes');
+          console.log(configuration.stations[index].uic);
+        }      
+      });
+      sendSocketNotification(NOTIF_SET_CONFIG, configuration);
+    });
 }
 
