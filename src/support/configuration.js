@@ -52,7 +52,7 @@ export const defaults: ModuleConfiguration = {
  * @param {Function} sendSocketNotification callback to notification handler
  */
 export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: Function) {
-  // const { debug } = configuration;
+  const { debug } = configuration;
   
   // Stations for transilien: retrieve UIC
   const queries = configuration.stations
@@ -66,21 +66,27 @@ export function enhanceConfiguration(configuration: ModuleConfiguration, sendSoc
       };
     });
 
-  // if (debug) console.log(`** Queries: ${queries}`);
-
   getAllStationInfo(queries, configuration)
     .then(responses => {
       responses.forEach(response => {
-        const { index, value: { stationValue, destinationValue } } = response;
-        if (!configuration.stations[index].uic) configuration.stations[index].uic = {};
-        configuration.stations[index].uic.station = stationValue;
-        configuration.stations[index].uic.destination = destinationValue;
 
-        if (configuration.debug) {
-          console.log('** Resolved UIC codes');
+        if (debug) {
+          console.log('** getAllStationInfo response:');
+          console.dir(response);
+        }
+
+        const { index, stationValue, destinationValue } = response;
+        configuration.stations[index].uic = {
+          station: stationValue.code_uic,
+          destination: destinationValue.code_uic,
+        };
+
+        if (debug) {
+          console.log('** Resolved UIC codes:');
           console.log(configuration.stations[index].uic);
         }      
       });
+
       sendSocketNotification(NOTIF_SET_CONFIG, configuration);
     });
 }

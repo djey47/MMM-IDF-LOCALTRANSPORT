@@ -7,22 +7,28 @@ const axiosConfig = {
 };
 
 /**
+ * @private
+ */
+const getStationInfoUrl = function (sncfApiUrl, query) {
+  return encodeURI(`${sncfApiUrl}search?q=${query}&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle`);
+};
+
+/**
  * @param query Object with index and stationValue, destinationValue attributes (index is the index within stations array from config)
  * @returns Promise to first station/destination info matching provided query (label or UIC), or null if it does not exist
  */
 const getStationInfo = function(query, config) {
   const { index, stationValue, destinationValue } = query;
   const { sncfApiUrl, debug } = config;
-  const urls = [];
   
-  // TODO extract format function
-  urls.push(encodeURI(`${sncfApiUrl}search?q=${stationValue}&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle`));
-  urls.push(encodeURI(`${sncfApiUrl}search?q=${destinationValue}&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle`));
+  const axiosPromises = [
+    axios.get(getStationInfoUrl(sncfApiUrl, stationValue)), 
+    axios.get(getStationInfoUrl(sncfApiUrl, destinationValue)), 
+  ];
 
   return new Promise((resolve, reject) => {
-    axios.all(urls, axiosConfig)
+    axios.all(axiosPromises, axiosConfig)
       .then((responses) => {
-
         const [ stationResponse, destinationResponse ] = responses;
 
         if (debug) {
@@ -39,11 +45,12 @@ const getStationInfo = function(query, config) {
             stationValue: stationResponse.data.records[0].fields,
             destinationValue: destinationResponse.data.records[0].fields,
           });
-        } 
+        } else {
         
-        if (debug) console.log(`** No station info found for '${query}'`);
+          if (debug) console.log(`** No station info found for '${query}'`);
 
-        resolve(null);
+          resolve(null);
+        }
       },
       (error) => {
         console.error(`** Error invoking API for '${query}'`);

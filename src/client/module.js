@@ -43,7 +43,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   start: function() {
     Log.info('Starting module: ' + this.name);
 
-    enhanceConfiguration(this.config, this.sendSocketNotification);
+    enhanceConfiguration(this.config, this.sendSocketNotification.bind(this));
 
     this.transportSchedules = {};
     this.transportLastUpdate = {};
