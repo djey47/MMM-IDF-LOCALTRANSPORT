@@ -14,16 +14,17 @@ const getStationInfoUrl = function (sncfApiUrl, query) {
 };
 
 /**
- * @param query Object with index and stationValue, destinationValue attributes (index is the index within stations array from config)
- * @returns Promise to first station/destination info matching provided query (label or UIC), or null if it does not exist
+ * @param {Object} query Object with index and stationValue, destinationValue attributes (index is the index within stations array from config)
+ * @param {Object} config
+ * @returns {Promise} first station/destination info matching provided query (label or UIC), or null if it does not exist
  */
 const getStationInfo = function(query, config) {
   const { index, stationValue, destinationValue } = query;
   const { sncfApiUrl, debug } = config;
   
   const axiosPromises = [
-    axios.get(getStationInfoUrl(sncfApiUrl, stationValue)), 
-    axios.get(getStationInfoUrl(sncfApiUrl, destinationValue)), 
+    axios.get(getStationInfoUrl(sncfApiUrl, stationValue), axiosConfig), 
+    axios.get(getStationInfoUrl(sncfApiUrl, destinationValue), axiosConfig), 
   ];
 
   return new Promise((resolve, reject) => {
@@ -38,12 +39,12 @@ const getStationInfo = function(query, config) {
 
         if (stationResponse && stationResponse.data && stationResponse.data.records.length) {
           
-          if (debug) console.log(`** Station info found for '${query}'`);
+          if (debug) console.log(`** Station info found for '${stationValue}'`);
 
           resolve({
             index,
-            stationValue: stationResponse.data.records[0].fields,
-            destinationValue: destinationResponse.data.records[0].fields,
+            stationInfo: stationResponse.data.records[0].fields,
+            destinationInfo: destinationResponse.data.records[0].fields,
           });
         } else {
         
@@ -62,10 +63,8 @@ const getStationInfo = function(query, config) {
 };
 
 /**
- * 
- * 
- * @param {Object[]} queries 
- * @param {any} config
+ * @param {Object[]} queries requests to get info for
+ * @param {Object} config
  * @returns Promise to all first station info matching provided query (label or UIC), or null if it does not exist
  */
 function getAllStationInfo(queries, config) {
@@ -73,6 +72,7 @@ function getAllStationInfo(queries, config) {
 }
 
 module.exports = {
+  axiosConfig,
   getStationInfo,
   getAllStationInfo,
 };

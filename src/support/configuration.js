@@ -46,14 +46,45 @@ export const defaults: ModuleConfiguration = {
 };
 
 /**
+ * 
+ * 
+ * @export
+ * @param {Array<Object>} responses 
+ * @param {Function} sendSocketNotification 
+ * @param {Object} configuration 
+ */
+export function handleStationInfoResponse(responses: Array<Object>, sendSocketNotification: Function, configuration: ModuleConfiguration) {
+  const { debug } = configuration;
+
+  responses.forEach(response => {
+
+    if (debug) {
+      console.log('** getAllStationInfo response:');
+      console.dir(response);
+    }
+
+    const { index, stationInfo, destinationInfo } = response;
+    configuration.stations[index].uic = {
+      station: stationInfo.code_uic,
+      destination: destinationInfo.code_uic,
+    };
+
+    if (debug) {
+      console.log('** Resolved UIC codes:');
+      console.log(configuration.stations[index].uic);
+    }      
+  });
+
+  sendSocketNotification(NOTIF_SET_CONFIG, configuration);
+}
+
+/**
  * Resolves useful information from module configuration (station UIC ...)
  * Sends configuration to server-side via sockets.
  * @param {Object} configuration configuration to be enhanced
  * @param {Function} sendSocketNotification callback to notification handler
  */
 export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: Function) {
-  const { debug } = configuration;
-  
   // Stations for transilien: retrieve UIC
   const queries = configuration.stations
     .filter(stationConfig => stationConfig.type === TYPE_TRANSILIEN)
@@ -66,28 +97,10 @@ export function enhanceConfiguration(configuration: ModuleConfiguration, sendSoc
       };
     });
 
-  getAllStationInfo(queries, configuration)
-    .then(responses => {
-      responses.forEach(response => {
-
-        if (debug) {
-          console.log('** getAllStationInfo response:');
-          console.dir(response);
-        }
-
-        const { index, stationValue, destinationValue } = response;
-        configuration.stations[index].uic = {
-          station: stationValue.code_uic,
-          destination: destinationValue.code_uic,
-        };
-
-        if (debug) {
-          console.log('** Resolved UIC codes:');
-          console.log(configuration.stations[index].uic);
-        }      
-      });
-
-      sendSocketNotification(NOTIF_SET_CONFIG, configuration);
-    });
+  if (queries.length) {
+    getAllStationInfo(queries, configuration)
+      .then(responses => handleStationInfoResponse(responses, sendSocketNotification, configuration));
+  } else {
+    sendSocketNotification(NOTIF_SET_CONFIG, configuration);
+  }
 }
-
