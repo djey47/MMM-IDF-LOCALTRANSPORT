@@ -1,6 +1,6 @@
 /* @flow */
 
-import { formatDateFull, toWaitingTime } from '../../support/format';
+import { formatDateFull, toWaitingTime } from '../support/format';
 import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
 import { translate } from '../../support/messages';

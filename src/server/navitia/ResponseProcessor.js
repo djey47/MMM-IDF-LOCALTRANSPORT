@@ -13,6 +13,7 @@ const ResponseProcessor = {
       .map((schedule) => {
         const { route, date_times } = schedule;
 
+        // TODO move to client side and MessageKeys as well. Transmit raw data only.
         const departureTime = moment(date_times[0].date_time);
         const delta = Math.abs(moment().diff(departureTime));
         const message = delta >= 60000 ? departureTime.format('HH:mm') : MessageKeys.STATUS_APPROACHING;

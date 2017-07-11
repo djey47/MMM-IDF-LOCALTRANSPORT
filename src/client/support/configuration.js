@@ -1,9 +1,9 @@
 /* @flow */
 
-import { getAllStationInfo } from './railwayRepository';
-import { NOTIF_SET_CONFIG } from '../support/notifications';
+import { getAllStationInfo } from '../../support/railwayRepository';
+import { NOTIF_SET_CONFIG } from '../../support/notifications';
 
-import type { ModuleConfiguration } from '../types/Configuration';
+import type { ModuleConfiguration } from '../../types/Configuration';
 
 const TYPE_TRANSILIEN = 'transiliens';
 

@@ -1,7 +1,7 @@
 /* @flow */
 
 import moment from 'moment';
-import { translate, MessageKeys } from './messages';
+import { translate, MessageKeys } from '../../support/messages';
 
 /**
  * @returns time with format H:MM:SS from date
