@@ -1,0 +1,7 @@
+{
+  "rootDir": "../..",
+  "testEnvironment": "jsdom",
+  "roots": [
+    "<rootDir>/src"
+  ]
+}
