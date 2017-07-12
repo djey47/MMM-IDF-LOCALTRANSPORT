@@ -26,7 +26,7 @@
   "scripts": {
     "build": "webpack --config tools/webpack/webpack.config.module.js",
     "lint": "yarn lint:scripts",
-    "lint:scripts": "eslint src && yarn flow:typings && yarn flow",
+    "lint:scripts": "eslint src && yarn flow",
     "flow:typings": "yarn flow-typed update",
     "test": "yarn jest -- --config ./tools/test/jest.default.json",
     "jest:watch-client": "yarn jest -- --config ./tools/test/jest.client.json --watch",
