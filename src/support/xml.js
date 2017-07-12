@@ -7,7 +7,7 @@ const options = { explicitArray: false };
  * @returns {Object} corresponding JS object
  */
 function xmlToJson(xml) {
-	// Create the return object
+  // Create the return object
   let obj = null;
 
   parseString(xml, options, (err, result) => {

@@ -2,11 +2,11 @@ const axios = require('axios');
 const NavitiaResponseProcessor = require('./navitia/ResponseProcessor.js');
 const TransilienResponseProcessor = require('./transilien/ResponseProcessor.js');
 const {
- NOTIF_UPDATE,
- NOTIF_TRAFFIC,
- NOTIF_VELIB,
- NOTIF_TRANSPORT,
- NOTIF_SET_CONFIG,
+  NOTIF_UPDATE,
+  NOTIF_TRAFFIC,
+  NOTIF_VELIB,
+  NOTIF_TRANSPORT,
+  NOTIF_SET_CONFIG,
 } = require('../support/notifications.js');
 /**
  * Custom NodeHelper implementation

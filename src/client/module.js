@@ -10,10 +10,10 @@
  */
 
 import {
- NOTIF_UPDATE,
- NOTIF_TRAFFIC,
- NOTIF_VELIB,
- NOTIF_TRANSPORT,
+  NOTIF_UPDATE,
+  NOTIF_TRAFFIC,
+  NOTIF_VELIB,
+  NOTIF_TRANSPORT,
 } from '../support/notifications';
 import { defaults, enhanceConfiguration } from './support/configuration';
 import {
