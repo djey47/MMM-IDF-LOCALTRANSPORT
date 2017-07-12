@@ -1,3 +1,14 @@
 {
-  "presets": ["es2015", "react"]
+  "presets": [
+    [
+      "env",
+      {
+        "targets": {
+          "chrome": 58,
+          "node": "current"
+        }
+      }
+    ],
+    "react"
+  ]
 }
