@@ -134,7 +134,7 @@ describe('handleApiResponse function', () => {
     NodeHelper.scheduleUpdate = scheduleUpdateMock;    
     NodeHelper.loaded = true;
     const response = {
-      body: 'body',
+      data: {},
     };
     // when
     NodeHelper.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, response);
@@ -147,7 +147,7 @@ describe('handleApiResponse function', () => {
     // given
     NodeHelper.scheduleUpdate = scheduleUpdateMock;    
     const response = {
-      body: 'body',
+      data: {},
     };
     // when
     NodeHelper.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, response);

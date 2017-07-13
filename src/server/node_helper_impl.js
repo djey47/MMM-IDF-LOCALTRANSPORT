@@ -8,6 +8,7 @@ const {
   NOTIF_TRANSPORT,
   NOTIF_SET_CONFIG,
 } = require('../support/notifications.js');
+
 /**
  * Custom NodeHelper implementation
  */
@@ -48,16 +49,24 @@ module.exports = {
     this.updateTimer = setTimeout(this.updateTimetable.bind(this), nextLoad);
   },
 
+  /**
+   * Extracts reponse body if available, otherwise handles retries
+   * @param url requested URL
+   * @param processFunction callback to send extracted data to
+   * @param response API response
+   * @private
+   */
   handleAPIResponse: function(url, processFunction, response) {
     const { debug } = this.config;
-    if (response && response.body) {
+    if (response && response.data) {
+      const { data } = response;
 
       if (debug) {
         console.log (` *** received answer for: ${url}`);
-        console.log (response.body);
+        console.log (data);
       }
 
-      processFunction(response.body, this);
+      processFunction(data, this);
     } else {
 
       if (debug) {
@@ -79,7 +88,14 @@ module.exports = {
     }
   },
 
-  getResponse: function(_url, _processFunction, authToken) {
+  /**
+   * Calls API and handles response via callback
+   * @param url requested URL
+   * @param processFunction callback to send extracted data to
+   * @param authToken optional authentication token
+   * @private
+   */
+  getResponse: function(url, processFunction, authToken) {
     const { debug } = this.config.debug;
     const config = {
       headers: {
@@ -88,11 +104,11 @@ module.exports = {
       },
     };
 
-    if (debug) console.log (` *** fetching: ${_url}`);
+    if (debug) console.log (` *** fetching: ${url}`);
 
-    axios.get(_url, config )
+    axios.get(url, config )
       .then(function(response) {
-        this.handleAPIResponse(_url, _processFunction, response);
+        this.handleAPIResponse(url, processFunction, response);
       }.bind(this));
   },
 
@@ -135,11 +151,7 @@ module.exports = {
           this.getResponse(url, TransilienResponseProcessor.processTransportTransilien, transilienToken);
           break;        
         default:
-
-          if (debug) {
-            console.log(` *** unknown request: ${type}`);
-          }
-
+          if (debug) console.log(` *** unknown request: ${type}`);
       }
     });
   },
