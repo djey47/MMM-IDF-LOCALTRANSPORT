@@ -1,6 +1,7 @@
 const axios = require('axios');
 const NavitiaResponseProcessor = require('./navitia/ResponseProcessor.js');
 const TransilienResponseProcessor = require('./transilien/ResponseProcessor.js');
+const { getTransilienDepartUrl } = require ('../support/transilien');
 const {
   NOTIF_UPDATE,
   NOTIF_TRAFFIC,
@@ -50,6 +51,17 @@ module.exports = {
   },
 
   /**
+   * @private
+   */
+  scheduleRetry: function() {
+    if (this.loaded) {
+      this.scheduleUpdate();
+    } else {
+      this.scheduleUpdate(this.retryDelay);
+    }
+  },
+
+  /**
    * Extracts reponse body if available, otherwise handles retries
    * @param url requested URL
    * @param processFunction callback to send extracted data to
@@ -80,36 +92,40 @@ module.exports = {
     
     }
 
-    // Schedule retry
-    if (this.loaded) {
-      this.scheduleUpdate();
-    } else {
-      this.scheduleUpdate(this.retryDelay);
-    }
+    this.scheduleRetry();
+  },
+
+  /**
+   * When API error occurs, do particular processing and handle retries
+   * @private
+   */
+  handleAPIError: function(error) {
+    console.error(error);
+
+    this.scheduleRetry();
   },
 
   /**
    * Calls API and handles response via callback
    * @param url requested URL
    * @param processFunction callback to send extracted data to
-   * @param authToken optional authentication token
+   * @param authToken (optional) authentication token
    * @private
    */
-  getResponse: function(url, processFunction, authToken) {
+  getResponse: function(url, processFunction, authToken = '') {
     const { debug } = this.config.debug;
     const config = {
       headers: {
         Accept: 'application/json;charset=utf-8',
-        Authorization: authToken || '',
+        Authorization: authToken,
       },
     };
 
     if (debug) console.log (` *** fetching: ${url}`);
 
-    axios.get(url, config )
-      .then(function(response) {
-        this.handleAPIResponse(url, processFunction, response);
-      }.bind(this));
+    axios.get(url, config)
+      .then((response => this.handleAPIResponse(url, processFunction, response)).bind(this))
+      .catch((error => this.handleAPIError(error)).bind(this));
   },
 
   /* updateTimetable(transports)
@@ -117,15 +133,20 @@ module.exports = {
   */
   updateTimetable: function() {
     const { debug, stations, apiBaseV3, apiVelib, apiNavitia, apiTransilien, navitiaToken, transilienToken } = this.config;
-    if (debug) {
-      console.log (' *** fetching update');
-    }
+    
+    if (debug) console.log (' *** fetching update');
     
     this.sendSocketNotification(NOTIF_UPDATE, { lastUpdate : new Date()});
 
     stations.forEach((stopConfig) => {
       let url;
-      const { type, line, station, destination } = stopConfig;
+      const {
+        type,
+        line,
+        station,
+        destination,
+      } = stopConfig;
+
       switch (type) {
         case 'tramways':
         case 'bus':
@@ -147,8 +168,11 @@ module.exports = {
           this.getResponse(url, NavitiaResponseProcessor.processTransportNavitia, navitiaToken);
           break;        
         case 'transiliens':
-          url = `${apiTransilien}gare/${station}/depart`;
-          this.getResponse(url, TransilienResponseProcessor.processTransportTransilien, transilienToken);
+          this.getResponse(
+            getTransilienDepartUrl(apiTransilien, stopConfig),
+            TransilienResponseProcessor.processTransportTransilien,
+            transilienToken
+          );
           break;        
         default:
           if (debug) console.log(` *** unknown request: ${type}`);
