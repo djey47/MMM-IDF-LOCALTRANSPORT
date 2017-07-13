@@ -10,8 +10,8 @@ const axiosConfig = {
 /**
  * @private
  */
-const getInfoUrl = function (sncfApiUrl, query) {
-  return encodeURI(`${sncfApiUrl}search?q=${query}&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle`);
+const getInfoUrl = function (apiSncfData, query) {
+  return encodeURI(`${apiSncfData}search?q=${query}&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle`);
 };
 
 /**
@@ -60,13 +60,13 @@ const handleInfoResponsesOnSuccess = function (responses, resolveCallback, query
  */
 const getStationInfo = function(query, config) {
   const { stationValue, destinationValue } = query;
-  const { sncfApiUrl, debug } = config;
+  const { apiSncfData, debug } = config;
   
   const axiosPromises = [];
   // Mandatory: station
-  axiosPromises.push(axios.get(getInfoUrl(sncfApiUrl, stationValue), axiosConfig));
+  axiosPromises.push(axios.get(getInfoUrl(apiSncfData, stationValue), axiosConfig));
   // Not mandatory: destination
-  if (destinationValue) axiosPromises.push(axios.get(getInfoUrl(sncfApiUrl, destinationValue), axiosConfig));
+  if (destinationValue) axiosPromises.push(axios.get(getInfoUrl(apiSncfData, destinationValue), axiosConfig));
 
   return new Promise((resolve, reject) => {
     axios.all(axiosPromises, axiosConfig)

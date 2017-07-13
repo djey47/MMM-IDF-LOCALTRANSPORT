@@ -20,8 +20,8 @@ jest.mock('axios', () => ({
 const mockResolve = jest.fn();
 
 const config = {
-  sncfApiUrl: 'https://foo/bar',
-  debug: true,
+  apiSncfData: 'https://foo/bar',
+  debug: false,
 };
 
 beforeEach(() => {
