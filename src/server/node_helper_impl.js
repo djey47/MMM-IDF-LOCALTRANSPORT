@@ -2,6 +2,12 @@ const axios = require('axios');
 const NavitiaResponseProcessor = require('./navitia/ResponseProcessor.js');
 const TransilienResponseProcessor = require('./transilien/ResponseProcessor.js');
 const { getTransilienDepartUrl } = require ('../support/transilien');
+const { getNavitiaStopSchedulesUrl } = require ('../support/navitia');
+const {
+  getTrafficUrl,
+  getVelibUrl,
+  getScheduleUrl,
+} = require ('../support/legacyApi');
 const {
   NOTIF_UPDATE,
   NOTIF_TRAFFIC,
@@ -139,39 +145,38 @@ module.exports = {
     this.sendSocketNotification(NOTIF_UPDATE, { lastUpdate : new Date()});
 
     stations.forEach((stopConfig) => {
-      let url;
-      const {
-        type,
-        line,
-        station,
-        destination,
-      } = stopConfig;
-
+      const { type } = stopConfig;
       switch (type) {
         case 'tramways':
         case 'bus':
         case 'rers':
         case 'metros':
-          url = `${apiBaseV3}schedules/${type}/${line.toString().toLowerCase()}/${station}/${destination}`;
-          this.getResponse(url, this.processTransport);
+          this.getResponse(
+            getScheduleUrl(apiBaseV3, stopConfig),
+            this.processTransport);
           break;
         case 'velib':
-          url = `${apiVelib}&q=${station}`;
-          this.getResponse(url, this.processVelib);
+          this.getResponse(
+            getVelibUrl(apiVelib, stopConfig),
+            this.processVelib);
           break;
         case 'traffic':
-          url = `${apiBaseV3}traffic/${line[0]}/${line[1]}`;
-          this.getResponse(url, this.processTraffic);
+          this.getResponse(
+            getTrafficUrl(apiBaseV3, stopConfig),
+            this.processTraffic);
           break;
         case 'transiliensNavitia':
-          url = `${apiNavitia}coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_areas/stop_area:${station}/lines/line:${line}/stop_schedules`;
-          this.getResponse(url, NavitiaResponseProcessor.processTransportNavitia, navitiaToken);
+          this.getResponse(
+            getNavitiaStopSchedulesUrl(apiNavitia, stopConfig),
+            NavitiaResponseProcessor.processTransportNavitia,
+            navitiaToken,
+          );
           break;        
         case 'transiliens':
           this.getResponse(
             getTransilienDepartUrl(apiTransilien, stopConfig),
             TransilienResponseProcessor.processTransportTransilien,
-            transilienToken
+            transilienToken,
           );
           break;        
         default:

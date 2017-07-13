@@ -11,9 +11,14 @@ const Navitia = {
   /**
    * @returns indexfor results access (client side)
    */
-  createIndexFromStopConfig: function (config) {
-    const { station, line  } = config;    
+  createIndexFromStopConfig: function (stopConfig) {
+    const { station, line  } = stopConfig;    
     return `physical_mode:RapidTransit/stop_areas/stop_area:${station}/lines/line:${line}/stop_schedules`;
+  },
+
+  getNavitiaStopSchedulesUrl: function (apiNavitia, stopConfig) {
+    const { station, line  } = stopConfig;    
+    return `${apiNavitia}coverage/fr-idf/physical_modes/physical_mode:RapidTransit/stop_areas/stop_area:${station}/lines/line:${line}/stop_schedules`;
   },
 };
 
