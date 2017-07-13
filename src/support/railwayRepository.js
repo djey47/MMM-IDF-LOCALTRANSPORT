@@ -1,4 +1,5 @@
 const axios = require('axios');
+const _get = require('lodash/get');
 
 const axiosConfig = {
   headers: {
@@ -9,8 +10,47 @@ const axiosConfig = {
 /**
  * @private
  */
-const getStationInfoUrl = function (sncfApiUrl, query) {
+const getInfoUrl = function (sncfApiUrl, query) {
   return encodeURI(`${sncfApiUrl}search?q=${query}&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle`);
+};
+
+/**
+ * @private
+ */
+const isInfoReceived = function (response) {
+  return !!_get(response, 'data.records.length');
+};
+
+/**
+ * @private
+ */
+const handleInfoResponsesOnSuccess = function (responses, resolveCallback, query, debug) {
+  const { index, stationValue, destinationValue } = query;
+  const [ stationResponse, destinationResponse ] = responses;
+
+  if (debug) {
+    console.log(responses);
+  }
+
+  if (isInfoReceived(stationResponse)) {
+    const isDestinationInfoReceived = isInfoReceived(destinationResponse);
+    
+    if (debug) {
+      console.log(`** Info found for station '${stationValue}'`);
+      if (isDestinationInfoReceived) console.log(`** Info found for destination '${destinationValue}'`);
+    }
+
+    resolveCallback({
+      index,
+      stationInfo: stationResponse.data.records[0].fields,
+      destinationInfo: isDestinationInfoReceived ? destinationResponse.data.records[0].fields : null,
+    });
+  } else {
+  
+    if (debug) console.log(`** No station info found for '${stationValue}'`);
+
+    resolveCallback(null);
+  }
 };
 
 /**
@@ -19,46 +59,26 @@ const getStationInfoUrl = function (sncfApiUrl, query) {
  * @returns {Promise} first station/destination info matching provided query (label or UIC), or null if it does not exist
  */
 const getStationInfo = function(query, config) {
-  const { index, stationValue, destinationValue } = query;
+  const { stationValue, destinationValue } = query;
   const { sncfApiUrl, debug } = config;
   
-  const axiosPromises = [
-    axios.get(getStationInfoUrl(sncfApiUrl, stationValue), axiosConfig), 
-    axios.get(getStationInfoUrl(sncfApiUrl, destinationValue), axiosConfig), 
-  ];
+  const axiosPromises = [];
+  // Mandatory: station
+  axiosPromises.push(axios.get(getInfoUrl(sncfApiUrl, stationValue), axiosConfig));
+  // Not mandatory: destination
+  if (destinationValue) axiosPromises.push(axios.get(getInfoUrl(sncfApiUrl, destinationValue), axiosConfig));
 
   return new Promise((resolve, reject) => {
     axios.all(axiosPromises, axiosConfig)
-      .then((responses) => {
-        const [ stationResponse, destinationResponse ] = responses;
+      .then(
+        (responses) => handleInfoResponsesOnSuccess(responses, resolve, query, debug),
+        (error) => {
+          console.error('** Error invoking API for:');
+          console.dir(query);
+          console.error(error);
 
-        if (debug) {
-          console.log(stationResponse.data);
-          console.log(destinationResponse.data);
-        }
-
-        if (stationResponse && stationResponse.data && stationResponse.data.records.length) {
-          
-          if (debug) console.log(`** Station info found for '${stationValue}'`);
-
-          resolve({
-            index,
-            stationInfo: stationResponse.data.records[0].fields,
-            destinationInfo: destinationResponse.data.records[0].fields,
-          });
-        } else {
-        
-          if (debug) console.log(`** No station info found for '${query}'`);
-
-          resolve(null);
-        }
-      },
-      (error) => {
-        console.error(`** Error invoking API for '${query}'`);
-        console.error(error);
-
-        reject(error);
-      });
+          reject(error);
+        });
   });
 };
 
@@ -75,4 +95,6 @@ module.exports = {
   axiosConfig,
   getStationInfo,
   getAllStationInfo,
+  // test exports
+  handleInfoResponsesOnSuccess,
 };
