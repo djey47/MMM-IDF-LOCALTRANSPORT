@@ -49,6 +49,29 @@ describe('handleStationInfoResponse function', () => {
     expect(stations2.uic).toEqual(expectedCodes2);
     expect(mockSendSocketNotification).toHaveBeenCalledWith('SET_CONFIG', currentConfig);
   });
+
+  it('should ignore missing destination info', () => {
+    // given
+    const stations = [{
+      type: 'transiliens',
+      station: 'becon',
+    }];    
+    const currentConfig = Object.assign({}, defaults, { stations });
+    const responses = [{
+      index: 0,
+      stationInfo: { code_uic: 'UIC1' },
+    }];
+    // when
+    handleStationInfoResponse(responses, mockSendSocketNotification, currentConfig);
+    // then
+    const expectedCodes = {
+      station: 'UIC1',
+      destination: null,
+    };
+    const [ stationsInfo ] = currentConfig.stations;
+    expect(stationsInfo.uic).toEqual(expectedCodes);
+    expect(mockSendSocketNotification).toHaveBeenCalledWith('SET_CONFIG', currentConfig);
+  });
 });
 
 describe('enhanceConfiguration function', () => {

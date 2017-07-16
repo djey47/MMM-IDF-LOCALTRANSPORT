@@ -66,7 +66,7 @@ export function handleStationInfoResponse(responses: Array<Object>, sendSocketNo
     const { index, stationInfo, destinationInfo } = response;
     configuration.stations[index].uic = {
       station: stationInfo.code_uic,
-      destination: destinationInfo.code_uic,
+      destination: destinationInfo ? destinationInfo.code_uic : null,
     };
 
     if (debug) {
