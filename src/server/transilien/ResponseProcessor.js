@@ -1,20 +1,34 @@
 const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
 const xmlToJson = require('../../support/xml.js');
 const { createIndexFromResponse } = require('../../support/transilien.js'); 
+const { getAllStationInfo } = require('../../support/railwayRepository'); 
 
 const ResponseProcessor = {
   /**
    * @private
    */
-  dataToSchedule: function(data) {
-    if (!data.passages) return {};
+  passagesToInfoQueries: function(passages) {
+    if (!passages) return [];
 
-    // TODO resolve UIC codes to labels
+    return passages.train
+      .map(({ term }, index) => ({
+        index,
+        stationValue: term,
+      }));    
+  },
+
+  /**
+   * @private
+   */
+  dataToSchedule: function(data, stationInfos) {
+    if (!data.passages) return {};
+    const {passages: {train}} = data;    
+
     // TODO use date object instead of label, formatting will be client side
     // TODO use raw field for date, message will be reserved for status
-    const schedules = data.passages.train
-      .map(({ term, date }) => ({
-        destination: term,
+    const schedules = train
+      .map(({ date }, index) => ({
+        destination: stationInfos[index].stationInfo.libelle,
         message: date._,
       }));
 
@@ -32,7 +46,7 @@ const ResponseProcessor = {
    * @param {any} context 
    */
   processTransportTransilien: function(xmlData, context) {
-    const { config: { debug } } = context;
+    const { config, config: { debug } } = context;
     const data = xmlToJson(xmlData);
 
     if (debug) {
@@ -42,8 +56,12 @@ const ResponseProcessor = {
       console.log (data);
     }
 
-    context.loaded = true;
-    context.sendSocketNotification(NOTIF_TRANSPORT, ResponseProcessor.dataToSchedule(data));
+    getAllStationInfo(ResponseProcessor.passagesToInfoQueries(data.passages), config)
+      .then(stationInfos => {
+        context.loaded = true;
+        context.sendSocketNotification(NOTIF_TRANSPORT, ResponseProcessor.dataToSchedule(data, stationInfos));
+      })
+      .catch(error => console.error(error));
   },
 };
 
