@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/djey47/MMM-IDF-STIFF-NAVITIA#readme",
   "scripts": {
+    "install": "npm run build",
     "build": "webpack --config tools/webpack/webpack.config.module.js",
     "lint": "yarn lint:scripts",
     "lint:scripts": "eslint src && yarn flow",
