@@ -1,9 +1,11 @@
+const _get = require('lodash/get');
+
 const Transilien = {
   /**
    * @returns index for results storage (server side)
    */
-  createIndexFromResponse: function (url) {
-    return url.split('/').slice(-3).join('/');
+  createIndexFromResponse: function (responseData) {
+    return `gare/${_get(responseData, 'passages.$.gare')}/depart`;
   },
 
   /**
@@ -14,6 +16,9 @@ const Transilien = {
     return `gare/${station}/depart`;
   },
 
+  /**
+   * @returns full call URL to transilien next departures for a station
+   */
   getTransilienDepartUrl: function (apiTransilien, stopConfig) {
     const { uic: { station }} = stopConfig;
     return `${apiTransilien}gare/${station}/depart`;
