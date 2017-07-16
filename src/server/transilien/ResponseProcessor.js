@@ -1,7 +1,11 @@
+const moment = require('moment');
 const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
 const xmlToJson = require('../../support/xml.js');
 const { createIndexFromResponse } = require('../../support/transilien.js'); 
-const { getAllStationInfo } = require('../../support/railwayRepository'); 
+const { getAllStationInfo } = require('../../support/railwayRepository');
+
+
+const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm';
 
 const ResponseProcessor = {
   /**
@@ -27,9 +31,10 @@ const ResponseProcessor = {
     // TODO use date object instead of label, formatting will be client side
     // TODO use raw field for date, message will be reserved for status
     const schedules = train
-      .map(({ date }, index) => ({
+      .map(({ date: {_} }, index) => ({
         destination: stationInfos[index].stationInfo.libelle,
-        message: date._,
+        message: _,
+        time: moment(_, DATE_TIME_FORMAT).toISOString(),
       }));
 
     return {
