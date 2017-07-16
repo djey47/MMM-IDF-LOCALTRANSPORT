@@ -97,11 +97,11 @@ describe('dataToSchedule function', () => {
       schedules: [
         {
           destination: 'Label for UIC 87384008(1)',
-          message: '20/06/2017 12:46',
+          status: 'POPI Retardé',
           time: '2017-06-20T10:46:00.000Z',
         },{
           destination: 'Label for UIC 87384008(2)',
-          message: '20/06/2017 13:41',
+          status: 'PEBU',
           time: '2017-06-20T11:41:00.000Z',
         },
       ],

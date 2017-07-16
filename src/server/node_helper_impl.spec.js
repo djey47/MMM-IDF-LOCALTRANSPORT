@@ -1,6 +1,7 @@
 /* @flow */
 
 const NodeHelper = require('./node_helper_impl.js');
+const LegacyResponseProcessor = require('./legacy/ResponseProcessor');
 
 const scheduleUpdate = NodeHelper.scheduleUpdate;
 const scheduleUpdateMock = jest.fn();
@@ -114,7 +115,7 @@ describe('updateTimetable function', () => {
     expect(getResponseMock).toHaveBeenCalledTimes(3);
     expect(getResponseMock).toHaveBeenCalledWith('http://apiVelib/search?ds=stations&q=2099', NodeHelper.processVelib);
     expect(getResponseMock).toHaveBeenCalledWith('http://api/traffic/tramways/1', NodeHelper.processTraffic);
-    expect(getResponseMock).toHaveBeenCalledWith('http://api/schedules/bus/275/Ulbach/A', NodeHelper.processTransport);
+    expect(getResponseMock).toHaveBeenCalledWith('http://api/schedules/bus/275/Ulbach/A', LegacyResponseProcessor.processTransport);
   });
 });
 
@@ -190,29 +191,6 @@ describe('processVelib function', () => {
       total: 24,
     };    
     expect(sendSocketNotificationMock).toHaveBeenCalledWith('VELIB', expected);
-  });
-});
-
-describe('processTransport function', () => {
-  it('should send notification with correct values', () => {
-    // given
-    NodeHelper.config = {};
-    const data = {
-      result: {
-        schedules: [{
-          code: 'ELOI',
-          message: 'Train à quai',
-          destination: 'Charles-de-Gaulle. Mitry-Claye.',
-        }],
-      },
-      _metadata: {
-        call: 'GET /schedules/rers/b/port+royal/A',
-      },
-    };
-    // when
-    NodeHelper.processTransport(data, NodeHelper);
-    // then
-    expect(sendSocketNotificationMock).toHaveBeenCalled();
   });
 });
 

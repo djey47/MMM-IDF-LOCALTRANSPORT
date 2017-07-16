@@ -11,6 +11,15 @@ const ResponseProcessor = {
   /**
    * @private
    */
+  // TODO status should be a code
+  getStatus: function(train) {
+    const { miss, etat } = train;
+    return `${miss} ${etat ? etat : ''}`.trim();
+  },
+
+  /**
+   * @private
+   */
   passagesToInfoQueries: function(passages) {
     if (!passages) return [];
 
@@ -26,16 +35,17 @@ const ResponseProcessor = {
    */
   dataToSchedule: function(data, stationInfos) {
     if (!data.passages) return {};
-    const {passages: {train}} = data;    
 
-    // TODO use date object instead of label, formatting will be client side
-    // TODO use raw field for date, message will be reserved for status
+    const {passages: {train}} = data;    
     const schedules = train
-      .map(({ date: {_} }, index) => ({
-        destination: stationInfos[index].stationInfo.libelle,
-        message: _,
-        time: moment(_, DATE_TIME_FORMAT).toISOString(),
-      }));
+      .map((t, index) => {
+        const { date: {_} } = t;
+        return {
+          destination: stationInfos[index].stationInfo.libelle,
+          status: ResponseProcessor.getStatus(t),
+          time: moment(_, DATE_TIME_FORMAT).toISOString(),
+        };
+      });
 
     return {
       id: createIndexFromResponse(data),

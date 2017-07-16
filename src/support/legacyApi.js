@@ -1,3 +1,5 @@
+// TODO: unit tests
+
 const LegacyApi = {
   getScheduleUrl: function (apiBaseV3, stopConfig) {
     const { type, line, station, destination } = stopConfig;    
@@ -12,6 +14,21 @@ const LegacyApi = {
   getVelibUrl: function (apiVelib, stopConfig) {
     const { station  } = stopConfig;    
     return `${apiVelib}&q=${station}`;
+  },
+
+  /**
+   * @returns index for results storage (server side)
+   */
+  createIndexFromResponse: function (responseData) {
+    return responseData._metadata.call.split('/').slice(-3).join('/');
+  },
+  
+  /**
+  * @private
+  */
+  createStopIndexFromStopConfig: function(stopConfig) {
+    const { line, station, destination } = stopConfig;
+    return `${line.toString().toLowerCase()}/${station}/${destination || ''}`;
   },
 };
 

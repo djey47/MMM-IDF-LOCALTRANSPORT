@@ -1,9 +1,9 @@
 /* @flow */
 
-import { formatDateFull, toWaitingTime } from '../support/format';
+import { formatDateFull, toWaitingTime, toHoursMinutes } from '../support/format';
 import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
-import { translate } from '../../support/messages';
+import LegacyApi  from '../../support/legacyApi';
 
 type Stop = {
   line: (number|string)[],
@@ -23,14 +23,16 @@ type Schedule = {
   message?: string, // Deprecated
   destination: string,
   status?: string,
-  time?: Object, // moment Object
+  time?: string, // ISO
 };
 
 type ComingContext = {
-  previousMessage: string,
+  previousDepInfo: string,
   previousDestination: ?string,
   previousRow: ?any,
 };
+
+const UNAVAILABLE = 'N/A';
 
 /**
  * @returns HTML for main wrapper
@@ -98,18 +100,8 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
 /**
  * @private
  */
-export const createStopIndexFromStopConfig = (config: Object) => {
-  const { line, station, destination } = config;
-  
-  return `${line.toString().toLowerCase()}/${station}/${destination || ''}`;
-};
-
-/**
- * @private
- */
 const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: Object, now: Date): ?any => {
   const { line, label } = stop;
-  const { message = '', destination } = comingTransport ;
   const row = document.createElement('tr');
 
   const nameCell = document.createElement('td');
@@ -121,21 +113,37 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
   }
   row.appendChild(nameCell);
 
+  if(!comingTransport) return row;
+
+  const {
+    status,
+    destination,
+    time,
+  } = comingTransport ;
   const destinationCell = document.createElement('td');
   destinationCell.innerHTML = destination.substr(0, config.maxLettersForDestination);
   destinationCell.className = 'align-left';
   row.appendChild(destinationCell);
 
+  // TODO Limit status label length?
+  if (status) {
+    const statCell = document.createElement('td');
+    statCell.className = 'bright';
+    statCell.innerHTML = status;
+    row.appendChild(statCell);
+  }
+
+  // TODO handle approaching status...
   const depCell = document.createElement('td');
-  depCell.className = 'bright';
-  let depInfo = 'N/A';
-  if (comingTransport) {
-    const { messages } = config;
-    if (config.convertToWaitingTime) {
-      depInfo = toWaitingTime(message, now, messages);
-    } else {
-      depInfo = translate(message, messages);
-    }      
+  const { messages } = config;
+  depCell.className = 'bright';  
+  let depInfo;
+  if (!time) {
+    depInfo = UNAVAILABLE;
+  } else if (config.convertToWaitingTime) {
+    depInfo = toWaitingTime(time, now, messages);
+  } else {
+    depInfo = toHoursMinutes(time);
   }
   depCell.innerHTML = depInfo.substr(0, config.maxLettersForTime);
   row.appendChild(depCell);
@@ -149,14 +157,14 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
   if (config.concatenateArrivals 
       && !firstLine 
       && destination === previousDestination) {
-    previous.previousMessage += ` / ${message}`;
+    previous.previousDepInfo += ` / ${depInfo}`;
     if (previousRow) {
-      previousRow.getElementsByTagName('td')[2].innerHTML = previous.previousMessage;
+      previousRow.getElementsByTagName('td')[2].innerHTML = previous.previousDepInfo;
     }
     return null;
   } else {
     previous.previousRow = row;
-    previous.previousMessage = message;
+    previous.previousDepInfo = depInfo;
     previous.previousDestination = destination;
     return row;
   }
@@ -172,7 +180,7 @@ export const renderPublicTransport = (stopConfig: Object, stopIndex: string, sch
   const previous = {
     previousRow: null,
     previousDestination: null,
-    previousMessage: '',
+    previousDepInfo: '',
   };
   let firstLine = true;
   for (let comingIndex = 0; (comingIndex < config.maximumEntries) && (comingIndex < coming.length); comingIndex++) {
@@ -187,7 +195,7 @@ export const renderPublicTransport = (stopConfig: Object, stopIndex: string, sch
  * @returns HTML for public transport items (rows) via classical API (Grimaud v3)
  */
 export const renderPublicTransportLegacy = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
-  const stopIndex = createStopIndexFromStopConfig(stop);
+  const stopIndex = LegacyApi.createStopIndexFromStopConfig(stop);
 
   return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
 };

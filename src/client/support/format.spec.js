@@ -42,11 +42,20 @@ describe('toHoursMinutes function', () => {
 });
 
 describe('toWaitingTime function', () => {
+  it('should return 0 when arrival time has expired', () => {
+    // given
+    const now = new Date(2017, 6, 16, 23, 10, 0, 0);
+    // when
+    const actual = toWaitingTime('2017-07-16T21:08:00.000Z', now, {}); // GMT
+    // then
+    expect(actual).toEqual('0 {units.minutes}');
+  });
+
   it('should return duration in minutes when proper time given', () => {
     // given
-    const now = new Date(0, 0, 0, 22, 0, 0, 0);
+    const now = new Date(2017, 6, 16, 22, 0, 0, 0);
     // when
-    const actual = toWaitingTime('23:08', now, {});
+    const actual = toWaitingTime('2017-07-16T21:08:00.000Z', now, {}); // GMT
     // then
     expect(actual).toEqual('68 {units.minutes}');
   });
