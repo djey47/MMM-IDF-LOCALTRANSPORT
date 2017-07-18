@@ -24,6 +24,7 @@
     "expect": false,
     "jest": false,
     "beforeEach": false,
+    "beforeAll": false,
     // Following are MM2's symbols
     "Module": false,
     "Log": false

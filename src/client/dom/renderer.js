@@ -1,6 +1,6 @@
 /* @flow */
 
-import { formatDateFull, toWaitingTime, toHoursMinutes } from '../support/format';
+import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
 import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
 import LegacyApi  from '../../support/legacyApi';
@@ -67,7 +67,7 @@ export const renderHeader = (data: Object, config: Object): string => {
   }
 
   if (showLastUpdateTime) {
-    contents += (lastUpdate ? ` @ ${formatDateFull(lastUpdate)}` : '');
+    contents += (lastUpdate ? ` @ ${toHoursMinutesSeconds(lastUpdate)}` : '');
   }
 
   return contents;

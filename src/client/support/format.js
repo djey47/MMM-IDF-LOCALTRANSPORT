@@ -1,12 +1,12 @@
 /* @flow */
 
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { translate, MessageKeys } from '../../support/messages';
 
 /**
  * @returns time with format H:MM:SS from date
  */
-export const formatDateFull = (date?: Date) => {
+export const toHoursMinutesSeconds = (date?: Date) => {
   if (!date) return '';
 
   return moment(date).format('HH:mm:ss');

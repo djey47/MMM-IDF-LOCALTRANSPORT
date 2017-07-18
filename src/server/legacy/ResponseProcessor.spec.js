@@ -1,25 +1,27 @@
 /* @flow */
 
-import moment from 'moment';
+import moment from 'moment-timezone';
+import ResponseProcessor from './ResponseProcessor.js';
 
-const ResponseProcessor = require('./ResponseProcessor.js');
-
-ResponseProcessor.now = jest.fn(() => moment('2017-07-16T00:00:00.000Z'));
+beforeAll(() => {
+  moment.tz.setDefault('UTC');
+  ResponseProcessor.now = jest.fn(() => moment('2017-07-16T00:00:00.000Z'));
+});
 
 describe('dataToSchedule function', () => {
   const rerData = {
     result: {
       schedules: [{
         code: 'ZEUS',
-        message: '19:07',
+        message: '17:07',
         destination: 'St-Germain-en-Laye. Poissy. Cergy.',
       },{
         code: 'TEDU',
-        message: '19:10',
+        message: '17:10',
         destination: 'St-Germain-en-Laye. Poissy. Cergy.',
       },{
         code: 'ZEUS',
-        message: '19:17',
+        message: '17:17',
         destination: 'St-Germain-en-Laye. Poissy. Cergy.',
       }],
     },
@@ -36,7 +38,7 @@ describe('dataToSchedule function', () => {
     // then
     const expected = {
       id: 'A/Nation/A',
-      lastUpdate: new Date('2017-06-04T20:10:01.938Z'),
+      lastUpdate: '2017-07-16T00:00:00.000Z',
       schedules: [
         {
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
@@ -53,9 +55,7 @@ describe('dataToSchedule function', () => {
         },
       ],
     };
-    expect(actual.id).toEqual(expected.id);
-    expect(actual.lastUpdate).toBeTruthy();
-    expect(actual.schedules).toEqual(expected.schedules);
+    expect(actual).toEqual(expected);
   });
 
   it('should return empty object when incorrect data', () => {

@@ -1,4 +1,4 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
 const xmlToJson = require('../../support/xml.js');
 const { createIndexFromResponse } = require('../../support/transilien.js'); 
@@ -8,6 +8,13 @@ const { getAllStationInfo } = require('../../support/railwayRepository');
 const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm';
 
 const ResponseProcessor = {
+  /**
+   * @private
+   */
+  now: function() {
+    return moment();
+  },
+ 
   /**
    * @private
    */
@@ -49,7 +56,7 @@ const ResponseProcessor = {
 
     return {
       id: createIndexFromResponse(data),
-      lastUpdate: new Date(),
+      lastUpdate: ResponseProcessor.now().toDate(),
       schedules,
     };
   },

@@ -1,6 +1,12 @@
 /* @flow */
 
-const ResponseProcessor = require('./ResponseProcessor.js');
+import moment from 'moment-timezone';
+import ResponseProcessor from './ResponseProcessor.js';
+
+beforeAll(() => {
+  moment.tz.setDefault('UTC');
+  ResponseProcessor.now = jest.fn(() => moment('2017-06-20T12:45:23.968Z'));
+});
 
 describe('passagesToInfoQueries function', () => {
   it('should return empty array when incorrect data', () => {
@@ -93,22 +99,20 @@ describe('dataToSchedule function', () => {
     // then
     const expected = {
       id: 'gare/87382002/depart',
-      lastUpdate: new Date('2017-06-04T20:10:01.938Z'),
+      lastUpdate: moment('2017-06-20T12:45:23.968Z').toDate(),
       schedules: [
         {
           destination: 'Label for UIC 87384008(1)',
           status: 'POPI Retardé',
-          time: '2017-06-20T10:46:00.000Z',
+          time: '2017-06-20T12:46:00.000Z',
         },{
           destination: 'Label for UIC 87384008(2)',
           status: 'PEBU',
-          time: '2017-06-20T11:41:00.000Z',
+          time: '2017-06-20T13:41:00.000Z',
         },
       ],
     };
-    expect(actual.id).toEqual(expected.id);
-    expect(actual.lastUpdate).toBeTruthy();
-    expect(actual.schedules).toEqual(expected.schedules);
+    expect(actual).toEqual(expected);
   });
 
   it('should return empty object when incorrect data', () => {

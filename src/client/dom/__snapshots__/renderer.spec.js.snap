@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renderLocalTransport function should return correct HTML when no schedule 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">N/A</td><td class=\\"bright\\">N/A</td></tr>"`;
-
-exports[`renderLocalTransport function should return correct HTML when schedule 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">15:00</td></tr><tr><td class=\\"align-right bright\\"> </td><td class=\\"align-left\\">Place Charras</td><td class=\\"bright\\">15:05</td></tr>"`;
-
-exports[`renderLocalTransport function should return correct HTML when schedule and concatenate arrivals 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">Place Charras</td><td class=\\"bright\\">15:00</td></tr><tr><td class=\\"align-right bright\\"> </td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">15:15 / 15:30</td></tr>"`;
-
-exports[`renderLocalTransport function should return correct HTML when schedule and convert to waiting time 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">15 {units.minutes}</td></tr><tr><td class=\\"align-right bright\\"> </td><td class=\\"align-left\\">Place Charras</td><td class=\\"bright\\">30 {units.minutes}</td></tr>"`;
-
-exports[`renderLocalTransport function should return correct HTML when schedule and status info 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">STATUS</td><td class=\\"bright\\">15:00</td></tr>"`;
-
 exports[`renderNoInfoVelib function should return correct HTML for table cell when no label 1`] = `"<tr><td class=\\"bright\\">Stations no info yet</td></tr>"`;
 
 exports[`renderNoInfoVelib function should return correct HTML for table row when label 1`] = `"<tr><td class=\\"bright\\">Ulbach no info yet</td></tr>"`;
+
+exports[`renderPublicTransport function should return correct HTML when no schedule 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">N/A</td><td class=\\"bright\\">N/A</td></tr>"`;
+
+exports[`renderPublicTransport function should return correct HTML when schedule 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">13:00</td></tr><tr><td class=\\"align-right bright\\"> </td><td class=\\"align-left\\">Place Charras</td><td class=\\"bright\\">13:05</td></tr>"`;
+
+exports[`renderPublicTransport function should return correct HTML when schedule and concatenate arrivals 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">Place Charras</td><td class=\\"bright\\">13:00</td></tr><tr><td class=\\"align-right bright\\"> </td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">13:15 / 13:30</td></tr>"`;
+
+exports[`renderPublicTransport function should return correct HTML when schedule and convert to waiting time 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">15 {units.minutes}</td></tr><tr><td class=\\"align-right bright\\"> </td><td class=\\"align-left\\">Place Charras</td><td class=\\"bright\\">30 {units.minutes}</td></tr>"`;
+
+exports[`renderPublicTransport function should return correct HTML when schedule and status info 1`] = `"<tr><td class=\\"align-right bright\\">BUS,275</td><td class=\\"align-left\\">La Défense</td><td class=\\"bright\\">STATUS</td><td class=\\"bright\\">13:00</td></tr>"`;
 
 exports[`renderTraffic function should return correct HTML for table row 1`] = `"<tr><td class=\\"align-right bright\\">Ulbach Label</td><td class=\\"align-left\\" colspan=\\"2\\">fluide</td></tr>"`;
 

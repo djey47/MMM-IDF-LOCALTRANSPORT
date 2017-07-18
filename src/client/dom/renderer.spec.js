@@ -1,5 +1,6 @@
 /* @flow */
 
+import moment from 'moment-timezone';
 import {
   renderWrapper,
   renderHeader,
@@ -8,6 +9,10 @@ import {
   renderNoInfoVelib,
   renderVelib,
 } from './renderer.js';
+
+beforeAll(() => {
+  moment.tz.setDefault('UTC');
+});
 
 describe('renderWrapper function', () => {
   it('should return correct HTML when not loaded', () => {
@@ -82,8 +87,8 @@ describe('renderHeader function', () => {
   });
 });
 
-describe('renderLocalTransport function', () => {
-  const now = new Date('2017/05/30 14:45:00');
+describe('renderPublicTransport function', () => {
+  const now = moment('2017-05-30T12:45:00Z');
   const stop = {
     line: ['BUS', 275],
     station: 'Ulbach',
@@ -95,6 +100,37 @@ describe('renderLocalTransport function', () => {
     maximumEntries: 3,  
   };
 
+  // it('should return correct HTML when message to be translated', () => {
+  //   // given
+  //   const schedules = {
+  //     [stopIndex]: [{
+  //       message: '{status.approaching}',
+  //       time: '2017-07-16T13:00:00.000Z',
+  //       destination: 'La Défense',
+  //     },{
+  //       time: '2017-07-16T13:05:00.000Z',
+  //       destination: 'Place Charras',       
+  //     }],
+  //   };
+  //   const lastUpdate = {
+  //     [stopIndex]: '2017/05/30 15:00:00',
+  //   };
+  //   const config = {
+  //     maximumEntries: 2,
+  //     maxLettersForDestination: 256,
+  //     messages: {
+  //       status: {
+  //         approaching: 'A l`approche',
+  //       },
+  //     },
+  //   };
+  //   const now = new Date();
+  //   // when
+  //   const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
+  //   // then
+  //   expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
+  // });
+  
   it('should return correct HTML when schedule', () => {
     // given
     const schedules = {
@@ -109,7 +145,6 @@ describe('renderLocalTransport function', () => {
     const lastUpdate = {
       [stopIndex]: '2017/05/30 15:00:00',
     };
-    const now = new Date();
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig, now);
     // then
@@ -187,38 +222,6 @@ describe('renderLocalTransport function', () => {
     expect(actual.length).toEqual(2);
     expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
   });
-
-  // it('should return correct HTML when message to be translated', () => {
-  //   // given
-  //   const schedules = {
-  //     [stopIndex]: [{
-  //       message: '{status.approaching}',
-  //       time: '2017-07-16T13:00:00.000Z',
-  //       destination: 'La Défense',
-  //     },{
-  //       time: '2017-07-16T13:05:00.000Z',
-  //       destination: 'Place Charras',       
-  //     }],
-  //   };
-  //   const lastUpdate = {
-  //     [stopIndex]: '2017/05/30 15:00:00',
-  //   };
-  //   const config = {
-  //     maximumEntries: 2,
-  //     maxLettersForDestination: 256,
-  //     messages: {
-  //       status: {
-  //         approaching: 'A l`approche',
-  //       },
-  //     },
-  //   };
-  //   const now = new Date();
-  //   // when
-  //   const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
-  //   // then
-  //   expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
-  // });
-  
 
   it('should return correct HTML when no schedule', () => {
     // given

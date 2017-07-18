@@ -1,8 +1,11 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
 const { createIndexFromResponse } = require('../../support/legacyApi'); 
 
 const ResponseProcessor = {
+  /**
+   * @private
+   */
   now: function() {
     return moment();
   },
@@ -45,7 +48,7 @@ const ResponseProcessor = {
 
     return {
       id: createIndexFromResponse(data),
-      lastUpdate: new Date(),
+      lastUpdate: ResponseProcessor.now().toISOString(),
       schedules,
     };
   },
