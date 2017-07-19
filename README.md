@@ -55,41 +55,38 @@ A module to display:
 * `debug`: false, //console.log more things to help debugging
 * `stations`: [] // stations/directions to monitor (bus, RERs, tramways and subways), as an array of objects with different properties (see example below):
   - `type`: Mandatory: Possible values: `['bus', 'rers', 'tramways', 'velib', 'traffic', 'transiliens']`
-  - `line`: Mandatory for 'bus', 'rers', 'tramways' and 'transiliens': Value such as:[28, 'B'] -> typically the official name but you can check through:
-    - bus-metros-rers-tramways: https://api-ratp.pierre-grimaud.fr/v3/lines/bus, https://api-ratp.pierre-grimaud.fr/v3/lines/rers, https://api-ratp.pierre-grimaud.fr/v3/lines/tramways, https://api-ratp.pierre-grimaud.fr/v3/lines/metros
-    - traffic: https://api-ratp.pierre-grimaud.fr/v3/traffic set the line as: [type, line], such as: ['metros', 6], ['rers', 'A']...
-    - transiliens: navitia [line](http://doc.navitia.io/#autocomplete-on-public-transport-objects) identifier.
+  - `line`: Mandatory for 'bus', 'rers', and 'tramways': typically the official name but you can check through:
+    - 'bus-metros-rers-tramways': https://api-ratp.pierre-grimaud.fr/v3/lines/bus, https://api-ratp.pierre-grimaud.fr/v3/lines/rers, https://api-ratp.pierre-grimaud.fr/v3/lines/tramways, https://api-ratp.pierre-grimaud.fr/v3/lines/metros
+    - traffic: https://api-ratp.pierre-grimaud.fr/v3/traffic, set the line as: [type, line], such as: ['metros', 6], ['rers', 'A']...
+    - not used for 'transiliens'.
   - `station`: Mandatory: [name of the station] ->
-    - for bus/rers/tramways/metros, https://api-ratp.pierre-grimaud.fr/v3/stations/{type}/{line}
-    - for velib, you can search here: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/
-    - for transiliens, navitia [stop_area](http://doc.navitia.io/#autocomplete-on-public-transport-objects) identifier, 
+    - for 'bus-rers-tramways-metros', https://api-ratp.pierre-grimaud.fr/v3/stations/{type}/{line}
+    - for 'velib', you can search here: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/
+    - for 'transiliens', https://ressources.data.sncf.com/explore/dataset/referentiel-gares-voyageurs/?sort=intitule_gare
     - not required for traffic.
   - `destination`: 
     - Mandatory for 'metros', 'bus', 'rers' & tramways: either 'A' or 'R'
     - Optional for 'velib': ['leaving', 'arriving', '']: indicate if only one value is needed //not in use yet
-    - not required for traffic and transiliens.
-  - `label`: Optional: to rename the line differently if needed
+    - Optional for 'transiliens': not handled yet (see station repository above)
+    - not required for 'traffic'.
+  - `label`: Optional, to rename the line differently if needed.
 * `conversion`: object of key/ values to convert traffic message. Those message can be very long, and it might worth to convert them in a simpler text. by default:
   - `conversion: {"Trafic normal sur l'ensemble de la ligne." : "Traffic normal"}`
   - don't hesitate to add more when there's works on a specific line or others...
 * `navitiaToken`: '00000000-0000-0000-000000000000' // Mandatory to access navitia.io API (account required)
-* `messages`: see example below // key-values to convert generic messages to your preferred language
+* `messages`: key-values to convert generic messages to your preferred language. See example below. 
 
 Example:
 ```javascript
 stations: [
-  {type: 'bus', line: 38, station: 2758, destination: 183, label: 'bus vers le Nord'},
   {type: 'bus', line: 38, station: 'observatoire+++port+royal', destination: 'A'},
-  {type: 'rers', line: 'B', station: 62, destination: 4},
   {type: 'rers', line: 'B', station: 'port+royal', destination: 'A'},
   {type: 'traffic', line: ['rers', 'B']},
   {type: 'traffic', line: ['tramways', 1], label: 'T1'}, //label to avoid confusion with metros line 1
-  {type: 'tramways', line: '3a', station: 464, destination: 41},	
   {type: 'tramways', line: '3a', station: 'georges+brassens', destination: 'R'},
-  {type: 'metros', line: '6', station: 145, destination: 17},	
   {type: 'metros', line: '6', station: 'raspail', destination: 'A'},
   {type: 'velib', station: 5029, destination: 'leaving', label: 'RER'},
-  {type: 'transiliens', station: 'OIF:SA:8738200', line: 'OIF:800:LOIF742', label: 'Becon L'},
+  {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L'},
 ],
 messages: {
   status: {
