@@ -20,7 +20,7 @@ const LegacyApi = {
    * @returns index for results storage (server side)
    */
   createIndexFromResponse: function (responseData) {
-    return responseData._metadata.call.split('/').slice(-3).join('/');
+    return responseData._metadata.call.split('/').slice(-3).join('/').toLowerCase();
   },
   
   /**
@@ -28,7 +28,7 @@ const LegacyApi = {
   */
   createStopIndexFromStopConfig: function(stopConfig) {
     const { line, station, destination } = stopConfig;
-    return `${line.toString().toLowerCase()}/${station}/${destination || ''}`;
+    return `${line.toString()}/${station}/${destination || ''}`.toLowerCase();
   },
 };
 

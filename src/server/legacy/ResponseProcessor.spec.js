@@ -37,7 +37,7 @@ describe('dataToSchedule function', () => {
     const actual = ResponseProcessor.dataToSchedule(rerData);
     // then
     const expected = {
-      id: 'A/Nation/A',
+      id: 'a/nation/a',
       lastUpdate: '2017-07-16T00:00:00.000Z',
       schedules: [
         {

@@ -2,6 +2,7 @@ const axios = require('axios');
 const NavitiaResponseProcessor = require('./navitia/ResponseProcessor.js');
 const TransilienResponseProcessor = require('./transilien/ResponseProcessor.js');
 const LegacyResponseProcessor = require('./legacy/ResponseProcessor.js');
+const TrafficResponseProcessor = require('./traffic/ResponseProcessor.js');
 const { getTransilienDepartUrl } = require ('../support/transilien');
 const { getNavitiaStopSchedulesUrl } = require ('../support/navitia');
 const {
@@ -11,7 +12,6 @@ const {
 } = require ('../support/legacyApi');
 const {
   NOTIF_UPDATE,
-  NOTIF_TRAFFIC,
   NOTIF_VELIB,
   NOTIF_SET_CONFIG,
 } = require('../support/notifications.js');
@@ -163,7 +163,7 @@ module.exports = {
         case 'traffic':
           this.getResponse(
             getTrafficUrl(apiBaseV3, stopConfig),
-            this.processTraffic);
+            TrafficResponseProcessor.processTraffic);
           break;
         case 'transiliensNavitia':
           this.getResponse(
@@ -197,22 +197,5 @@ module.exports = {
       loaded: true,
     };
     context.sendSocketNotification(NOTIF_VELIB, velibInfo);
-  },
-
-  processTraffic: (data, context) => {
-    if (context.config.debug) {
-      console.log('response receive: ');
-      console.log(data.result); //line, title, message
-      console.log('___');
-    }
-
-    const id = data._metadata.call.split('/').slice(-3).join('/').toLowerCase();
-    const result = {};
-    Object.assign(result, data.result, {
-      id,
-      lastUpdate: new Date(),
-      loaded: true,
-    });
-    context.sendSocketNotification(NOTIF_TRAFFIC, result);
   },
 };
