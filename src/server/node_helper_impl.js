@@ -3,6 +3,7 @@ const NavitiaResponseProcessor = require('./navitia/ResponseProcessor.js');
 const TransilienResponseProcessor = require('./transilien/ResponseProcessor.js');
 const LegacyResponseProcessor = require('./legacy/ResponseProcessor.js');
 const TrafficResponseProcessor = require('./traffic/ResponseProcessor.js');
+const VelibResponseProcessor = require('./velib/ResponseProcessor.js');
 const { getTransilienDepartUrl } = require ('../support/transilien');
 const { getNavitiaStopSchedulesUrl } = require ('../support/navitia');
 const {
@@ -12,7 +13,6 @@ const {
 } = require ('../support/legacyApi');
 const {
   NOTIF_UPDATE,
-  NOTIF_VELIB,
   NOTIF_SET_CONFIG,
 } = require('../support/notifications.js');
 
@@ -158,7 +158,7 @@ module.exports = {
         case 'velib':
           this.getResponse(
             getVelibUrl(apiVelib, stopConfig),
-            this.processVelib);
+            VelibResponseProcessor.processVelib);
           break;
         case 'traffic':
           this.getResponse(
@@ -183,19 +183,5 @@ module.exports = {
           if (debug) console.log(` *** unknown request: ${type}`);
       }
     });
-  },
-
-  processVelib: (data, context) => {
-    const { number, name, bike_stands, available_bike_stands, available_bikes, last_update } = data.records[0].fields;
-    const velibInfo = {
-      id: number,
-      name,
-      total: bike_stands,
-      empty: available_bike_stands,
-      bike: available_bikes,
-      last_update: last_update,
-      loaded: true,
-    };
-    context.sendSocketNotification(NOTIF_VELIB, velibInfo);
   },
 };

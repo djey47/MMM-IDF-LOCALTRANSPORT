@@ -4,6 +4,7 @@ import NodeHelper from './node_helper_impl.js';
 import LegacyResponseProcessor from './legacy/ResponseProcessor';
 import TrafficResponseProcessor from './traffic/ResponseProcessor';
 import TransilienResponseProcessor from './transilien/ResponseProcessor';
+import VelibResponseProcessor from './velib/ResponseProcessor';
 
 const scheduleUpdate = NodeHelper.scheduleUpdate;
 const scheduleUpdateMock = jest.fn();
@@ -123,7 +124,7 @@ describe('updateTimetable function', () => {
     // then
     expect(sendSocketNotificationMock).toHaveBeenCalled();
     expect(getResponseMock).toHaveBeenCalledTimes(4);
-    expect(getResponseMock).toHaveBeenCalledWith('http://apiVelib/search?ds=stations&q=2099', NodeHelper.processVelib);
+    expect(getResponseMock).toHaveBeenCalledWith('http://apiVelib/search?ds=stations&q=2099', VelibResponseProcessor.processVelib);
     expect(getResponseMock).toHaveBeenCalledWith('http://api/traffic/tramways/1', TrafficResponseProcessor.processTraffic);
     expect(getResponseMock).toHaveBeenCalledWith('http://api/schedules/bus/275/Ulbach/A', LegacyResponseProcessor.processTransport);
     expect(getResponseMock).toHaveBeenCalledWith('http://apiTransilien/gare/87382002/depart', TransilienResponseProcessor.processTransportTransilien, 'token');
@@ -166,41 +167,5 @@ describe('handleApiResponse function', () => {
     // then
     expect(processFunctionMock).toHaveBeenCalled();
     expect(scheduleUpdateMock).toHaveBeenCalledWith(5000);
-  });
-});
-
-describe('processVelib function', () => {
-  it('should send notification with correct values', () => {
-    // given
-    const fields = {
-      status: 'OPEN',
-      contract_name: 'Paris',
-      name: '14111 - DENFERT-ROCHEREAU CASSINI',
-      bonus: 'False',
-      bike_stands: 24,
-      number: 14111,
-      last_update: '2017-04-15T12:14:25+00:00',
-      available_bike_stands: 24,
-      banking: 'True',
-      available_bikes: 0,
-      address: '18 RUE CASSINI - 75014 PARIS',
-      position: [48.8375492922, 2.33598303047],
-    };    
-    const data = {
-      records: [ { fields } ],
-    };
-    // when
-    NodeHelper.processVelib(data, NodeHelper);
-    // then
-    const expected = {
-      bike: 0,
-      empty: 24,
-      id: 14111,
-      last_update: '2017-04-15T12:14:25+00:00',
-      loaded: true,
-      name: '14111 - DENFERT-ROCHEREAU CASSINI',
-      total: 24,
-    };    
-    expect(sendSocketNotificationMock).toHaveBeenCalledWith('VELIB', expected);
   });
 });
