@@ -31,6 +31,28 @@ describe('dataToSchedule function', () => {
       version: 3,
     },    
   };
+  const metroData = {
+    result: {
+      schedules: [{
+        message: 'Train retarde',
+        destination: 'Pont de Levallois Bécon',
+      }, {
+        message: '4 mn',
+        destination: 'Pont de Levallois Bécon',
+      }, {
+        message: '7 mn',
+        destination: 'Pont de Levallois Bécon',
+      }, {
+        message: '9 mn',
+        destination: 'Pont de Levallois Bécon',
+      }],
+    },
+    '_metadata': {
+      call: 'GET /schedules/metros/3/Pereire/A',
+      date: '2017-07-21T13:49:30+02:00',
+      version: 3,
+    },
+  };
 
   it('should convert data correctly for RERs', () => {
     // given-when
@@ -52,6 +74,36 @@ describe('dataToSchedule function', () => {
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
           time: '2017-07-16T17:17:00.000Z',
           status: 'ZEUS',
+        },
+      ],
+    };
+    expect(actual).toEqual(expected);
+  });
+
+  it('should convert data correctly for metros', () => {
+    // given-when
+    const actual = ResponseProcessor.dataToSchedule(metroData);
+    // then
+    const expected = {
+      id: '3/pereire/a',
+      lastUpdate: '2017-07-16T00:00:00.000Z',
+      schedules: [
+        {
+          destination: 'Pont de Levallois Bécon',
+          time: null,
+          status: undefined,
+        },{
+          destination: 'Pont de Levallois Bécon',
+          time: '2017-07-16T00:04:00.000Z',
+          status: undefined,
+        },{
+          destination: 'Pont de Levallois Bécon',
+          time: '2017-07-16T00:07:00.000Z',
+          status: undefined,
+        },{
+          destination: 'Pont de Levallois Bécon',
+          time: '2017-07-16T00:09:00.000Z',
+          status: undefined,
         },
       ],
     };
