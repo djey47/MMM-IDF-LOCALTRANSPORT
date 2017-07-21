@@ -195,7 +195,7 @@ export const renderPublicTransport = (stopConfig: Object, stopIndex: string, sch
  * @returns HTML for public transport items (rows) via classical API (Grimaud v3)
  */
 export const renderPublicTransportLegacy = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
-  const stopIndex = LegacyApi.createStopIndexFromStopConfig(stop);
+  const stopIndex = LegacyApi.createIndexFromStopConfig(stop);
 
   return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
 };
