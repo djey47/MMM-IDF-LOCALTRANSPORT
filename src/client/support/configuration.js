@@ -69,10 +69,15 @@ export function handleStationInfoResponse(responses: Array<Object>, sendSocketNo
       destination: destinationInfo ? destinationInfo.code_uic : null,
     };
 
-    if (debug) {
-      console.log('** Resolved UIC codes:');
-      console.log(configuration.stations[index].uic);
-    }      
+    // TODO use MM2 logger (available in client context ?)
+    const { station, destination, uic } = configuration.stations[index];
+    if (uic) {
+      console.log('** MMM-IDF-STIF-NAVITIA: Configuration resolved UIC codes:');
+      console.log(`station: ${station || '/'} => ${uic.station || '/'} , destination: ${destination || '/'} => ${uic.destination || '/'}`);
+    } else {
+      console.error('** MMM-IDF-STIF-NAVITIA: Configuration resolved no UIC codes:');      
+      console.error(`station: ${station || '/'}, destination: ${destination || '/'}`);
+    }
   });
 
   sendSocketNotification(NOTIF_SET_CONFIG, configuration);
