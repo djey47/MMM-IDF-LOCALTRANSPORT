@@ -25,6 +25,17 @@ describe('createIndexFromResponse function', () => {
 });
 
 describe('createIndexFromStopConfig function', () => {
+  it('should return null when no UIC codes resolved', () => {
+    // given
+    const stopConfig = {
+      station: 'Becon', 
+    };
+    // when
+    const actual = createIndexFromStopConfig(stopConfig);
+    // then
+    expect(actual).toBeNull();
+  });
+
   it('should return correct index', () => {
     // given
     const stopConfig = {

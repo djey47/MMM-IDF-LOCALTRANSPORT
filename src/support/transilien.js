@@ -12,7 +12,10 @@ const Transilien = {
    * @returns index for results access (client side)
    */
   createIndexFromStopConfig: function (stopConfig) {
-    const { uic: { station }} = stopConfig;
+    const { uic } = stopConfig;
+    if (!uic) return null;
+
+    const { station } = uic;
     return `gare/${station}/depart`;
   },
 
