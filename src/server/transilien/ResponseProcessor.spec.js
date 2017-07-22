@@ -92,10 +92,20 @@ describe('dataToSchedule function', () => {
       libelle: 'Label for UIC 87384008(2)',
     },
   }];
+  const stopConfig = {
+    type: 'transiliens',
+    station: 'becon',
+    destination: 'paris saint lazare',
+    uic: {
+      station: '87382002',
+      destination: '87384008',
+    },
+    label: 'Becon L (trans)',
+  };
 
   it('should convert data correctly', () => {
     // given-when
-    const actual = ResponseProcessor.dataToSchedule(data, stationInfos);
+    const actual = ResponseProcessor.dataToSchedule(data, stopConfig, stationInfos);
     // then
     const expected = {
       id: 'gare/87382002/depart',
@@ -115,9 +125,35 @@ describe('dataToSchedule function', () => {
     expect(actual).toEqual(expected);
   });
 
+  it('should return all schedules with given destination', () => {
+    // given-when
+    const actual = ResponseProcessor.dataToSchedule(data, stopConfig, stationInfos);
+    // then
+    expect(actual.schedules.length).toEqual(2);
+  });
+
+  it('should return no schedule with given destination', () => {
+    // given
+    const stopConfigFiltered = {
+      type: 'transiliens',
+      station: 'becon',
+      destination: 'nanterre prefecture',
+      uic: {
+        station: '87382002',
+        destination: '87386318',
+      },
+      label: 'Becon L (trans)',
+    };
+
+    // when
+    const actual = ResponseProcessor.dataToSchedule(data, stopConfigFiltered, stationInfos);
+    // then
+    expect(actual.schedules.length).toEqual(0);
+  });
+  
   it('should return empty object when incorrect data', () => {
     // given-when
-    const actual = ResponseProcessor.dataToSchedule({ foo: {}}, []);
+    const actual = ResponseProcessor.dataToSchedule({ foo: {}}, {}, []);
     // then
     expect(actual).toEqual({});
   });

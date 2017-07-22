@@ -119,15 +119,30 @@ describe('updateTimetable function', () => {
         },
       }],
     };
+    const transilienStopConfig = NodeHelper.config.stations[4];
     // when
     NodeHelper.updateTimetable();
     // then
     expect(sendSocketNotificationMock).toHaveBeenCalled();
     expect(getResponseMock).toHaveBeenCalledTimes(4);
-    expect(getResponseMock).toHaveBeenCalledWith('http://apiVelib/search?ds=stations&q=2099', VelibResponseProcessor.processVelib);
-    expect(getResponseMock).toHaveBeenCalledWith('http://api/traffic/tramways/1', TrafficResponseProcessor.processTraffic);
-    expect(getResponseMock).toHaveBeenCalledWith('http://api/schedules/bus/275/Ulbach/A', LegacyResponseProcessor.processTransport);
-    expect(getResponseMock).toHaveBeenCalledWith('http://apiTransilien/gare/87382002/depart', TransilienResponseProcessor.processTransportTransilien, 'token');
+    expect(getResponseMock).toHaveBeenCalledWith(
+      'http://apiVelib/search?ds=stations&q=2099',
+      VelibResponseProcessor.processVelib,
+    );
+    expect(getResponseMock).toHaveBeenCalledWith(
+      'http://api/traffic/tramways/1',
+      TrafficResponseProcessor.processTraffic,
+    );
+    expect(getResponseMock).toHaveBeenCalledWith(
+      'http://api/schedules/bus/275/Ulbach/A',
+      LegacyResponseProcessor.processTransport,
+    );
+    expect(getResponseMock).toHaveBeenCalledWith(
+      'http://apiTransilien/gare/87382002/depart',
+      TransilienResponseProcessor.processTransportTransilien,
+      'token',
+      transilienStopConfig,
+    );
   });
 });
 

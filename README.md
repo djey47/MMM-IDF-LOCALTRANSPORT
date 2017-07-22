@@ -63,12 +63,12 @@ A module to display:
     - for 'bus-rers-tramways-metros', https://api-ratp.pierre-grimaud.fr/v3/stations/{type}/{line}
     - for 'velib', you can search here: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/
     - for 'transiliens', https://ressources.data.sncf.com/explore/dataset/referentiel-gares-voyageurs/?sort=intitule_gare
-    - not required for traffic.
+    - not used for 'traffic'.
   - `destination`: 
-    - Mandatory for 'metros', 'bus', 'rers' & tramways: either 'A' or 'R'
+    - Mandatory for 'metros', 'bus', 'rers' & 'tramways': either 'A' or 'R'
     - Optional for 'velib': ['leaving', 'arriving', '']: indicate if only one value is needed //not in use yet
-    - Optional for 'transiliens': not handled yet (see station repository above)
-    - not required for 'traffic'.
+    - Optional for 'transiliens': shows train matching this destination only (see station repository above)
+    - not used for 'traffic'.
   - `label`: Optional, to rename the line differently if needed.
 * `conversion`: object of key/ values to convert traffic message. Those message can be very long, and it might worth to convert them in a simpler text. by default:
   - `conversion: {"Trafic normal sur l'ensemble de la ligne." : "Traffic normal"}`
@@ -86,7 +86,7 @@ stations: [
   {type: 'tramways', line: '3a', station: 'georges+brassens', destination: 'R'},
   {type: 'metros', line: '6', station: 'raspail', destination: 'A'},
   {type: 'velib', station: 5029, destination: 'leaving', label: 'RER'},
-  {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L'},
+  {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L', destination: 'NANTERRE UNIVERSITE'},
 ],
 messages: {
   status: {

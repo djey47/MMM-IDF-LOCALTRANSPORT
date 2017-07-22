@@ -72,9 +72,10 @@ module.exports = {
    * @param url requested URL
    * @param processFunction callback to send extracted data to
    * @param response API response
+   * @param stopConfig associated stop configuration
    * @private
    */
-  handleAPIResponse: function(url, processFunction, response) {
+  handleAPIResponse: function(url, processFunction, response, stopConfig) {
     const { debug } = this.config;
     if (response && response.data) {
       const { data } = response;
@@ -82,9 +83,10 @@ module.exports = {
       if (debug) {
         console.log (` *** received answer for: ${url}`);
         console.log (data);
+        console.log (stopConfig);
       }
 
-      processFunction(data, this);
+      processFunction(data, this, stopConfig);
     } else {
 
       if (debug) {
@@ -118,7 +120,7 @@ module.exports = {
    * @param authToken (optional) authentication token
    * @private
    */
-  getResponse: function(url, processFunction, authToken = '') {
+  getResponse: function(url, processFunction, authToken = '', stopConfig) {
     const { debug } = this.config.debug;
     const config = {
       headers: {
@@ -130,7 +132,7 @@ module.exports = {
     if (debug) console.log (` *** fetching: ${url}`);
 
     axios.get(url, config)
-      .then((response => this.handleAPIResponse(url, processFunction, response)).bind(this))
+      .then((response => this.handleAPIResponse(url, processFunction, response, stopConfig)).bind(this))
       .catch((error => this.handleAPIError(error)).bind(this));
   },
 
@@ -177,6 +179,7 @@ module.exports = {
             getTransilienDepartUrl(apiTransilien, stopConfig),
             TransilienResponseProcessor.processTransportTransilien,
             transilienToken,
+            stopConfig,
           );
           break;        
         default:

@@ -4,7 +4,6 @@ const xmlToJson = require('../../support/xml.js');
 const { createIndexFromResponse } = require('../../support/transilien.js'); 
 const { getAllStationInfo } = require('../../support/railwayRepository');
 
-
 const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm';
 
 const ResponseProcessor = {
@@ -40,19 +39,27 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  dataToSchedule: function(data, stationInfos) {
+  dataToSchedule: function(data, stopConfig, stationInfos) {
     if (!data.passages) return {};
 
-    const {passages: {train}} = data;    
+    const { uic: { destination } } = stopConfig;
+    const { passages: {train} } = data;    
     const schedules = train
       .map((t, index) => {
-        const { date: {_} } = t;
-        return {
-          destination: stationInfos[index].stationInfo.libelle,
-          status: ResponseProcessor.getStatus(t),
-          time: moment(_, DATE_TIME_FORMAT).toISOString(),
-        };
-      });
+        const { date: {_}, term } = t;
+        if (!destination || term === destination) {
+          // Accept train matching wanted destination, if specified
+          return {
+            destination: stationInfos[index].stationInfo.libelle,
+            status: ResponseProcessor.getStatus(t),
+            time: moment(_, DATE_TIME_FORMAT).toISOString(),
+          };        
+        }
+
+        // Reject train not matching wanted destination
+        return null;
+      })
+      .filter(schedule => !!schedule);
 
     return {
       id: createIndexFromResponse(data),
@@ -64,10 +71,11 @@ const ResponseProcessor = {
   /**
    * Handles Transilien realtime response
    * 
-   * @param {any} xmlData 
-   * @param {any} context 
+   * @param {string} xmlData data received from Transilien XML API
+   * @param {Object} context whole module context
+   * @param {Object} stopConfig associated stop configuration
    */
-  processTransportTransilien: function(xmlData, context) {
+  processTransportTransilien: function(xmlData, context, stopConfig) {
     const { config, config: { debug } } = context;
     const data = xmlToJson(xmlData);
 
@@ -81,7 +89,7 @@ const ResponseProcessor = {
     getAllStationInfo(ResponseProcessor.passagesToInfoQueries(data.passages), config)
       .then(stationInfos => {
         context.loaded = true;
-        context.sendSocketNotification(NOTIF_TRANSPORT, ResponseProcessor.dataToSchedule(data, stationInfos));
+        context.sendSocketNotification(NOTIF_TRANSPORT, ResponseProcessor.dataToSchedule(data, stopConfig, stationInfos));
       })
       .catch(error => console.error(error));
   },
