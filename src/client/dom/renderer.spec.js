@@ -130,7 +130,23 @@ describe('renderPublicTransport function', () => {
   //   // then
   //   expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
   // });
-  
+
+  it('should return correct HTML when no schedule', () => {
+    // given
+    const stop = {
+      line: ['BUS', 275],
+      station: '',
+    };
+    const schedules = {};
+    const config = {
+      maximumEntries: 1,
+    };
+    // when
+    const actual = renderPublicTransport(stop, stopIndex, schedules, {}, config, now);
+    // then
+    expect(actual[0].outerHTML).toMatchSnapshot();    
+  });
+
   it('should return correct HTML when schedule', () => {
     // given
     const schedules = {
@@ -223,21 +239,60 @@ describe('renderPublicTransport function', () => {
     expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
   });
 
-  it('should return correct HTML when no schedule', () => {
+  it('should return correct HTML when schedules and concatenate arrivals for transilien', () => {
     // given
-    const stop = {
-      line: ['BUS', 275],
-      station: '',
+    const stopIndexTransilien = 'gare/87382002/depart';
+    const stopConfigTransilien = {
+      type: 'transiliens',
+      label: 'Becon',
+      station: 'Becon Les Bruyeres',
+      destination: 'Saint Nom La breteche',
+      uic: {
+        station: '87382002',
+        destination: '87382481',
+      },
     };
-    const schedules = {};
+    const schedulesTransilien = {
+      [stopIndexTransilien]: [{
+        destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
+        status: 'SEBU',
+        time: '2017-07-26T11:20:00.000Z',
+      },
+      {
+        destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
+        status: 'SEBU',
+        time: '2017-07-26T11:35:00.000Z',
+      },
+      {
+        destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
+        status: 'SEBU',
+        time: '2017-07-26T11:50:00.000Z',
+      },
+      {
+        destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
+        status: 'SEBU',
+        time: '2017-07-26T12:05:00.000Z',
+      },
+      {
+        destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
+        status: 'SEBU',
+        time: '2017-07-26T12:20:00.000Z',
+      }],
+    };
+    const lastUpdateTransilien = {
+      [stopIndexTransilien]: '2017-07-26 13:17:00',
+    };
     const config = {
-      maximumEntries: 1,
+      ...baseConfig,
+      concatenateArrivals: true,
     };
     // when
-    const actual = renderPublicTransport(stop, stopIndex, schedules, {}, config, now);
+    const actual = renderPublicTransport(stopConfigTransilien, stopIndexTransilien, schedulesTransilien, lastUpdateTransilien, config, now);
     // then
+    expect(actual.length).toEqual(1);
     expect(actual[0].outerHTML).toMatchSnapshot();    
   });
+
 });
 
 describe('renderTraffic function', () => {

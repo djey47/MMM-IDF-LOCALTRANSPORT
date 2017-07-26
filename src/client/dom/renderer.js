@@ -5,6 +5,8 @@ import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
 import LegacyApi  from '../../support/legacyApi';
 
+// TODO use method to return current date (to enable mocking)
+
 type Stop = {
   line: (number|string)[],
   label?: string,
@@ -101,7 +103,10 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
  * @private
  */
 const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: Object, now: Date): ?any => {
+  const INDEX_STATUS = 3;
   const { line, label } = stop;
+  const { messages, concatenateArrivals, convertToWaitingTime, maxLettersForDestination, maxLettersForTime, oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity } = config;
+
   const row = document.createElement('tr');
 
   const nameCell = document.createElement('td');
@@ -121,45 +126,41 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
     time,
   } = comingTransport ;
   const destinationCell = document.createElement('td');
-  destinationCell.innerHTML = destination.substr(0, config.maxLettersForDestination);
+  destinationCell.innerHTML = destination.substr(0, maxLettersForDestination);
   destinationCell.className = 'align-left';
   row.appendChild(destinationCell);
 
   // TODO Limit status label length?
-  if (status) {
-    const statCell = document.createElement('td');
-    statCell.className = 'bright';
-    statCell.innerHTML = status;
-    row.appendChild(statCell);
-  }
+  const statCell = document.createElement('td');
+  statCell.className = 'bright';
+  statCell.innerHTML = status || '';
+  row.appendChild(statCell);
 
-  // TODO handle approaching status...
+  // TODO handle approaching/at platform/... status
   const depCell = document.createElement('td');
-  const { messages } = config;
   depCell.className = 'bright';  
   let depInfo;
   if (!time) {
     depInfo = UNAVAILABLE;
-  } else if (config.convertToWaitingTime) {
+  } else if (convertToWaitingTime) {
     depInfo = toWaitingTime(time, now, messages);
   } else {
     depInfo = toHoursMinutes(time);
   }
-  depCell.innerHTML = depInfo.substr(0, config.maxLettersForTime);
+  depCell.innerHTML = depInfo.substr(0, maxLettersForTime);
   row.appendChild(depCell);
 
-  const {oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity} = config;
   if ((now - Date.parse(comingLastUpdate)) > (oldUpdateThreshold ? oldUpdateThreshold : (updateInterval * (1 + oldThreshold)) )) {
     destinationCell.style.opacity = depCell.style.opacity = oldUpdateOpacity;
   }
 
   const { previousDestination, previousRow } = previous;
-  if (config.concatenateArrivals 
+  if (concatenateArrivals 
       && !firstLine 
       && destination === previousDestination) {
     previous.previousDepInfo += ` / ${depInfo}`;
     if (previousRow) {
-      previousRow.getElementsByTagName('td')[2].innerHTML = previous.previousDepInfo;
+      previousRow.getElementsByTagName('td')[INDEX_STATUS].innerHTML = previous.previousDepInfo;
     }
     return null;
   } else {
@@ -265,19 +266,20 @@ export const renderSimpleInfoVelib = (stop: Stop, station: VelibStation): any =>
  */
 export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHistory: Object, config: Object, now: Date): any => {
   const { name, bike, empty } = station;
+  const { velibTrendWidth, velibTrendHeight, velibTrendTimeScale, velibTrendZoom, velibTrendDay } = config;
   const rowTrend = document.createElement('tr');
   const cellTrend = document.createElement('td');
 
   const trendGraph = document.createElement('canvas');
   trendGraph.className = 'velibTrendGraph';
-  trendGraph.width  = config.velibTrendWidth || 400;
-  trendGraph.height = config.velibTrendHeight || 100;
+  trendGraph.width  = velibTrendWidth || 400;
+  trendGraph.height = velibTrendHeight || 100;
 
-  const timeScale = config.velibTrendDay ? 24 * 60 * 60 : config.velibTrendTimeScale || 60 * 60; // in nb of seconds, the previous hour
+  const timeScale = velibTrendDay ? 24 * 60 * 60 : velibTrendTimeScale || 60 * 60; // in nb of seconds, the previous hour
   // $FlowFixMe
   trendGraph.timeScale = timeScale;
 
-  const velibTrendZoom = config.velibTrendZoom || 30 * 60; //default zoom windows is 30 minutes for velibTrendDay
+  const effectiveZoom = velibTrendZoom || 30 * 60; //default zoom windows is 30 minutes for velibTrendDay
   const ctx = trendGraph.getContext('2d');
   if (!ctx) { return rowTrend; }
 
@@ -293,13 +295,13 @@ export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHis
       if (dataTimeStamp - timeScale < 10 * 60) { //takes it only if it is within 10 minutes of the closing windows
         dataTimeStamp = Math.min(dataTimeStamp, timeScale); //to be sure it does not exit the graph
         let x, y;
-        if (config.velibTrendDay) {
-          if ( dataTimeStamp  < velibTrendZoom ) { //1st third in zoom mode
-            x = (1 - dataTimeStamp / velibTrendZoom / 3) * width;
-          } else if (dataTimeStamp < timeScale - velibTrendZoom) { //middle in compressed mode
-            x = (2 / 3 - (dataTimeStamp - velibTrendZoom) / (timeScale - 2 * velibTrendZoom)/ 3) * width;
+        if (velibTrendDay) {
+          if ( dataTimeStamp  < effectiveZoom ) { //1st third in zoom mode
+            x = (1 - dataTimeStamp / effectiveZoom / 3) * width;
+          } else if (dataTimeStamp < timeScale - effectiveZoom) { //middle in compressed mode
+            x = (2 / 3 - (dataTimeStamp - effectiveZoom) / (timeScale - 2 * effectiveZoom)/ 3) * width;
           } else {
-            x = (1 / 3 - (dataTimeStamp - timeScale + velibTrendZoom)/ velibTrendZoom / 3) * width;
+            x = (1 / 3 - (dataTimeStamp - timeScale + effectiveZoom)/ effectiveZoom / 3) * width;
           }
         } else {
           x = (1 - dataTimeStamp / timeScale) * width;
@@ -318,10 +320,10 @@ export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHis
   ctx.textAlign = 'left';
   ctx.fillText(bike.toString(), 10, height - 10);
   ctx.fillText(empty.toString(), 10, Math.round(height / 5) + 10);
-  if (config.velibTrendDay) {
+  if (velibTrendDay) {
     ctx.font = Math.round(height / 10) + 'px ' + ctx.font.split(' ').slice(-1)[0];
-    ctx.fillText(Math.round(velibTrendZoom / 60) + 'mn', width * 5 / 6, height / 2);
-    ctx.fillText(Math.round(velibTrendZoom / 60) + 'mn', width / 6, height / 2);
+    ctx.fillText(Math.round(effectiveZoom / 60) + 'mn', width * 5 / 6, height / 2);
+    ctx.fillText(Math.round(effectiveZoom / 60) + 'mn', width / 6, height / 2);
     ctx.strokeStyle = 'grey';
     ctx.setLineDash([5, 15]);
     ctx.beginPath();
@@ -333,8 +335,8 @@ export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHis
     ctx.stroke();
     var hourMark = new Date(); var alpha;
     hourMark.setMinutes(0); hourMark.setSeconds(0);
-    alpha = (hourMark - now + 24 * 60 * 60 * 1000 - velibTrendZoom * 1000) / (24 * 60 * 60 * 1000 - 2 * velibTrendZoom * 1000);
-    alpha = (hourMark - now + velibTrendZoom * 1000) / (24 * 60 * 60 * 1000) * width;
+    alpha = (hourMark - now + 24 * 60 * 60 * 1000 - effectiveZoom * 1000) / (24 * 60 * 60 * 1000 - 2 * effectiveZoom * 1000);
+    alpha = (hourMark - now + effectiveZoom * 1000) / (24 * 60 * 60 * 1000) * width;
     for (var h = 0; h < 24; h = h + 2) {
       ctx.fillStyle = 'red';
       ctx.textAlign = 'center';
