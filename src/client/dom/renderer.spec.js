@@ -1,6 +1,7 @@
 /* @flow */
 
 import moment from 'moment-timezone';
+import htmlBeautify from 'html-beautify';
 import {
   renderWrapper,
   renderHeader,
@@ -14,19 +15,29 @@ beforeAll(() => {
   moment.tz.setDefault('UTC');
 });
 
+const testRender = (element: any): String => {
+  if (element instanceof Array) {
+    const parentNode = document.createElement('table');
+    element.forEach(subElement => parentNode.appendChild(subElement));
+    return htmlBeautify(parentNode.outerHTML);
+  }
+
+  return htmlBeautify(element.outerHTML);
+};
+
 describe('renderWrapper function', () => {
   it('should return correct HTML when not loaded', () => {
     // given-when
     const actual = renderWrapper(false);
     // then
-    expect(actual.outerHTML).toMatchSnapshot();
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when loaded', () => {
     // given-when
     const actual = renderWrapper(true);
     // then
-    expect(actual.outerHTML).toMatchSnapshot();
+    expect(testRender(actual)).toMatchSnapshot();
   });
 });
 
@@ -45,7 +56,7 @@ describe('renderHeader function', () => {
     // given-when
     const actual = renderHeader(data, {});
     // then
-    expect(actual).toEqual('Connections');
+    expect(actual).toMatchSnapshot();
   });
 
   it('should return correct header when complete configuration', () => {
@@ -83,7 +94,7 @@ describe('renderHeader function', () => {
     // given-when
     const actual = renderHeader(data, baseConfig);
     // then
-    expect(actual).toEqual('Connections');
+    expect(actual).toMatchSnapshot();
   });
 });
 
@@ -144,7 +155,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, {}, config, now);
     // then
-    expect(actual[0].outerHTML).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();    
   });
 
   it('should return correct HTML when schedule', () => {
@@ -164,7 +175,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig, now);
     // then
-    expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();    
   });
 
   it('should return correct HTML when schedule and status info', () => {
@@ -182,8 +193,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig, now);
     // then
-    expect(actual.length).toEqual(1);
-    expect(actual[0].outerHTML).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();    
   });
 
   it('should return correct HTML when schedule and convert to waiting time', () => {
@@ -207,8 +217,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
     // then
-    expect(actual.length).toEqual(2);
-    expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();    
   });
 
   it('should return correct HTML when schedule and concatenate arrivals', () => {
@@ -235,8 +244,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
     // then
-    expect(actual.length).toEqual(2);
-    expect(actual[0].outerHTML + actual[1].outerHTML).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();    
   });
 
   it('should return correct HTML when schedules and concatenate arrivals for transilien', () => {
@@ -290,7 +298,7 @@ describe('renderPublicTransport function', () => {
     const actual = renderPublicTransport(stopConfigTransilien, stopIndexTransilien, schedulesTransilien, lastUpdateTransilien, config, now);
     // then
     expect(actual.length).toEqual(1);
-    expect(actual[0].outerHTML).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();    
   });
 
 });
@@ -316,7 +324,7 @@ describe('renderTraffic function', () => {
     // when
     const actual = renderTraffic(stop, ratpTraffic, config);
     // then
-    expect(actual.outerHTML).toMatchSnapshot();
+    expect(testRender(actual)).toMatchSnapshot();
   });
 });
 
@@ -331,7 +339,7 @@ describe('renderNoInfoVelib function', () => {
     // when
     const actual = renderNoInfoVelib(stop);
     // then
-    expect(actual.outerHTML).toMatchSnapshot();
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML for table cell when no label', () => {
@@ -343,7 +351,7 @@ describe('renderNoInfoVelib function', () => {
     // when
     const actual = renderNoInfoVelib(stop);
     // then
-    expect(actual.outerHTML).toMatchSnapshot();
+    expect(testRender(actual)).toMatchSnapshot();
   });
 });
 
@@ -361,7 +369,7 @@ describe('renderVelib function', () => {
     // when
     const actual = renderVelib(stop, velibHistory, config, now);
     // then
-    expect(actual.outerHTML).toMatchSnapshot();
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when history without trend', () => {
@@ -385,7 +393,7 @@ describe('renderVelib function', () => {
     // when
     const actual = renderVelib(stop, velibHistory, config, now);
     // then
-    expect(actual.outerHTML).toMatchSnapshot();
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when history with trend', () => {
@@ -407,6 +415,6 @@ describe('renderVelib function', () => {
     // when
     const actual = renderVelib(stop, velibHistory, config, now);
     // then
-    expect(actual.outerHTML).toMatchSnapshot();
+    expect(testRender(actual)).toMatchSnapshot();
   });
 });

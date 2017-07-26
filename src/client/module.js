@@ -75,6 +75,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     wrapper.appendChild(table);
 
     // TODO use key generator as callback and use single renderer method
+    // TODO use table node as parameter and add children in renderer
     this.config.stations.forEach((stop) => {
       switch (stop.type) {
         case 'traffic':

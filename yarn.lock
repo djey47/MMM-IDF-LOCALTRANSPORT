@@ -2073,6 +2073,10 @@ hosted-git-info@^2.1.4:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.4.2.tgz#0076b9f46a270506ddbaaea56496897460612a67"
 
+html-beautify@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/html-beautify/-/html-beautify-1.0.4.tgz#09b2cf5806fa0dbd7e3dbe649d6598316d4794e0"
+
 html-encoding-sniffer@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/html-encoding-sniffer/-/html-encoding-sniffer-1.0.1.tgz#79bf7a785ea495fe66165e734153f363ff5437da"
