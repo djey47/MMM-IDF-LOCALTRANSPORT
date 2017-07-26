@@ -7,7 +7,7 @@ exports[`renderHeader function should return simple string when silent configura
 exports[`renderNoInfoVelib function should return correct HTML for table cell when no label 1`] = `
 "<tr>
    <td class=\\"bright\\">
-      Stations no info yet
+      Stations {notYet}
    </td>
 </tr>"
 `;
@@ -15,7 +15,7 @@ exports[`renderNoInfoVelib function should return correct HTML for table cell wh
 exports[`renderNoInfoVelib function should return correct HTML for table row when label 1`] = `
 "<tr>
    <td class=\\"bright\\">
-      Ulbach no info yet
+      Ulbach {notYet}
    </td>
 </tr>"
 `;
@@ -175,7 +175,7 @@ exports[`renderVelib function should return correct HTML when history without tr
       10
    </td>
    <td class=\\"bright\\">
-      2 velibs 8 spaces
+      2 {velib.bikes} 8 {velib.spaces}
    </td>
    <td class=\\"align-right\\">
       Opera
@@ -186,7 +186,7 @@ exports[`renderVelib function should return correct HTML when history without tr
 exports[`renderVelib function should return correct HTML when no history 1`] = `
 "<tr>
    <td class=\\"bright\\">
-      Opera Bis no info yet
+      Opera Bis {notYet}
    </td>
 </tr>"
 `;
@@ -195,6 +195,6 @@ exports[`renderWrapper function should return correct HTML when loaded 1`] = `"<
 
 exports[`renderWrapper function should return correct HTML when not loaded 1`] = `
 "<div class=\\"dimmed light small\\">
-   Loading connections ...
+   {loading}
 </div>"
 `;

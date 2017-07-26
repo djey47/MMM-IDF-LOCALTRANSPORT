@@ -1,6 +1,7 @@
 /* @flow */
 
 import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
+import { translate, MessageKeys } from '../../support/messages';
 import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
 import LegacyApi  from '../../support/legacyApi';
@@ -39,13 +40,13 @@ const UNAVAILABLE = 'N/A';
 /**
  * @returns HTML for main wrapper
  */
-export const renderWrapper = (loaded: boolean): any => {
+export const renderWrapper = (loaded: boolean, messages?: Object): any => {
   const wrapper = document.createElement('div');
 
   if (loaded) {
     wrapper.className = 'paristransport';
   } else {
-    wrapper.innerHTML = 'Loading connections ...';
+    wrapper.innerHTML = translate(MessageKeys.LOADING, messages);
     wrapper.className = 'dimmed light small';
   }
 
@@ -56,15 +57,17 @@ export const renderWrapper = (loaded: boolean): any => {
  * @returns module header contents
  */
 export const renderHeader = (data: Object, config: Object): string => {
-  const { updateInterval, showLastUpdateTime, lastUpdate, showSecondsToNextUpdate } = config;
+  // TODO use date mocking to test rendering
+  const { updateInterval, showLastUpdateTime, lastUpdate, showSecondsToNextUpdate, messages } = config;
 
   let contents = data.header;
   if (showSecondsToNextUpdate) {
     const timeDifference = Math.round((updateInterval - new Date() + Date.parse(lastUpdate)) / 1000);
+    const secondUnit = translate(MessageKeys.UNITS_SECONDS, messages);
     if (timeDifference > 0) {
-      contents += `, next update in ${timeDifference}s`;
+      contents += `, ${translate(MessageKeys.NEXT_UPDATE, messages)} ${timeDifference}${secondUnit}`;
     } else {
-      contents += `, update requested ${Math.abs(timeDifference)}s ago`;
+      contents += `, ${translate(MessageKeys.REQ_UPDATE, messages)} ${Math.abs(timeDifference)}${secondUnit} ${translate(MessageKeys.AGO, messages)}`;
     }
   }
 
@@ -89,7 +92,7 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
   row.appendChild(firstCell);
 
   const trafficAtStop = ratpTraffic[stopIndex];
-  const { message } = trafficAtStop ? trafficAtStop : { message: 'N/A' };
+  const { message } = trafficAtStop ? trafficAtStop : { message: UNAVAILABLE };
   const secondCell = document.createElement('td');
   secondCell.className = 'align-left';
   secondCell.innerHTML = config.conversion[message] || message;
@@ -176,7 +179,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
  */
 export const renderPublicTransport = (stopConfig: Object, stopIndex: string, schedules: Object, lastUpdate: Object, config: Object, now: Date) => {
   const rows = [];
-  const coming: Schedule[] = schedules[stopIndex] || [ { message: 'N/A', destination: 'N/A' } ];
+  const coming: Schedule[] = schedules[stopIndex] || [ { message: UNAVAILABLE, destination: UNAVAILABLE } ];
   const comingLastUpdate: string = lastUpdate[stopIndex];
   const previous = {
     previousRow: null,
@@ -222,13 +225,13 @@ export const renderPublicTransportTransilien = (stop: Stop, schedules: Object, l
 /**
  * @private
  */
-export const renderNoInfoVelib = (stop: Stop): any => {
+export const renderNoInfoVelib = (stop: Stop, messages?: Object): any => {
   const { label, station } = stop;
   const row = document.createElement('tr');
   const messageCell = document.createElement('td');
 
   messageCell.className = 'bright';
-  messageCell.innerHTML = `${label || station} no info yet`;
+  messageCell.innerHTML = `${label || station} ${translate(MessageKeys.NOT_YET, messages)}`;
   row.appendChild(messageCell);
 
   return row;
@@ -238,7 +241,7 @@ export const renderNoInfoVelib = (stop: Stop): any => {
  * @private
  * @returns HTML for info received for Velib (without trend)
  */
-export const renderSimpleInfoVelib = (stop: Stop, station: VelibStation): any => {
+export const renderSimpleInfoVelib = (stop: Stop, station: VelibStation, messages: Object): any => {
   const row = document.createElement('tr');
   const { label } = stop;
   const { total, bike, empty, name } = station;
@@ -249,7 +252,7 @@ export const renderSimpleInfoVelib = (stop: Stop, station: VelibStation): any =>
 
   const velibStatusCell = document.createElement('td');
   velibStatusCell.className = 'bright';
-  velibStatusCell.innerHTML = `${bike} velibs ${empty} spaces`;
+  velibStatusCell.innerHTML = `${bike} ${translate(MessageKeys.VELIB_BIKES, messages)} ${empty} ${translate(MessageKeys.VELIB_SPACES, messages)}`;
   row.appendChild(velibStatusCell);
 
   const velibNameCell = document.createElement('td');
@@ -355,15 +358,16 @@ export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHis
  * @returns HTML for info received for Velib
  */
 export const renderVelib = (stop: Stop, velibHistory: Object, config: Object, now: Date): any => {
+  const { messages, trendGraphOff } = config;
   const velibStationHistory = velibHistory[stop.station];
 
   if (!velibStationHistory) {
-    return renderNoInfoVelib(stop);
+    return renderNoInfoVelib(stop, messages);
   }
 
   const stationInfo = velibStationHistory.slice(-1)[0];
-  if (config.trendGraphOff) {
-    return renderSimpleInfoVelib(stop, stationInfo);
+  if (trendGraphOff) {
+    return renderSimpleInfoVelib(stop, stationInfo, messages);
   }
 
   return renderTrendInfoVelib(stop, stationInfo, velibHistory, config, now);

@@ -69,14 +69,15 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   getDom: function() {
     const now = new Date();
 
-    const wrapper = renderWrapper(this.loaded);
+    const { messages, stations } = this.config;
+    const wrapper = renderWrapper(this.loaded, messages);
     const table = document.createElement('table');
     table.className = 'small';
     wrapper.appendChild(table);
 
     // TODO use key generator as callback and use single renderer method
     // TODO use table node as parameter and add children in renderer
-    this.config.stations.forEach((stop) => {
+    stations.forEach((stop) => {
       switch (stop.type) {
         case 'traffic':
           table.appendChild(renderTraffic(stop, this.ratpTraffic, this.config));

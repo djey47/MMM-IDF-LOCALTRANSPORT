@@ -34,11 +34,21 @@ export const defaults: ModuleConfiguration = {
   apiAutolib: 'https://opendata.paris.fr/explore/dataset/stations_et_espaces_autolib_de_la_metropole_parisienne/api/',
   apiSncfData: 'https://ressources.data.sncf.com/api/records/1.0/',
   messages: {
+    ago: 'ago',
+    loading: 'Loading connections ...',
+    notYet: 'no info yet',
+    nextUpdate: 'next update in',
+    requestedUpdate: 'update requested',
     status: {
       approaching: 'Approaching',
     },
     units: {
       minutes: 'mn',
+      seconds: 's',
+    },
+    velib: {
+      bikes: 'velibs',
+      spaces: 'spaces',
     },
   },
 
