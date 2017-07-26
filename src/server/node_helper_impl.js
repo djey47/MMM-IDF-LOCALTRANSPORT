@@ -120,18 +120,18 @@ module.exports = {
    * @param authToken (optional) authentication token
    * @private
    */
-  getResponse: function(url, processFunction, authToken = '', stopConfig) {
+  getResponse: function(url, processFunction, authToken, stopConfig) {
     const { debug } = this.config.debug;
-    const config = {
-      headers: {
-        Accept: 'application/json;charset=utf-8',
-        Authorization: authToken,
-      },
+    const headers = {
+      Accept: 'application/json;charset=utf-8',
     };
+    if (authToken) {
+      headers.Authorization = authToken;
+    }
 
     if (debug) console.log (` *** fetching: ${url}`);
 
-    axios.get(url, config)
+    axios.get(url, { headers })
       .then((response => this.handleAPIResponse(url, processFunction, response, stopConfig)).bind(this))
       .catch((error => this.handleAPIError(error)).bind(this));
   },

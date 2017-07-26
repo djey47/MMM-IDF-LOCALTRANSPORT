@@ -10,22 +10,38 @@ const scheduleUpdate = NodeHelper.scheduleUpdate;
 const scheduleUpdateMock = jest.fn();
 const sendSocketNotificationMock = jest.fn();
 const getResponseMock = jest.fn();
+const getResponseReal = NodeHelper.getResponse;
 const processFunctionMock = jest.fn();
+const mockAxiosThen = jest.fn(() => ({
+  catch: () => null,
+}));
+const mockAxiosGet = jest.fn(() => ({
+  then: () => mockAxiosThen(),
+}));
+
+jest.mock('axios', () => ({
+  get: (url, axiosConfig) => mockAxiosGet(url, axiosConfig),
+}));
 
 beforeEach(() => {
   delete(NodeHelper.started);
-  NodeHelper.config = {};
+  NodeHelper.config = {
+    debug: false,
+  };
   NodeHelper.retryDelay = 5000;
   NodeHelper.loaded = false;
 
   NodeHelper.scheduleUpdate = scheduleUpdate;
   NodeHelper.sendSocketNotification = sendSocketNotificationMock;
-  NodeHelper.getResponse = getResponseMock;
 
   scheduleUpdateMock.mockReset();
   sendSocketNotificationMock.mockReset();
   getResponseMock.mockReset();
   processFunctionMock.mockReset();
+});
+
+afterEach(() => {
+  NodeHelper.getResponse = getResponseReal;
 });
 
 describe('start function', () => {
@@ -119,6 +135,7 @@ describe('updateTimetable function', () => {
         },
       }],
     };
+    NodeHelper.getResponse = getResponseMock;  
     const transilienStopConfig = NodeHelper.config.stations[4];
     // when
     NodeHelper.updateTimetable();
@@ -143,6 +160,35 @@ describe('updateTimetable function', () => {
       'token',
       transilienStopConfig,
     );
+  });
+});
+
+describe('getResponse function', () => {
+  it('should add Authorization header when token provided', () => {
+    // given
+    const token = 't-o-k-e-n';
+    // when
+    NodeHelper.getResponse('http://socket.io', processFunctionMock, token, {});
+    // then
+    const expectedConfig = {
+      headers: {
+        Accept: 'application/json;charset=utf-8',
+        Authorization: 't-o-k-e-n',
+      },
+    };
+    expect(mockAxiosGet).toHaveBeenCalledWith('http://socket.io', expectedConfig);
+  });
+
+  it('should not add Authorization header when no token provided', () => {
+    // given-when
+    NodeHelper.getResponse('http://socket.io', processFunctionMock, null, {});
+    // then
+    const expectedConfig = {
+      headers: {
+        Accept: 'application/json;charset=utf-8',
+      },
+    };
+    expect(mockAxiosGet).toHaveBeenCalledWith('http://socket.io', expectedConfig);
   });
 });
 

@@ -23,6 +23,8 @@
     "it": false,
     "expect": false,
     "jest": false,
+    "afterAll": false,
+    "afterEach": false,
     "beforeEach": false,
     "beforeAll": false,
     // Following are MM2's symbols
