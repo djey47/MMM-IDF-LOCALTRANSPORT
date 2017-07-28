@@ -10,7 +10,6 @@ const TYPE_TRANSILIEN = 'transiliens';
 export const defaults: ModuleConfiguration = {
   maximumEntries: 2,
   maxTimeOffset: 200,
-  useRealtime: true,
   updateInterval: 1 * 60 * 1000,
   animationSpeed: 2000,
   convertToWaitingTime: true,
