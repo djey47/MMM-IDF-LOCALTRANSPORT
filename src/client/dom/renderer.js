@@ -83,10 +83,10 @@ export const renderHeader = (data: Object, config: ModuleConfiguration): string 
  * @returns HTML for traffic status
  */
 export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): any => {
-  const { line, label } = stop;
-  const stopIndex = `traffic/${line[0].toString()}/${line[1].toString()}`.toLowerCase();
+  const stopIndex = LegacyApi.createTrafficIndexFromStopConfig(stop);
   const row = document.createElement('tr');
 
+  const { line, label } = stop;
   const firstCell = document.createElement('td');
   firstCell.className = 'align-right bright';
   firstCell.innerHTML = label || line[1].toString();

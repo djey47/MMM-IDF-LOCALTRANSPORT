@@ -31,11 +31,19 @@ const LegacyApi = {
   },
   
   /**
-  * @private
+  * @returns index for schedules access (client side)
   */
   createIndexFromStopConfig: function(stopConfig) {
     const { line, station, destination } = stopConfig;
     return `${line.toString()}/${station}/${destination || ''}`.toLowerCase();
+  },
+
+  /**
+  * @returns index for traffic access (client side)
+  */
+  createTrafficIndexFromStopConfig: function(stopConfig) {
+    const { line: [ type, index ] } = stopConfig;
+    return  `traffic/${type.toString()}/${index.toString()}`.toLowerCase();
   },
 };
 

@@ -6,6 +6,7 @@ import {
   getVelibUrl,
   createIndexFromResponse,
   createIndexFromStopConfig,
+  createTrafficIndexFromStopConfig,
 } from './legacyApi';
 
 const apiBase = 'http://api/v3/';
@@ -94,5 +95,31 @@ describe('createIndexFromStopConfig function', () => {
     const actual = createIndexFromStopConfig(stopConfig);
     // then
     expect(actual).toEqual('b/port+royal/');
+  });
+});
+
+describe('createTrafficIndexFromStopConfig function', () => {
+  it('should return correct index for RER', () => {
+    // given
+    const stopConfig = {
+      type: 'traffic',
+      line: ['rers', 'B'],
+    };
+    // when
+    const actual = createTrafficIndexFromStopConfig(stopConfig);
+    // then
+    expect(actual).toEqual('traffic/rers/b');
+  });
+
+  it('should return correct index for BUS', () => {
+    // given
+    const stopConfig = {
+      type: 'traffic',
+      line: ['bus', 275],
+    };
+    // when
+    const actual = createTrafficIndexFromStopConfig(stopConfig);
+    // then
+    expect(actual).toEqual('traffic/bus/275');
   });
 });
