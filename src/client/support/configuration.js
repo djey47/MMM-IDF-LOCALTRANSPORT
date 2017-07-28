@@ -55,9 +55,8 @@ export const defaults: ModuleConfiguration = {
 };
 
 /**
- * 
- * 
- * @export
+ * Callback to handle async response.
+ * Exported for testing.
  * @param {Array<Object>} responses 
  * @param {Function} sendSocketNotification 
  * @param {Object} configuration 
@@ -66,7 +65,6 @@ export function handleStationInfoResponse(responses: Array<Object>, sendSocketNo
   const { debug } = configuration;
 
   responses.forEach(response => {
-
     if (debug) {
       console.log('** getAllStationInfo response:');
       console.dir(response);
@@ -99,17 +97,21 @@ export function handleStationInfoResponse(responses: Array<Object>, sendSocketNo
  * @param {Function} sendSocketNotification callback to notification handler
  */
 export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: Function) {
+  const { stations } = configuration;
   // Stations for transilien: retrieve UIC
-  const queries = configuration.stations
+  const queries = stations
     .filter(stationConfig => stationConfig.type === TYPE_TRANSILIEN)
     .map((stationConfig, index) => {
-      const { station, destination } = stationConfig;
+      const { station, destination, uic } = stationConfig;
+      // Do not resolve to UIC codes if already provided
+      if (uic && uic.station && (!destination || destination && uic.destination)) return null;
       return {
         index,
         stationValue: station,
         destinationValue: destination,
       };
-    });
+    })
+    .filter(stationConfig => !!stationConfig);
 
   if (queries.length) {
     getAllStationInfo(queries, configuration)

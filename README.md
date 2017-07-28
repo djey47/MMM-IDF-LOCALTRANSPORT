@@ -69,6 +69,10 @@ A module to display:
     - Optional for 'velib': ['leaving', 'arriving', '']: indicate if only one value is needed //not in use yet
     - Optional for 'transiliens': shows train matching this destination only (see station repository above)
     - not used for 'traffic'.
+  - `uic`: ('transiliens' only) : UIC codes for station and destination (useful when names are not sufficient to identify)
+    - Optional, if not provided, station and destination codes will be resolved from names provided above
+    - `station` element: code
+    - `destination` element (optional): code
   - `label`: Optional, to rename the line differently if needed.
 * `conversion`: object of key/ values to convert traffic message. Those message can be very long, and it might worth to convert them in a simpler text. by default:
   - `conversion: {"Trafic normal sur l'ensemble de la ligne." : "Traffic normal"}`
@@ -79,14 +83,23 @@ A module to display:
 Example:
 ```javascript
 stations: [
+  // Legacy API
   {type: 'bus', line: 38, station: 'observatoire+++port+royal', destination: 'A'},
   {type: 'rers', line: 'B', station: 'port+royal', destination: 'A'},
   {type: 'traffic', line: ['rers', 'B']},
-  {type: 'traffic', line: ['tramways', 1], label: 'T1'}, //label to avoid confusion with metros line 1
+  // Label to avoid confusion with metros line 1:
+  {type: 'traffic', line: ['tramways', 1], label: 'T1'},
   {type: 'tramways', line: '3a', station: 'georges+brassens', destination: 'R'},
   {type: 'metros', line: '6', station: 'raspail', destination: 'A'},
   {type: 'velib', station: 5029, destination: 'leaving', label: 'RER'},
+  
+  // SNCF Transilien API
+  // With station name only to catch all destinations:
+  {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L'},
+  // With station and destination names to filter:
   {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L', destination: 'NANTERRE UNIVERSITE'},
+  // With UIC codes:
+  {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'SAINT NOM LA BRETECHE', uic: { station: '87382002', destination: '87382481'}, label: 'Becon L'},
 ],
 messages: {
   status: {

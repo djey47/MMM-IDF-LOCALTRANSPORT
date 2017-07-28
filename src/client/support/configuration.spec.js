@@ -2,14 +2,23 @@
 
 import { defaults, enhanceConfiguration, handleStationInfoResponse } from './configuration';
 
+let mockGetAllStationInfo = jest.fn();
 const mockThen = jest.fn();
 const mockSendSocketNotification = jest.fn();
-const mockGetAllStationInfo = jest.fn(() => ({
-  then: mockThen,
-}));
+
 jest.mock('../../support/railwayRepository', () => ({
   getAllStationInfo: (queries, config) => mockGetAllStationInfo(queries, config),
 }) );
+
+beforeEach(() => {
+  mockSendSocketNotification.mockReset();
+  mockGetAllStationInfo.mockReset();
+  mockThen.mockReset();
+
+  mockGetAllStationInfo.mockImplementation(() => ({
+    then: mockThen,
+  }));
+});
 
 describe('handleStationInfoResponse function', () => {
   it('should enhance configuration and send notification', () => {
@@ -103,5 +112,47 @@ describe('enhanceConfiguration function', () => {
     }];
     expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, currentConfig);
     expect(mockThen).toHaveBeenCalled();
+  });
+
+  it('should fetch station info from repository when missing UIC for destination', () => {
+    // given
+    const stations = [{
+      type: 'transiliens',
+      station: 'becon',
+      destination: 'la defense',
+      uic: {
+        station: 'UIC1',
+      },
+    }];
+    const currentConfig = Object.assign({}, defaults, { stations });
+    // when
+    enhanceConfiguration(currentConfig, mockSendSocketNotification);
+    // then
+    const expectedQueries = [{
+      index: 0,
+      stationValue: 'becon',
+      destinationValue: 'la defense',
+    }];
+    expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, currentConfig);
+    expect(mockThen).toHaveBeenCalled();
+  });
+
+  it('should not fetch station info from repository when all UIC provided', () => {
+    // given
+    const stations = [{
+      type: 'transiliens',
+      station: 'becon',
+      destination: 'la defense',
+      uic: {
+        station: '8738200',
+        destination: '8738221',
+      },
+    }];
+    const currentConfig = Object.assign({}, defaults, { stations });
+    // when
+    enhanceConfiguration(currentConfig, mockSendSocketNotification);
+    // then
+    expect(mockGetAllStationInfo).not.toHaveBeenCalled();
+    expect(mockSendSocketNotification).toHaveBeenCalledWith('SET_CONFIG', currentConfig);
   });
 });
