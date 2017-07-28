@@ -108,7 +108,7 @@ describe('dataToSchedule function', () => {
     const actual = ResponseProcessor.dataToSchedule(data, stopConfig, stationInfos);
     // then
     const expected = {
-      id: 'gare/87382002/depart',
+      id: 'gare/87382002/87384008/depart',
       lastUpdate: moment('2017-06-20T12:45:23.968Z').toDate(),
       schedules: [
         {

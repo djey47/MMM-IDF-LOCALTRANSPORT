@@ -4,8 +4,8 @@ const Transilien = {
   /**
    * @returns index for results storage (server side)
    */
-  createIndexFromResponse: function (responseData) {
-    return `gare/${_get(responseData, 'passages.$.gare')}/depart`;
+  createIndexFromResponse: function (responseData, destination) {
+    return `gare/${_get(responseData, 'passages.$.gare')}/${destination || ''}/depart`;
   },
 
   /**
@@ -15,8 +15,8 @@ const Transilien = {
     const { uic } = stopConfig;
     if (!uic) return null;
 
-    const { station } = uic;
-    return `gare/${station}/depart`;
+    const { station, destination } = uic;
+    return `gare/${station}/${destination || ''}/depart`;
   },
 
   /**

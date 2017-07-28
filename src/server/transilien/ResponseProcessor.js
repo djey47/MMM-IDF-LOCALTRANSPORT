@@ -62,7 +62,7 @@ const ResponseProcessor = {
       .filter(schedule => !!schedule);
 
     return {
-      id: createIndexFromResponse(data),
+      id: createIndexFromResponse(data, destination),
       lastUpdate: ResponseProcessor.now().toDate(),
       schedules,
     };
