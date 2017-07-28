@@ -1,12 +1,12 @@
 /* @flow */
-
+import moment from 'moment-timezone';
 import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
+import { now } from '../support/date';
 import { translate, MessageKeys } from '../../support/messages';
 import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
 import LegacyApi  from '../../support/legacyApi';
-
-// TODO use method to return current date (to enable mocking)
+import type { ModuleConfiguration } from '../../types/Configuration';
 
 type Stop = {
   line: (number|string)[],
@@ -56,23 +56,24 @@ export const renderWrapper = (loaded: boolean, messages?: Object): any => {
 /**
  * @returns module header contents
  */
-export const renderHeader = (data: Object, config: Object): string => {
-  // TODO use date mocking to test rendering
+export const renderHeader = (data: Object, config: ModuleConfiguration): string => {
   const { updateInterval, showLastUpdateTime, lastUpdate, showSecondsToNextUpdate, messages } = config;
+  const lastUpdateMoment = lastUpdate ? moment(lastUpdate) : null;
 
   let contents = data.header;
   if (showSecondsToNextUpdate) {
-    const timeDifference = Math.round((updateInterval - new Date() + Date.parse(lastUpdate)) / 1000);
+    const timeDifference = lastUpdateMoment ? Math.round((updateInterval - now().valueOf() + lastUpdateMoment.valueOf()) / 1000) : 0;
     const secondUnit = translate(MessageKeys.UNITS_SECONDS, messages);
     if (timeDifference > 0) {
       contents += `, ${translate(MessageKeys.NEXT_UPDATE, messages)} ${timeDifference}${secondUnit}`;
-    } else {
+    } else if (timeDifference < 0) {
+      // TODO when is it supposed to happen? => add unit test if necessary
       contents += `, ${translate(MessageKeys.REQ_UPDATE, messages)} ${Math.abs(timeDifference)}${secondUnit} ${translate(MessageKeys.AGO, messages)}`;
     }
   }
 
   if (showLastUpdateTime) {
-    contents += (lastUpdate ? ` @ ${toHoursMinutesSeconds(lastUpdate)}` : '');
+    contents += (lastUpdateMoment ? ` @ ${toHoursMinutesSeconds(lastUpdateMoment)}` : '');
   }
 
   return contents;
@@ -105,10 +106,11 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
 /**
  * @private
  */
-const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: Object, now: Date): ?any => {
+const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: ModuleConfiguration): ?any => {
   const INDEX_STATUS = 3;
   const { line, label } = stop;
   const { messages, concatenateArrivals, convertToWaitingTime, maxLettersForDestination, maxLettersForTime, oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity } = config;
+  const nowMoment = now();
 
   const row = document.createElement('tr');
 
@@ -146,15 +148,16 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
   if (!time) {
     depInfo = UNAVAILABLE;
   } else if (convertToWaitingTime) {
-    depInfo = toWaitingTime(time, now, messages);
+    depInfo = toWaitingTime(time, nowMoment, messages);
   } else {
     depInfo = toHoursMinutes(time);
   }
   depCell.innerHTML = depInfo.substr(0, maxLettersForTime);
   row.appendChild(depCell);
 
-  if ((now - Date.parse(comingLastUpdate)) > (oldUpdateThreshold ? oldUpdateThreshold : (updateInterval * (1 + oldThreshold)) )) {
-    destinationCell.style.opacity = depCell.style.opacity = oldUpdateOpacity;
+  const effectiveThreshold = oldUpdateThreshold ? oldUpdateThreshold : updateInterval * (1 + oldThreshold);
+  if (nowMoment.subtract(moment(comingLastUpdate).valueOf()) > effectiveThreshold) {
+    destinationCell.style.opacity = depCell.style.opacity = oldUpdateOpacity.toString();
   }
 
   const { previousDestination, previousRow } = previous;
@@ -177,7 +180,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
 /**
  * @returns HTML for public transport items (rows) for any API
  */
-export const renderPublicTransport = (stopConfig: Object, stopIndex: string, schedules: Object, lastUpdate: Object, config: Object, now: Date) => {
+export const renderPublicTransport = (stopConfig: Object, stopIndex: string, schedules: Object, lastUpdate: Object, config: Object) => {
   const rows = [];
   const coming: Schedule[] = schedules[stopIndex] || [ { message: UNAVAILABLE, destination: UNAVAILABLE } ];
   const comingLastUpdate: string = lastUpdate[stopIndex];
@@ -188,7 +191,7 @@ export const renderPublicTransport = (stopConfig: Object, stopIndex: string, sch
   };
   let firstLine = true;
   for (let comingIndex = 0; (comingIndex < config.maximumEntries) && (comingIndex < coming.length); comingIndex++) {
-    const row = renderComingTransport(firstLine, stopConfig, coming[comingIndex], comingLastUpdate, previous, config, now);
+    const row = renderComingTransport(firstLine, stopConfig, coming[comingIndex], comingLastUpdate, previous, config);
     if (row) rows.push(row);
     firstLine = false;
   }
@@ -198,28 +201,28 @@ export const renderPublicTransport = (stopConfig: Object, stopIndex: string, sch
 /**
  * @returns HTML for public transport items (rows) via classical API (Grimaud v3)
  */
-export const renderPublicTransportLegacy = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
+export const renderPublicTransportLegacy = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object): any[] => {
   const stopIndex = LegacyApi.createIndexFromStopConfig(stop);
 
-  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
+  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
 };
 
 /**
  * @returns HTML for public transport items (rows) via Navitia API
  */
-export const renderPublicTransportNavitia = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
+export const renderPublicTransportNavitia = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object): any[] => {
   const stopIndex = Navitia.createIndexFromStopConfig(stop);
 
-  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);  
+  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);  
 };
 
 /**
  * @returns HTML for public transport items (rows) via Transilien API
  */
-export const renderPublicTransportTransilien = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object, now: Date): any[] => {
+export const renderPublicTransportTransilien = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object): any[] => {
   const stopIndex = Transilien.createIndexFromStopConfig(stop);
 
-  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);  
+  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);  
 };
 
 /**
@@ -242,6 +245,7 @@ export const renderNoInfoVelib = (stop: Stop, messages?: Object): any => {
  * @returns HTML for info received for Velib (without trend)
  */
 export const renderSimpleInfoVelib = (stop: Stop, station: VelibStation, messages: Object): any => {
+  // FIXME swap columns and handle 4th one
   const row = document.createElement('tr');
   const { label } = stop;
   const { total, bike, empty, name } = station;
@@ -267,7 +271,7 @@ export const renderSimpleInfoVelib = (stop: Stop, station: VelibStation, message
  * @private
  * @returns HTML for info received for Velib (with trend)
  */
-export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHistory: Object, config: Object, now: Date): any => {
+export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHistory: Object, config: Object): any => {
   const { name, bike, empty } = station;
   const { velibTrendWidth, velibTrendHeight, velibTrendTimeScale, velibTrendZoom, velibTrendDay } = config;
   const rowTrend = document.createElement('tr');
@@ -286,13 +290,14 @@ export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHis
   const ctx = trendGraph.getContext('2d');
   if (!ctx) { return rowTrend; }
 
+  const nowMoment = now();
   const { label } = stop;
   const currentStation = velibHistory[stop.station];
   const { height, width } = trendGraph;
   let previousX = width;
   let inTime = false;
   for (var dataIndex = currentStation.length - 1; dataIndex >= 0 ; dataIndex--) { //start from most recent
-    let dataTimeStamp = (now - new Date(currentStation[dataIndex].lastUpdate)) / 1000; // time of the event in seconds ago
+    let dataTimeStamp = nowMoment.subtract(moment(currentStation[dataIndex].lastUpdate)).seconds(); // time of the event in seconds ago
     if (dataTimeStamp < timeScale || inTime) {
       inTime = dataTimeStamp < timeScale; // compute the last one outside of the time window
       if (dataTimeStamp - timeScale < 10 * 60) { //takes it only if it is within 10 minutes of the closing windows
@@ -338,8 +343,8 @@ export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHis
     ctx.stroke();
     var hourMark = new Date(); var alpha;
     hourMark.setMinutes(0); hourMark.setSeconds(0);
-    alpha = (hourMark - now + 24 * 60 * 60 * 1000 - effectiveZoom * 1000) / (24 * 60 * 60 * 1000 - 2 * effectiveZoom * 1000);
-    alpha = (hourMark - now + effectiveZoom * 1000) / (24 * 60 * 60 * 1000) * width;
+    alpha = (hourMark - nowMoment + 24 * 60 * 60 * 1000 - effectiveZoom * 1000) / (24 * 60 * 60 * 1000 - 2 * effectiveZoom * 1000);
+    alpha = (hourMark - nowMoment + effectiveZoom * 1000) / (24 * 60 * 60 * 1000) * width;
     for (var h = 0; h < 24; h = h + 2) {
       ctx.fillStyle = 'red';
       ctx.textAlign = 'center';
@@ -357,7 +362,7 @@ export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHis
 /**
  * @returns HTML for info received for Velib
  */
-export const renderVelib = (stop: Stop, velibHistory: Object, config: Object, now: Date): any => {
+export const renderVelib = (stop: Stop, velibHistory: Object, config: Object): any => {
   const { messages, trendGraphOff } = config;
   const velibStationHistory = velibHistory[stop.station];
 
@@ -370,5 +375,5 @@ export const renderVelib = (stop: Stop, velibHistory: Object, config: Object, no
     return renderSimpleInfoVelib(stop, stationInfo, messages);
   }
 
-  return renderTrendInfoVelib(stop, stationInfo, velibHistory, config, now);
+  return renderTrendInfoVelib(stop, stationInfo, velibHistory, config);
 };

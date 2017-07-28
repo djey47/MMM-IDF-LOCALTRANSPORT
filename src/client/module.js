@@ -9,6 +9,7 @@
  * MIT Licensed.
  */
 
+import moment from 'moment-timezone';
 import {
   NOTIF_UPDATE,
   NOTIF_TRAFFIC,
@@ -27,7 +28,6 @@ import {
 } from './dom/renderer';
 
 Module.register('MMM-IDF-STIF-NAVITIA',{
-
   // Define module defaults
   defaults,
 
@@ -67,8 +67,6 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
 
   // Override dom generator.
   getDom: function() {
-    const now = new Date();
-
     const { messages, stations } = this.config;
     const wrapper = renderWrapper(this.loaded, messages);
     const table = document.createElement('table');
@@ -86,19 +84,19 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
         case 'metros':
         case 'tramways':
         case 'rers':
-          renderPublicTransportLegacy(stop, this.transportSchedules, this.transportLastUpdate, this.config, now)
+          renderPublicTransportLegacy(stop, this.transportSchedules, this.transportLastUpdate, this.config)
             .forEach((row) => table.appendChild(row));
           break;
         case 'transiliensNavitia':
-          renderPublicTransportNavitia(stop, this.transportSchedules, this.transportLastUpdate, this.config, now)
+          renderPublicTransportNavitia(stop, this.transportSchedules, this.transportLastUpdate, this.config)
             .forEach((row) => table.appendChild(row));
           break;
         case 'transiliens':
-          renderPublicTransportTransilien(stop, this.transportSchedules, this.transportLastUpdate, this.config, now)
+          renderPublicTransportTransilien(stop, this.transportSchedules, this.transportLastUpdate, this.config)
             .forEach((row) => table.appendChild(row));
           break;
         case 'velib':
-          table.appendChild(renderVelib(stop, this.velibHistory, this.config, now));
+          table.appendChild(renderVelib(stop, this.velibHistory, this.config));
           break;
       }
     });
@@ -110,13 +108,14 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   socketNotificationReceived: function(notification, payload) {
     const { debug } = this.config;
     const { id, lastUpdate, schedules } = payload;
+    const lastUpdateMoment = moment(lastUpdate);
     this.caller = notification;
+
     switch (notification) {
       case NOTIF_TRANSPORT:
         this.transportSchedules[id] = schedules;
-        this.transportLastUpdate[id] = lastUpdate;
+        this.transportLastUpdate[id] = lastUpdateMoment;
         this.loaded = true;
-        this.updateDom();
         break;
       case NOTIF_VELIB:
         if (!this.velibHistory[id]) {
@@ -124,11 +123,9 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
           this.velibHistory[id].push(payload);
           localStorage[id] = JSON.stringify(this.velibHistory[id]);
           if (debug) {console.log (' *** size of velib History for ' + id + ' is: ' + this.velibHistory[id].length);}
-          this.updateDom();
-        } else if (this.velibHistory[id][this.velibHistory[id].length - 1].lastUpdate != lastUpdate) {
+        } else if (this.velibHistory[id][this.velibHistory[id].length - 1].lastUpdate !== lastUpdateMoment) {
           this.velibHistory[id].push(payload);
           localStorage[id] = JSON.stringify(this.velibHistory[id]);
-          this.updateDom();
           if (debug) {
             console.log (' *** size of velib History for ' + id + ' is: ' + this.velibHistory[id].length);
             console.log (this.velibHistory[id]);
@@ -144,14 +141,14 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
           console.log(payload);
         }
         this.ratpTraffic[id] = payload;
-        this.ratpTrafficLastUpdate[id] = lastUpdate;
+        this.ratpTrafficLastUpdate[id] = lastUpdateMoment;
         this.loaded = true;
-        this.updateDom();
         break;
       case NOTIF_UPDATE:
-        this.config.lastUpdate = lastUpdate;
-        this.updateDom();
+        this.config.lastUpdate = lastUpdateMoment;
         break;
     }
+
+    this.updateDom();
   },
 });

@@ -1,5 +1,6 @@
 /* @flow */
 
+
 import moment from 'moment-timezone';
 import htmlBeautify from 'html-beautify';
 import {
@@ -10,9 +11,18 @@ import {
   renderNoInfoVelib,
   renderVelib,
 } from './renderer.js';
+import { defaults } from '../support/configuration';
+
+import type { ModuleConfiguration } from '../../types/Configuration';
+
+const mockNow = jest.fn();
+jest.mock('../support/date', () => ({
+  now: () => mockNow(),
+}));
 
 beforeAll(() => {
   moment.tz.setDefault('UTC');
+  mockNow.mockImplementation(() => moment());
 });
 
 const testRender = (element: any): String => {
@@ -43,8 +53,9 @@ describe('renderWrapper function', () => {
 
 describe('renderHeader function', () => {
   const baseConfig = {
-    updateInterval: 60000,
-    lastUpdate: new Date(),
+    ...defaults,
+    messages: {},
+    lastUpdate: '2017-07-27T08:23:40.000Z',
     showLastUpdateTime: false,
     showSecondsToNextUpdate: false,
   };
@@ -52,54 +63,49 @@ describe('renderHeader function', () => {
     header: 'Connections',
   };
 
-  it('should return correctly when empty configuration', () => {
-    // given-when
-    const actual = renderHeader(data, {});
+  it('should return correct header when complete configuration', () => {
+    // given
+    mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
+    const config: ModuleConfiguration = Object.assign({}, baseConfig, { showLastUpdateTime: true, showSecondsToNextUpdate: true });
+    // when
+    const actual = renderHeader(data, config);
     // then
     expect(actual).toMatchSnapshot();
   });
 
-  it('should return correct header when complete configuration', () => {
-    // given
-    const config = Object.assign({}, baseConfig, { showLastUpdateTime: true, showSecondsToNextUpdate: true });
-    // when
-    const actual = renderHeader(data, config);
-    // then
-    expect(actual).toContain('Connections, {nextUpdate} ');
-    expect(actual).toContain('@');
-  });
-
   it('should return correct header when incomplete configuration 1', () => {
     // given
-    const config = Object.assign({}, baseConfig, { showSecondsToNextUpdate: true });
+    mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
+    const config: ModuleConfiguration = Object.assign({}, baseConfig, { showSecondsToNextUpdate: true });
     // when
     const actual = renderHeader(data, config);
     // then
-    expect(actual).toContain('Connections, {nextUpdate} ');
-    expect(actual).not.toContain('@');
+    expect(actual).toMatchSnapshot();
   });
 
   it('should return correct header when incomplete configuration 2', () => {
     // given
-    const config = Object.assign({}, baseConfig, { showLastUpdateTime: true });
+    mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
+    const config: ModuleConfiguration = Object.assign({}, baseConfig, { showLastUpdateTime: true });
     // when
     const actual = renderHeader(data, config);
     // then
-    expect(actual).toContain('Connections');
-    expect(actual).not.toContain(', next update in ');
-    expect(actual).toContain('@');
+    expect(actual).toMatchSnapshot();
   });
 
   it('should return simple string when silent configuration', () => {
-    // given-when
-    const actual = renderHeader(data, baseConfig);
+    // given
+    mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
+    const config: ModuleConfiguration = Object.assign({}, baseConfig, { showLastUpdateTime: false });
+    // when
+    const actual = renderHeader(data, config);
     // then
     expect(actual).toMatchSnapshot();
   });
 });
 
 describe('renderPublicTransport function', () => {
-  const now = moment('2017-05-30T12:45:00Z');
+  mockNow.mockImplementation(() => moment('2017-05-30T12:45:00Z'));
   const stop = {
     line: ['BUS', 275],
     station: 'Ulbach',
@@ -153,7 +159,7 @@ describe('renderPublicTransport function', () => {
       maximumEntries: 1,
     };
     // when
-    const actual = renderPublicTransport(stop, stopIndex, schedules, {}, config, now);
+    const actual = renderPublicTransport(stop, stopIndex, schedules, {}, config);
     // then
     expect(testRender(actual)).toMatchSnapshot();    
   });
@@ -170,10 +176,10 @@ describe('renderPublicTransport function', () => {
       }],
     };
     const lastUpdate = {
-      [stopIndex]: '2017/05/30 15:00:00',
+      [stopIndex]: '2017-05-30T15:00:00.000Z',
     };
     // when
-    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig, now);
+    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig);
     // then
     expect(testRender(actual)).toMatchSnapshot();    
   });
@@ -188,16 +194,17 @@ describe('renderPublicTransport function', () => {
       }],
     };
     const lastUpdate = {
-      [stopIndex]: '2017/05/30 15:00:00',
+      [stopIndex]: '2017-05-30T15:00:00.000Z',
     };
     // when
-    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig, now);
+    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig);
     // then
     expect(testRender(actual)).toMatchSnapshot();    
   });
 
   it('should return correct HTML when schedule and convert to waiting time', () => {
     // given
+    mockNow.mockImplementation(() => moment('2017-05-30T12:45:00.000Z'));
     const schedules = {
       [stopIndex]: [{
         time: '2017-05-30T13:00:00.000Z',
@@ -208,14 +215,14 @@ describe('renderPublicTransport function', () => {
       }],
     };
     const lastUpdate = {
-      [stopIndex]: '2017/05/30 15:00:00',
+      [stopIndex]: '2017-05-30T15:00:00.000Z',
     };
     const config = {
       ...baseConfig,
       convertToWaitingTime: true,
     };
     // when
-    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
+    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
     // then
     expect(testRender(actual)).toMatchSnapshot();    
   });
@@ -235,14 +242,14 @@ describe('renderPublicTransport function', () => {
       }],
     };
     const lastUpdate = {
-      [stopIndex]: '2017/05/30 15:00:00',
+      [stopIndex]: '2017-05-30T15:00:00.000Z',
     };
     const config = {
       ...baseConfig,
       concatenateArrivals: true,
     };
     // when
-    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config, now);
+    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
     // then
     expect(testRender(actual)).toMatchSnapshot();    
   });
@@ -288,14 +295,14 @@ describe('renderPublicTransport function', () => {
       }],
     };
     const lastUpdateTransilien = {
-      [stopIndexTransilien]: '2017-07-26 13:17:00',
+      [stopIndexTransilien]: '2017-07-26T13:17:00.000Z',
     };
     const config = {
       ...baseConfig,
       concatenateArrivals: true,
     };
     // when
-    const actual = renderPublicTransport(stopConfigTransilien, stopIndexTransilien, schedulesTransilien, lastUpdateTransilien, config, now);
+    const actual = renderPublicTransport(stopConfigTransilien, stopIndexTransilien, schedulesTransilien, lastUpdateTransilien, config);
     // then
     expect(actual.length).toEqual(1);
     expect(testRender(actual)).toMatchSnapshot();    
@@ -365,9 +372,8 @@ describe('renderVelib function', () => {
     };
     const velibHistory = {};
     const config = {};
-    const now = new Date();
     // when
-    const actual = renderVelib(stop, velibHistory, config, now);
+    const actual = renderVelib(stop, velibHistory, config);
     // then
     expect(testRender(actual)).toMatchSnapshot();
   });
@@ -389,9 +395,9 @@ describe('renderVelib function', () => {
     const config = {
       trendGraphOff: true,
     };
-    const now = new Date(2017, 5, 29, 8, 34, 28);
+    mockNow.mockImplementationOnce(() => new Date(2017, 5, 29, 8, 34, 28));
     // when
-    const actual = renderVelib(stop, velibHistory, config, now);
+    const actual = renderVelib(stop, velibHistory, config);
     // then
     expect(testRender(actual)).toMatchSnapshot();
   });
@@ -411,9 +417,9 @@ describe('renderVelib function', () => {
       }],
     };
     const config = {};
-    const now = new Date(2017, 5, 29, 8, 34, 28);
+    mockNow.mockImplementationOnce(() => new Date(2017, 5, 29, 8, 34, 28));
     // when
-    const actual = renderVelib(stop, velibHistory, config, now);
+    const actual = renderVelib(stop, velibHistory, config);
     // then
     expect(testRender(actual)).toMatchSnapshot();
   });
