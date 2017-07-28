@@ -59,7 +59,16 @@ const ResponseProcessor = {
         // Reject train not matching wanted destination
         return null;
       })
-      .filter(schedule => !!schedule);
+      .filter(schedule => !!schedule)
+      .sort((schedule1, schedule2) => {
+        const firstCriteria = schedule1.destination.localeCompare(schedule2.destination);
+        if (firstCriteria === 0) {
+          const moment1 = moment(schedule1.time);
+          const moment2 = moment(schedule2.time);
+          return moment1.isBefore(moment2) ? -1 : 1; 
+        }
+        return firstCriteria;
+      });
 
     return {
       id: createIndexFromResponse(data, destination),
