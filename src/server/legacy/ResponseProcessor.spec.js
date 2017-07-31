@@ -65,15 +65,18 @@ describe('dataToSchedule function', () => {
         {
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
           time: '2017-07-16T17:07:00.000Z',
-          status: 'ZEUS',
+          status: '',
+          code: 'ZEUS',
         },{
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
           time: '2017-07-16T17:10:00.000Z',
-          status: 'TEDU',
+          status: '',
+          code: 'TEDU',
         },{
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
           time: '2017-07-16T17:17:00.000Z',
-          status: 'ZEUS',
+          status: '',
+          code: 'ZEUS',
         },
       ],
     };
@@ -91,19 +94,19 @@ describe('dataToSchedule function', () => {
         {
           destination: 'Pont de Levallois Bécon',
           time: null,
-          status: undefined,
+          status: '',
         },{
           destination: 'Pont de Levallois Bécon',
           time: '2017-07-16T00:04:00.000Z',
-          status: undefined,
+          status: '',
         },{
           destination: 'Pont de Levallois Bécon',
           time: '2017-07-16T00:07:00.000Z',
-          status: undefined,
+          status: '',
         },{
           destination: 'Pont de Levallois Bécon',
           time: '2017-07-16T00:09:00.000Z',
-          status: undefined,
+          status: '',
         },
       ],
     };

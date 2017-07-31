@@ -186,10 +186,36 @@ describe('renderPublicTransport function', () => {
 
   it('should return correct HTML when schedule and status info', () => {
     // given
+    const rerStop = {
+      line: 'A',
+      station: 'La+Defense',
+      destination: 'a',
+    };
+    const rerStopIndex = 'a/la+defense/a';
+    const schedules = {
+      [rerStopIndex]: [{
+        time: '2017-05-30T13:00:00.000Z',
+        status: 'STATUS',
+        destination: 'La Défense',
+        code: 'UAPY',
+      }],
+    };
+    const lastUpdate = {
+      [rerStopIndex]: '2017-05-30T15:00:00.000Z',
+    };
+    // when
+    const actual = renderPublicTransport(rerStop, rerStopIndex, schedules, lastUpdate, baseConfig);
+    // then
+    expect(testRender(actual)).toMatchSnapshot();    
+  });
+
+  it('should return correct HTML when schedule and mission code', () => {
+    // given
     const schedules = {
       [stopIndex]: [{
         time: '2017-05-30T13:00:00.000Z',
-        status: 'STATUS',
+        status: '',
+        code: 'POPU',
         destination: 'La Défense',
       }],
     };
@@ -270,27 +296,27 @@ describe('renderPublicTransport function', () => {
     const schedulesTransilien = {
       [stopIndexTransilien]: [{
         destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
-        status: 'SEBU',
+        code: 'SEBU',
         time: '2017-07-26T11:20:00.000Z',
       },
       {
         destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
-        status: 'SEBU',
+        code: 'SEBU',
         time: '2017-07-26T11:35:00.000Z',
       },
       {
         destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
-        status: 'SEBU',
+        code: 'SEBU',
         time: '2017-07-26T11:50:00.000Z',
       },
       {
         destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
-        status: 'SEBU',
+        code: 'SEBU',
         time: '2017-07-26T12:05:00.000Z',
       },
       {
         destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
-        status: 'SEBU',
+        code: 'SEBU',
         time: '2017-07-26T12:20:00.000Z',
       }],
     };

@@ -139,7 +139,7 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
-exports[`renderPublicTransport function should return correct HTML when schedule and status info 1`] = `
+exports[`renderPublicTransport function should return correct HTML when schedule and mission code 1`] = `
 "<table>
    <tr>
       <td class=\\"align-right bright\\">
@@ -149,7 +149,26 @@ exports[`renderPublicTransport function should return correct HTML when schedule
          La Défense
       </td>
       <td class=\\"bright\\">
-         STATUS
+         POPU
+      </td>
+      <td class=\\"bright\\">
+         13:00
+      </td>
+</tr>
+</table>"
+`;
+
+exports[`renderPublicTransport function should return correct HTML when schedule and status info 1`] = `
+"<table>
+   <tr>
+      <td class=\\"align-right bright\\">
+         A
+      </td>
+      <td class=\\"align-left\\">
+         La Défense
+      </td>
+      <td class=\\"bright\\">
+         UAPY STATUS
       </td>
       <td class=\\"bright\\">
          13:00

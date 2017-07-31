@@ -19,8 +19,8 @@ const ResponseProcessor = {
    */
   // TODO status should be a code
   getStatus: function(train) {
-    const { miss, etat } = train;
-    return `${miss} ${etat ? etat : ''}`.trim();
+    const { etat } = train;
+    return etat || '';
   },
 
   /**
@@ -46,13 +46,14 @@ const ResponseProcessor = {
     const { passages: {train} } = data;    
     const schedules = train
       .map((t, index) => {
-        const { date: {_}, term } = t;
+        const { date: {_}, term, miss } = t;
         if (!destination || term === destination) {
           // Accept train matching wanted destination, if specified
           return {
             destination: stationInfos[index].stationInfo.libelle,
             status: ResponseProcessor.getStatus(t),
             time: moment(_, DATE_TIME_FORMAT).toISOString(),
+            code: miss,
           };        
         }
 

@@ -23,10 +23,11 @@ type VelibStation = {
 };
 
 type Schedule = {
-  message?: string, // Deprecated
+  message?: string,   // Deprecated
   destination: string,
-  status?: string,
-  time?: string, // ISO
+  status?: string,    // Should be code
+  time?: string,      // ISO
+  code?: string,      // Mission code for trains
 };
 
 type ComingContext = {
@@ -141,6 +142,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
     status,
     destination,
     time,
+    code,
   } = comingTransport ;
   const destinationCell = document.createElement('td');
   destinationCell.innerHTML = destination.substr(0, maxLettersForDestination);
@@ -150,7 +152,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
   // TODO Limit status label length?
   const statCell = document.createElement('td');
   statCell.className = 'bright';
-  statCell.innerHTML = status || '';
+  statCell.innerHTML = `${code || ''} ${status || ''}`.trim();
   row.appendChild(statCell);
 
   // TODO handle approaching/at platform/... status

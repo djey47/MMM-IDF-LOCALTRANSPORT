@@ -13,9 +13,9 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  getStatus: function(schedule) {
-    const { code } = schedule;
-    return code;
+  getStatus: function() {
+    // TODO get status from message
+    return '';
   },
 
   /**
@@ -59,7 +59,6 @@ const ResponseProcessor = {
       schedule.status = ResponseProcessor.getStatus(schedule);
       schedule.time = ResponseProcessor.getDepartureTime(schedule);
 
-      delete(schedule.code);
       delete(schedule.message);
     });
 
