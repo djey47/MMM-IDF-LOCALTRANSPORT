@@ -168,7 +168,7 @@ exports[`renderPublicTransport function should return correct HTML when schedule
          La Défense
       </td>
       <td class=\\"bright\\">
-         UAPY STATUS
+         UAPY {status.delayed}
       </td>
       <td class=\\"bright\\">
          13:00

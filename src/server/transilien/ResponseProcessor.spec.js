@@ -114,12 +114,12 @@ describe('dataToSchedule function', () => {
         {
           destination: 'Label for UIC 87384008(1)',
           code: 'POPI',
-          status: 'Retardé',
+          status: 'DELAYED',
           time: '2017-06-20T12:46:00.000Z',
         },{
           destination: 'Label for UIC 87384008(2)',
           code: 'PEBU',
-          status: '',
+          status: 'ON_TIME',
           time: '2017-06-20T13:41:00.000Z',
         },
       ],

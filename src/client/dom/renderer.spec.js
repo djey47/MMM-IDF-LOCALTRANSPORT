@@ -195,7 +195,7 @@ describe('renderPublicTransport function', () => {
     const schedules = {
       [rerStopIndex]: [{
         time: '2017-05-30T13:00:00.000Z',
-        status: 'STATUS',
+        status: 'DELAYED',
         destination: 'La Défense',
         code: 'UAPY',
       }],

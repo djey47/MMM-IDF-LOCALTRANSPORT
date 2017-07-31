@@ -40,6 +40,9 @@ export const defaults: ModuleConfiguration = {
     requestedUpdate: 'update requested',
     status: {
       approaching: 'Approaching',
+      ontime: '😊⏲',
+      deleted: '😞❌',
+      delayed: '😐⏳',
     },
     units: {
       minutes: 'mn',

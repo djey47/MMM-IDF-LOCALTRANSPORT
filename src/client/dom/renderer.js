@@ -6,6 +6,7 @@ import { translate, MessageKeys } from '../../support/messages';
 import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
 import LegacyApi  from '../../support/legacyApi';
+import { MessageKeys as StatusMessageKeys }  from '../../support/status';
 import type { ModuleConfiguration } from '../../types/Configuration';
 
 type Stop = {
@@ -107,6 +108,16 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
 /**
  * @private
  */
+const resolveStatus = (statusCode?: string, messages: Object): string => {
+  if (!statusCode) return '';
+
+  const key = StatusMessageKeys[statusCode];
+  return key && translate(key, messages) || UNAVAILABLE;
+};
+
+/**
+ * @private
+ */
 const resolveName = (firstLine: boolean, stop: Stop): string => {
   const { line, label, station } = stop;
 
@@ -152,7 +163,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
   // TODO Limit status label length?
   const statCell = document.createElement('td');
   statCell.className = 'bright';
-  statCell.innerHTML = `${code || ''} ${status || ''}`.trim();
+  statCell.innerHTML = `${code || ''} ${resolveStatus(status, messages)}`.trim();
   row.appendChild(statCell);
 
   // TODO handle approaching/at platform/... status

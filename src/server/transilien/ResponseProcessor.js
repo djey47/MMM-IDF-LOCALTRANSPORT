@@ -2,9 +2,20 @@ const moment = require('moment-timezone');
 const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
 const xmlToJson = require('../../support/xml.js');
 const { createIndexFromResponse } = require('../../support/transilien.js'); 
-const { getAllStationInfo } = require('../../support/railwayRepository');
+const { getAllStationInfo } = require('../../support/railwayRepository.js');
+const { Status: {
+  ON_TIME,
+  DELAYED,
+  DELETED,
+  UNKNOWN,
+}} = require('../../support/status.js');
 
 const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm';
+
+const statuses = {
+  'Retardé': DELAYED,
+  'Supprimé': DELETED,
+};
 
 const ResponseProcessor = {
   /**
@@ -17,10 +28,9 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  // TODO status should be a code
-  getStatus: function(train) {
-    const { etat } = train;
-    return etat || '';
+  getStatus: function(etat) {
+    if (!etat) return ON_TIME;
+    return statuses[etat] || UNKNOWN;
   },
 
   /**
@@ -46,12 +56,12 @@ const ResponseProcessor = {
     const { passages: {train} } = data;    
     const schedules = train
       .map((t, index) => {
-        const { date: {_}, term, miss } = t;
+        const { date: {_}, term, miss, etat } = t;
         if (!destination || term === destination) {
           // Accept train matching wanted destination, if specified
           return {
             destination: stationInfos[index].stationInfo.libelle,
-            status: ResponseProcessor.getStatus(t),
+            status: ResponseProcessor.getStatus(etat),
             time: moment(_, DATE_TIME_FORMAT).toISOString(),
             code: miss,
           };        
