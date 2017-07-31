@@ -41,6 +41,23 @@ exports[`renderPublicTransport function should return correct HTML when no sched
 </table>"
 `;
 
+exports[`renderPublicTransport function should return correct HTML when no schedule and no custom label for transilien 1`] = `
+"<table>
+   <tr>
+      <td class=\\"align-right bright\\">
+         Becon Les Bruyeres
+      </td>
+      <td class=\\"align-left\\">
+         N/A
+      </td>
+      <td class=\\"bright\\"></td>
+      <td class=\\"bright\\">
+         N/A
+      </td>
+</tr>
+</table>"
+`;
+
 exports[`renderPublicTransport function should return correct HTML when schedule 1`] = `
 "<table>
    <tr>

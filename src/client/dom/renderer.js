@@ -106,9 +106,25 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
 /**
  * @private
  */
+const resolveName = (firstLine: boolean, stop: Stop): string => {
+  const { line, label, station } = stop;
+
+  if (!firstLine) return ' ';
+
+  if (label) return label;
+
+  if (line) return line.toString();
+
+  if (station) return station.toString();
+
+  return UNAVAILABLE;
+};
+
+/**
+ * @private
+ */
 const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: ModuleConfiguration): ?any => {
   const INDEX_STATUS = 3;
-  const { line, label } = stop;
   const { messages, concatenateArrivals, convertToWaitingTime, maxLettersForDestination, maxLettersForTime, oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity } = config;
   const nowMoment = now();
 
@@ -116,11 +132,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
 
   const nameCell = document.createElement('td');
   nameCell.className = 'align-right bright';
-  if (firstLine) {
-    nameCell.innerHTML = label || line.toString();
-  } else {
-    nameCell.innerHTML = ' ';
-  }
+  nameCell.innerHTML = resolveName(firstLine, stop);
   row.appendChild(nameCell);
 
   if(!comingTransport) return row;

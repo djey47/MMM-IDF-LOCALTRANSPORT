@@ -308,6 +308,26 @@ describe('renderPublicTransport function', () => {
     expect(testRender(actual)).toMatchSnapshot();    
   });
 
+  it('should return correct HTML when no schedule and no custom label for transilien', () => {
+    // given
+    const stopConfigTransilien = {
+      type: 'transiliens',
+      station: 'Becon Les Bruyeres',
+      destination: 'Saint Nom La breteche',
+      uic: {
+        station: '87382002',
+        destination: '87382481',
+      },
+    };
+    const config = {
+      ...baseConfig,
+      concatenateArrivals: true,
+    };
+    // when
+    const actual = renderPublicTransport(stopConfigTransilien, 'gare/87382002/depart', {}, {}, config);
+    // then
+    expect(testRender(actual)).toMatchSnapshot();    
+  });
 });
 
 describe('renderTraffic function', () => {
