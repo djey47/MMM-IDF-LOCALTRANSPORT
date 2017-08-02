@@ -38,8 +38,10 @@ export const defaults: ModuleConfiguration = {
     notYet: 'no info yet',
     nextUpdate: 'next update in',
     requestedUpdate: 'update requested',
+    unavailable: '-',
     status: {
       approaching: 'Approaching',
+      atplatform: 'At platform',
       ontime: '😊⏲',
       deleted: '😞❌',
       delayed: '😐⏳',

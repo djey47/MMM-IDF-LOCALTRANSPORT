@@ -37,8 +37,6 @@ type ComingContext = {
   previousRow: ?any,
 };
 
-const UNAVAILABLE = 'N/A';
-
 /**
  * @returns HTML for main wrapper
  */
@@ -85,6 +83,7 @@ export const renderHeader = (data: Object, config: ModuleConfiguration): string 
  * @returns HTML for traffic status
  */
 export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): any => {
+  const { messages, conversion } = config;
   const stopIndex = LegacyApi.createTrafficIndexFromStopConfig(stop);
   const row = document.createElement('tr');
 
@@ -95,10 +94,10 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
   row.appendChild(firstCell);
 
   const trafficAtStop = ratpTraffic[stopIndex];
-  const { message } = trafficAtStop ? trafficAtStop : { message: UNAVAILABLE };
+  const { message } = trafficAtStop ? trafficAtStop : { message: translate(MessageKeys.UNAVAILABLE, messages) };
   const secondCell = document.createElement('td');
   secondCell.className = 'align-left';
-  secondCell.innerHTML = config.conversion[message] || message;
+  secondCell.innerHTML = conversion[message] || message;
   secondCell.colSpan = 2;
   row.appendChild(secondCell);
 
@@ -112,13 +111,13 @@ const resolveStatus = (statusCode?: string, messages: Object): string => {
   if (!statusCode) return '';
 
   const key = StatusMessageKeys[statusCode];
-  return key && translate(key, messages) || UNAVAILABLE;
+  return key && translate(key, messages) || translate(MessageKeys.UNAVAILABLE, messages);
 };
 
 /**
  * @private
  */
-const resolveName = (firstLine: boolean, stop: Stop): string => {
+const resolveName = (firstLine: boolean, stop: Stop, messages: Object): string => {
   const { line, label, station } = stop;
 
   if (!firstLine) return ' ';
@@ -129,7 +128,7 @@ const resolveName = (firstLine: boolean, stop: Stop): string => {
 
   if (station) return station.toString();
 
-  return UNAVAILABLE;
+  return translate(MessageKeys.UNAVAILABLE, messages);
 };
 
 /**
@@ -144,7 +143,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
 
   const nameCell = document.createElement('td');
   nameCell.className = 'align-right bright';
-  nameCell.innerHTML = resolveName(firstLine, stop);
+  nameCell.innerHTML = resolveName(firstLine, stop, messages);
   row.appendChild(nameCell);
 
   if(!comingTransport) return row;
@@ -171,7 +170,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
   depCell.className = 'bright';  
   let depInfo;
   if (!time) {
-    depInfo = UNAVAILABLE;
+    depInfo = translate(MessageKeys.UNAVAILABLE, messages);
   } else if (convertToWaitingTime) {
     depInfo = toWaitingTime(time, nowMoment, messages);
   } else {
@@ -206,8 +205,10 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
  * @returns HTML for public transport items (rows) for any API
  */
 export const renderPublicTransport = (stopConfig: Object, stopIndex: string, schedules: Object, lastUpdate: Object, config: Object) => {
+  const { maximumEntries, messages } = config;
   const rows = [];
-  const coming: Schedule[] = schedules[stopIndex] || [ { message: UNAVAILABLE, destination: UNAVAILABLE } ];
+  const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);
+  const coming: Schedule[] = schedules[stopIndex] || [ { message: unavailableLabel, destination: unavailableLabel } ];
   const comingLastUpdate: string = lastUpdate[stopIndex];
   const previous = {
     previousRow: null,
@@ -215,7 +216,7 @@ export const renderPublicTransport = (stopConfig: Object, stopIndex: string, sch
     previousDepInfo: '',
   };
   let firstLine = true;
-  for (let comingIndex = 0; (comingIndex < config.maximumEntries) && (comingIndex < coming.length); comingIndex++) {
+  for (let comingIndex = 0; (comingIndex < maximumEntries) && (comingIndex < coming.length); comingIndex++) {
     const row = renderComingTransport(firstLine, stopConfig, coming[comingIndex], comingLastUpdate, previous, config);
     if (row) rows.push(row);
     firstLine = false;

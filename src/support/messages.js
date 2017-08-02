@@ -13,10 +13,12 @@ const MessageKeys = {
   STATUS_DELAYED: '{status.delayed}',
   STATUS_DELETED: '{status.deleted}',
   STATUS_ON_TIME: '{status.ontime}',
+  STATUS_AT_PLATFORM: '{status.atplatform}',
   UNITS_MINUTES: '{units.minutes}',
   UNITS_SECONDS: '{units.seconds}',
   VELIB_BIKES: '{velib.bikes}',
   VELIB_SPACES: '{velib.spaces}',
+  UNAVAILABLE: '{unavailable}',
 };
 
 /**

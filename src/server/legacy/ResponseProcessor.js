@@ -1,6 +1,24 @@
 const moment = require('moment-timezone');
 const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
 const { createIndexFromResponse } = require('../../support/legacyApi'); 
+const { Status: {
+  APPROACHING,
+  AT_PLATFORM,
+  ON_TIME,
+  DELAYED,
+  UNKNOWN,
+}} = require('../../support/status.js');
+
+// TODO DELETED?
+const statuses = {
+  'Train a l\'approche': APPROACHING, // Metro
+  'Train a quai': AT_PLATFORM,        // Metro
+  'Train à quai': AT_PLATFORM,        // RER
+  'Train retarde': DELAYED,           // Metro
+};
+
+const REGEX_RER_TIME = /\d{1,2}:\d{1,2}/;
+const REGEX_METRO_TIME = /\d+ mn/;
 
 const ResponseProcessor = {
   /**
@@ -13,9 +31,12 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  getStatus: function() {
-    // TODO get status from message
-    return '';
+  getStatus: function(schedule) {
+    const { message } = schedule;
+
+    if (REGEX_METRO_TIME.test(message) || REGEX_RER_TIME.test(message)) return ON_TIME;
+
+    return statuses[message] || UNKNOWN;
   },
 
   /**
@@ -25,13 +46,13 @@ const ResponseProcessor = {
     const { message } = schedule;
 
     let time = null;
-    if (/\d{1,2}:\d{1,2}/.test(message)) {
+    if (REGEX_RER_TIME.test(message)) {
       // RERs
       const hoursMinutes = moment(message, 'HH:mm');
       time = ResponseProcessor.now()
         .hour(hoursMinutes.hour())
         .minute(hoursMinutes.minute());
-    } else if (/\d+ mn/.test(message)) {
+    } else if (REGEX_METRO_TIME.test(message)) {
       // Metros and Buses
       const [minutes] = message.split(' ');
       time = ResponseProcessor.now()

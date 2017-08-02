@@ -3,6 +3,7 @@ const { MessageKeys: {
   STATUS_DELAYED,
   STATUS_DELETED,
   STATUS_ON_TIME,
+  STATUS_AT_PLATFORM,
 }} = require('./messages.js');
 
 /**
@@ -25,6 +26,7 @@ const MessageKeys = {
   DELETED: STATUS_DELETED,
   DELAYED: STATUS_DELAYED,
   ON_TIME: STATUS_ON_TIME,
+  AT_PLATFORM: STATUS_AT_PLATFORM,
 };
 
 module.exports = {

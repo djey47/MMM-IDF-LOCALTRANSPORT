@@ -13,7 +13,7 @@ describe('dataToSchedule function', () => {
     result: {
       schedules: [{
         code: 'ZEUS',
-        message: '17:07',
+        message: 'Train à quai',
         destination: 'St-Germain-en-Laye. Poissy. Cergy.',
       },{
         code: 'TEDU',
@@ -64,18 +64,18 @@ describe('dataToSchedule function', () => {
       schedules: [
         {
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
-          time: '2017-07-16T17:07:00.000Z',
-          status: '',
+          time: null,
+          status: 'AT_PLATFORM',
           code: 'ZEUS',
         },{
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
           time: '2017-07-16T17:10:00.000Z',
-          status: '',
+          status: 'ON_TIME',
           code: 'TEDU',
         },{
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
           time: '2017-07-16T17:17:00.000Z',
-          status: '',
+          status: 'ON_TIME',
           code: 'ZEUS',
         },
       ],
@@ -94,19 +94,19 @@ describe('dataToSchedule function', () => {
         {
           destination: 'Pont de Levallois Bécon',
           time: null,
-          status: '',
+          status: 'DELAYED',
         },{
           destination: 'Pont de Levallois Bécon',
           time: '2017-07-16T00:04:00.000Z',
-          status: '',
+          status: 'ON_TIME',
         },{
           destination: 'Pont de Levallois Bécon',
           time: '2017-07-16T00:07:00.000Z',
-          status: '',
+          status: 'ON_TIME',
         },{
           destination: 'Pont de Levallois Bécon',
           time: '2017-07-16T00:09:00.000Z',
-          status: '',
+          status: 'ON_TIME',
         },
       ],
     };

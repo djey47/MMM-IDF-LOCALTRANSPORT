@@ -31,11 +31,11 @@ exports[`renderPublicTransport function should return correct HTML when no sched
          BUS,275
       </td>
       <td class=\\"align-left\\">
-         N/A
+         {unavailable}
       </td>
       <td class=\\"bright\\"></td>
       <td class=\\"bright\\">
-         N/A
+         {unavailable}
       </td>
 </tr>
 </table>"
@@ -48,11 +48,11 @@ exports[`renderPublicTransport function should return correct HTML when no sched
          Becon Les Bruyeres
       </td>
       <td class=\\"align-left\\">
-         N/A
+         {unavailable}
       </td>
       <td class=\\"bright\\"></td>
       <td class=\\"bright\\">
-         N/A
+         {unavailable}
       </td>
 </tr>
 </table>"
