@@ -1,12 +1,13 @@
 /* @flow */
 import moment from 'moment-timezone';
+import classnames from 'classnames';
 import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
 import { now } from '../support/date';
 import { translate, MessageKeys } from '../../support/messages';
 import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
 import LegacyApi  from '../../support/legacyApi';
-import { MessageKeys as StatusMessageKeys }  from '../../support/status';
+import { Status, MessageKeys as StatusMessageKeys }  from '../../support/status';
 import type { ModuleConfiguration } from '../../types/Configuration';
 
 type Stop = {
@@ -44,10 +45,10 @@ export const renderWrapper = (loaded: boolean, messages?: Object): any => {
   const wrapper = document.createElement('div');
 
   if (loaded) {
-    wrapper.className = 'paristransport';
+    wrapper.className = 'IDFTransportWrapper';
   } else {
     wrapper.innerHTML = translate(MessageKeys.LOADING, messages);
-    wrapper.className = 'dimmed light small';
+    wrapper.className = classnames('dimmed', 'light', 'small');
   }
 
   return wrapper;
@@ -89,7 +90,7 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
 
   const { line, label } = stop;
   const firstCell = document.createElement('td');
-  firstCell.className = 'align-right bright';
+  firstCell.className = classnames('align-right', 'bright');
   firstCell.innerHTML = label || line[1].toString();
   row.appendChild(firstCell);
 
@@ -142,7 +143,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
   const row = document.createElement('tr');
 
   const nameCell = document.createElement('td');
-  nameCell.className = 'align-right bright';
+  nameCell.className = classnames('align-right');
   nameCell.innerHTML = resolveName(firstLine, stop, messages);
   row.appendChild(nameCell);
 
@@ -153,21 +154,27 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
     destination,
     time,
     code,
-  } = comingTransport ;
+  } = comingTransport;
+
+  row.className = classnames('Schedules__item', 'bright', {
+    'is-delayed': status === Status.DELAYED,
+    'is-deleted': status === Status.DELETED,
+    'is-ontime': status === Status.ON_TIME,
+  });
+
   const destinationCell = document.createElement('td');
   destinationCell.innerHTML = destination.substr(0, maxLettersForDestination);
   destinationCell.className = 'align-left';
   row.appendChild(destinationCell);
 
-  // TODO Limit status label length?
   const statCell = document.createElement('td');
-  statCell.className = 'bright';
+  statCell.className = '';
   statCell.innerHTML = `${code || ''} ${resolveStatus(status, messages)}`.trim();
   row.appendChild(statCell);
 
   // TODO handle approaching/at platform/... status
   const depCell = document.createElement('td');
-  depCell.className = 'bright';  
+  depCell.className = '';  
   let depInfo;
   if (!time) {
     depInfo = translate(MessageKeys.UNAVAILABLE, messages);

@@ -26,15 +26,15 @@ exports[`renderNoInfoVelib function should return correct HTML for table row whe
 
 exports[`renderPublicTransport function should return correct HTML when no schedule 1`] = `
 "<table>
-   <tr>
-      <td class=\\"align-right bright\\">
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\">
          BUS,275
       </td>
       <td class=\\"align-left\\">
          {unavailable}
       </td>
-      <td class=\\"bright\\"></td>
-      <td class=\\"bright\\">
+      <td class=\\"\\"></td>
+      <td class=\\"\\">
          {unavailable}
       </td>
 </tr>
@@ -43,15 +43,15 @@ exports[`renderPublicTransport function should return correct HTML when no sched
 
 exports[`renderPublicTransport function should return correct HTML when no schedule and no custom label for transilien 1`] = `
 "<table>
-   <tr>
-      <td class=\\"align-right bright\\">
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\">
          Becon Les Bruyeres
       </td>
       <td class=\\"align-left\\">
          {unavailable}
       </td>
-      <td class=\\"bright\\"></td>
-      <td class=\\"bright\\">
+      <td class=\\"\\"></td>
+      <td class=\\"\\">
          {unavailable}
       </td>
 </tr>
@@ -60,25 +60,25 @@ exports[`renderPublicTransport function should return correct HTML when no sched
 
 exports[`renderPublicTransport function should return correct HTML when schedule 1`] = `
 "<table>
-   <tr>
-      <td class=\\"align-right bright\\">
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\">
          BUS,275
       </td>
       <td class=\\"align-left\\">
          La Défense
       </td>
-      <td class=\\"bright\\"></td>
-      <td class=\\"bright\\">
+      <td class=\\"\\"></td>
+      <td class=\\"\\">
          13:00
       </td>
 </tr>
-   <tr>
-      <td class=\\"align-right bright\\"></td>
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\"></td>
       <td class=\\"align-left\\">
          Place Charras
       </td>
-      <td class=\\"bright\\"></td>
-      <td class=\\"bright\\">
+      <td class=\\"\\"></td>
+      <td class=\\"\\">
          13:05
       </td>
 </tr>
@@ -87,25 +87,25 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 
 exports[`renderPublicTransport function should return correct HTML when schedule and concatenate arrivals 1`] = `
 "<table>
-   <tr>
-      <td class=\\"align-right bright\\">
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\">
          BUS,275
       </td>
       <td class=\\"align-left\\">
          Place Charras
       </td>
-      <td class=\\"bright\\"></td>
-      <td class=\\"bright\\">
+      <td class=\\"\\"></td>
+      <td class=\\"\\">
          13:00
       </td>
 </tr>
-   <tr>
-      <td class=\\"align-right bright\\"></td>
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\"></td>
       <td class=\\"align-left\\">
          La Défense
       </td>
-      <td class=\\"bright\\"></td>
-      <td class=\\"bright\\">
+      <td class=\\"\\"></td>
+      <td class=\\"\\">
          13:15 / 13:30
       </td>
 </tr>
@@ -114,25 +114,25 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 
 exports[`renderPublicTransport function should return correct HTML when schedule and convert to waiting time 1`] = `
 "<table>
-   <tr>
-      <td class=\\"align-right bright\\">
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\">
          BUS,275
       </td>
       <td class=\\"align-left\\">
          La Défense
       </td>
-      <td class=\\"bright\\"></td>
-      <td class=\\"bright\\">
+      <td class=\\"\\"></td>
+      <td class=\\"\\">
          15 {units.minutes}
       </td>
 </tr>
-   <tr>
-      <td class=\\"align-right bright\\"></td>
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\"></td>
       <td class=\\"align-left\\">
          Place Charras
       </td>
-      <td class=\\"bright\\"></td>
-      <td class=\\"bright\\">
+      <td class=\\"\\"></td>
+      <td class=\\"\\">
          30 {units.minutes}
       </td>
 </tr>
@@ -141,17 +141,17 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 
 exports[`renderPublicTransport function should return correct HTML when schedule and mission code 1`] = `
 "<table>
-   <tr>
-      <td class=\\"align-right bright\\">
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\">
          BUS,275
       </td>
       <td class=\\"align-left\\">
          La Défense
       </td>
-      <td class=\\"bright\\">
+      <td class=\\"\\">
          POPU
       </td>
-      <td class=\\"bright\\">
+      <td class=\\"\\">
          13:00
       </td>
 </tr>
@@ -160,17 +160,17 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 
 exports[`renderPublicTransport function should return correct HTML when schedule and status info 1`] = `
 "<table>
-   <tr>
-      <td class=\\"align-right bright\\">
+   <tr class=\\"Schedules__item bright is-delayed\\">
+      <td class=\\"align-right\\">
          A
       </td>
       <td class=\\"align-left\\">
          La Défense
       </td>
-      <td class=\\"bright\\">
+      <td class=\\"\\">
          UAPY {status.delayed}
       </td>
-      <td class=\\"bright\\">
+      <td class=\\"\\">
          13:00
       </td>
 </tr>
@@ -179,17 +179,17 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 
 exports[`renderPublicTransport function should return correct HTML when schedules and concatenate arrivals for transilien 1`] = `
 "<table>
-   <tr>
-      <td class=\\"align-right bright\\">
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\">
          Becon
       </td>
       <td class=\\"align-left\\">
          SAINT-NOM LA BRETECHE FORET DE MARLY
       </td>
-      <td class=\\"bright\\">
+      <td class=\\"\\">
          SEBU
       </td>
-      <td class=\\"bright\\">
+      <td class=\\"\\">
          11:20 / 11:35 / 11:50
       </td>
 </tr>
@@ -231,7 +231,7 @@ exports[`renderVelib function should return correct HTML when no history 1`] = `
 </tr>"
 `;
 
-exports[`renderWrapper function should return correct HTML when loaded 1`] = `"<div class=\\"paristransport\\"></div>"`;
+exports[`renderWrapper function should return correct HTML when loaded 1`] = `"<div class=\\"IDFTransportWrapper\\"></div>"`;
 
 exports[`renderWrapper function should return correct HTML when not loaded 1`] = `
 "<div class=\\"dimmed light small\\">

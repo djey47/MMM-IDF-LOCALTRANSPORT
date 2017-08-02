@@ -10,6 +10,7 @@
  */
 
 import moment from 'moment-timezone';
+import classnames from 'classnames';
 import {
   NOTIF_UPDATE,
   NOTIF_TRAFFIC,
@@ -70,7 +71,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     const { messages, stations } = this.config;
     const wrapper = renderWrapper(this.loaded, messages);
     const table = document.createElement('table');
-    table.className = 'small';
+    table.className = classnames('Schedules', 'small');
     wrapper.appendChild(table);
 
     // TODO use key generator as callback and use single renderer method
