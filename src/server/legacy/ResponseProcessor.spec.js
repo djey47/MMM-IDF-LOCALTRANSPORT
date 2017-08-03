@@ -21,7 +21,7 @@ describe('dataToSchedule function', () => {
         destination: 'St-Germain-en-Laye. Poissy. Cergy.',
       },{
         code: 'ZEUS',
-        message: '17:17',
+        message: '17:17 Départ voie B',
         destination: 'St-Germain-en-Laye. Poissy. Cergy.',
       }],
     },

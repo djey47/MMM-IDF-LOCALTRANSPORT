@@ -17,7 +17,7 @@ const statuses = {
   'Train retarde': DELAYED,           // Metro
 };
 
-const REGEX_RER_TIME = /\d{1,2}:\d{1,2}/;
+const REGEX_RER_TIME = /\d{1,2}:\d{1,2}\s?.*/;
 const REGEX_METRO_TIME = /\d+ mn/;
 
 const ResponseProcessor = {
@@ -48,7 +48,8 @@ const ResponseProcessor = {
     let time = null;
     if (REGEX_RER_TIME.test(message)) {
       // RERs
-      const hoursMinutes = moment(message, 'HH:mm');
+      const [extractedTime] = message.split(' ');
+      const hoursMinutes = moment(extractedTime, 'HH:mm');
       time = ResponseProcessor.now()
         .hour(hoursMinutes.hour())
         .minute(hoursMinutes.minute());
