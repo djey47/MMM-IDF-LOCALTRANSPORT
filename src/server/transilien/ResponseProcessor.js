@@ -64,6 +64,7 @@ const ResponseProcessor = {
             status: ResponseProcessor.getStatus(etat),
             time: moment(_, DATE_TIME_FORMAT).toISOString(),
             code: miss,
+            info: null,
           };        
         }
 

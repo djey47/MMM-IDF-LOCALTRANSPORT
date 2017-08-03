@@ -67,16 +67,19 @@ describe('dataToSchedule function', () => {
           time: null,
           status: 'AT_PLATFORM',
           code: 'ZEUS',
+          info: null,          
         },{
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
           time: '2017-07-16T17:10:00.000Z',
           status: 'ON_TIME',
           code: 'TEDU',
+          info: null,          
         },{
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
           time: '2017-07-16T17:17:00.000Z',
           status: 'ON_TIME',
           code: 'ZEUS',
+          info: 'Départ voie B',          
         },
       ],
     };
@@ -95,18 +98,22 @@ describe('dataToSchedule function', () => {
           destination: 'Pont de Levallois Bécon',
           time: null,
           status: 'DELAYED',
+          info: null,
         },{
           destination: 'Pont de Levallois Bécon',
           time: '2017-07-16T00:04:00.000Z',
           status: 'ON_TIME',
+          info: null,
         },{
           destination: 'Pont de Levallois Bécon',
           time: '2017-07-16T00:07:00.000Z',
           status: 'ON_TIME',
+          info: null,
         },{
           destination: 'Pont de Levallois Bécon',
           time: '2017-07-16T00:09:00.000Z',
           status: 'ON_TIME',
+          info: null,
         },
       ],
     };

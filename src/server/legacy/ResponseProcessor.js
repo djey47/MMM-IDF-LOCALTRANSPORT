@@ -11,7 +11,7 @@ const { Status: {
 
 // TODO DELETED?
 const statuses = {
-  'Train a l\'approche': APPROACHING, // Metro
+  'Train a l\'approche': APPROACHING, // Metro, RER
   'Train a quai': AT_PLATFORM,        // Metro
   'Train à quai': AT_PLATFORM,        // RER
   'Train retarde': DELAYED,           // Metro
@@ -26,6 +26,21 @@ const ResponseProcessor = {
    */
   now: function() {
     return moment();
+  },
+
+  /**
+   * @private
+   */
+  getAdditionalInfo: function(schedule) {
+    const { message } = schedule;
+
+    if (!REGEX_RER_TIME.test(message)) return null;
+
+    const splittedMessage = message.split(' ');
+    if (splittedMessage.length < 2) return null;
+    
+    const [, ...info] = splittedMessage;
+    return info.join(' ');
   },
 
   /**
@@ -80,6 +95,7 @@ const ResponseProcessor = {
     schedules.forEach(schedule => {
       schedule.status = ResponseProcessor.getStatus(schedule);
       schedule.time = ResponseProcessor.getDepartureTime(schedule);
+      schedule.info = ResponseProcessor.getAdditionalInfo(schedule);
 
       delete(schedule.message);
     });
