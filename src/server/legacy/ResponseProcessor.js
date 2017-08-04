@@ -1,13 +1,19 @@
 const moment = require('moment-timezone');
 const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
 const { createIndexFromResponse } = require('../../support/legacyApi'); 
-const { Status: {
-  APPROACHING,
-  AT_PLATFORM,
-  ON_TIME,
-  DELAYED,
-  UNKNOWN,
-}} = require('../../support/status.js');
+const { 
+  Status: {
+    APPROACHING,
+    AT_PLATFORM,
+    ON_TIME,
+    DELAYED,
+    UNKNOWN,
+  },
+  TimeModes: {
+    UNDEFINED,
+    REALTIME,
+  },
+} = require('../../support/status.js');
 
 // TODO DELETED?
 const statuses = {
@@ -57,10 +63,10 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  getDepartureTime: function(schedule) {
+  getTimeInfo: function(schedule) {
     const { message } = schedule;
 
-    let time = null;
+    let time;
     if (REGEX_RER_TIME.test(message)) {
       // RERs
       const [extractedTime] = message.split(' ');
@@ -75,13 +81,19 @@ const ResponseProcessor = {
         .add(Number(minutes), 'm');
     } else {
       // Other message
-      return null;
+      return {
+        time: null,
+        timeMode: UNDEFINED,
+      };
     }
 
-    return time
-      .second(0)
-      .millisecond(0)
-      .toISOString();  
+    return {
+      time: time
+        .second(0)
+        .millisecond(0)
+        .toISOString(),
+      timeMode: REALTIME,
+    };
   },
 
   /**
@@ -92,18 +104,23 @@ const ResponseProcessor = {
     
     const {result: {schedules}} = data;
 
-    schedules.forEach(schedule => {
-      schedule.status = ResponseProcessor.getStatus(schedule);
-      schedule.time = ResponseProcessor.getDepartureTime(schedule);
-      schedule.info = ResponseProcessor.getAdditionalInfo(schedule);
-
-      delete(schedule.message);
+    const targetSchedules = schedules.map(schedule => {
+      // TODO use object rest spread when server bundling
+      const { time, timeMode } =  ResponseProcessor.getTimeInfo(schedule);
+      return {
+        time,
+        timeMode,
+        code: schedule.code || null,
+        destination: schedule.destination,
+        status: ResponseProcessor.getStatus(schedule),
+        info: ResponseProcessor.getAdditionalInfo(schedule),
+      };
     });
 
     return {
       id: createIndexFromResponse(data),
       lastUpdate: ResponseProcessor.now().toISOString(),
-      schedules,
+      schedules: targetSchedules,
     };
   },
 

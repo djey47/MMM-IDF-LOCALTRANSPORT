@@ -3,18 +3,31 @@ const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
 const xmlToJson = require('../../support/xml.js');
 const { createIndexFromResponse } = require('../../support/transilien.js'); 
 const { getAllStationInfo } = require('../../support/railwayRepository.js');
-const { Status: {
-  ON_TIME,
-  DELAYED,
-  DELETED,
-  UNKNOWN,
-}} = require('../../support/status.js');
+const {
+  Status: {
+    ON_TIME,
+    DELAYED,
+    DELETED,
+    UNKNOWN,
+  },
+  TimeModes: {
+    REALTIME,
+    THEORICAL,
+    UNDEFINED,
+  },
+} = require('../../support/status.js');
 
 const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm';
 
-const statuses = {
+const STATUSES = {
   'Retardé': DELAYED,
   'Supprimé': DELETED,
+};
+
+const TIME_MODES = {
+  R: REALTIME,
+  T: THEORICAL,
+  U: UNDEFINED,
 };
 
 const ResponseProcessor = {
@@ -30,7 +43,17 @@ const ResponseProcessor = {
    */
   getStatus: function(etat) {
     if (!etat) return ON_TIME;
-    return statuses[etat] || UNKNOWN;
+    return STATUSES[etat] || UNKNOWN;
+  },
+
+  /**
+   * @private
+   */
+  getTimeInfo: function(time, mode) {
+    return {
+      time: moment(time, DATE_TIME_FORMAT).toISOString(),
+      timeMode: TIME_MODES[mode] || TIME_MODES.U,
+    };
   },
 
   /**
@@ -56,15 +79,17 @@ const ResponseProcessor = {
     const { passages: {train} } = data;    
     const schedules = train
       .map((t, index) => {
-        const { date: {_}, term, miss, etat } = t;
+        const { date: {_, $: { mode }}, term, miss, etat } = t;
         if (!destination || term === destination) {
           // Accept train matching wanted destination, if specified
+          // TODO use object rest spread when server bundling
+          const { time, timeMode } =  ResponseProcessor.getTimeInfo(_, mode);
           return {
+            time,
+            timeMode,
             destination: stationInfos[index].stationInfo.libelle,
             status: ResponseProcessor.getStatus(etat),
-            time: moment(_, DATE_TIME_FORMAT).toISOString(),
             code: miss,
-            info: null,
           };        
         }
 

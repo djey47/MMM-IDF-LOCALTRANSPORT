@@ -7,7 +7,7 @@ import { translate, MessageKeys } from '../../support/messages';
 import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
 import LegacyApi  from '../../support/legacyApi';
-import { Status, MessageKeys as StatusMessageKeys }  from '../../support/status';
+import { Status, TimeModes, MessageKeys as StatusMessageKeys }  from '../../support/status';
 import type { ModuleConfiguration } from '../../types/Configuration';
 
 type Stop = {
@@ -25,11 +25,13 @@ type VelibStation = {
 };
 
 type Schedule = {
-  message?: string,   // Deprecated
+  message?: string,     // TODO deletion: Deprecated
   destination: string,
-  status?: string,    // Should be code
-  time?: string,      // ISO
-  code?: string,      // Mission code for trains
+  status: ?string,      // See support/status.js
+  time?: ?string,       // ISO
+  timeMode?: string,    // See support/status.js
+  code?: ?string,       // Mission code for trains
+  info?: ?string,       // Additional information, not applicable for transiliens
 };
 
 type ComingContext = {
@@ -108,7 +110,7 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
 /**
  * @private
  */
-const resolveStatus = (statusCode?: string, messages: Object): string => {
+const resolveStatus = (statusCode: ?string, messages: Object): string => {
   if (!statusCode) return '';
 
   const key = StatusMessageKeys[statusCode];
@@ -215,7 +217,14 @@ export const renderPublicTransport = (stopConfig: Object, stopIndex: string, sch
   const { maximumEntries, messages } = config;
   const rows = [];
   const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);
-  const coming: Schedule[] = schedules[stopIndex] || [ { message: unavailableLabel, destination: unavailableLabel } ];
+  const coming: Schedule[] = schedules[stopIndex] || [ {
+    message: unavailableLabel,
+    destination: unavailableLabel,
+    code: null,
+    status: null,
+    timeMode: TimeModes.UNDEFINED,
+    time: null,
+  } ];
   const comingLastUpdate: string = lastUpdate[stopIndex];
   const previous = {
     previousRow: null,

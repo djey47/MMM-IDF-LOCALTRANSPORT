@@ -19,6 +19,15 @@ const Status = {
 };
 
 /**
+ * All schedule modes
+ */
+const TimeModes = {
+  REALTIME: 'REALTIME',
+  THEORICAL: 'THEORICAL',
+  UNDEFINED: 'UNDEFINED',
+};
+
+/**
  * All associated translation keys
  */
 const MessageKeys = {
@@ -31,5 +40,6 @@ const MessageKeys = {
 
 module.exports = {
   Status,
+  TimeModes,
   MessageKeys,
 };
