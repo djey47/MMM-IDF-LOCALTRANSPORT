@@ -17,10 +17,12 @@ const {
 
 // TODO DELETED?
 const statuses = {
-  'Train a l\'approche': APPROACHING, // Metro, RER
+  'Train a l\'approche': APPROACHING, // Metro
+  'Train à l\'approche': APPROACHING, // RER
   'Train a quai': AT_PLATFORM,        // Metro
   'Train à quai': AT_PLATFORM,        // RER
   'Train retarde': DELAYED,           // Metro
+  'Train retardé': DELAYED,           // RER
 };
 
 const REGEX_RER_TIME = /\d{1,2}:\d{1,2}\s?.*/;
