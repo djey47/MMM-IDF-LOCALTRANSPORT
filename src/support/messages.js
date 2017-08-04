@@ -19,6 +19,7 @@ const MessageKeys = {
   VELIB_BIKES: '{velib.bikes}',
   VELIB_SPACES: '{velib.spaces}',
   UNAVAILABLE: '{unavailable}',
+  THEORICAL: '{theorical}',
 };
 
 /**

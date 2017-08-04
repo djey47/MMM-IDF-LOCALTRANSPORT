@@ -78,7 +78,7 @@ A module to display:
   - `conversion: {"Trafic normal sur l'ensemble de la ligne." : "Traffic normal"}`
   - don't hesitate to add more when there's works on a specific line or others...
 * `navitiaToken`: '00000000-0000-0000-000000000000' // Mandatory to access navitia.io API (account required)
-* `messages`: key-values to convert generic messages to your preferred language. See example below. 
+* `messages`: key-values to convert generic messages to your preferred language. Copy paste all default values and modify to your likings. (see example below). 
 
 Example:
 ```javascript
@@ -102,8 +102,29 @@ stations: [
   {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'SAINT NOM LA BRETECHE', uic: { station: '87382002', destination: '87382481'}, label: 'Becon L'},
 ],
 messages: {
-  status: {
-    approaching: 'Approaching'
-  }
+  messages: {
+    ago: 'ago',
+    loading: 'Loading connections ...',
+    notYet: 'no info yet',
+    nextUpdate: 'next update in',
+    requestedUpdate: 'update requested',
+    unavailable: '-',
+    theorical: '?',
+    status: {
+      approaching: 'Approaching',
+      atplatform: 'At platform',
+      ontime: '😊⏲',
+      deleted: '😞❌',
+      delayed: '😐⏳',
+    },
+    units: {
+      minutes: 'mn',
+      seconds: 's',
+    },
+    velib: {
+      bikes: 'velibs',
+      spaces: 'spaces',
+    },
+  },
 }
 ```

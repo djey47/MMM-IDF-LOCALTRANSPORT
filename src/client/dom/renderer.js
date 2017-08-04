@@ -155,6 +155,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
     status,
     destination,
     time,
+    timeMode,
     code,
   } = comingTransport;
 
@@ -174,7 +175,6 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
   statCell.innerHTML = `${code || ''} ${resolveStatus(status, messages)}`.trim();
   row.appendChild(statCell);
 
-  // TODO handle approaching/at platform/... status
   const depCell = document.createElement('td');
   depCell.className = '';  
   let depInfo;
@@ -185,7 +185,8 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
   } else {
     depInfo = toHoursMinutes(time);
   }
-  depCell.innerHTML = depInfo.substr(0, maxLettersForTime);
+  const theoricalSuffix = timeMode === TimeModes.THEORICAL ? translate(MessageKeys.THEORICAL, messages) : '';
+  depCell.innerHTML = depInfo.concat(theoricalSuffix).substr(0, maxLettersForTime);
   row.appendChild(depCell);
 
   const effectiveThreshold = oldUpdateThreshold ? oldUpdateThreshold : updateInterval * (1 + oldThreshold);

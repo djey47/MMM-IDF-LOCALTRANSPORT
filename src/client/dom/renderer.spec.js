@@ -228,6 +228,24 @@ describe('renderPublicTransport function', () => {
     expect(testRender(actual)).toMatchSnapshot();    
   });
 
+  it('should return correct HTML when schedule and theorical time mode', () => {
+    // given
+    const schedules = {
+      [stopIndex]: [{
+        time: '2017-05-30T13:00:00.000Z',
+        timeMode: 'THEORICAL',
+        destination: 'La Défense',
+      }],
+    };
+    const lastUpdate = {
+      [stopIndex]: '2017-05-30T15:00:00.000Z',
+    };
+    // when
+    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig);
+    // then
+    expect(testRender(actual)).toMatchSnapshot();    
+  });
+
   it('should return correct HTML when schedule and convert to waiting time', () => {
     // given
     mockNow.mockImplementation(() => moment('2017-05-30T12:45:00.000Z'));

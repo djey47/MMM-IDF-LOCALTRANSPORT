@@ -39,6 +39,7 @@ export const defaults: ModuleConfiguration = {
     nextUpdate: 'next update in',
     requestedUpdate: 'update requested',
     unavailable: '-',
+    theorical: '?',
     status: {
       approaching: 'Approaching',
       atplatform: 'At platform',

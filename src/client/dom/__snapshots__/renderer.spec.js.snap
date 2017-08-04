@@ -177,6 +177,23 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
+exports[`renderPublicTransport function should return correct HTML when schedule and theorical time mode 1`] = `
+"<table>
+   <tr class=\\"Schedules__item bright\\">
+      <td class=\\"align-right\\">
+         BUS,275
+      </td>
+      <td class=\\"align-left\\">
+         La Défense
+      </td>
+      <td class=\\"\\"></td>
+      <td class=\\"\\">
+         13:00{theorical}
+      </td>
+</tr>
+</table>"
+`;
+
 exports[`renderPublicTransport function should return correct HTML when schedules and concatenate arrivals for transilien 1`] = `
 "<table>
    <tr class=\\"Schedules__item bright\\">
