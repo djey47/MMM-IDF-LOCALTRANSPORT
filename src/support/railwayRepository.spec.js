@@ -6,6 +6,11 @@ import {
   handleInfoResponsesOnSuccess,
   axiosConfig,
 } from './railwayRepository';
+import {
+  putInfoInCache,
+  resetInfoCache,
+  getInfoFromCache,
+} from './cache';
 
 const mockThen = jest.fn();
 const mockAll = jest.fn(() => ({
@@ -28,6 +33,7 @@ beforeEach(() => {
   mockGet.mockReset();
   mockAll.mockReset();
   mockResolve.mockReset();
+  resetInfoCache();
 });
 
 describe('getStationInfo function', () => {
@@ -46,6 +52,21 @@ describe('getStationInfo function', () => {
     expect(mockGet).toHaveBeenCalledTimes(2);
     expect(mockGet).toHaveBeenCalledWith('https://foo/barsearch?q=St%20Cloud&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle', axiosConfig);
     expect(mockGet).toHaveBeenCalledWith('https://foo/barsearch?q=Lazare&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle', axiosConfig);
+  });
+
+  it('should return Promise without API call if response already in cache', () => {
+    // given
+    const query = {
+      index: 0,
+      stationValue: 'Lazare',
+    };
+    putInfoInCache('Lazare', {});
+    // when
+    const actual = getStationInfo(query, config);
+    // then
+    expect(actual).toBeDefined();
+    expect(mockAll).not.toHaveBeenCalled();
+    expect(mockGet).not.toHaveBeenCalled();
   });
 });
 
@@ -70,7 +91,7 @@ describe('getAllStationInfo function', () => {
 });
 
 describe('handleInfoResponsesOnSuccess function', () => {
-  it('should resolve values properly for both station and destination', () => {
+  it('should resolve values properly for both station and destination, and update cache', () => {
     // given
     const responses = [
       {
@@ -109,9 +130,11 @@ describe('handleInfoResponsesOnSuccess function', () => {
         f1: 'st cloud',
       }, 
     });
+    expect(getInfoFromCache('Becon')).toEqual({ f1: 'becon' });
+    expect(getInfoFromCache('St Cloud')).toEqual({ f1: 'st cloud' });
   });
 
-  it('should resolve values properly for station only', () => {
+  it('should resolve values properly for station only, and update cache', () => {
     // given
     const responses = [
       {
@@ -138,6 +161,7 @@ describe('handleInfoResponsesOnSuccess function', () => {
       },
       destinationInfo: null,
     });
+    expect(getInfoFromCache('Becon')).toEqual({ f1: 'becon' });    
   });
 
   it('should resolve to null when wrong response', () => {
@@ -155,5 +179,6 @@ describe('handleInfoResponsesOnSuccess function', () => {
     handleInfoResponsesOnSuccess(responses, mockResolve, query, config.debug);
     // then
     expect(mockResolve).toHaveBeenCalledWith(null);
+
   });
 });

@@ -1,5 +1,9 @@
 const axios = require('axios');
 const _get = require('lodash/get');
+const {
+  getInfoFromCache,
+  putInfoInCache,
+} = require('./cache.js');
 
 const axiosConfig = {
   headers: {
@@ -40,10 +44,16 @@ const handleInfoResponsesOnSuccess = function (responses, resolveCallback, query
       if (isDestinationInfoReceived) console.log(`** Info found for destination '${destinationValue}'`);
     }
 
+    const stationInfo = stationResponse.data.records[0].fields;
+    putInfoInCache(stationValue, stationInfo);
+  
+    const destinationInfo = isDestinationInfoReceived ? destinationResponse.data.records[0].fields : null;
+    if (destinationValue && destinationInfo) putInfoInCache(destinationValue, destinationInfo);
+
     resolveCallback({
       index,
-      stationInfo: stationResponse.data.records[0].fields,
-      destinationInfo: isDestinationInfoReceived ? destinationResponse.data.records[0].fields : null,
+      stationInfo,
+      destinationInfo,
     });
   } else {
   
@@ -54,21 +64,32 @@ const handleInfoResponsesOnSuccess = function (responses, resolveCallback, query
 };
 
 /**
- * @param {Object} query Object with index and stationValue, destinationValue attributes (index is the index within stations array from config)
- * @param {Object} config
- * @returns {Promise} first station/destination info matching provided query (label or UIC), or null if it does not exist
+ * @private
  */
-const getStationInfo = function(query, config) {
-  const { stationValue, destinationValue } = query;
-  const { apiSncfData, debug } = config;
-  
-  const axiosPromises = [];
-  // Mandatory: station
-  axiosPromises.push(axios.get(getInfoUrl(apiSncfData, stationValue), axiosConfig));
-  // Not mandatory: destination
-  if (destinationValue) axiosPromises.push(axios.get(getInfoUrl(apiSncfData, destinationValue), axiosConfig));
+const getCachedCallbackForStationInfo = function(index, stationInfo, destinationInfo) {
+  return (resolve) => {
+    // Station info or Station+Destination info already in cache
+    resolve({
+      index,
+      stationInfo,
+      destinationInfo: destinationInfo || null,
+    });
+  };
+};
 
-  return new Promise((resolve, reject) => {
+/**
+ * @private 
+ */
+const getCallbackForStationInfo = function(query, config) {
+  const { stationValue, destinationValue } = query;  
+  const { apiSncfData, debug } = config;
+  return (resolve, reject) => {
+    const axiosPromises = [];
+    // Mandatory: station
+    axiosPromises.push(axios.get(getInfoUrl(apiSncfData, stationValue), axiosConfig));
+    // Not mandatory: destination
+    if (destinationValue) axiosPromises.push(axios.get(getInfoUrl(apiSncfData, destinationValue), axiosConfig));
+
     axios.all(axiosPromises, axiosConfig)
       .then(
         (responses) => handleInfoResponsesOnSuccess(responses, resolve, query, debug),
@@ -79,7 +100,27 @@ const getStationInfo = function(query, config) {
 
           reject(error);
         });
-  });
+  };
+};
+
+/**
+ * @param {Object} query Object with index and stationValue, destinationValue attributes (index is the index within stations array from config)
+ * @param {Object} config
+ * @returns {Promise} first station/destination info matching provided query (label or UIC), or null if it does not exist
+ */
+const getStationInfo = function(query, config) {
+  const { index, stationValue, destinationValue } = query;
+  
+  const stationInfo = getInfoFromCache(stationValue);
+  const destinationInfo = destinationValue ? getInfoFromCache(destinationValue) : null;
+  let callback;
+  if ( stationInfo && (!destinationValue || destinationInfo) ) {
+    callback = getCachedCallbackForStationInfo(index, stationInfo, destinationInfo);
+  } else {
+    callback = getCallbackForStationInfo(query, config);
+  }
+
+  return new Promise(callback);
 };
 
 /**
