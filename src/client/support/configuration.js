@@ -43,6 +43,7 @@ export const defaults: ModuleConfiguration = {
     status: {
       approaching: 'Approaching',
       atplatform: 'At platform',
+      atstop: 'At stop',
       ontime: '😊⏲',
       deleted: '😞❌',
       delayed: '😐⏳',

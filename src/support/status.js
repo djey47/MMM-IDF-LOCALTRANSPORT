@@ -4,6 +4,7 @@ const { MessageKeys: {
   STATUS_DELETED,
   STATUS_ON_TIME,
   STATUS_AT_PLATFORM,
+  STATUS_AT_STOP,
   STATUS_SKIPPED,
 }} = require('./messages.js');
 
@@ -13,6 +14,7 @@ const { MessageKeys: {
 const Status = {
   APPROACHING: 'APPROACHING',
   AT_PLATFORM: 'AT_PLATFORM',
+  AT_STOP: 'AT_STOP',
   DELETED: 'DELETED',
   DELAYED: 'DELAYED',
   ON_TIME: 'ON_TIME',
@@ -38,6 +40,7 @@ const MessageKeys = {
   DELAYED: STATUS_DELAYED,
   ON_TIME: STATUS_ON_TIME,
   AT_PLATFORM: STATUS_AT_PLATFORM,
+  AT_STOP: STATUS_AT_STOP,
   SKIPPED: STATUS_SKIPPED,
 };
 

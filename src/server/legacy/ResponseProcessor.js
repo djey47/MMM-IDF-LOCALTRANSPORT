@@ -5,8 +5,9 @@ const {
   Status: {
     APPROACHING,
     AT_PLATFORM,
-    ON_TIME,
+    AT_STOP,
     DELAYED,
+    ON_TIME,
     UNKNOWN,
     SKIPPED,
   },
@@ -16,8 +17,12 @@ const {
   },
 } = require('../../support/status.js');
 
-// TODO DELETED?
+/**
+ * Association between API messages and statuses
+ */
 const statuses = {
+  // TODO DELETED?
+  'A l\'arret': AT_STOP,              // Bus
   'Train a l\'approche': APPROACHING, // Metro
   'Train à l\'approche': APPROACHING, // RER
   'Train a quai': AT_PLATFORM,        // Metro

@@ -11,6 +11,7 @@ const MessageKeys = {
   NOT_YET: '{notYet}',
   STATUS_APPROACHING: '{status.approaching}',
   STATUS_AT_PLATFORM: '{status.atplatform}',
+  STATUS_AT_STOP: '{status.atstop}',
   STATUS_DELAYED: '{status.delayed}',
   STATUS_DELETED: '{status.deleted}',
   STATUS_ON_TIME: '{status.ontime}',
