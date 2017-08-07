@@ -17,18 +17,25 @@ A module to display:
 ![screenshot](https://github.com/da4throux/MMM-Paris-RATP-PG/blob/master/MMM-Paris-RATP-PG2.png)
 
 # API
-* It is based on the REST API provided by [NAVITIA](https://www.navitia.io/)
+* It is based on the REST API provided by [TRANSILIEN](https://ressources.data.sncf.com/explore/dataset/api-temps-reel-transilien/) and [SNCF](https://ressources.data.sncf.com)
+* RERs, Metros, Buses and Tramways infos are provided by [P.Grimaud's API](https://github.com/pgrimaud/horaires-ratp-api) via RATP services.
 * It also uses [Paris Open Data for Velib](https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/) (use it to get the 5 digits stations you will need for the configuration)
 * API examples are provided into `api` subdirectory, as [POSTMAN collections](https://www.getpostman.com/).
+
+## Transilien realtime API
+To use this API you need to request credentials, please ask by sending email [HERE](mailto:innovation-transilien@sncf.fr?subject=Demande%20acc%C3%A8s%20API%20prochains%20d%C3%A9parts&body=nom,%20pr%C3%A9nom,organisation,utilisation).
+
+Once login/password have been given to you back, generate token value: open a browser window, press F12 and execute following code in console: `window.btoa(unescape(encodeURIComponent('LOGIN:PASSWORD')))`.
+
+Finally, transilienToken value to be entered in configuration file will be `Basic GENERATED_TOKEN_VALUE`.
 
 # Install
 
 1. Clone repository into `/modules/` inside your MagicMirror folder
 2. Install [yarn](https://yarnpkg.com/en/docs/install)
 3. Run `yarn install` inside `/modules/MMM-IDF-STIF-NAVITIA/` folder
-4. Run `yarn build` inside `/modules/MMM-IDF-STIF-NAVITIA/` folder
-5. Check that `/modules/MMM-IDF-STIF-NAVITIA/MMM-IDF-STIF-NAVITIA.js` script has been created
-6. Add the module to the MagicMirror config:
+4. Check that `/modules/MMM-IDF-STIF-NAVITIA/MMM-IDF-STIF-NAVITIA.js` script has been created
+5. Add the module to the MagicMirror config:
 ```
 		{
 	        module: 'MMM-IDF-STIF-NAVITIA',
@@ -77,11 +84,12 @@ A module to display:
 * `conversion`: object of key/ values to convert traffic message. Those message can be very long, and it might worth to convert them in a simpler text. by default:
   - `conversion: {"Trafic normal sur l'ensemble de la ligne." : "Traffic normal"}`
   - don't hesitate to add more when there's works on a specific line or others...
-* `navitiaToken`: '00000000-0000-0000-000000000000' // Mandatory to access navitia.io API (account required)
+* `transilienToken`: 'Basic xxxxxxxx' : mandatory to access transilien realtime API (account required, see section above)
 * `messages`: key-values to convert generic messages to your preferred language. Copy paste all default values and modify to your likings. (see example below). 
 
 Example:
 ```javascript
+transilienToken: 'Basic bG9naW46cGFzc3dvcmQ=',
 stations: [
   // Legacy API
   {type: 'bus', line: 38, station: 'observatoire+++port+royal', destination: 'A'},
@@ -116,6 +124,7 @@ messages: {
       ontime: '😊⏲',
       deleted: '😞❌',
       delayed: '😐⏳',
+      skipped: '❌',
     },
     units: {
       minutes: 'mn',
