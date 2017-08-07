@@ -46,6 +46,7 @@ export const defaults: ModuleConfiguration = {
       ontime: '😊⏲',
       deleted: '😞❌',
       delayed: '😐⏳',
+      skipped: '❌',
     },
     units: {
       minutes: 'mn',

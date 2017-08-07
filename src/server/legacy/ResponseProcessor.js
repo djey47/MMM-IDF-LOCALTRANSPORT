@@ -8,6 +8,7 @@ const {
     ON_TIME,
     DELAYED,
     UNKNOWN,
+    SKIPPED,
   },
   TimeModes: {
     UNDEFINED,
@@ -27,6 +28,8 @@ const statuses = {
 
 const REGEX_RER_TIME = /\d{1,2}:\d{1,2}\s?.*/;
 const REGEX_METRO_TIME = /\d+ mn/;
+const MESSAGE_BYPASSED = 'DEVIATION';
+const MESSAGE_UNSERVED = 'ARRET NON DESSERVI';
 
 const ResponseProcessor = {
   /**
@@ -58,6 +61,8 @@ const ResponseProcessor = {
     const { message } = schedule;
 
     if (REGEX_METRO_TIME.test(message) || REGEX_RER_TIME.test(message)) return ON_TIME;
+
+    if (message.indexOf(MESSAGE_UNSERVED) !== -1 || message.indexOf(MESSAGE_BYPASSED) !== -1) return SKIPPED;
 
     return statuses[message] || UNKNOWN;
   },

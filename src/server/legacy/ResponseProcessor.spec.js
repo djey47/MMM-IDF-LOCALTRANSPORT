@@ -53,6 +53,22 @@ describe('dataToSchedule function', () => {
       version: 3,
     },
   };
+  const busData = {
+    result: {
+      schedules: [{
+        message: 'DEVIATION / ARRET NON DESSERVI',
+        destination: 'La Défense',
+      }, {
+        message: 'DEVIATION / ARRET NON DESSERVI',
+        destination: 'La Défense',
+      }],
+    },
+    '_metadata': {
+      call: 'GET /schedules/bus/275/Ulbach/A',
+      date: '2017-07-21T13:49:30+02:00',
+      version: 3,
+    },
+  };
 
   it('should convert data correctly for RERs', () => {
     // given-when
@@ -123,6 +139,34 @@ describe('dataToSchedule function', () => {
           time: '2017-07-16T00:09:00.000Z',
           timeMode: 'REALTIME',          
           status: 'ON_TIME',
+          info: null,
+          code: null,
+        },
+      ],
+    };
+    expect(actual).toEqual(expected);
+  });
+
+  it('should convert data correctly for buses', () => {
+    // given-when
+    const actual = ResponseProcessor.dataToSchedule(busData);
+    // then
+    const expected = {
+      id: '275/ulbach/a',
+      lastUpdate: '2017-07-16T00:00:00.000Z',
+      schedules: [
+        {
+          destination: 'La Défense',
+          time: null,
+          timeMode: 'UNDEFINED',          
+          status: 'SKIPPED',
+          info: null,
+          code: null,
+        },{
+          destination: 'La Défense',
+          time: null,
+          timeMode: 'UNDEFINED',          
+          status: 'SKIPPED',
           info: null,
           code: null,
         },
