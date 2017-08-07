@@ -171,16 +171,14 @@ module.exports = {
           this.getResponse(
             getNavitiaStopSchedulesUrl(apiNavitia, stopConfig),
             NavitiaResponseProcessor.processTransportNavitia,
-            navitiaToken,
-          );
+            navitiaToken);
           break;        
         case 'transiliens':
           this.getResponse(
             getTransilienDepartUrl(apiTransilien, stopConfig),
             TransilienResponseProcessor.processTransportTransilien,
             transilienToken,
-            stopConfig,
-          );
+            stopConfig);
           break;        
         default:
           if (debug) console.log(` *** unknown request: ${type}`);
