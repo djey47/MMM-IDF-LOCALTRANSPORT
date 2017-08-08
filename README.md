@@ -34,16 +34,14 @@ Finally, transilienToken value to be entered in configuration file will be `Basi
 1. Clone repository into `/modules/` inside your MagicMirror folder
 2. Install [yarn](https://yarnpkg.com/en/docs/install)
 3. Run `yarn install` inside `/modules/MMM-IDF-STIF-NAVITIA/` folder
-4. Check that `/modules/MMM-IDF-STIF-NAVITIA/MMM-IDF-STIF-NAVITIA.js` script has been created
+4. Check that `MMM-IDF-STIF-NAVITIA.js` and `node_helper.js` scripts have been created into current folder
 5. Add the module to the MagicMirror config:
 ```
 		{
 	        module: 'MMM-IDF-STIF-NAVITIA',
 	        position: 'bottom_right',
 	        header: 'Connections',
-	        config: {
-            // see below
-	        }
+	        config: { // see below }
     	},
 ```
 
@@ -85,11 +83,12 @@ Finally, transilienToken value to be entered in configuration file will be `Basi
   - `conversion: {"Trafic normal sur l'ensemble de la ligne." : "Traffic normal"}`
   - don't hesitate to add more when there's works on a specific line or others...
 * `transilienToken`: 'Basic xxxxxxxx' : mandatory to access transilien realtime API (account required, see section above)
-* `messages`: key-values to convert generic messages to your preferred language. Copy paste all default values and modify to your likings. (see example below). 
+* `messages`: key-values to convert generic messages to your preferred language. Copy paste all default values and modify to your likings (see example below). 
 
 Example:
 ```javascript
 transilienToken: 'Basic bG9naW46cGFzc3dvcmQ=',
+
 stations: [
   // Legacy API
   {type: 'bus', line: 38, station: 'observatoire+++port+royal', destination: 'A'},
@@ -109,6 +108,7 @@ stations: [
   // With UIC codes:
   {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'SAINT NOM LA BRETECHE', uic: { station: '87382002', destination: '87382481'}, label: 'Becon L'},
 ],
+
 messages: {
   messages: {
     ago: 'ago',

@@ -1,16 +1,16 @@
 /* @flow */
 
-import NodeHelper from './node_helper_impl.js';
+import NodeHelperImpl from './helper_impl.js';
 import LegacyResponseProcessor from './legacy/ResponseProcessor';
 import TrafficResponseProcessor from './traffic/ResponseProcessor';
 import TransilienResponseProcessor from './transilien/ResponseProcessor';
 import VelibResponseProcessor from './velib/ResponseProcessor';
 
-const scheduleUpdate = NodeHelper.scheduleUpdate;
+const scheduleUpdate = NodeHelperImpl.scheduleUpdate;
 const scheduleUpdateMock = jest.fn();
 const sendSocketNotificationMock = jest.fn();
 const getResponseMock = jest.fn();
-const getResponseReal = NodeHelper.getResponse;
+const getResponseReal = NodeHelperImpl.getResponse;
 const processFunctionMock = jest.fn();
 const mockAxiosThen = jest.fn(() => ({
   catch: () => null,
@@ -24,15 +24,15 @@ jest.mock('axios', () => ({
 }));
 
 beforeEach(() => {
-  delete(NodeHelper.started);
-  NodeHelper.config = {
+  delete(NodeHelperImpl.started);
+  NodeHelperImpl.config = {
     debug: false,
   };
-  NodeHelper.retryDelay = 5000;
-  NodeHelper.loaded = false;
+  NodeHelperImpl.retryDelay = 5000;
+  NodeHelperImpl.loaded = false;
 
-  NodeHelper.scheduleUpdate = scheduleUpdate;
-  NodeHelper.sendSocketNotification = sendSocketNotificationMock;
+  NodeHelperImpl.scheduleUpdate = scheduleUpdate;
+  NodeHelperImpl.sendSocketNotification = sendSocketNotificationMock;
 
   scheduleUpdateMock.mockReset();
   sendSocketNotificationMock.mockReset();
@@ -41,43 +41,43 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  NodeHelper.getResponse = getResponseReal;
+  NodeHelperImpl.getResponse = getResponseReal;
 });
 
 describe('start function', () => {
   it('should set started to false', () => {
     // given
-    NodeHelper.started = true;
+    NodeHelperImpl.started = true;
     // when
-    NodeHelper.start();
+    NodeHelperImpl.start();
     // then
-    expect(NodeHelper.started).toEqual(false);
+    expect(NodeHelperImpl.started).toEqual(false);
   });
 });
 
 describe('socketNotificationReceived function', () => {
   it('should keep started to false if unexpected notification', () => {
     // given
-    delete(NodeHelper.config);    
+    delete(NodeHelperImpl.config);    
     // when
-    NodeHelper.socketNotificationReceived('HELLO');
+    NodeHelperImpl.socketNotificationReceived('HELLO');
     // then
-    expect(NodeHelper.started).toBeFalsy();
-    expect(NodeHelper.config).toBeFalsy();
+    expect(NodeHelperImpl.started).toBeFalsy();
+    expect(NodeHelperImpl.config).toBeFalsy();
   });
 
   it('should set started to true and received configuration', () => {
     // given
-    NodeHelper.scheduleUpdate = scheduleUpdateMock;
+    NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;
     const config = {
       param1: true,
       initialLoadDelay: 1000,
     };
     // when
-    NodeHelper.socketNotificationReceived('SET_CONFIG', config);
+    NodeHelperImpl.socketNotificationReceived('SET_CONFIG', config);
     // then
-    expect(NodeHelper.started).toEqual(true);
-    expect(NodeHelper.config).toEqual(config);
+    expect(NodeHelperImpl.started).toEqual(true);
+    expect(NodeHelperImpl.config).toEqual(config);
     expect(scheduleUpdateMock).toHaveBeenCalledWith(1000);
   });
 });
@@ -85,31 +85,31 @@ describe('socketNotificationReceived function', () => {
 describe('scheduleUpdate function', () => {
   it('should use configured interval when not provided', () => {
     // given
-    NodeHelper.config = {
+    NodeHelperImpl.config = {
       updateInterval: 60000,
     };
     // when
-    NodeHelper.scheduleUpdate();
+    NodeHelperImpl.scheduleUpdate();
     // then
-    expect(NodeHelper.updateTimer).toBeTruthy();
+    expect(NodeHelperImpl.updateTimer).toBeTruthy();
   });
 
   it('should use provided interval', () => {
     // given
-    NodeHelper.config = {
+    NodeHelperImpl.config = {
       updateInterval: 60000,
     };
     // when
-    NodeHelper.scheduleUpdate(60000);
+    NodeHelperImpl.scheduleUpdate(60000);
     // then
-    expect(NodeHelper.updateTimer).toBeTruthy();
+    expect(NodeHelperImpl.updateTimer).toBeTruthy();
   });
 });
 
 describe('updateTimetable function', () => {
   it('should send UPDATE notifications and invoke getResponse function', () => {
     // given
-    NodeHelper.config = {
+    NodeHelperImpl.config = {
       apiBaseV3: 'http://api/',
       apiVelib: 'http://apiVelib/search?ds=stations',
       apiTransilien: 'http://apiTransilien/',
@@ -135,10 +135,10 @@ describe('updateTimetable function', () => {
         },
       }],
     };
-    NodeHelper.getResponse = getResponseMock;  
-    const transilienStopConfig = NodeHelper.config.stations[4];
+    NodeHelperImpl.getResponse = getResponseMock;  
+    const transilienStopConfig = NodeHelperImpl.config.stations[4];
     // when
-    NodeHelper.updateTimetable();
+    NodeHelperImpl.updateTimetable();
     // then
     expect(sendSocketNotificationMock).toHaveBeenCalled();
     expect(getResponseMock).toHaveBeenCalledTimes(4);
@@ -168,7 +168,7 @@ describe('getResponse function', () => {
     // given
     const token = 't-o-k-e-n';
     // when
-    NodeHelper.getResponse('http://socket.io', processFunctionMock, token, {});
+    NodeHelperImpl.getResponse('http://socket.io', processFunctionMock, token, {});
     // then
     const expectedConfig = {
       headers: {
@@ -181,7 +181,7 @@ describe('getResponse function', () => {
 
   it('should not add Authorization header when no token provided', () => {
     // given-when
-    NodeHelper.getResponse('http://socket.io', processFunctionMock, null, {});
+    NodeHelperImpl.getResponse('http://socket.io', processFunctionMock, null, {});
     // then
     const expectedConfig = {
       headers: {
@@ -195,9 +195,9 @@ describe('getResponse function', () => {
 describe('handleApiResponse function', () => {
   it('should not invoke processFunction but schedule next update when response KO', () => {
     // given
-    NodeHelper.scheduleUpdate = scheduleUpdateMock;    
+    NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;    
     // when
-    NodeHelper.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, null);
+    NodeHelperImpl.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, null);
     // then
     expect(processFunctionMock).not.toHaveBeenCalled();
     expect(scheduleUpdateMock).toHaveBeenCalledWith(5000);
@@ -205,13 +205,13 @@ describe('handleApiResponse function', () => {
 
   it('should invoke processFunction and schedule next update when response OK and module loaded', () => {
     // given
-    NodeHelper.scheduleUpdate = scheduleUpdateMock;    
-    NodeHelper.loaded = true;
+    NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;    
+    NodeHelperImpl.loaded = true;
     const response = {
       data: {},
     };
     // when
-    NodeHelper.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, response);
+    NodeHelperImpl.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, response);
     // then
     expect(processFunctionMock).toHaveBeenCalled();
     expect(scheduleUpdateMock).toHaveBeenCalledWith();
@@ -219,12 +219,12 @@ describe('handleApiResponse function', () => {
 
   it('should invoke processFunction and schedule next update when response OK and module not loaded', () => {
     // given
-    NodeHelper.scheduleUpdate = scheduleUpdateMock;    
+    NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;    
     const response = {
       data: {},
     };
     // when
-    NodeHelper.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, response);
+    NodeHelperImpl.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, response);
     // then
     expect(processFunctionMock).toHaveBeenCalled();
     expect(scheduleUpdateMock).toHaveBeenCalledWith(5000);
