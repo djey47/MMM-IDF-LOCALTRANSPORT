@@ -124,7 +124,7 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  dataToSchedule: function(data: LegacyResponse): ServerScheduleResponse {
+  dataToSchedule: function(data: LegacyResponse): ServerScheduleResponse|{} {
     if (!data.result) return {};
     
     const {result: {schedules}} = data;
@@ -139,11 +139,13 @@ const ResponseProcessor = {
       }
     ));
 
-    return {
+    const response: ServerScheduleResponse = {
       id: createIndexFromResponse(data),
       lastUpdate: ResponseProcessor.now().toISOString(),
       schedules: targetSchedules,
     };
+
+    return response;
   },
 
   /**

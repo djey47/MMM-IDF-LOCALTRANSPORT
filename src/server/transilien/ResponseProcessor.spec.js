@@ -109,7 +109,7 @@ describe('dataToSchedule function', () => {
     // then
     const expected = {
       id: 'gare/87382002/87384008/depart',
-      lastUpdate: moment('2017-06-20T12:45:23.968Z').toDate(),
+      lastUpdate: '2017-06-20T12:45:23.968Z',
       schedules: [
         {
           destination: 'Label for UIC 87384008(1)',
@@ -133,6 +133,7 @@ describe('dataToSchedule function', () => {
     // given-when
     const actual = ResponseProcessor.dataToSchedule(data, stopConfig, stationInfos);
     // then
+    // $FlowFixMe: always valid
     expect(actual.schedules.length).toEqual(2);
   });
 
@@ -152,13 +153,7 @@ describe('dataToSchedule function', () => {
     // when
     const actual = ResponseProcessor.dataToSchedule(data, stopConfigFiltered, stationInfos);
     // then
+    // $FlowFixMe: always valid
     expect(actual.schedules.length).toEqual(0);
-  });
-  
-  it('should return empty object when incorrect data', () => {
-    // given-when
-    const actual = ResponseProcessor.dataToSchedule({ foo: {}}, {}, []);
-    // then
-    expect(actual).toEqual({});
   });
 });

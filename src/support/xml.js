@@ -1,4 +1,6 @@
-const { parseString } = require('xml2js');
+/* @flow */
+
+import { parseString } from 'xml2js';
 
 const options = { explicitArray: false }; 
 
@@ -6,7 +8,7 @@ const options = { explicitArray: false };
  * @param {String} xml XML string
  * @returns {Object} corresponding JS object
  */
-function xmlToJson(xml) {
+export default function xmlToJson(xml: string): ?Object {
   // Create the return object
   let obj = null;
 
@@ -16,5 +18,3 @@ function xmlToJson(xml) {
 
   return obj;
 }
-
-module.exports = xmlToJson;

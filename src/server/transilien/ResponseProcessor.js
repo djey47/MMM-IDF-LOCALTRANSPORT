@@ -1,6 +1,9 @@
 /* @flow */
 
 import moment from 'moment-timezone';
+
+import type Moment from 'moment';
+
 import { NOTIF_TRANSPORT } from '../../support/notifications';
 import xmlToJson from '../../support/xml';
 import Transilien from '../../support/transilien'; 
@@ -8,6 +11,15 @@ import { getAllStationInfo } from '../../support/railwayRepository';
 import { Status, TimeModes } from '../../support/status';
 
 import type { TimeInfo } from '../../types/Time';
+import type {
+  StationInfoQuery,
+  TransilienResponse,
+  TransilienPassage,
+  TransilienStationInfo,
+  Schedule,
+  ServerScheduleResponse,
+} from '../../types/Transport';
+import type { StationConfiguration } from '../../types/Configuration';
 
 const { createIndexFromResponse } = Transilien;
 
@@ -41,14 +53,14 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  now: function() {
+  now: function(): Moment {
     return moment();
   },
  
   /**
    * @private
    */
-  getStatus: function(etat: string): string {
+  getStatus: function(etat?: string): string {
     if (!etat) return ON_TIME;
     return STATUSES[etat] || UNKNOWN;
   },
@@ -66,8 +78,7 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  // TODO use type
-  passagesToInfoQueries: function(passages?: Object) {
+  passagesToInfoQueries: function(passages: ?TransilienPassage): Array<StationInfoQuery> {
     if (!passages) return [];
 
     return passages.train
@@ -81,13 +92,15 @@ const ResponseProcessor = {
    * @private
    */
   // TODO use types
-  dataToSchedule: function(data: Object, stopConfig: Object, stationInfos: Array<Object>): Object {
-    if (!data.passages) return {};
+  dataToSchedule: function(data: TransilienResponse, stopConfig: StationConfiguration, stationInfos: Array<TransilienStationInfo>): ServerScheduleResponse|{} {
+    const { uic } = stopConfig;
 
-    const { uic: { destination } } = stopConfig;
+    if (!data.passages || !uic) return {};
+
+    const { destination } = uic;
     const { passages: {train} } = data;    
     const schedules = train
-      .map((t, index) => {
+      .map((t, index): any => {
         const { date: {_, $: { mode }}, term, miss, etat } = t;
         if (!destination || term === destination) {
           // Accept train matching wanted destination, if specified
@@ -103,7 +116,7 @@ const ResponseProcessor = {
         return null;
       })
       .filter(schedule => !!schedule)
-      .sort((schedule1, schedule2) => {
+      .sort((schedule1: Schedule, schedule2: Schedule) => {
         const firstCriteria = schedule1.destination.localeCompare(schedule2.destination);
         if (firstCriteria === 0) {
           const moment1 = moment(schedule1.time);
@@ -113,11 +126,13 @@ const ResponseProcessor = {
         return firstCriteria;
       });
 
-    return {
+    const response: ServerScheduleResponse = {
       id: createIndexFromResponse(data, destination),
-      lastUpdate: ResponseProcessor.now().toDate(),
+      lastUpdate: ResponseProcessor.now().toISOString(),
       schedules,
     };
+
+    return response;
   },
 
   /**
@@ -128,9 +143,9 @@ const ResponseProcessor = {
    * @param {Object} stopConfig associated stop configuration
    */
   // TODO use types  
-  processTransportTransilien: function(xmlData: string, context: Object, stopConfig: Object) {
+  processTransportTransilien: function(xmlData: string, context: Object, stopConfig: StationConfiguration) {
     const { config, config: { debug } } = context;
-    const data = xmlToJson(xmlData);
+    const data: ?TransilienResponse = xmlToJson(xmlData);
 
     if (debug) {
       console.log (' *** processTransportTransilien XML data');
@@ -138,6 +153,8 @@ const ResponseProcessor = {
       console.log (' *** processTransportTransilien JSON data');
       console.log (data);
     }
+
+    if (!data) return;
 
     getAllStationInfo(ResponseProcessor.passagesToInfoQueries(data.passages), config)
       .then(stationInfos => {

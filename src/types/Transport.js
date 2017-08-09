@@ -24,8 +24,41 @@ export type LegacyResponse = {
   result: LegacyResult,
 };
 
-export type ServerScheduleResponse = {
-  id?: string,
-  lastUpdate?: string,
-  schedules?: Array<Schedule>,
+export type TransilienTrain = {
+  date: {
+    _: string,
+    $: {
+      mode: string,
+    },
+  },
+  term: string,
+  miss: string,
+  etat?: string,
 };
+
+export type TransilienPassage = {
+  train: Array<TransilienTrain>,
+}
+
+export type TransilienResponse = {
+  passages: TransilienPassage,
+};
+
+export type TransilienStationInfo = {
+  stationInfo: {
+    libelle: string,
+  },
+};
+
+
+export type ServerScheduleResponse = {
+  id: string,
+  lastUpdate: string,
+  schedules: Array<Schedule>,
+};
+
+export type StationInfoQuery = {
+  index: number,
+  stationValue: string,
+};
+

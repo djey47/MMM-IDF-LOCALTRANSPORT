@@ -6,7 +6,7 @@ const Transilien = {
   /**
    * @returns index for results storage (server side)
    */
-  createIndexFromResponse: function (responseData: Object, destination?: string): string {
+  createIndexFromResponse: function (responseData: Object, destination?: ?string): string {
     return `gare/${_get(responseData, 'passages.$.gare')}/${destination || ''}/depart`;
   },
 
