@@ -17,6 +17,7 @@ export const MessageKeys = {
   STATUS_DELETED: '{status.deleted}',
   STATUS_ON_TIME: '{status.ontime}',
   STATUS_SKIPPED: '{status.skipped}',
+  STATUS_TERMINAL: '{status.terminal}',
   UNITS_MINUTES: '{units.minutes}',
   UNITS_SECONDS: '{units.seconds}',
   VELIB_BIKES: '{velib.bikes}',

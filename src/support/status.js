@@ -10,6 +10,7 @@ const {
   STATUS_AT_PLATFORM,
   STATUS_AT_STOP,
   STATUS_SKIPPED,
+  STATUS_TERMINAL,
 } = Keys;
 
 /**
@@ -22,6 +23,7 @@ export const Status = {
   DELETED: 'DELETED',
   DELAYED: 'DELAYED',
   ON_TIME: 'ON_TIME',
+  TERMINAL: 'TERMINAL',
   UNKNOWN: 'UNKNOWN',
   SKIPPED: 'SKIPPED', // RATP only for now
 };
@@ -46,4 +48,5 @@ export const MessageKeys = {
   AT_PLATFORM: STATUS_AT_PLATFORM,
   AT_STOP: STATUS_AT_STOP,
   SKIPPED: STATUS_SKIPPED,
+  TERMINAL: STATUS_TERMINAL,
 };

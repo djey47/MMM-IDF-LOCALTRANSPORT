@@ -48,6 +48,7 @@ export const defaults: ModuleConfiguration = {
       deleted: '😞❌',
       delayed: '😐⏳',
       skipped: '❌',
+      terminal: '❌ term',
     },
     units: {
       minutes: 'mn',

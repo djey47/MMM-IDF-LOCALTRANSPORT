@@ -8,7 +8,9 @@ import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
 import LegacyApi  from '../../support/legacyApi';
 import { Status, TimeModes, MessageKeys as StatusMessageKeys }  from '../../support/status';
+
 import type { ModuleConfiguration } from '../../types/Configuration';
+import type { Schedule } from '../../types/Transport';
 
 type Stop = {
   line: (number|string)[],
@@ -22,16 +24,6 @@ type VelibStation = {
   bike: number,
   empty: number,
   name: string,
-};
-
-type Schedule = {
-  message?: string,     // TODO deletion: Deprecated
-  destination: string,
-  status: ?string,      // See support/status.js
-  time?: ?string,       // ISO
-  timeMode?: string,    // See support/status.js
-  code?: ?string,       // Mission code for trains
-  info?: ?string,       // Additional information, not applicable for transiliens
 };
 
 type ComingContext = {

@@ -23,6 +23,10 @@ describe('dataToSchedule function', () => {
         code: 'ZEUS',
         message: '17:17 Départ voie B',
         destination: 'St-Germain-en-Laye. Poissy. Cergy.',
+      },{
+        code: 'BINA',
+        message: 'Train terminus V.1',
+        destination: 'Boissy-St-Léger. Marne-la-Vallée.',
       }],
     },
     _metadata: {
@@ -99,6 +103,13 @@ describe('dataToSchedule function', () => {
           status: 'ON_TIME',
           code: 'ZEUS',
           info: 'Départ voie B',          
+        },{
+          destination: 'Boissy-St-Léger. Marne-la-Vallée.',
+          time: null,
+          timeMode: 'UNDEFINED',
+          status: 'TERMINAL',
+          code: 'BINA',
+          info: null,          
         },
       ],
     };
@@ -173,12 +184,5 @@ describe('dataToSchedule function', () => {
       ],
     };
     expect(actual).toEqual(expected);
-  });
-
-  it('should return empty object when incorrect data', () => {
-    // given-when
-    const actual = ResponseProcessor.dataToSchedule({ foo: {}});
-    // then
-    expect(actual).toEqual({});
   });
 });

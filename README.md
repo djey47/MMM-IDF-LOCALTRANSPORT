@@ -126,6 +126,7 @@ messages: {
       deleted: '😞❌',
       delayed: '😐⏳',
       skipped: '❌',
+      terminal: '❌ term',
     },
     units: {
       minutes: 'mn',

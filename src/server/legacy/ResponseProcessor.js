@@ -1,11 +1,15 @@
 /* @flow */
 
 import moment from 'moment-timezone';
-import { NOTIF_TRANSPORT } from '../../support/notifications.js';
+
+import type Moment from 'moment';
+
+import { NOTIF_TRANSPORT } from '../../support/notifications';
 import { createIndexFromResponse } from '../../support/legacyApi'; 
-import { Status, TimeModes } from '../../support/status.js';
+import { Status, TimeModes } from '../../support/status';
 
 import type { TimeInfo } from '../../types/Time';
+import type { LegacySchedule, LegacyResponse, Schedule, ServerScheduleResponse } from '../../types/Transport';
 
 const { 
   APPROACHING,
@@ -14,6 +18,7 @@ const {
   DELAYED,
   ON_TIME,
   SKIPPED,
+  TERMINAL,
   UNKNOWN,
 } = Status;
 
@@ -40,20 +45,20 @@ const REGEX_RER_TIME = /\d{1,2}:\d{1,2}\s?.*/;
 const REGEX_METRO_TIME = /\d+ mn/;
 const MESSAGE_BYPASSED = 'DEVIATION';
 const MESSAGE_UNSERVED = 'ARRET NON DESSERVI';
+const MESSAGE_TERMINAL = 'Train terminus';
 
 const ResponseProcessor = {
   /**
    * @private
    */
-  now: function() {
+  now: function(): Moment {
     return moment();
   },
 
   /**
    * @private
    */
-  // TODO use type
-  getAdditionalInfo: function(schedule: Object): ?string {
+  getAdditionalInfo: function(schedule: LegacySchedule): ?string {
     const { message } = schedule;
 
     if (!REGEX_RER_TIME.test(message)) return null;
@@ -68,13 +73,14 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  // TODO use type
-  getStatus: function(schedule: Object): string {
+  getStatus: function(schedule: LegacySchedule): string {
     const { message } = schedule;
 
     if (REGEX_METRO_TIME.test(message) || REGEX_RER_TIME.test(message)) return ON_TIME;
 
     if (message.indexOf(MESSAGE_UNSERVED) !== -1 || message.indexOf(MESSAGE_BYPASSED) !== -1) return SKIPPED;
+
+    if (message.indexOf(MESSAGE_TERMINAL) !== -1) return TERMINAL;
 
     return statuses[message] || UNKNOWN;
   },
@@ -82,8 +88,7 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  // TODO use type
-  getTimeInfo: function(schedule: Object): TimeInfo {
+  getTimeInfo: function(schedule: LegacySchedule): TimeInfo {
     const { message } = schedule;
 
     let time;
@@ -119,13 +124,12 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  // TODO use types
-  dataToSchedule: function(data: Object): Object {
+  dataToSchedule: function(data: LegacyResponse): ServerScheduleResponse {
     if (!data.result) return {};
     
     const {result: {schedules}} = data;
 
-    const targetSchedules = schedules.map(schedule => (
+    const targetSchedules: Array<Schedule> = schedules.map((schedule: LegacySchedule) => (
       {
         ...ResponseProcessor.getTimeInfo(schedule),
         code: schedule.code || null,
