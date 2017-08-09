@@ -1,10 +1,12 @@
 /* @flow */
 
-import {
+import Transilien from './transilien';
+
+const {
   createIndexFromResponse,
   createIndexFromStopConfig,
   getTransilienDepartUrl,
-} from './transilien';
+} = Transilien;
 
 describe('createIndexFromResponse function', () => {
   it('should return correct index', () => {

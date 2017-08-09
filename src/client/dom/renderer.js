@@ -214,7 +214,7 @@ const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: 
 /**
  * @returns HTML for public transport items (rows) for any API
  */
-export const renderPublicTransport = (stopConfig: Object, stopIndex: string, schedules: Object, lastUpdate: Object, config: Object) => {
+export const renderPublicTransport = (stopConfig: Object, stopIndex: ?string, schedules: Object, lastUpdate: Object, config: Object) => {
   const { maximumEntries, messages } = config;
   const rows = [];
   const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);

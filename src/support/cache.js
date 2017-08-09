@@ -1,3 +1,5 @@
+/* @flow */
+
 /** Very basic cache implementation **/
 
 const infoCache = {};
@@ -5,14 +7,15 @@ const infoCache = {};
 /**
  * @returns cached value for query if it exists, null otherwise
  */
-const getInfoFromCache = function(query) {
+// TODO use type
+export const getInfoFromCache = function(query: string): ?Object {
   return query ? infoCache[query] : null;
 };
 
 /**
  * Adds or update value in cache
  */
-const putInfoInCache = function(query, stationInfo) {
+export const putInfoInCache = function(query: string, stationInfo: Object) {
   if (!query || !stationInfo) return;
 
   infoCache[query] = stationInfo;
@@ -21,14 +24,8 @@ const putInfoInCache = function(query, stationInfo) {
 /**
  * Clears all values in cache
  */
-const resetInfoCache = function() {
+export const resetInfoCache = function() {
   for (const prop of Object.keys(infoCache)) {
     delete infoCache[prop];
   }
-};
-
-module.exports = {
-  putInfoInCache,
-  resetInfoCache,
-  getInfoFromCache,
 };

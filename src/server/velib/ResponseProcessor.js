@@ -1,4 +1,6 @@
-const { NOTIF_VELIB } = require('../../support/notifications.js');
+/* @flow */
+
+import { NOTIF_VELIB } from '../../support/notifications';
 
 const ResponseProcessor = {
   /**
@@ -7,7 +9,8 @@ const ResponseProcessor = {
    * @param {any} data 
    * @param {any} context 
    */
-  processVelib: (data, context) => {
+  // TODO use types
+  processVelib: (data: Object, context: Object) => {
     const { number, name, bike_stands, available_bike_stands, available_bikes, last_update } = data.records[0].fields;
     const velibInfo = {
       id: number,
@@ -22,4 +25,4 @@ const ResponseProcessor = {
   },
 };
 
-module.exports = ResponseProcessor;
+export default ResponseProcessor;

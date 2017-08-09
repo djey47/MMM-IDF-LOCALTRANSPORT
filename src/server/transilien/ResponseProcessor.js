@@ -1,21 +1,28 @@
-const moment = require('moment-timezone');
-const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
-const xmlToJson = require('../../support/xml.js');
-const { createIndexFromResponse } = require('../../support/transilien.js'); 
-const { getAllStationInfo } = require('../../support/railwayRepository.js');
+/* @flow */
+
+import moment from 'moment-timezone';
+import { NOTIF_TRANSPORT } from '../../support/notifications';
+import xmlToJson from '../../support/xml';
+import Transilien from '../../support/transilien'; 
+import { getAllStationInfo } from '../../support/railwayRepository';
+import { Status, TimeModes } from '../../support/status';
+
+import type { TimeInfo } from '../../types/Time';
+
+const { createIndexFromResponse } = Transilien;
+
 const {
-  Status: {
-    ON_TIME,
-    DELAYED,
-    DELETED,
-    UNKNOWN,
-  },
-  TimeModes: {
-    REALTIME,
-    THEORICAL,
-    UNDEFINED,
-  },
-} = require('../../support/status.js');
+  ON_TIME,
+  DELAYED,
+  DELETED,
+  UNKNOWN,
+} = Status;
+
+const {
+  REALTIME,
+  THEORICAL,
+  UNDEFINED,
+} = TimeModes;
 
 const DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm';
 
@@ -41,7 +48,7 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  getStatus: function(etat) {
+  getStatus: function(etat: string): string {
     if (!etat) return ON_TIME;
     return STATUSES[etat] || UNKNOWN;
   },
@@ -49,7 +56,7 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  getTimeInfo: function(time, mode) {
+  getTimeInfo: function(time: string, mode: string): TimeInfo {
     return {
       time: moment(time, DATE_TIME_FORMAT).toISOString(),
       timeMode: TIME_MODES[mode] || TIME_MODES.U,
@@ -59,7 +66,8 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  passagesToInfoQueries: function(passages) {
+  // TODO use type
+  passagesToInfoQueries: function(passages?: Object) {
     if (!passages) return [];
 
     return passages.train
@@ -72,7 +80,8 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  dataToSchedule: function(data, stopConfig, stationInfos) {
+  // TODO use types
+  dataToSchedule: function(data: Object, stopConfig: Object, stationInfos: Array<Object>): Object {
     if (!data.passages) return {};
 
     const { uic: { destination } } = stopConfig;
@@ -82,11 +91,8 @@ const ResponseProcessor = {
         const { date: {_, $: { mode }}, term, miss, etat } = t;
         if (!destination || term === destination) {
           // Accept train matching wanted destination, if specified
-          // TODO use object rest spread when server bundling
-          const { time, timeMode } =  ResponseProcessor.getTimeInfo(_, mode);
           return {
-            time,
-            timeMode,
+            ...ResponseProcessor.getTimeInfo(_, mode),
             destination: stationInfos[index].stationInfo.libelle,
             status: ResponseProcessor.getStatus(etat),
             code: miss,
@@ -121,7 +127,8 @@ const ResponseProcessor = {
    * @param {Object} context whole module context
    * @param {Object} stopConfig associated stop configuration
    */
-  processTransportTransilien: function(xmlData, context, stopConfig) {
+  // TODO use types  
+  processTransportTransilien: function(xmlData: string, context: Object, stopConfig: Object) {
     const { config, config: { debug } } = context;
     const data = xmlToJson(xmlData);
 
@@ -141,4 +148,4 @@ const ResponseProcessor = {
   },
 };
 
-module.exports = ResponseProcessor;
+export default ResponseProcessor;

@@ -1,5 +1,3 @@
-/* @flow */
-
 import NodeHelperImpl from './helper_impl.js';
 import LegacyResponseProcessor from './legacy/ResponseProcessor';
 import TrafficResponseProcessor from './traffic/ResponseProcessor';

@@ -1,30 +1,36 @@
-const axios = require('axios');
-const NavitiaResponseProcessor = require('./navitia/ResponseProcessor.js');
-const TransilienResponseProcessor = require('./transilien/ResponseProcessor.js');
-const LegacyResponseProcessor = require('./legacy/ResponseProcessor.js');
-const TrafficResponseProcessor = require('./traffic/ResponseProcessor.js');
-const VelibResponseProcessor = require('./velib/ResponseProcessor.js');
-const { getTransilienDepartUrl } = require ('../support/transilien');
-const { getNavitiaStopSchedulesUrl } = require ('../support/navitia');
-const {
+/* @flow */
+
+import axios from 'axios';
+import NavitiaResponseProcessor from './navitia/ResponseProcessor';
+import TransilienResponseProcessor from './transilien/ResponseProcessor';
+import LegacyResponseProcessor from './legacy/ResponseProcessor';
+import TrafficResponseProcessor from './traffic/ResponseProcessor';
+import VelibResponseProcessor from './velib/ResponseProcessor';
+import Transilien from '../support/transilien';
+import { getNavitiaStopSchedulesUrl } from '../support/navitia';
+import {
   getTrafficUrl,
   getVelibUrl,
   getScheduleUrl,
-} = require ('../support/legacyApi');
-const {
+} from '../support/legacyApi';
+import {
   NOTIF_UPDATE,
   NOTIF_SET_CONFIG,
-} = require('../support/notifications.js');
+} from '../support/notifications.js';
+
+const { getTransilienDepartUrl } = Transilien;
 
 /**
  * Custom NodeHelper implementation
  */
+// ES6 module export does not work here...
 module.exports = {
   start: function () {
     this.started = false;
   },
 
-  socketNotificationReceived: function(notification, payload) {
+  // TODO use type
+  socketNotificationReceived: function(notification: string, payload: Object) {
     if (notification === NOTIF_SET_CONFIG && !this.started) {
       this.config = payload;
 
@@ -42,7 +48,7 @@ module.exports = {
    * Schedule next update.
    * @param delay Milliseconds before next update. If empty, this.config.updateInterval is used.
   */
-  scheduleUpdate: function(delay) {
+  scheduleUpdate: function(delay?: number) {
     let nextLoad = this.config.updateInterval;
     if (typeof delay !== 'undefined' && delay >= 0) {
       nextLoad = delay;
@@ -75,7 +81,8 @@ module.exports = {
    * @param stopConfig associated stop configuration
    * @private
    */
-  handleAPIResponse: function(url, processFunction, response, stopConfig) {
+  // TODO use types
+  handleAPIResponse: function(url: string, processFunction: Function, response: Object, stopConfig: Object) {
     const { debug } = this.config;
     if (response && response.data) {
       const { data } = response;
@@ -107,7 +114,7 @@ module.exports = {
    * When API error occurs, do particular processing and handle retries
    * @private
    */
-  handleAPIError: function(error) {
+  handleAPIError: function(error: any) {
     console.error(error);
 
     this.scheduleRetry();
@@ -120,9 +127,10 @@ module.exports = {
    * @param authToken (optional) authentication token
    * @private
    */
-  getResponse: function(url, processFunction, authToken, stopConfig) {
+  // TODO use types  
+  getResponse: function(url: string, processFunction: Function, authToken: string, stopConfig: Object) {
     const { debug } = this.config.debug;
-    const headers = {
+    const headers: Object = {
       Accept: 'application/json;charset=utf-8',
     };
     if (authToken) {

@@ -1,7 +1,7 @@
 /* @flow */
 
 import moment from 'moment-timezone';
-import ResponseProcessor from './ResponseProcessor.js';
+import ResponseProcessor from './ResponseProcessor';
 
 beforeAll(() => {
   moment.tz.setDefault('UTC');

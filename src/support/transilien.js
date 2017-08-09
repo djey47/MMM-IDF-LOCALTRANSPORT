@@ -1,17 +1,20 @@
-const _get = require('lodash/get');
+/* @flow */
+
+import _get from 'lodash/get';
 
 const Transilien = {
   /**
    * @returns index for results storage (server side)
    */
-  createIndexFromResponse: function (responseData, destination) {
+  createIndexFromResponse: function (responseData: Object, destination?: string): string {
     return `gare/${_get(responseData, 'passages.$.gare')}/${destination || ''}/depart`;
   },
 
   /**
    * @returns index for results access (client side)
    */
-  createIndexFromStopConfig: function (stopConfig) {
+  // TODO use type
+  createIndexFromStopConfig: function (stopConfig: Object): ?string {
     const { uic } = stopConfig;
     if (!uic) return null;
 
@@ -22,10 +25,11 @@ const Transilien = {
   /**
    * @returns full call URL to transilien next departures for a station
    */
-  getTransilienDepartUrl: function (apiTransilien, stopConfig) {
+  // TODO use type
+  getTransilienDepartUrl: function (apiTransilien: string, stopConfig: Object) {
     const { uic: { station }} = stopConfig;
     return `${apiTransilien}gare/${station}/depart`;
   },
 };
 
-module.exports = Transilien;
+export default Transilien;

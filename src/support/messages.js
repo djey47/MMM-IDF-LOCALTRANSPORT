@@ -1,9 +1,10 @@
-const _get = require('lodash/get');
+/* @flow */
+import _get from 'lodash/get';
 
 /**
  * Keys for translated messages. To be shared between client and server sides.
  */
-const MessageKeys = {
+export const MessageKeys = {
   AGO: '{ago}',
   LOADING: '{loading}',
   NEXT_UPDATE: '{nextUpdate}',
@@ -29,12 +30,7 @@ const MessageKeys = {
  * @param {*} messages 
  * @returns Translated message if corresponding key was found in messages section.
  */
-const translate = function(key, messages) {
+export const translate = function(key: string, messages: ?Object) {
   if (!key || !messages || !/^{.*}/.test(key)) return key;
   return _get(messages, key.slice(1, -1), key);
-};
-
-module.exports = {
-  MessageKeys,
-  translate,
 };

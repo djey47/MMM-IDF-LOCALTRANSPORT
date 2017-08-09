@@ -177,7 +177,7 @@ describe('dataToSchedule function', () => {
 
   it('should return empty object when incorrect data', () => {
     // given-when
-    const actual = ResponseProcessor.dataToSchedule({ foo: {}}, []);
+    const actual = ResponseProcessor.dataToSchedule({ foo: {}});
     // then
     expect(actual).toEqual({});
   });

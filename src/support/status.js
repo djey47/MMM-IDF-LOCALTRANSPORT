@@ -1,4 +1,8 @@
-const { MessageKeys: {
+/* @flow */
+
+import { MessageKeys as Keys } from './messages';
+
+const {
   STATUS_APPROACHING,
   STATUS_DELAYED,
   STATUS_DELETED,
@@ -6,12 +10,12 @@ const { MessageKeys: {
   STATUS_AT_PLATFORM,
   STATUS_AT_STOP,
   STATUS_SKIPPED,
-}} = require('./messages.js');
+} = Keys;
 
 /**
  * All transportation status codes
  */
-const Status = {
+export const Status = {
   APPROACHING: 'APPROACHING',
   AT_PLATFORM: 'AT_PLATFORM',
   AT_STOP: 'AT_STOP',
@@ -25,7 +29,7 @@ const Status = {
 /**
  * All schedule modes
  */
-const TimeModes = {
+export const TimeModes = {
   REALTIME: 'REALTIME',
   THEORICAL: 'THEORICAL',
   UNDEFINED: 'UNDEFINED',
@@ -34,7 +38,7 @@ const TimeModes = {
 /**
  * All associated translation keys
  */
-const MessageKeys = {
+export const MessageKeys = {
   APPROACHING: STATUS_APPROACHING,
   DELETED: STATUS_DELETED,
   DELAYED: STATUS_DELAYED,
@@ -42,10 +46,4 @@ const MessageKeys = {
   AT_PLATFORM: STATUS_AT_PLATFORM,
   AT_STOP: STATUS_AT_STOP,
   SKIPPED: STATUS_SKIPPED,
-};
-
-module.exports = {
-  Status,
-  TimeModes,
-  MessageKeys,
 };

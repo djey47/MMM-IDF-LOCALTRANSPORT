@@ -1,6 +1,6 @@
 /* @flow */
 
-import ResponseProcessor from './ResponseProcessor.js';
+import ResponseProcessor from './ResponseProcessor';
 
 const sendSocketNotificationMock = jest.fn();
 

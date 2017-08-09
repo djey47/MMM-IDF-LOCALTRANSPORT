@@ -1,21 +1,26 @@
-const moment = require('moment-timezone');
-const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
-const { createIndexFromResponse } = require('../../support/legacyApi'); 
+/* @flow */
+
+import moment from 'moment-timezone';
+import { NOTIF_TRANSPORT } from '../../support/notifications.js';
+import { createIndexFromResponse } from '../../support/legacyApi'; 
+import { Status, TimeModes } from '../../support/status.js';
+
+import type { TimeInfo } from '../../types/Time';
+
 const { 
-  Status: {
-    APPROACHING,
-    AT_PLATFORM,
-    AT_STOP,
-    DELAYED,
-    ON_TIME,
-    UNKNOWN,
-    SKIPPED,
-  },
-  TimeModes: {
-    UNDEFINED,
-    REALTIME,
-  },
-} = require('../../support/status.js');
+  APPROACHING,
+  AT_PLATFORM,
+  AT_STOP,
+  DELAYED,
+  ON_TIME,
+  SKIPPED,
+  UNKNOWN,
+} = Status;
+
+const {
+  REALTIME,
+  UNDEFINED,
+} = TimeModes;
 
 /**
  * Association between API messages and statuses
@@ -47,7 +52,8 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  getAdditionalInfo: function(schedule) {
+  // TODO use type
+  getAdditionalInfo: function(schedule: Object): ?string {
     const { message } = schedule;
 
     if (!REGEX_RER_TIME.test(message)) return null;
@@ -62,7 +68,8 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  getStatus: function(schedule) {
+  // TODO use type
+  getStatus: function(schedule: Object): string {
     const { message } = schedule;
 
     if (REGEX_METRO_TIME.test(message) || REGEX_RER_TIME.test(message)) return ON_TIME;
@@ -75,7 +82,8 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  getTimeInfo: function(schedule) {
+  // TODO use type
+  getTimeInfo: function(schedule: Object): TimeInfo {
     const { message } = schedule;
 
     let time;
@@ -111,23 +119,21 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  dataToSchedule: function(data) {
+  // TODO use types
+  dataToSchedule: function(data: Object): Object {
     if (!data.result) return {};
     
     const {result: {schedules}} = data;
 
-    const targetSchedules = schedules.map(schedule => {
-      // TODO use object rest spread when server bundling
-      const { time, timeMode } =  ResponseProcessor.getTimeInfo(schedule);
-      return {
-        time,
-        timeMode,
+    const targetSchedules = schedules.map(schedule => (
+      {
+        ...ResponseProcessor.getTimeInfo(schedule),
         code: schedule.code || null,
         destination: schedule.destination,
         status: ResponseProcessor.getStatus(schedule),
         info: ResponseProcessor.getAdditionalInfo(schedule),
-      };
-    });
+      }
+    ));
 
     return {
       id: createIndexFromResponse(data),
@@ -137,12 +143,12 @@ const ResponseProcessor = {
   },
 
   /**
-   * Handles Transilien realtime response
+   * Handles realtime response
    * 
-   * @param {any} xmlData 
+   * @param {any} data 
    * @param {any} context 
    */
-  processTransport: function(data, context) {
+  processTransport: function(data: Object, context: Object) {
     if (context.debug) {
       console.log (' *** processTransport data');
       console.log (data);
@@ -153,4 +159,4 @@ const ResponseProcessor = {
   },
 };
 
-module.exports = ResponseProcessor;
+export default ResponseProcessor;

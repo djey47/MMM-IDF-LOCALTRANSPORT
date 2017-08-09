@@ -1,6 +1,8 @@
-const moment = require('moment-timezone');
-const { NOTIF_TRAFFIC } = require('../../support/notifications.js');
-const { createIndexFromResponse } = require('../../support/legacyApi'); 
+/* @flow */
+
+import moment from 'moment-timezone';
+import { NOTIF_TRAFFIC } from '../../support/notifications.js';
+import { createIndexFromResponse } from '../../support/legacyApi'; 
 
 const ResponseProcessor = {
   /**
@@ -16,7 +18,8 @@ const ResponseProcessor = {
    * @param {any} data 
    * @param {any} context 
    */
-  processTraffic: (data, context) => {
+  // TODO use types
+  processTraffic: (data: Object, context: Object) => {
     const { result } = data;
 
     if (context.config.debug) {
@@ -34,4 +37,4 @@ const ResponseProcessor = {
   },
 };
 
-module.exports = ResponseProcessor;
+export default ResponseProcessor;
