@@ -8,17 +8,19 @@ import TrafficResponseProcessor from './traffic/ResponseProcessor';
 import VelibResponseProcessor from './velib/ResponseProcessor';
 import Transilien from '../support/transilien';
 import { getNavitiaStopSchedulesUrl } from '../support/navitia';
-import {
-  getTrafficUrl,
-  getVelibUrl,
-  getScheduleUrl,
-} from '../support/legacyApi';
+import LegacyApi from '../support/legacyApi';
 import {
   NOTIF_UPDATE,
   NOTIF_SET_CONFIG,
 } from '../support/notifications.js';
 
 import type { StationConfiguration } from '../types/Configuration';
+
+const {
+  getTrafficUrl,
+  getVelibUrl,
+  getScheduleUrl,
+} = LegacyApi;
 
 const { getTransilienDepartUrl } = Transilien;
 

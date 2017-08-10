@@ -1,7 +1,8 @@
 /* @flow */
 
 import moment from 'moment-timezone';
-import ResponseProcessor from './ResponseProcessor.js';
+import ResponseProcessor from './ResponseProcessor';
+import { defaults } from '../../client/support/configuration';
 
 const sendSocketNotificationMock = jest.fn();
 
@@ -12,7 +13,7 @@ beforeAll(() => {
 
 describe('processTraffic function', () => {
   const context = {
-    config: {},
+    config: {...defaults},
     sendSocketNotification: sendSocketNotificationMock,
   };
 
@@ -36,7 +37,7 @@ describe('processTraffic function', () => {
       'TRAFFIC',
       {
         id: 'traffic/metros/3',
-        lastUpdate: moment('2017-07-16T00:00:00.000Z').toDate(),
+        lastUpdate: '2017-07-16T00:00:00.000Z',
         line: '3',
         loaded: true,
         message: 'Trafic normal sur l\'ensemble de la ligne.',

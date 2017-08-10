@@ -5,11 +5,13 @@ import moment from 'moment-timezone';
 import type Moment from 'moment';
 
 import { NOTIF_TRANSPORT } from '../../support/notifications';
-import { createIndexFromResponse } from '../../support/legacyApi'; 
+import LegacyApi from '../../support/legacyApi'; 
 import { Status, TimeModes } from '../../support/status';
 
 import type { TimeInfo } from '../../types/Time';
 import type { LegacySchedule, LegacyResponse, Schedule, ServerScheduleResponse } from '../../types/Transport';
+
+const { createIndexFromResponse } = LegacyApi;
 
 const { 
   APPROACHING,

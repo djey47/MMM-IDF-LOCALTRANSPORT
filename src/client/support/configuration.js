@@ -1,9 +1,13 @@
 /* @flow */
 
+// TODO Move to common support directory
+
 import { getAllStationInfo } from '../../support/railwayRepository';
 import { NOTIF_SET_CONFIG } from '../../support/notifications';
 
+import type { NotificationSenderFunction } from '../../types/Application';
 import type { ModuleConfiguration } from '../../types/Configuration';
+import type { StationInfoResult } from '../../types/Transport';
 
 const TYPE_TRANSILIEN = 'transiliens';
 
@@ -70,7 +74,7 @@ export const defaults: ModuleConfiguration = {
  * @param {Function} sendSocketNotification 
  * @param {Object} configuration 
  */
-export function handleStationInfoResponse(responses: Array<Object>, sendSocketNotification: Function, configuration: ModuleConfiguration) {
+export function handleStationInfoResponse(responses: Array<StationInfoResult>, sendSocketNotification: NotificationSenderFunction, configuration: ModuleConfiguration) {
   const { debug } = configuration;
 
   responses.forEach(response => {
@@ -105,22 +109,30 @@ export function handleStationInfoResponse(responses: Array<Object>, sendSocketNo
  * @param {Object} configuration configuration to be enhanced
  * @param {Function} sendSocketNotification callback to notification handler
  */
-export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: Function) {
+export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: (notification: string, payload: Object) => void) {
   const { stations } = configuration;
   // Stations for transilien: retrieve UIC
   const queries = stations
     .filter(stationConfig => stationConfig.type === TYPE_TRANSILIEN)
-    .map((stationConfig, index) => {
-      const { station, destination, uic } = stationConfig;
+    .filter(stationConfig => {
       // Do not resolve to UIC codes if already provided
-      if (uic && uic.station && (!destination || destination && uic.destination)) return null;
+      const { destination, uic } = stationConfig;      
+      return !uic || !uic.station || destination && !uic.destination;
+    })
+    .map((stationConfig, index)  => {
+      const { station, destination } = stationConfig;
+      
+      if(!station) {
+        console.error('** MMM-IDF-STIF-NAVITIA: Configuration does not contain station:');
+        console.error(stationConfig);
+      }
+      
       return {
         index,
-        stationValue: station,
+        stationValue: station || '?',
         destinationValue: destination,
       };
-    })
-    .filter(stationConfig => !!stationConfig);
+    });
 
   if (queries.length) {
     getAllStationInfo(queries, configuration)

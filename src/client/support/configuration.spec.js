@@ -35,12 +35,12 @@ describe('handleStationInfoResponse function', () => {
     const currentConfig = Object.assign({}, defaults, { stations });
     const responses = [{
       index: 0,
-      stationInfo: { code_uic: 'UIC1' },
-      destinationInfo: { code_uic: 'UIC2'},
+      stationInfo: { libelle: 'L1', code_uic: 'UIC1' },
+      destinationInfo: { libelle: 'L2', code_uic: 'UIC2'},
     }, {
       index: 1,
-      stationInfo: { code_uic: 'UIC2' },
-      destinationInfo: { code_uic: 'UIC1'},
+      stationInfo: { libelle: 'L2', code_uic: 'UIC2' },
+      destinationInfo: { libelle: 'L1', code_uic: 'UIC1'},
     }];
     // when
     handleStationInfoResponse(responses, mockSendSocketNotification, currentConfig);
@@ -68,7 +68,7 @@ describe('handleStationInfoResponse function', () => {
     const currentConfig = Object.assign({}, defaults, { stations });
     const responses = [{
       index: 0,
-      stationInfo: { code_uic: 'UIC1' },
+      stationInfo: { libelle: 'L1', code_uic: 'UIC1' },
     }];
     // when
     handleStationInfoResponse(responses, mockSendSocketNotification, currentConfig);

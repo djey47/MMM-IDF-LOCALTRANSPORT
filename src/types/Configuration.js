@@ -11,12 +11,12 @@ export type UICConfiguration = {
 
 export type StationConfiguration = {
 
-  type: string,
+  type?: string,
   label?: string,
   station?: string,
   destination?: string,
   uic?: UICConfiguration, 
-  line?: Array<number|string>,
+  line?: string|Array<number|string>,
 
 };
 

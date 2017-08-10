@@ -11,7 +11,7 @@ import { Status, TimeModes, MessageKeys as StatusMessageKeys }  from '../../supp
 
 import type { ComingContext } from '../../types/Application';
 import type { ModuleConfiguration, StationConfiguration } from '../../types/Configuration';
-import type { Schedule, VelibStationInfo } from '../../types/Transport';
+import type { Schedule, ServerVelibResponse } from '../../types/Transport';
 
 /**
  * @returns HTML for main wrapper
@@ -261,7 +261,7 @@ export const renderNoInfoVelib = (stop: StationConfiguration, messages?: Object)
  * @private
  * @returns HTML for info received for Velib (without trend)
  */
-export const renderSimpleInfoVelib = (stop: StationConfiguration, station: VelibStationInfo, messages: Object): any => {
+export const renderSimpleInfoVelib = (stop: StationConfiguration, station: ServerVelibResponse, messages: Object): any => {
   // TODO swap columns and handle 4th one
   const row = document.createElement('tr');
   const { label } = stop;
@@ -288,7 +288,7 @@ export const renderSimpleInfoVelib = (stop: StationConfiguration, station: Velib
  * @private
  * @returns HTML for info received for Velib (with trend)
  */
-export const renderTrendInfoVelib = (stop: StationConfiguration, station: VelibStationInfo, velibHistory: Object, config: Object): any => {
+export const renderTrendInfoVelib = (stop: StationConfiguration, station: ServerVelibResponse, velibHistory: Object, config: Object): any => {
   const { name, bike, empty } = station;
   const { velibTrendWidth, velibTrendHeight, velibTrendTimeScale, velibTrendZoom, velibTrendDay } = config;
   const rowTrend = document.createElement('tr');

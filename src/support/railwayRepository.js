@@ -1,11 +1,16 @@
-const axios = require('axios');
-const _get = require('lodash/get');
-const {
+/* @flow */
+
+import axios from 'axios';
+import _get from 'lodash/get';
+import {
   getInfoFromCache,
   putInfoInCache,
-} = require('./cache.js');
+} from './cache';
 
-const axiosConfig = {
+import type { StationInfoQuery, StationInfoResult, SNCFStationInfo } from '../types/Transport';
+import type { ModuleConfiguration } from '../types/Configuration';
+
+export const axiosConfig = {
   headers: {
     Accept: 'application/json;charset=utf-8',
   },
@@ -14,22 +19,24 @@ const axiosConfig = {
 /**
  * @private
  */
-const getInfoUrl = function (apiSncfData, query) {
+const getInfoUrl = function (apiSncfData: string, query: string): string {
   return encodeURI(`${apiSncfData}search?q=${query}&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle`);
 };
 
 /**
  * @private
  */
-const isInfoReceived = function (response) {
+// TODO use types 
+const isInfoReceived = function (response: Object): boolean {
   return !!_get(response, 'data.records.length');
 };
 
 /**
  * @private
  */
-const handleInfoResponsesOnSuccess = function (responses, resolveCallback, query, debug) {
-  const { index, stationValue, destinationValue } = query;
+// TODO use types 
+export const handleInfoResponsesOnSuccess = function (responses: Array<Object>, resolveCallback: Function, infoQuery: StationInfoQuery, debug: boolean): void {
+  const { index, stationValue, destinationValue } = infoQuery;
   const [ stationResponse, destinationResponse ] = responses;
 
   if (debug) {
@@ -41,7 +48,7 @@ const handleInfoResponsesOnSuccess = function (responses, resolveCallback, query
     
     if (debug) {
       console.log(`** Info found for station '${stationValue}'`);
-      if (isDestinationInfoReceived) console.log(`** Info found for destination '${destinationValue}'`);
+      if (isDestinationInfoReceived) console.log(`** Info found for destination '${destinationValue || ''}'`);
     }
 
     const stationInfo = stationResponse.data.records[0].fields;
@@ -66,7 +73,8 @@ const handleInfoResponsesOnSuccess = function (responses, resolveCallback, query
 /**
  * @private
  */
-const getCachedCallbackForStationInfo = function(index, stationInfo, destinationInfo) {
+// TODO use types 
+const getCachedCallbackForStationInfo = function(index: number, stationInfo: SNCFStationInfo, destinationInfo: ?SNCFStationInfo): Function {
   return (resolve) => {
     // Station info or Station+Destination info already in cache
     resolve({
@@ -80,7 +88,8 @@ const getCachedCallbackForStationInfo = function(index, stationInfo, destination
 /**
  * @private 
  */
-const getCallbackForStationInfo = function(query, config) {
+// TODO use types 
+const getCallbackForStationInfo = function(query: StationInfoQuery, config: ModuleConfiguration): Function {
   const { stationValue, destinationValue } = query;  
   const { apiSncfData, debug } = config;
   return (resolve, reject) => {
@@ -90,7 +99,7 @@ const getCallbackForStationInfo = function(query, config) {
     // Not mandatory: destination
     if (destinationValue) axiosPromises.push(axios.get(getInfoUrl(apiSncfData, destinationValue), axiosConfig));
 
-    axios.all(axiosPromises, axiosConfig)
+    axios.all(axiosPromises)
       .then(
         (responses) => handleInfoResponsesOnSuccess(responses, resolve, query, debug),
         (error) => {
@@ -108,7 +117,7 @@ const getCallbackForStationInfo = function(query, config) {
  * @param {Object} config
  * @returns {Promise} first station/destination info matching provided query (label or UIC), or null if it does not exist
  */
-const getStationInfo = function(query, config) {
+export const getStationInfo = function(query: StationInfoQuery, config: ModuleConfiguration) {
   const { index, stationValue, destinationValue } = query;
   
   const stationInfo = getInfoFromCache(stationValue);
@@ -128,14 +137,6 @@ const getStationInfo = function(query, config) {
  * @param {Object} config
  * @returns Promise to all first station info matching provided query (label or UIC), or null if it does not exist
  */
-function getAllStationInfo(queries, config) {
+export const getAllStationInfo = (queries: Array<StationInfoQuery>, config: ModuleConfiguration): Promise<Array<StationInfoResult>> => {
   return Promise.all(queries.map(query => getStationInfo(query, config)));
-}
-
-module.exports = {
-  axiosConfig,
-  getStationInfo,
-  getAllStationInfo,
-  // test exports
-  handleInfoResponsesOnSuccess,
 };

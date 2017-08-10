@@ -1,12 +1,12 @@
 /* @flow */
 
 import ResponseProcessor from './ResponseProcessor';
-
+import { defaults } from '../../client/support/configuration';
 const sendSocketNotificationMock = jest.fn();
 
 describe('processVelib function', () => {
   const context = {
-    config: {},
+    config: {...defaults},
     sendSocketNotification: sendSocketNotificationMock,
   };
 

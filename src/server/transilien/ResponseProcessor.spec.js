@@ -85,11 +85,13 @@ describe('dataToSchedule function', () => {
     index: 0,
     stationInfo: {
       libelle: 'Label for UIC 87384008(1)',
+      code_uic: '87384008',
     },
   },{
     index: 1,
     stationInfo: {
       libelle: 'Label for UIC 87384008(2)',
+      code_uic: '87384008',
     },
   }];
   const stopConfig = {

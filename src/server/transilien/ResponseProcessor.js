@@ -13,9 +13,9 @@ import { Status, TimeModes } from '../../support/status';
 import type { TimeInfo } from '../../types/Time';
 import type {
   StationInfoQuery,
+  StationInfoResult,
   TransilienResponse,
   TransilienPassage,
-  TransilienStationInfo,
   Schedule,
   ServerScheduleResponse,
 } from '../../types/Transport';
@@ -91,7 +91,7 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  dataToSchedule: function(data: TransilienResponse, stopConfig: StationConfiguration, stationInfos: Array<TransilienStationInfo>): ServerScheduleResponse|{} {
+  dataToSchedule: function(data: TransilienResponse, stopConfig: StationConfiguration, stationInfos: Array<StationInfoResult>): ServerScheduleResponse|{} {
     const { uic } = stopConfig;
 
     if (!data.passages || !uic) return {};

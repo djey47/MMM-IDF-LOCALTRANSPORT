@@ -1,5 +1,7 @@
 /* @flow */
 
+/* Module specific defs */
+
 export type Schedule = {
   message?: string,     // TODO deletion: Deprecated
   destination: string,
@@ -10,9 +12,45 @@ export type Schedule = {
   info?: ?string,       // Additional information, not applicable for transiliens
 };
 
-type LegacyResult = {
-  schedules: Array<LegacySchedule>,
+export type ServerScheduleResponse = {
+  id: string,
+  lastUpdate: string,
+  schedules: Array<Schedule>,
 };
+
+export type ServerTrafficResponse = {
+  id: string,
+  lastUpdate: string,
+  loaded: boolean,
+  message: string,
+  slug: string,
+  title: string,
+};
+
+export type ServerVelibResponse = {
+  id: number,
+  // TODO: rename to keep same
+  last_update: string,
+  name: string,
+  total: number,
+  empty: number,
+  bike: number,
+  loaded: boolean,
+};
+
+export type StationInfoQuery = {
+  index: number,
+  stationValue: string,
+  destinationValue?: ?string,
+};
+
+export type StationInfoResult = {
+  index: number,
+  stationInfo: SNCFStationInfo,
+  destinationInfo?: SNCFStationInfo,
+};
+
+/* Legacy API defs */
 
 export type LegacySchedule = {
   code?: string,
@@ -21,8 +59,26 @@ export type LegacySchedule = {
 };
 
 export type LegacyResponse = {
-  result: LegacyResult,
+  _metadata: {
+    call: string,
+  },  
+  result: {
+    schedules: Array<LegacySchedule>,
+  },
 };
+
+export type LegacyTrafficResponse = {
+  _metadata: {
+    call: string,
+  },
+  result: {
+    message: string,
+    slug: string,
+    title: string,
+  },  
+};
+
+/* Transilien API defs */
 
 export type TransilienTrain = {
   date: {
@@ -44,27 +100,25 @@ export type TransilienResponse = {
   passages: TransilienPassage,
 };
 
-export type TransilienStationInfo = {
-  stationInfo: {
-    libelle: string,
-  },
+/* SNCF Gares API defs */
+
+export type SNCFStationInfo = {
+  code_uic: string,
+  libelle: string,
 };
 
-export type ServerScheduleResponse = {
-  id: string,
-  lastUpdate: string,
-  schedules: Array<Schedule>,
-};
+/* Velib API defs */
 
-export type StationInfoQuery = {
-  index: number,
-  stationValue: string,
-};
-
-export type VelibStationInfo = {
-  total: number,
-  bike: number,
-  empty: number,
-  name: string,
+export type VelibResponse = {
+  records: [{
+    fields: {
+      number: number,
+      name: string,
+      bike_stands: number,
+      available_bike_stands: number,
+      available_bikes: number,
+      last_update: string,      
+    }
+  }],
 };
 

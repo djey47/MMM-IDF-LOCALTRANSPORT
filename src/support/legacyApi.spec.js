@@ -1,20 +1,24 @@
 /* @flow */
 
-import {
+import LegacyApi from './legacyApi';
+
+import type { StationConfiguration } from '../types/Configuration';
+
+const {
   getScheduleUrl,
   getTrafficUrl,
   getVelibUrl,
   createIndexFromResponse,
   createIndexFromStopConfig,
   createTrafficIndexFromStopConfig,
-} from './legacyApi';
+} = LegacyApi;
 
 const apiBase = 'http://api/v3/';
 
 describe('getScheduleUrl function', () => {
   it('should return correct URL', () => {
     // given
-    const stopConfig = {
+    const stopConfig: StationConfiguration = {
       type: 'rers',
       line: 'B',
       station: 'port+royal',
@@ -45,7 +49,7 @@ describe('getVelibUrl function', () => {
     // given
     const apiVelib = 'http://apivelib/';
     const stopConfig = {
-      station: 10868,
+      station: '10868',
     };
     // when
     const actual = getVelibUrl(apiVelib, stopConfig);
@@ -60,6 +64,9 @@ describe('createIndexFromResponse function', () => {
     const data = {
       _metadata: {
         call: 'http://api/v3/schedules/rers/b/port+royal/A',
+      },
+      result: {
+        schedules: [],
       },
     };
     // when

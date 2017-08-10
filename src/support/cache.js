@@ -1,5 +1,7 @@
 /* @flow */
 
+import type { SNCFStationInfo } from '../types/Transport';
+
 /** Very basic cache implementation **/
 
 const infoCache = {};
@@ -7,15 +9,14 @@ const infoCache = {};
 /**
  * @returns cached value for query if it exists, null otherwise
  */
-// TODO use type
-export const getInfoFromCache = function(query: string): ?Object {
+export const getInfoFromCache = function(query: string): ?SNCFStationInfo {
   return query ? infoCache[query] : null;
 };
 
 /**
  * Adds or update value in cache
  */
-export const putInfoInCache = function(query: string, stationInfo: Object) {
+export const putInfoInCache = function(query: string, stationInfo: SNCFStationInfo) {
   if (!query || !stationInfo) return;
 
   infoCache[query] = stationInfo;

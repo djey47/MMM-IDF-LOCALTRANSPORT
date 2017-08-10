@@ -11,6 +11,7 @@ import {
   resetInfoCache,
   getInfoFromCache,
 } from './cache';
+import { defaults } from '../client/support/configuration';
 
 const mockThen = jest.fn();
 const mockAll = jest.fn(() => ({
@@ -25,8 +26,8 @@ jest.mock('axios', () => ({
 const mockResolve = jest.fn();
 
 const config = {
+  ...defaults,
   apiSncfData: 'https://foo/bar',
-  debug: false,
 };
 
 beforeEach(() => {
@@ -60,7 +61,7 @@ describe('getStationInfo function', () => {
       index: 0,
       stationValue: 'Lazare',
     };
-    putInfoInCache('Lazare', {});
+    putInfoInCache('Lazare', { code_uic: 'UIC1', libelle: 'L1' });
     // when
     const actual = getStationInfo(query, config);
     // then
