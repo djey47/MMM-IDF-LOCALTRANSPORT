@@ -378,6 +378,7 @@ describe('renderTraffic function', () => {
   it('should return correct HTML for table row', () => {
     // given
     const stop = {
+      type: 'bus',
       line: ['BUS', 275],
       label: 'Ulbach Label',
       station: 'Ulbach',
@@ -399,11 +400,16 @@ describe('renderTraffic function', () => {
   });
 });
 
+const baseStopConfigForVelib = {
+  type: 'velibs',
+  line: ['VELIB', 68],
+};
+
 describe('renderNoInfoVelib function', () => {
   it('should return correct HTML for table row when label', () => {
     // given
     const stop = {
-      line: ['VELIB', 68],
+      ...baseStopConfigForVelib,
       label: 'Ulbach',
       station: '',
     };
@@ -416,7 +422,7 @@ describe('renderNoInfoVelib function', () => {
   it('should return correct HTML for table cell when no label', () => {
     // given
     const stop = {
-      line: ['VELIB', 68],
+      ...baseStopConfigForVelib,
       station: 'Stations',
     };
     // when
@@ -430,7 +436,7 @@ describe('renderVelib function', () => {
   it('should return correct HTML when no history', () => {
     // given
     const stop = {
-      line: ['VELIB', 68],
+      ...baseStopConfigForVelib,
       label: 'Opera Bis',
       station: '',
     };
@@ -445,8 +451,8 @@ describe('renderVelib function', () => {
   it('should return correct HTML when history without trend', () => {
     // given
     const stop = {
-      line: ['VELIB', 68],
-      station: 2209,
+      ...baseStopConfigForVelib,
+      station: '2209',
     };
     const velibHistory = {
       '2209': [{
@@ -469,8 +475,8 @@ describe('renderVelib function', () => {
   it('should return correct HTML when history with trend', () => {
     // given
     const stop = {
-      line: ['VELIB', 68],
-      station: 2209,
+      ...baseStopConfigForVelib,
+      station: '2209',
     };
     const velibHistory = {
       '2209': [{

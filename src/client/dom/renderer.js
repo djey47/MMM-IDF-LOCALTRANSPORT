@@ -9,28 +9,9 @@ import Transilien  from '../../support/transilien';
 import LegacyApi  from '../../support/legacyApi';
 import { Status, TimeModes, MessageKeys as StatusMessageKeys }  from '../../support/status';
 
-import type { ModuleConfiguration } from '../../types/Configuration';
-import type { Schedule } from '../../types/Transport';
-
-type Stop = {
-  line: (number|string)[],
-  label?: string,
-  station: number|string,
-  destination?: string,
-};
-
-type VelibStation = {
-  total: number,
-  bike: number,
-  empty: number,
-  name: string,
-};
-
-type ComingContext = {
-  previousDepInfo: string,
-  previousDestination: ?string,
-  previousRow: ?any,
-};
+import type { ComingContext } from '../../types/Application';
+import type { ModuleConfiguration, StationConfiguration } from '../../types/Configuration';
+import type { Schedule, VelibStationInfo } from '../../types/Transport';
 
 /**
  * @returns HTML for main wrapper
@@ -77,7 +58,7 @@ export const renderHeader = (data: Object, config: ModuleConfiguration): string 
 /**
  * @returns HTML for traffic status
  */
-export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): any => {
+export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, config: Object): any => {
   const { messages, conversion } = config;
   const stopIndex = LegacyApi.createTrafficIndexFromStopConfig(stop);
   const row = document.createElement('tr');
@@ -85,10 +66,11 @@ export const renderTraffic = (stop: Stop, ratpTraffic: Object, config: Object): 
   const { line, label } = stop;
   const firstCell = document.createElement('td');
   firstCell.className = classnames('align-right', 'bright');
-  firstCell.innerHTML = label || line[1].toString();
+  firstCell.innerHTML = label || (line ? line[1].toString() : MessageKeys.UNAVAILABLE);
   row.appendChild(firstCell);
 
   const trafficAtStop = ratpTraffic[stopIndex];
+  // TODO use info field instead
   const { message } = trafficAtStop ? trafficAtStop : { message: translate(MessageKeys.UNAVAILABLE, messages) };
   const secondCell = document.createElement('td');
   secondCell.className = 'align-left';
@@ -112,7 +94,7 @@ const resolveStatus = (statusCode: ?string, messages: Object): string => {
 /**
  * @private
  */
-const resolveName = (firstLine: boolean, stop: Stop, messages: Object): string => {
+const resolveName = (firstLine: boolean, stop: StationConfiguration, messages: Object): string => {
   const { line, label, station } = stop;
 
   if (!firstLine) return ' ';
@@ -129,7 +111,7 @@ const resolveName = (firstLine: boolean, stop: Stop, messages: Object): string =
 /**
  * @private
  */
-const renderComingTransport = (firstLine: boolean, stop: Stop, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: ModuleConfiguration): ?any => {
+const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: ModuleConfiguration): ?any => {
   const INDEX_STATUS = 3;
   const { messages, concatenateArrivals, convertToWaitingTime, maxLettersForDestination, maxLettersForTime, oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity } = config;
   const nowMoment = now();
@@ -236,7 +218,7 @@ export const renderPublicTransport = (stopConfig: Object, stopIndex: ?string, sc
 /**
  * @returns HTML for public transport items (rows) via classical API (Grimaud v3)
  */
-export const renderPublicTransportLegacy = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object): any[] => {
+export const renderPublicTransportLegacy = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: Object): any[] => {
   const stopIndex = LegacyApi.createIndexFromStopConfig(stop);
 
   return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
@@ -245,7 +227,7 @@ export const renderPublicTransportLegacy = (stop: Stop, schedules: Object, lastU
 /**
  * @returns HTML for public transport items (rows) via Navitia API
  */
-export const renderPublicTransportNavitia = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object): any[] => {
+export const renderPublicTransportNavitia = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: Object): any[] => {
   const stopIndex = Navitia.createIndexFromStopConfig(stop);
 
   return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);  
@@ -254,7 +236,7 @@ export const renderPublicTransportNavitia = (stop: Stop, schedules: Object, last
 /**
  * @returns HTML for public transport items (rows) via Transilien API
  */
-export const renderPublicTransportTransilien = (stop: Stop, schedules: Object, lastUpdate: Object, config: Object): any[] => {
+export const renderPublicTransportTransilien = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: Object): any[] => {
   const stopIndex = Transilien.createIndexFromStopConfig(stop);
 
   return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);  
@@ -263,13 +245,13 @@ export const renderPublicTransportTransilien = (stop: Stop, schedules: Object, l
 /**
  * @private
  */
-export const renderNoInfoVelib = (stop: Stop, messages?: Object): any => {
+export const renderNoInfoVelib = (stop: StationConfiguration, messages?: Object): any => {
   const { label, station } = stop;
   const row = document.createElement('tr');
   const messageCell = document.createElement('td');
 
   messageCell.className = 'bright';
-  messageCell.innerHTML = `${label || station} ${translate(MessageKeys.NOT_YET, messages)}`;
+  messageCell.innerHTML = `${label || station || MessageKeys.UNAVAILABLE} ${translate(MessageKeys.NOT_YET, messages)}`;
   row.appendChild(messageCell);
 
   return row;
@@ -279,8 +261,8 @@ export const renderNoInfoVelib = (stop: Stop, messages?: Object): any => {
  * @private
  * @returns HTML for info received for Velib (without trend)
  */
-export const renderSimpleInfoVelib = (stop: Stop, station: VelibStation, messages: Object): any => {
-  // FIXME swap columns and handle 4th one
+export const renderSimpleInfoVelib = (stop: StationConfiguration, station: VelibStationInfo, messages: Object): any => {
+  // TODO swap columns and handle 4th one
   const row = document.createElement('tr');
   const { label } = stop;
   const { total, bike, empty, name } = station;
@@ -306,7 +288,7 @@ export const renderSimpleInfoVelib = (stop: Stop, station: VelibStation, message
  * @private
  * @returns HTML for info received for Velib (with trend)
  */
-export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHistory: Object, config: Object): any => {
+export const renderTrendInfoVelib = (stop: StationConfiguration, station: VelibStationInfo, velibHistory: Object, config: Object): any => {
   const { name, bike, empty } = station;
   const { velibTrendWidth, velibTrendHeight, velibTrendTimeScale, velibTrendZoom, velibTrendDay } = config;
   const rowTrend = document.createElement('tr');
@@ -397,7 +379,7 @@ export const renderTrendInfoVelib = (stop: Stop, station: VelibStation, velibHis
 /**
  * @returns HTML for info received for Velib
  */
-export const renderVelib = (stop: Stop, velibHistory: Object, config: Object): any => {
+export const renderVelib = (stop: StationConfiguration, velibHistory: Object, config: Object): any => {
   const { messages, trendGraphOff } = config;
   const velibStationHistory = velibHistory[stop.station];
 

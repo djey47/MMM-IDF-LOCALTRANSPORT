@@ -8,6 +8,11 @@ const {
   getTransilienDepartUrl,
 } = Transilien;
 
+const baseStopConfig = {
+  type: 'transiliens',
+  station: 'Becon',
+};
+
 describe('createIndexFromResponse function', () => {
   it('should return correct index', () => {
     // given
@@ -46,7 +51,7 @@ describe('createIndexFromStopConfig function', () => {
   it('should return null when no UIC codes resolved', () => {
     // given
     const stopConfig = {
-      station: 'Becon', 
+      ...baseStopConfig,
     };
     // when
     const actual = createIndexFromStopConfig(stopConfig);
@@ -57,7 +62,7 @@ describe('createIndexFromStopConfig function', () => {
   it('should return correct index', () => {
     // given
     const stopConfig = {
-      station: 'Becon', 
+      ...baseStopConfig,
       uic: {
         station: '87382002',
       },
@@ -71,7 +76,7 @@ describe('createIndexFromStopConfig function', () => {
   it('should return correct index with destination', () => {
     // given
     const stopConfig = {
-      station: 'Becon', 
+      ...baseStopConfig,
       uic: {
         station: '87382002',
         destination: '87382210',
@@ -88,7 +93,7 @@ describe('getTransilienDepartUrl function', () => {
   it('should return correct URL', () => {
     // given
     const stopConfig = {
-      station: 'Becon', 
+      ...baseStopConfig,
       uic: {
         station: '87382002',
       },

@@ -91,7 +91,6 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  // TODO use types
   dataToSchedule: function(data: TransilienResponse, stopConfig: StationConfiguration, stationInfos: Array<TransilienStationInfo>): ServerScheduleResponse|{} {
     const { uic } = stopConfig;
 
@@ -142,7 +141,6 @@ const ResponseProcessor = {
    * @param {Object} context whole module context
    * @param {Object} stopConfig associated stop configuration
    */
-  // TODO use types  
   processTransportTransilien: function(xmlData: string, context: Object, stopConfig: StationConfiguration) {
     const { config, config: { debug } } = context;
     const data: ?TransilienResponse = xmlToJson(xmlData);

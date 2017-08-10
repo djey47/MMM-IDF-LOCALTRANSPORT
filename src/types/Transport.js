@@ -50,7 +50,6 @@ export type TransilienStationInfo = {
   },
 };
 
-
 export type ServerScheduleResponse = {
   id: string,
   lastUpdate: string,
@@ -60,5 +59,12 @@ export type ServerScheduleResponse = {
 export type StationInfoQuery = {
   index: number,
   stationValue: string,
+};
+
+export type VelibStationInfo = {
+  total: number,
+  bike: number,
+  empty: number,
+  name: string,
 };
 

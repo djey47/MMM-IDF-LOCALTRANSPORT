@@ -18,29 +18,32 @@ import {
   NOTIF_SET_CONFIG,
 } from '../support/notifications.js';
 
+import type { StationConfiguration } from '../types/Configuration';
+
 const { getTransilienDepartUrl } = Transilien;
 
 /**
  * Custom NodeHelper implementation
+ * ES6 module export does not work here...
  */
-// ES6 module export does not work here...
 module.exports = {
   start: function () {
     this.started = false;
   },
 
-  // TODO use type
   socketNotificationReceived: function(notification: string, payload: Object) {
     if (notification === NOTIF_SET_CONFIG && !this.started) {
+      const { debug, initialLoadDelay } = payload;
+
       this.config = payload;
 
-      if (this.config.debug) {
+      if (debug) {
         console.log (' *** config set in node_helper: ');
         console.log ( payload );
       }
 
       this.started = true;
-      this.scheduleUpdate(this.config.initialLoadDelay);
+      this.scheduleUpdate(initialLoadDelay);
     }
   },
 
@@ -49,13 +52,15 @@ module.exports = {
    * @param delay Milliseconds before next update. If empty, this.config.updateInterval is used.
   */
   scheduleUpdate: function(delay?: number) {
-    let nextLoad = this.config.updateInterval;
+    const { debug, updateInterval } = this.config;
+
+    let nextLoad = updateInterval;
     if (typeof delay !== 'undefined' && delay >= 0) {
       nextLoad = delay;
     }
     clearTimeout(this.updateTimer);
 
-    if (this.config.debug) {
+    if (debug) {
       console.log (' *** scheduleUpdate set next update in ' + nextLoad);
     }
 
@@ -81,8 +86,7 @@ module.exports = {
    * @param stopConfig associated stop configuration
    * @private
    */
-  // TODO use types
-  handleAPIResponse: function(url: string, processFunction: Function, response: Object, stopConfig: Object) {
+  handleAPIResponse: function(url: string, processFunction: Function, response: Object, stopConfig: StationConfiguration) {
     const { debug } = this.config;
     if (response && response.data) {
       const { data } = response;
@@ -127,8 +131,7 @@ module.exports = {
    * @param authToken (optional) authentication token
    * @private
    */
-  // TODO use types  
-  getResponse: function(url: string, processFunction: Function, authToken: string, stopConfig: Object) {
+  getResponse: function(url: string, processFunction: Function, authToken: string, stopConfig: StationConfiguration) {
     const { debug } = this.config.debug;
     const headers: Object = {
       Accept: 'application/json;charset=utf-8',
