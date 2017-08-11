@@ -2,12 +2,12 @@
 
 // TODO Move to common support directory
 
-import { getAllStationInfo } from '../../support/railwayRepository';
-import { NOTIF_SET_CONFIG } from '../../support/notifications';
+import { getAllStationInfo } from './railwayRepository';
+import { NOTIF_SET_CONFIG } from './notifications';
 
-import type { NotificationSenderFunction } from '../../types/Application';
-import type { ModuleConfiguration } from '../../types/Configuration';
-import type { StationInfoResult } from '../../types/Transport';
+import type { NotificationSenderFunction } from '../types/Application';
+import type { ModuleConfiguration } from '../types/Configuration';
+import type { StationInfoResult } from '../types/Transport';
 
 const TYPE_TRANSILIEN = 'transiliens';
 

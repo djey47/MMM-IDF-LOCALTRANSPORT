@@ -11,7 +11,7 @@ import {
   resetInfoCache,
   getInfoFromCache,
 } from './cache';
-import { defaults } from '../client/support/configuration';
+import { defaults } from './configuration';
 
 const mockThen = jest.fn();
 const mockAll = jest.fn(() => ({

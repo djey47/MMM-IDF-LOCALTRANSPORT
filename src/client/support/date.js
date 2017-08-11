@@ -2,4 +2,6 @@
 
 import moment from 'moment-timezone';
 
-export const now = ():moment.Moment => moment(); 
+import type Moment from 'moment';
+
+export const now = ():Moment => moment(); 

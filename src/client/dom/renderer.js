@@ -164,7 +164,7 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
   row.appendChild(depCell);
 
   const effectiveThreshold = oldUpdateThreshold ? oldUpdateThreshold : updateInterval * (1 + oldThreshold);
-  if (nowMoment.subtract(moment(comingLastUpdate).valueOf()) > effectiveThreshold) {
+  if (nowMoment.subtract(moment(comingLastUpdate)).valueOf() > effectiveThreshold) {
     destinationCell.style.opacity = depCell.style.opacity = oldUpdateOpacity.toString();
   }
 
@@ -358,17 +358,22 @@ export const renderTrendInfoVelib = (stop: StationConfiguration, station: Server
     ctx.moveTo(width / 3, 0);
     ctx.lineTo(width / 3, 100);
     ctx.stroke();
-    var hourMark = new Date(); var alpha;
-    hourMark.setMinutes(0); hourMark.setSeconds(0);
-    alpha = (hourMark - nowMoment + 24 * 60 * 60 * 1000 - effectiveZoom * 1000) / (24 * 60 * 60 * 1000 - 2 * effectiveZoom * 1000);
-    alpha = (hourMark - nowMoment + effectiveZoom * 1000) / (24 * 60 * 60 * 1000) * width;
-    for (var h = 0; h < 24; h = h + 2) {
-      ctx.fillStyle = 'red';
-      ctx.textAlign = 'center';
-      ctx.font = Math.round(height / 12) + 'px';
-      ctx.fillText(`${(hourMark.getHours() + 24 - h) % 24}`, (2 - h / 24) * width / 3 + alpha, h % 12 * height / 12 / 3 + height / 3);
-    }
+    
+    // TODO compute properly (use moment)
+    // var hourMark = new Date(); var alpha;
+    // hourMark.setMinutes(0); hourMark.setSeconds(0);
+    // alpha = (hourMark - nowMoment + 24 * 60 * 60 * 1000 - effectiveZoom * 1000) / (24 * 60 * 60 * 1000 - 2 * effectiveZoom * 1000);
+    // alpha = (hourMark - nowMoment + effectiveZoom * 1000) / (24 * 60 * 60 * 1000) * width;
+    
+    // for (var h = 0; h < 24; h = h + 2) {
+    //   ctx.fillStyle = 'red';
+    //   ctx.textAlign = 'center';
+    //   ctx.font = Math.round(height / 12) + 'px';
+    //   ctx.fillText(`${(hourMark.getHours() + 24 - h) % 24}`, (2 - h / 24) * width / 3 + alpha, h % 12 * height / 12 / 3 + height / 3);
+    // }
+
   }
+  // TODO use constant for cell count?
   cellTrend.colSpan = 3; //so that it takes the whole row
   cellTrend.appendChild(trendGraph);
   rowTrend.appendChild(cellTrend);

@@ -11,7 +11,7 @@ import {
   renderNoInfoVelib,
   renderVelib,
 } from './renderer.js';
-import { defaults } from '../support/configuration';
+import { defaults } from '../../support/configuration';
 
 import type { ModuleConfiguration } from '../../types/Configuration';
 

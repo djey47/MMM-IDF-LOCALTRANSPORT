@@ -17,7 +17,7 @@ import {
   NOTIF_VELIB,
   NOTIF_TRANSPORT,
 } from '../support/notifications';
-import { defaults, enhanceConfiguration } from './support/configuration';
+import { defaults, enhanceConfiguration } from '../support/configuration';
 import {
   renderWrapper,
   renderHeader,

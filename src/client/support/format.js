@@ -3,6 +3,9 @@
 import moment from 'moment-timezone';
 import { translate, MessageKeys } from '../../support/messages';
 
+import type Moment from 'moment';
+
+
 /**
  * @returns time with format H:MM:SS from date
  */
@@ -24,7 +27,7 @@ export const toHoursMinutes = (date?: string): string => {
 /**
  * @return waiting time in minutes from transport time ISO
  */
-export const toWaitingTime = (transportTime?: string, now: Date, messages: Object): string => {
+export const toWaitingTime = (transportTime?: string, now: Moment, messages: Object): string => {
   const endDate = moment(transportTime);
   if (!endDate.isValid()) return transportTime || '';
   const startDate = moment(now);

@@ -6,7 +6,7 @@ let mockGetAllStationInfo = jest.fn();
 const mockThen = jest.fn();
 const mockSendSocketNotification = jest.fn();
 
-jest.mock('../../support/railwayRepository', () => ({
+jest.mock('./railwayRepository', () => ({
   getAllStationInfo: (queries, config) => mockGetAllStationInfo(queries, config),
 }) );
 
