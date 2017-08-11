@@ -20,7 +20,7 @@ const ResponseProcessor = {
       total: bike_stands,
       empty: available_bike_stands,
       bike: available_bikes,
-      last_update: last_update,
+      lastUpdate: last_update,
       loaded: true,
     };
     context.sendSocketNotification(NOTIF_VELIB, velibInfo);

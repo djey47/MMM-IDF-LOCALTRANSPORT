@@ -29,8 +29,7 @@ export type ServerTrafficResponse = {
 
 export type ServerVelibResponse = {
   id: number,
-  // TODO: rename to keep same
-  last_update: string,
+  lastUpdate: string,
   name: string,
   total: number,
   empty: number,

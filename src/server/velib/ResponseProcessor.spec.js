@@ -36,7 +36,7 @@ describe('processVelib function', () => {
       bike: 0,
       empty: 24,
       id: 14111,
-      last_update: '2017-04-15T12:14:25+00:00',
+      lastUpdate: '2017-04-15T12:14:25+00:00',
       loaded: true,
       name: '14111 - DENFERT-ROCHEREAU CASSINI',
       total: 24,
