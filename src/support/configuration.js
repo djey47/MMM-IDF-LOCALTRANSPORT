@@ -1,7 +1,5 @@
 /* @flow */
 
-// TODO Move to common support directory
-
 import { getAllStationInfo } from './railwayRepository';
 import { NOTIF_SET_CONFIG } from './notifications';
 

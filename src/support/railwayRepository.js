@@ -7,7 +7,14 @@ import {
   putInfoInCache,
 } from './cache';
 
-import type { StationInfoQuery, StationInfoResult, SNCFStationInfo } from '../types/Transport';
+import type {
+  StationInfoQuery,
+  StationInfoResult,
+  SNCFStationInfo,
+  SNCFStationResponse,
+  StationInfoHandlerFunction,
+  StationInfoResolverFunction,
+} from '../types/Transport';
 import type { ModuleConfiguration } from '../types/Configuration';
 
 export const axiosConfig = {
@@ -26,16 +33,14 @@ const getInfoUrl = function (apiSncfData: string, query: string): string {
 /**
  * @private
  */
-// TODO use types 
-const isInfoReceived = function (response: Object): boolean {
+const isInfoReceived = function (response: SNCFStationResponse): boolean {
   return !!_get(response, 'data.records.length');
 };
 
 /**
  * @private
  */
-// TODO use types 
-export const handleInfoResponsesOnSuccess = function (responses: Array<Object>, resolveCallback: Function, infoQuery: StationInfoQuery, debug: boolean): void {
+export const handleInfoResponsesOnSuccess = function (responses:  Array<SNCFStationResponse>, resolveCallback: StationInfoResolverFunction, infoQuery: StationInfoQuery, debug: boolean): void {
   const { index, stationValue, destinationValue } = infoQuery;
   const [ stationResponse, destinationResponse ] = responses;
 
@@ -73,8 +78,7 @@ export const handleInfoResponsesOnSuccess = function (responses: Array<Object>, 
 /**
  * @private
  */
-// TODO use types 
-const getCachedCallbackForStationInfo = function(index: number, stationInfo: SNCFStationInfo, destinationInfo: ?SNCFStationInfo): Function {
+const getCachedCallbackForStationInfo = function(index: number, stationInfo: SNCFStationInfo, destinationInfo: ?SNCFStationInfo): StationInfoHandlerFunction {
   return (resolve) => {
     // Station info or Station+Destination info already in cache
     resolve({
@@ -88,8 +92,7 @@ const getCachedCallbackForStationInfo = function(index: number, stationInfo: SNC
 /**
  * @private 
  */
-// TODO use types 
-const getCallbackForStationInfo = function(query: StationInfoQuery, config: ModuleConfiguration): Function {
+const getCallbackForStationInfo = function(query: StationInfoQuery, config: ModuleConfiguration): StationInfoHandlerFunction {
   const { stationValue, destinationValue } = query;  
   const { apiSncfData, debug } = config;
   return (resolve, reject) => {
@@ -113,11 +116,11 @@ const getCallbackForStationInfo = function(query: StationInfoQuery, config: Modu
 };
 
 /**
- * @param {Object} query Object with index and stationValue, destinationValue attributes (index is the index within stations array from config)
- * @param {Object} config
+ * @param {StationInfoQuery} query Object with index and stationValue, destinationValue attributes (index is the index within stations array from config)
+ * @param {ModuleConfiguration} config
  * @returns {Promise} first station/destination info matching provided query (label or UIC), or null if it does not exist
  */
-export const getStationInfo = function(query: StationInfoQuery, config: ModuleConfiguration) {
+export const getStationInfo = function(query: StationInfoQuery, config: ModuleConfiguration): Promise<StationInfoResult> {
   const { index, stationValue, destinationValue } = query;
   
   const stationInfo = getInfoFromCache(stationValue);
@@ -133,8 +136,8 @@ export const getStationInfo = function(query: StationInfoQuery, config: ModuleCo
 };
 
 /**
- * @param {Object[]} queries requests to get info for
- * @param {Object} config
+ * @param {StationInfoQuery[]} queries requests to get info for
+ * @param {ModuleConfiguration} config
  * @returns Promise to all first station info matching provided query (label or UIC), or null if it does not exist
  */
 export const getAllStationInfo = (queries: Array<StationInfoQuery>, config: ModuleConfiguration): Promise<Array<StationInfoResult>> => {

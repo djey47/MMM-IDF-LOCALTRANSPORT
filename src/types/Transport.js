@@ -46,8 +46,12 @@ export type StationInfoQuery = {
 export type StationInfoResult = {
   index: number,
   stationInfo: SNCFStationInfo,
-  destinationInfo?: SNCFStationInfo,
+  destinationInfo?: ?SNCFStationInfo,
 };
+
+export type StationInfoHandlerFunction = (resolve: Function, reject: Function) => void;
+
+export type StationInfoResolverFunction = (stationInfo: ?StationInfoResult) => void;
 
 /* Legacy API defs */
 
@@ -104,6 +108,16 @@ export type TransilienResponse = {
 export type SNCFStationInfo = {
   code_uic: string,
   libelle: string,
+};
+
+export type SNCFStationRecord = {
+  fields: SNCFStationInfo,
+};
+
+export type SNCFStationResponse = {
+  data: {
+    records: Array<SNCFStationRecord>,
+  },
 };
 
 /* Velib API defs */

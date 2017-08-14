@@ -99,7 +99,7 @@ describe('handleInfoResponsesOnSuccess function', () => {
         data: {
           records: [
             {
-              fields: { f1: 'becon' },
+              fields: { libelle: 'becon', code_uic: 'UIC1' },
             },
           ],
         },
@@ -108,7 +108,7 @@ describe('handleInfoResponsesOnSuccess function', () => {
         data: {
           records: [
             {
-              fields: { f1: 'st cloud' },
+              fields: { libelle: 'st cloud', code_uic: 'UIC2' },
             },
           ],
         },
@@ -125,14 +125,16 @@ describe('handleInfoResponsesOnSuccess function', () => {
     expect(mockResolve).toHaveBeenCalledWith({
       index: 0,
       stationInfo: {
-        f1: 'becon',
+        libelle: 'becon',
+        code_uic: 'UIC1',
       },
       destinationInfo: {
-        f1: 'st cloud',
+        libelle: 'st cloud',
+        code_uic: 'UIC2',
       }, 
     });
-    expect(getInfoFromCache('Becon')).toEqual({ f1: 'becon' });
-    expect(getInfoFromCache('St Cloud')).toEqual({ f1: 'st cloud' });
+    expect(getInfoFromCache('Becon')).toEqual({ libelle: 'becon', code_uic: 'UIC1' });
+    expect(getInfoFromCache('St Cloud')).toEqual({ libelle: 'st cloud', code_uic: 'UIC2' });
   });
 
   it('should resolve values properly for station only, and update cache', () => {
@@ -142,7 +144,7 @@ describe('handleInfoResponsesOnSuccess function', () => {
         data: {
           records: [
             {
-              fields: { f1: 'becon' },
+              fields: { libelle: 'becon', code_uic: 'UIC1' },
             },
           ],
         },
@@ -158,18 +160,19 @@ describe('handleInfoResponsesOnSuccess function', () => {
     expect(mockResolve).toHaveBeenCalledWith({
       index: 0,
       stationInfo: {
-        f1: 'becon',
+        libelle: 'becon',
+        code_uic: 'UIC1',
       },
       destinationInfo: null,
     });
-    expect(getInfoFromCache('Becon')).toEqual({ f1: 'becon' });    
+    expect(getInfoFromCache('Becon')).toEqual({ libelle: 'becon', code_uic: 'UIC1' });    
   });
 
   it('should resolve to null when wrong response', () => {
     // given
     const responses = [
       {
-        data: {},
+        data: { records: []},
       },
     ];
     const query = {
