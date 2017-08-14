@@ -23,8 +23,6 @@ export type ServerTrafficResponse = {
   lastUpdate: string,
   loaded: boolean,
   message: string,
-  slug: string,
-  title: string,
   status: string,
 };
 
@@ -79,6 +77,7 @@ export type LegacyTrafficResponse = {
 };
 
 export type LegacyTrafficInfo = {
+  line: string,
   message: string,
   slug: string,
   title: string,

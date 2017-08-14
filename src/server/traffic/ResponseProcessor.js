@@ -54,11 +54,12 @@ const ResponseProcessor = {
     }
 
     const sentResult: ServerTrafficResponse = {
-      ...result,
       id: createIndexFromResponse(data),
       lastUpdate: ResponseProcessor.now().toISOString(),
+      line: result.line,
       loaded: true,
       status: ResponseProcessor.getStatus(result),
+      message: result.message,
     };
     context.sendSocketNotification(NOTIF_TRAFFIC, sentResult);
   },

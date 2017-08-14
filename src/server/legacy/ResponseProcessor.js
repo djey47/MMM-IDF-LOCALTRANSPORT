@@ -32,7 +32,7 @@ const {
 /**
  * Association between API messages and statuses
  */
-const statuses = {
+const STATUSES = {
   // TODO DELETED?
   'A l\'arret': AT_STOP,              // Bus
   'Train a l\'approche': APPROACHING, // Metro
@@ -84,7 +84,7 @@ const ResponseProcessor = {
 
     if (message.indexOf(MESSAGE_TERMINAL) !== -1) return TERMINAL;
 
-    return statuses[message] || UNKNOWN;
+    return STATUSES[message] || UNKNOWN;
   },
 
   /**

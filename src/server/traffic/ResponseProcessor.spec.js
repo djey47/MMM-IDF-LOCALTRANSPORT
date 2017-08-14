@@ -41,8 +41,6 @@ describe('processTraffic function', () => {
         line: '3',
         loaded: true,
         message: 'Trafic normal sur l\'ensemble de la ligne.',
-        slug: 'normal',
-        title: 'Trafic normal',
         status: 'OK',
       },
     );
