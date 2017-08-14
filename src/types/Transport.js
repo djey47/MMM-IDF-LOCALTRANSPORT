@@ -25,6 +25,7 @@ export type ServerTrafficResponse = {
   message: string,
   slug: string,
   title: string,
+  status: string,
 };
 
 export type ServerVelibResponse = {
@@ -74,11 +75,13 @@ export type LegacyTrafficResponse = {
   _metadata: {
     call: string,
   },
-  result: {
-    message: string,
-    slug: string,
-    title: string,
-  },  
+  result: LegacyTrafficInfo,
+};
+
+export type LegacyTrafficInfo = {
+  message: string,
+  slug: string,
+  title: string,
 };
 
 /* Transilien API defs */

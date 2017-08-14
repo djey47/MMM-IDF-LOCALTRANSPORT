@@ -29,6 +29,16 @@ export const Status = {
 };
 
 /**
+ * All traffic status codes
+ */
+export const TrafficStatus = {
+  KO: 'KO',
+  OK: 'OK',
+  OK_WORK: 'OK_WORK',
+  UNKNOWN: 'UNKNOWN',
+};
+
+/**
  * All schedule modes
  */
 export const TimeModes = {

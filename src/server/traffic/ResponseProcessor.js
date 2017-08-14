@@ -6,11 +6,22 @@ import type Moment from 'moment';
 
 import { NOTIF_TRAFFIC } from '../../support/notifications.js';
 import LegacyApi from '../../support/legacyApi'; 
+import { TrafficStatus } from '../../support/status';
 
 import type { Context } from '../../types/Application';
-import type { LegacyTrafficResponse, ServerTrafficResponse } from '../../types/Transport';
+import type { LegacyTrafficResponse, LegacyTrafficInfo, ServerTrafficResponse } from '../../types/Transport';
 
 const { createIndexFromResponse } = LegacyApi;
+const { OK, OK_WORK, KO, UNKNOWN } = TrafficStatus;
+
+/**
+ * Association between API slugs and statuses
+ */
+const STATUSES = {
+  'normal': OK,
+  'normal_trav': OK_WORK,
+  'alerte': KO,
+};
 
 const ResponseProcessor = {
   /**
@@ -18,6 +29,13 @@ const ResponseProcessor = {
    */
   now: function(): Moment {
     return moment();
+  },
+
+  /**
+   * @private
+   */
+  getStatus: (info: LegacyTrafficInfo): string => {
+    return STATUSES[info.slug] || UNKNOWN;
   },
 
   /**
@@ -31,7 +49,7 @@ const ResponseProcessor = {
 
     if (context.config.debug) {
       console.log('** Received traffic response:');
-      console.log(result); //line, title, message
+      console.log(result);
       console.log('**');
     }
 
@@ -40,6 +58,7 @@ const ResponseProcessor = {
       id: createIndexFromResponse(data),
       lastUpdate: ResponseProcessor.now().toISOString(),
       loaded: true,
+      status: ResponseProcessor.getStatus(result),
     };
     context.sendSocketNotification(NOTIF_TRAFFIC, sentResult);
   },

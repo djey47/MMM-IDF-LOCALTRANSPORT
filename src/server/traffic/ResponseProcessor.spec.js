@@ -43,6 +43,7 @@ describe('processTraffic function', () => {
         message: 'Trafic normal sur l\'ensemble de la ligne.',
         slug: 'normal',
         title: 'Trafic normal',
+        status: 'OK',
       },
     );
   });
