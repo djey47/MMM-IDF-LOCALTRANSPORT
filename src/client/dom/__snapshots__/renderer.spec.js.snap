@@ -237,6 +237,7 @@ exports[`renderVelib function should return correct HTML when history without tr
    <td class=\\"align-right\\">
       Opera
    </td>
+   <td></td>
 </tr>"
 `;
 

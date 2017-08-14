@@ -13,6 +13,10 @@ import type { ComingContext } from '../../types/Application';
 import type { ModuleConfiguration, StationConfiguration } from '../../types/Configuration';
 import type { Schedule, ServerVelibResponse } from '../../types/Transport';
 
+/** Table cells configuration */
+const CELLS_COUNT = 4;
+const INDEX_STATUS = 3;
+
 /**
  * @returns HTML for main wrapper
  */
@@ -70,7 +74,6 @@ export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, c
   row.appendChild(firstCell);
 
   const trafficAtStop = ratpTraffic[stopIndex];
-  // TODO use info field instead
   const { message } = trafficAtStop ? trafficAtStop : { message: translate(MessageKeys.UNAVAILABLE, messages) };
   const secondCell = document.createElement('td');
   secondCell.className = 'align-left';
@@ -112,7 +115,6 @@ const resolveName = (firstLine: boolean, stop: StationConfiguration, messages: O
  * @private
  */
 const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: ModuleConfiguration): ?any => {
-  const INDEX_STATUS = 3;
   const { messages, concatenateArrivals, convertToWaitingTime, maxLettersForDestination, maxLettersForTime, oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity } = config;
   const nowMoment = now();
 
@@ -248,8 +250,8 @@ export const renderPublicTransportTransilien = (stop: StationConfiguration, sche
 export const renderNoInfoVelib = (stop: StationConfiguration, messages?: Object): any => {
   const { label, station } = stop;
   const row = document.createElement('tr');
+  
   const messageCell = document.createElement('td');
-
   messageCell.className = 'bright';
   messageCell.innerHTML = `${label || station || MessageKeys.UNAVAILABLE} ${translate(MessageKeys.NOT_YET, messages)}`;
   row.appendChild(messageCell);
@@ -280,6 +282,9 @@ export const renderSimpleInfoVelib = (stop: StationConfiguration, station: Serve
   velibNameCell.className = 'align-right';
   velibNameCell.innerHTML = label || name;
   row.appendChild(velibNameCell);
+
+  const velibEmptyCell = document.createElement('td');
+  row.appendChild(velibEmptyCell);
 
   return row;
 };
@@ -373,8 +378,8 @@ export const renderTrendInfoVelib = (stop: StationConfiguration, station: Server
     // }
 
   }
-  // TODO use constant for cell count?
-  cellTrend.colSpan = 3; //so that it takes the whole row
+
+  cellTrend.colSpan = CELLS_COUNT; //so that it takes the whole row
   cellTrend.appendChild(trendGraph);
   rowTrend.appendChild(cellTrend);
 
