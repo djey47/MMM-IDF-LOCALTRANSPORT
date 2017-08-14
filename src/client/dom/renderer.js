@@ -1,4 +1,5 @@
 /* @flow */
+
 import moment from 'moment-timezone';
 import classnames from 'classnames';
 import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
@@ -7,7 +8,13 @@ import { translate, MessageKeys } from '../../support/messages';
 import Navitia  from '../../support/navitia';
 import Transilien  from '../../support/transilien';
 import LegacyApi  from '../../support/legacyApi';
-import { Status, TimeModes, MessageKeys as StatusMessageKeys }  from '../../support/status';
+import {
+  Status,
+  TrafficStatus,
+  TimeModes,
+  MessageKeys as StatusMessageKeys,
+  TrafficMessageKeys as TrafficStatusMessageKeys,
+}  from '../../support/status';
 
 import type { ComingContext } from '../../types/Application';
 import type { ModuleConfiguration, StationConfiguration } from '../../types/Configuration';
@@ -62,24 +69,37 @@ export const renderHeader = (data: Object, config: ModuleConfiguration): string 
 /**
  * @returns HTML for traffic status
  */
+// TODO use types
 export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, config: Object): any => {
-  const { messages, conversion } = config;
+  const { messages } = config;
   const stopIndex = LegacyApi.createTrafficIndexFromStopConfig(stop);
   const row = document.createElement('tr');
 
   const { line, label } = stop;
-  const firstCell = document.createElement('td');
-  firstCell.className = classnames('align-right', 'bright');
-  firstCell.innerHTML = label || (line ? line[1].toString() : MessageKeys.UNAVAILABLE);
-  row.appendChild(firstCell);
-
   const trafficAtStop = ratpTraffic[stopIndex];
-  const { message } = trafficAtStop ? trafficAtStop : { message: translate(MessageKeys.UNAVAILABLE, messages) };
-  const secondCell = document.createElement('td');
-  secondCell.className = 'align-left';
-  secondCell.innerHTML = conversion[message] || message;
-  secondCell.colSpan = 2;
-  row.appendChild(secondCell);
+  const { message, status } = trafficAtStop ? trafficAtStop : { message: translate(MessageKeys.UNAVAILABLE, messages), status: TrafficStatus.UNKNOWN };
+
+  row.className = classnames('Traffic__item', 'bright', {
+    'is-ok': status === TrafficStatus.OK,
+    'is-ok-with-work': status === TrafficStatus.OK_WORK,
+    'is-ko': status === TrafficStatus.KO,
+  });
+  
+  const labelCell = document.createElement('td');
+  labelCell.className = classnames('align-right');
+  labelCell.innerHTML = label || (line ? line[1].toString() : MessageKeys.UNAVAILABLE);
+  row.appendChild(labelCell);
+
+  const statusCell = document.createElement('td');
+  statusCell.className = 'align-left';
+  statusCell.innerHTML = resolveStatus(status, messages, TrafficStatusMessageKeys);
+  row.appendChild(statusCell);
+
+  const messageCell = document.createElement('td');
+  messageCell.className = 'align-left';
+  messageCell.innerHTML = message;
+  messageCell.colSpan = 2;
+  row.appendChild(messageCell);
 
   return row;
 };
@@ -87,10 +107,13 @@ export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, c
 /**
  * @private
  */
-const resolveStatus = (statusCode: ?string, messages: Object): string => {
+const resolveStatus = (statusCode: ?string, messages: Object, statusMessageKeys: Object): string => {
   if (!statusCode) return '';
 
-  const key = StatusMessageKeys[statusCode];
+  const key = statusMessageKeys[statusCode];
+  console.log(statusCode);
+  console.log(key);
+  console.log(statusMessageKeys);
   return key && translate(key, messages) || translate(MessageKeys.UNAVAILABLE, messages);
 };
 
@@ -147,8 +170,7 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
   row.appendChild(destinationCell);
 
   const statCell = document.createElement('td');
-  statCell.className = '';
-  statCell.innerHTML = `${code || ''} ${resolveStatus(status, messages)}`.trim();
+  statCell.innerHTML = `${code || ''} ${resolveStatus(status, messages, StatusMessageKeys)}`.trim();
   row.appendChild(statCell);
 
   const depCell = document.createElement('td');

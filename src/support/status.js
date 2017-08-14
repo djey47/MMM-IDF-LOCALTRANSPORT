@@ -11,6 +11,10 @@ const {
   STATUS_AT_STOP,
   STATUS_SKIPPED,
   STATUS_TERMINAL,
+  TRAFFIC_OK,
+  TRAFFIC_OK_WORK,
+  TRAFFIC_KO,
+  UNAVAILABLE,
 } = Keys;
 
 /**
@@ -59,4 +63,11 @@ export const MessageKeys = {
   AT_STOP: STATUS_AT_STOP,
   SKIPPED: STATUS_SKIPPED,
   TERMINAL: STATUS_TERMINAL,
+};
+
+export const TrafficMessageKeys = {
+  OK: TRAFFIC_OK,
+  OK_WORK: TRAFFIC_OK_WORK,
+  KO: TRAFFIC_KO,
+  UNKNOWN: UNAVAILABLE,
 };

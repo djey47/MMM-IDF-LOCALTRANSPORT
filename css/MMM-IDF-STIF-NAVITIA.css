@@ -28,3 +28,13 @@
 }
 
 /* .IDFTransportWrapper .Schedules__item.is-ontime {} */
+
+.IDFTransportWrapper .Traffic__item.is-ok-with-work {
+  color: orange;
+}
+
+.IDFTransportWrapper .Traffic__item.is-ko {
+  color: red;
+}
+
+.IDFTransportWrapper .Traffic__item.is-ok {}

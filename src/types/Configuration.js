@@ -38,7 +38,6 @@ export type ModuleConfiguration = {
   oldUpdateThreshold?: number, // ???
   debug: boolean, //console.log more things to help debugging
   velibGraphWidth: number, //Height will follow
-  conversion: Object, //{ key1: value1, ... }
 
   apiBaseV3: string,  
   apiNavitia: string,

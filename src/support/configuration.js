@@ -24,7 +24,6 @@ export const defaults: ModuleConfiguration = {
   oldThreshold: 0.1,
   debug: false,
   velibGraphWidth: 400,
-  conversion: { "Trafic normal sur l'ensemble de la ligne." : 'Traffic OK'},
 
   apiBaseV3: 'https://api-ratp.pierre-grimaud.fr/v3/',
   apiNavitia: 'https://api.navitia.io/v1/',
@@ -51,6 +50,11 @@ export const defaults: ModuleConfiguration = {
       delayed: '😐⏳',
       skipped: '❌',
       terminal: '❌ term',
+    },
+    traffic: {
+      ok: '😊',
+      okwork: '😐',
+      ko: '😞',
     },
     units: {
       minutes: 'mn',

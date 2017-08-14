@@ -79,11 +79,9 @@ Finally, transilienToken value to be entered in configuration file will be `Basi
     - `station` element: code
     - `destination` element (optional): code
   - `label`: Optional, to rename the line differently if needed.
-* `conversion`: object of key/ values to convert traffic message. Those message can be very long, and it might worth to convert them in a simpler text. by default:
-  - `conversion: {"Trafic normal sur l'ensemble de la ligne." : "Traffic normal"}`
-  - don't hesitate to add more when there's works on a specific line or others...
 * `transilienToken`: 'Basic xxxxxxxx' : mandatory to access transilien realtime API (account required, see section above)
-* `messages`: key-values to convert generic messages to your preferred language. Copy paste all default values and modify to your likings (see example below). 
+* `messages`: (see example below) : key-values to convert generic messages to your preferred language.
+  - Copy paste all default values and modify to your likings. 
 
 Example:
 ```javascript
@@ -128,6 +126,11 @@ messages: {
       skipped: '❌',
       terminal: '❌ term',
     },
+    traffic: {
+      ok: '😊',
+      okwork: '😐',
+      ko: '😞',
+    },    
     units: {
       minutes: 'mn',
       seconds: 's',

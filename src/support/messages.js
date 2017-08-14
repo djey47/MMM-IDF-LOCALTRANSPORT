@@ -24,6 +24,9 @@ export const MessageKeys = {
   VELIB_SPACES: '{velib.spaces}',
   UNAVAILABLE: '{unavailable}',
   THEORICAL: '{theorical}',
+  TRAFFIC_OK: '{traffic.ok}',
+  TRAFFIC_OK_WORK: '{traffic.okwork}',
+  TRAFFIC_KO: '{traffic.ko}',
 };
 
 /**
