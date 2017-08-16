@@ -1,6 +1,6 @@
 /** Configuration for server-side webpack bundle **/
 
-const { outputPath, moduleRules } = require('./webpack.config.common.js');
+const { outputPath, moduleRules, commonPlugins } = require('./webpack.config.common.js');
 
 module.exports = {
   target: 'node',
@@ -14,4 +14,5 @@ module.exports = {
   module: { 
     rules: moduleRules,
   },
+  plugins: commonPlugins,
 };

@@ -25,13 +25,17 @@
   "homepage": "https://github.com/djey47/MMM-IDF-STIFF-NAVITIA#readme",
   "scripts": {
     "install": "npm run build",
-    "build": "webpack --config tools/webpack/webpack.config.module.js && webpack --config tools/webpack/webpack.config.helper.js",
+    "build:module": "webpack --config tools/webpack/webpack.config.module.js",
+    "build:helper": "webpack --config tools/webpack/webpack.config.helper.js",
+    "build": "yarn build:module && yarn build:helper",
+    "analyze:module": "yarn build:module && yarn webpack-bundle-analyzer stats.json .",
+    "analyze:helper": "yarn build:helper && yarn webpack-bundle-analyzer stats.json .",
     "lint": "yarn lint:scripts",
     "lint:scripts": "eslint src && yarn flow",
     "flow:typings": "yarn flow-typed update",
     "test": "yarn jest -- --config ./tools/test/jest.default.json",
-    "jest:watch-client": "yarn jest -- --config ./tools/test/jest.client.json --watch",
-    "jest:watch-server": "yarn jest -- --config ./tools/test/jest.server.json --watch",
+    "jest:watch:module": "yarn jest -- --config ./tools/test/jest.client.json --watch",
+    "jest:watch:helper:": "yarn jest -- --config ./tools/test/jest.server.json --watch",
     "jest:watch": "yarn jest -- --config ./tools/test/jest.default.json --watch",
     "precommit": "yarn lint",
     "prepush": "yarn test"
@@ -63,6 +67,7 @@
     "flow-typed": "^2.1.2",
     "husky": "^0.14.3",
     "jest": "^20.0.4",
-    "webpack": "^3.2.0"
+    "webpack": "^3.2.0",
+    "webpack-bundle-analyzer": "^2.9.0"
   }
 }
