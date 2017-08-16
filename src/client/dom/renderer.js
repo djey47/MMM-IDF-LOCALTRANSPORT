@@ -5,9 +5,9 @@ import classnames from 'classnames';
 import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
 import { now } from '../support/date';
 import { translate, MessageKeys } from '../../support/messages';
-import Navitia  from '../../support/navitia';
-import Transilien  from '../../support/transilien';
-import LegacyApi  from '../../support/legacyApi';
+import LegacyApi  from '../../support/api/legacy';
+import Navitia  from '../../support/api/navitia';
+import Transilien  from '../../support/api/transilien';
 import {
   Status,
   TrafficStatus,

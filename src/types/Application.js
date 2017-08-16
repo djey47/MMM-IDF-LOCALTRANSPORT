@@ -11,6 +11,8 @@ export type ComingContext = {
 export type NotificationSenderFunction = (notification: string, payload: Object) => void;
 
 export type Context = {
+  loaded: boolean,
+  started?: boolean,
   config: ModuleConfiguration,
-  sendSocketNotification: NotificationSenderFunction ,
+  sendSocketNotification: NotificationSenderFunction,
 };

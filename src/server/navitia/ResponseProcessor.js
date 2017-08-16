@@ -1,5 +1,5 @@
 const moment = require('moment');
-const Navitia = require('../../support/navitia.js');
+const Navitia = require('../../support/api/navitia.js');
 const { MessageKeys } = require('../../support/messages.js');
 const { NOTIF_TRANSPORT } = require('../../support/notifications.js');
 

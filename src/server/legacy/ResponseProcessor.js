@@ -5,9 +5,10 @@ import moment from 'moment-timezone';
 import type Moment from 'moment';
 
 import { NOTIF_TRANSPORT } from '../../support/notifications';
-import LegacyApi from '../../support/legacyApi'; 
+import LegacyApi from '../../support/api/legacy'; 
 import { Status, TimeModes } from '../../support/status';
 
+import type { Context } from '../../types/Application';
 import type { TimeInfo } from '../../types/Time';
 import type { LegacySchedule, LegacyResponse, Schedule, ServerScheduleResponse } from '../../types/Transport';
 
@@ -156,8 +157,8 @@ const ResponseProcessor = {
    * @param {any} data 
    * @param {any} context 
    */
-  processTransport: function(data: Object, context: Object) {
-    if (context.debug) {
+  processTransport: function(data: LegacyResponse, context: Context) {
+    if (context.config.debug) {
       console.log (' *** processTransport data');
       console.log (data);
     }

@@ -7,10 +7,10 @@ import LegacyResponseProcessor from './legacy/ResponseProcessor';
 import TrafficResponseProcessor from './legacy/TrafficResponseProcessor';
 import TransilienTrafficResponseProcessor from './citymapper/ResponseProcessor';
 import VelibResponseProcessor from './velib/ResponseProcessor';
-import Transilien from '../support/transilien';
 import Citymapper from '../support/api/citymapper';
-import { getNavitiaStopSchedulesUrl } from '../support/navitia';
-import LegacyApi from '../support/legacyApi';
+import LegacyApi from '../support/api/legacy';
+import Transilien from '../support/api/transilien';
+import { getNavitiaStopSchedulesUrl } from '../support/api/navitia';
 import {
   NOTIF_UPDATE,
   NOTIF_SET_CONFIG,
@@ -33,6 +33,8 @@ const { getTransilienRouteInfoUrl } = Citymapper;
  * ES6 module export does not work here...
  */
 module.exports = {
+  loaded: false,
+
   start: function () {
     this.started = false;
   },

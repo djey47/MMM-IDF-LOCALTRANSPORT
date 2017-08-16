@@ -1,8 +1,8 @@
 /* @flow */
 
-import LegacyApi from './legacyApi';
+import LegacyApi from './legacy';
 
-import type { StationConfiguration } from '../types/Configuration';
+import type { StationConfiguration } from '../../types/Configuration';
 
 const {
   getScheduleUrl,

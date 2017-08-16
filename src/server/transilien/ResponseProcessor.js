@@ -6,7 +6,7 @@ import type Moment from 'moment';
 
 import { NOTIF_TRANSPORT } from '../../support/notifications';
 import xmlToJson from '../../support/xml';
-import Transilien from '../../support/transilien'; 
+import Transilien from '../../support/api/transilien'; 
 import { getAllStationInfo } from '../../support/railwayRepository';
 import { Status, TimeModes } from '../../support/status';
 

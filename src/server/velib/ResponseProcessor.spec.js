@@ -8,6 +8,7 @@ describe('processVelib function', () => {
   const context = {
     config: {...defaults},
     sendSocketNotification: sendSocketNotificationMock,
+    loaded: false,
   };
 
   it('should send notification with correct values', () => {

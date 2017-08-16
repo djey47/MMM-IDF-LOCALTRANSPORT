@@ -1,6 +1,6 @@
 /** @flow */
 
-import type { StationConfiguration } from '../types/Configuration';
+import type { StationConfiguration } from '../../types/Configuration';
 
 const LegacyApi = {
   /**

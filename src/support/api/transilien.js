@@ -2,8 +2,8 @@
 
 import _get from 'lodash/get';
 
-import type { StationConfiguration } from '../types/Configuration';
-import type { TransilienResponse } from '../types/Transport';
+import type { StationConfiguration } from '../../types/Configuration';
+import type { TransilienResponse } from '../../types/Transport';
 
 const Transilien = {
   /**

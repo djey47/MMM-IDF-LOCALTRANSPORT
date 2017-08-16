@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 import type Moment from 'moment';
 
 import { NOTIF_TRAFFIC } from '../../support/notifications.js';
-import LegacyApi from '../../support/legacyApi'; 
+import LegacyApi from '../../support/api/legacy'; 
 import { TrafficStatus } from '../../support/status';
 
 import type { Context } from '../../types/Application';
