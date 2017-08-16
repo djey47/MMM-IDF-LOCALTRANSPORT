@@ -1,6 +1,5 @@
 /* @flow */
 
-
 import moment from 'moment-timezone';
 import htmlBeautify from 'html-beautify';
 import {
@@ -55,7 +54,7 @@ describe('renderHeader function', () => {
   const baseConfig = {
     ...defaults,
     messages: {},
-    lastUpdate: '2017-07-27T08:23:40.000Z',
+    lastUpdate: moment('2017-07-27T08:23:40.000Z'),
     showLastUpdateTime: false,
     showSecondsToNextUpdate: false,
   };
@@ -66,7 +65,7 @@ describe('renderHeader function', () => {
   it('should return correct header when complete configuration', () => {
     // given
     mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
-    const config: ModuleConfiguration = Object.assign({}, baseConfig, { showLastUpdateTime: true, showSecondsToNextUpdate: true });
+    const config: ModuleConfiguration = { ...baseConfig, showLastUpdateTime: true, showSecondsToNextUpdate: true };
     // when
     const actual = renderHeader(data, config);
     // then
@@ -76,7 +75,7 @@ describe('renderHeader function', () => {
   it('should return correct header when incomplete configuration 1', () => {
     // given
     mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
-    const config: ModuleConfiguration = Object.assign({}, baseConfig, { showSecondsToNextUpdate: true });
+    const config: ModuleConfiguration = { ...baseConfig, showSecondsToNextUpdate: true };
     // when
     const actual = renderHeader(data, config);
     // then
@@ -86,7 +85,7 @@ describe('renderHeader function', () => {
   it('should return correct header when incomplete configuration 2', () => {
     // given
     mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
-    const config: ModuleConfiguration = Object.assign({}, baseConfig, { showLastUpdateTime: true });
+    const config: ModuleConfiguration = { ...baseConfig, showLastUpdateTime: true };
     // when
     const actual = renderHeader(data, config);
     // then
@@ -96,7 +95,7 @@ describe('renderHeader function', () => {
   it('should return simple string when silent configuration', () => {
     // given
     mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
-    const config: ModuleConfiguration = Object.assign({}, baseConfig, { showLastUpdateTime: false });
+    const config: ModuleConfiguration = { ...baseConfig, showLastUpdateTime: false };
     // when
     const actual = renderHeader(data, config);
     // then
@@ -113,8 +112,11 @@ describe('renderPublicTransport function', () => {
   };
   const stopIndex = 'bus,275/Ulbach/La+Defense';
   const baseConfig = {
+    ...defaults,
+    convertToWaitingTime: false,
     maxLettersForDestination: 256,
-    maximumEntries: 3,  
+    maximumEntries: 3,
+    messages: {},
   };
 
   it('should return correct HTML when no schedule', () => {
@@ -125,7 +127,9 @@ describe('renderPublicTransport function', () => {
     };
     const schedules = {};
     const config = {
+      ...defaults,
       maximumEntries: 1,
+      messages: {},
     };
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, {}, config);
@@ -358,7 +362,7 @@ describe('renderTraffic function', () => {
         message: 'message',
       },
     };
-    const config = {};
+    const config = { ...defaults, messages: {} };
     // when
     const actual = renderTraffic(stop, ratpTraffic, config);
     // then
@@ -407,7 +411,10 @@ describe('renderVelib function', () => {
       station: '',
     };
     const velibHistory = {};
-    const config = {};
+    const config = {
+      ...defaults,
+      messages: {},
+    };
     // when
     const actual = renderVelib(stop, velibHistory, config);
     // then
@@ -429,7 +436,9 @@ describe('renderVelib function', () => {
       }],
     };
     const config = {
+      ...defaults,
       trendGraphOff: true,
+      messages: {},
     };
     mockNow.mockImplementationOnce(() => new Date(2017, 5, 29, 8, 34, 28));
     // when
@@ -452,7 +461,7 @@ describe('renderVelib function', () => {
         name: 'Opera',
       }],
     };
-    const config = {};
+    const config = { ...defaults };
     mockNow.mockImplementationOnce(() => new Date(2017, 5, 29, 8, 34, 28));
     // when
     const actual = renderVelib(stop, velibHistory, config);

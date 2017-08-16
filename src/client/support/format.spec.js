@@ -14,7 +14,7 @@ describe('toHoursMinutesSeconds function', () => {
 
   it('should return correctly formatted date @midnight', () => {
     // given
-    const currentDate = moment('20170601').toDate();
+    const currentDate = moment('20170601');
     // when
     const actual = toHoursMinutesSeconds(currentDate);
     // then
@@ -23,7 +23,7 @@ describe('toHoursMinutesSeconds function', () => {
 
   it('should return correctly formatted date', () => {
     // given
-    const currentDate = moment('2017-06-01T08:34:28.000Z').toDate();
+    const currentDate = moment('2017-06-01T08:34:28.000Z');
     // when
     const actual = toHoursMinutesSeconds(currentDate);
     // then

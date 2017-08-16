@@ -2,6 +2,9 @@
 
 import moment from 'moment-timezone';
 import classnames from 'classnames';
+
+import type Moment from 'moment';
+
 import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
 import { now } from '../support/date';
 import { translate, MessageKeys } from '../../support/messages';
@@ -16,9 +19,9 @@ import {
   TrafficMessageKeys as TrafficStatusMessageKeys,
 }  from '../../support/status';
 
-import type { ComingContext } from '../../types/Application';
+import type { Data, ComingContext } from '../../types/Application';
 import type { ModuleConfiguration, StationConfiguration } from '../../types/Configuration';
-import type { Schedule, ServerVelibResponse } from '../../types/Transport';
+import type { Schedule, ServerVelibResponse, ServerTrafficResponse } from '../../types/Transport';
 
 /** Table cells configuration */
 const CELLS_COUNT = 4;
@@ -43,13 +46,12 @@ export const renderWrapper = (loaded: boolean, messages?: Object): any => {
 /**
  * @returns module header contents
  */
-export const renderHeader = (data: Object, config: ModuleConfiguration): string => {
+export const renderHeader = (data: Data, config: ModuleConfiguration): string => {
   const { updateInterval, showLastUpdateTime, lastUpdate, showSecondsToNextUpdate, messages } = config;
-  const lastUpdateMoment = lastUpdate ? moment(lastUpdate) : null;
 
   let contents = data.header;
   if (showSecondsToNextUpdate) {
-    const timeDifference = lastUpdateMoment ? Math.round((updateInterval - now().valueOf() + lastUpdateMoment.valueOf()) / 1000) : 0;
+    const timeDifference = lastUpdate ? Math.round((updateInterval - now().valueOf() + lastUpdate.valueOf()) / 1000) : 0;
     const secondUnit = translate(MessageKeys.UNITS_SECONDS, messages);
     if (timeDifference > 0) {
       contents += `, ${translate(MessageKeys.NEXT_UPDATE, messages)} ${timeDifference}${secondUnit}`;
@@ -60,7 +62,7 @@ export const renderHeader = (data: Object, config: ModuleConfiguration): string 
   }
 
   if (showLastUpdateTime) {
-    contents += (lastUpdateMoment ? ` @ ${toHoursMinutesSeconds(lastUpdateMoment)}` : '');
+    contents += (lastUpdate ? ` @ ${toHoursMinutesSeconds(lastUpdate)}` : '');
   }
 
   return contents;
@@ -69,14 +71,13 @@ export const renderHeader = (data: Object, config: ModuleConfiguration): string 
 /**
  * @returns HTML for traffic status
  */
-// TODO use types
-export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, config: Object): any => {
+export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, config: ModuleConfiguration): any => {
   const { messages } = config;
   const stopIndex = LegacyApi.createTrafficIndexFromStopConfig(stop);
   const row = document.createElement('tr');
 
   const { line, label } = stop;
-  const trafficAtStop = ratpTraffic[stopIndex];
+  const trafficAtStop: ServerTrafficResponse = ratpTraffic[stopIndex];
   const { message, status } = trafficAtStop ? trafficAtStop : { message: translate(MessageKeys.UNAVAILABLE, messages), status: TrafficStatus.UNKNOWN };
 
   row.className = classnames('Traffic__item', 'bright', {
@@ -134,7 +135,7 @@ const resolveName = (firstLine: boolean, stop: StationConfiguration, messages: O
 /**
  * @private
  */
-const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, comingTransport: Schedule, comingLastUpdate: string, previous: ComingContext, config: ModuleConfiguration): ?any => {
+const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, comingTransport: Schedule, comingLastUpdate: Moment, previous: ComingContext, config: ModuleConfiguration): ?any => {
   const { messages, concatenateArrivals, convertToWaitingTime, maxLettersForDestination, maxLettersForTime, oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity } = config;
   const nowMoment = now();
 
@@ -185,7 +186,7 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
   row.appendChild(depCell);
 
   const effectiveThreshold = oldUpdateThreshold ? oldUpdateThreshold : updateInterval * (1 + oldThreshold);
-  if (nowMoment.subtract(moment(comingLastUpdate)).valueOf() > effectiveThreshold) {
+  if (nowMoment.subtract(comingLastUpdate).valueOf() > effectiveThreshold) {
     destinationCell.style.opacity = depCell.style.opacity = oldUpdateOpacity.toString();
   }
 
@@ -209,11 +210,11 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
 /**
  * @returns HTML for public transport items (rows) for any API
  */
-export const renderPublicTransport = (stopConfig: Object, stopIndex: ?string, schedules: Object, lastUpdate: Object, config: Object) => {
+export const renderPublicTransport = (stop: StationConfiguration, stopIndex: ?string, schedules: Object, lastUpdate: Object, config: ModuleConfiguration) => {
   const { maximumEntries, messages } = config;
   const rows = [];
   const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);
-  const coming: Schedule[] = schedules[stopIndex] || [ {
+  const coming: Array<Schedule> = schedules[stopIndex] || [ {
     message: unavailableLabel,
     destination: unavailableLabel,
     code: null,
@@ -221,15 +222,15 @@ export const renderPublicTransport = (stopConfig: Object, stopIndex: ?string, sc
     timeMode: TimeModes.UNDEFINED,
     time: null,
   } ];
-  const comingLastUpdate: string = lastUpdate[stopIndex];
-  const previous = {
+  const comingLastUpdate: Moment = lastUpdate[stopIndex];
+  const previous: ComingContext = {
     previousRow: null,
     previousDestination: null,
     previousDepInfo: '',
   };
   let firstLine = true;
   for (let comingIndex = 0; (comingIndex < maximumEntries) && (comingIndex < coming.length); comingIndex++) {
-    const row = renderComingTransport(firstLine, stopConfig, coming[comingIndex], comingLastUpdate, previous, config);
+    const row = renderComingTransport(firstLine, stop, coming[comingIndex], comingLastUpdate, previous, config);
     if (row) rows.push(row);
     firstLine = false;
   }
@@ -239,7 +240,7 @@ export const renderPublicTransport = (stopConfig: Object, stopIndex: ?string, sc
 /**
  * @returns HTML for public transport items (rows) via classical API (Grimaud v3)
  */
-export const renderPublicTransportLegacy = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: Object): any[] => {
+export const renderPublicTransportLegacy = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: ModuleConfiguration): any[] => {
   const stopIndex = LegacyApi.createIndexFromStopConfig(stop);
 
   return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
@@ -248,7 +249,7 @@ export const renderPublicTransportLegacy = (stop: StationConfiguration, schedule
 /**
  * @returns HTML for public transport items (rows) via Navitia API
  */
-export const renderPublicTransportNavitia = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: Object): any[] => {
+export const renderPublicTransportNavitia = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: ModuleConfiguration): any[] => {
   const stopIndex = Navitia.createIndexFromStopConfig(stop);
 
   return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);  
@@ -257,7 +258,7 @@ export const renderPublicTransportNavitia = (stop: StationConfiguration, schedul
 /**
  * @returns HTML for public transport items (rows) via Transilien API
  */
-export const renderPublicTransportTransilien = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: Object): any[] => {
+export const renderPublicTransportTransilien = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: ModuleConfiguration): any[] => {
   const stopIndex = Transilien.createIndexFromStopConfig(stop);
 
   return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);  
@@ -283,7 +284,6 @@ export const renderNoInfoVelib = (stop: StationConfiguration, messages?: Object)
  * @returns HTML for info received for Velib (without trend)
  */
 export const renderSimpleInfoVelib = (stop: StationConfiguration, station: ServerVelibResponse, messages: Object): any => {
-  // TODO swap columns and handle 4th one
   const row = document.createElement('tr');
   const { label } = stop;
   const { total, bike, empty, name } = station;
@@ -312,7 +312,7 @@ export const renderSimpleInfoVelib = (stop: StationConfiguration, station: Serve
  * @private
  * @returns HTML for info received for Velib (with trend)
  */
-export const renderTrendInfoVelib = (stop: StationConfiguration, station: ServerVelibResponse, velibHistory: Object, config: Object): any => {
+export const renderTrendInfoVelib = (stop: StationConfiguration, station: ServerVelibResponse, velibHistory: Object, config: ModuleConfiguration): any => {
   const { name, bike, empty } = station;
   const { velibTrendWidth, velibTrendHeight, velibTrendTimeScale, velibTrendZoom, velibTrendDay } = config;
   const rowTrend = document.createElement('tr');
@@ -320,42 +320,42 @@ export const renderTrendInfoVelib = (stop: StationConfiguration, station: Server
 
   const trendGraph = document.createElement('canvas');
   trendGraph.className = 'velibTrendGraph';
-  trendGraph.width  = velibTrendWidth || 400;
-  trendGraph.height = velibTrendHeight || 100;
+  trendGraph.width  = velibTrendWidth;
+  trendGraph.height = velibTrendHeight;
 
-  const timeScale = velibTrendDay ? 24 * 60 * 60 : velibTrendTimeScale || 60 * 60; // in nb of seconds, the previous hour
+  const timeScale = velibTrendDay ? 24 * 60 * 60 : velibTrendTimeScale;
   // $FlowFixMe
   trendGraph.timeScale = timeScale;
 
-  const effectiveZoom = velibTrendZoom || 30 * 60; //default zoom windows is 30 minutes for velibTrendDay
   const ctx = trendGraph.getContext('2d');
   if (!ctx) { return rowTrend; }
 
   const nowMoment = now();
   const { label } = stop;
-  const currentStation = velibHistory[stop.station];
+  const currentStation: Array<ServerVelibResponse> = velibHistory[stop.station];
   const { height, width } = trendGraph;
   let previousX = width;
   let inTime = false;
   for (var dataIndex = currentStation.length - 1; dataIndex >= 0 ; dataIndex--) { //start from most recent
-    let dataTimeStamp = nowMoment.subtract(moment(currentStation[dataIndex].lastUpdate)).seconds(); // time of the event in seconds ago
+    const { lastUpdate, bike, total } = currentStation[dataIndex];
+    let dataTimeStamp = nowMoment.subtract(moment(lastUpdate)).seconds(); // time of the event in seconds ago
     if (dataTimeStamp < timeScale || inTime) {
       inTime = dataTimeStamp < timeScale; // compute the last one outside of the time window
       if (dataTimeStamp - timeScale < 10 * 60) { //takes it only if it is within 10 minutes of the closing windows
         dataTimeStamp = Math.min(dataTimeStamp, timeScale); //to be sure it does not exit the graph
         let x, y;
         if (velibTrendDay) {
-          if ( dataTimeStamp  < effectiveZoom ) { //1st third in zoom mode
-            x = (1 - dataTimeStamp / effectiveZoom / 3) * width;
-          } else if (dataTimeStamp < timeScale - effectiveZoom) { //middle in compressed mode
-            x = (2 / 3 - (dataTimeStamp - effectiveZoom) / (timeScale - 2 * effectiveZoom)/ 3) * width;
+          if ( dataTimeStamp  < velibTrendZoom ) { //1st third in zoom mode
+            x = (1 - dataTimeStamp / velibTrendZoom / 3) * width;
+          } else if (dataTimeStamp < timeScale - velibTrendZoom) { //middle in compressed mode
+            x = (2 / 3 - (dataTimeStamp - velibTrendZoom) / (timeScale - 2 * velibTrendZoom)/ 3) * width;
           } else {
-            x = (1 / 3 - (dataTimeStamp - timeScale + effectiveZoom)/ effectiveZoom / 3) * width;
+            x = (1 / 3 - (dataTimeStamp - timeScale + velibTrendZoom)/ velibTrendZoom / 3) * width;
           }
         } else {
           x = (1 - dataTimeStamp / timeScale) * width;
         }
-        y = currentStation[dataIndex].bike / currentStation[dataIndex].total * height * 4 / 5;
+        y = bike / total * height * 4 / 5;
         ctx.fillStyle = 'white';
         ctx.fillRect(x, height - y - 1, previousX - x, Math.max(y, 1)); //a thin line even if it's zero
         previousX = x;
@@ -371,8 +371,9 @@ export const renderTrendInfoVelib = (stop: StationConfiguration, station: Server
   ctx.fillText(empty.toString(), 10, Math.round(height / 5) + 10);
   if (velibTrendDay) {
     ctx.font = Math.round(height / 10) + 'px ' + ctx.font.split(' ').slice(-1)[0];
-    ctx.fillText(Math.round(effectiveZoom / 60) + 'mn', width * 5 / 6, height / 2);
-    ctx.fillText(Math.round(effectiveZoom / 60) + 'mn', width / 6, height / 2);
+    // TODO use translation keys
+    ctx.fillText(Math.round(velibTrendZoom / 60) + 'mn', width * 5 / 6, height / 2);
+    ctx.fillText(Math.round(velibTrendZoom / 60) + 'mn', width / 6, height / 2);
     ctx.strokeStyle = 'grey';
     ctx.setLineDash([5, 15]);
     ctx.beginPath();
@@ -395,7 +396,6 @@ export const renderTrendInfoVelib = (stop: StationConfiguration, station: Server
     //   ctx.font = Math.round(height / 12) + 'px';
     //   ctx.fillText(`${(hourMark.getHours() + 24 - h) % 24}`, (2 - h / 24) * width / 3 + alpha, h % 12 * height / 12 / 3 + height / 3);
     // }
-
   }
 
   cellTrend.colSpan = CELLS_COUNT; //so that it takes the whole row
@@ -408,9 +408,9 @@ export const renderTrendInfoVelib = (stop: StationConfiguration, station: Server
 /**
  * @returns HTML for info received for Velib
  */
-export const renderVelib = (stop: StationConfiguration, velibHistory: Object, config: Object): any => {
+export const renderVelib = (stop: StationConfiguration, velibHistory: Object, config: ModuleConfiguration): any => {
   const { messages, trendGraphOff } = config;
-  const velibStationHistory = velibHistory[stop.station];
+  const velibStationHistory: Array<ServerVelibResponse> = velibHistory[stop.station];
 
   if (!velibStationHistory) {
     return renderNoInfoVelib(stop, messages);

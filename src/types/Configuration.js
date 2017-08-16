@@ -1,5 +1,7 @@
 /* @flow */
 
+import type Moment from 'moment';
+
 /** Types for configuration objects */
 
 export type UICConfiguration = {
@@ -38,6 +40,12 @@ export type ModuleConfiguration = {
   oldUpdateThreshold?: number, // ???
   debug: boolean, //console.log more things to help debugging
   velibGraphWidth: number, //Height will follow
+  velibTrendWidth: number,
+  velibTrendHeight: number,
+  velibTrendTimeScale: number, // in nb of seconds
+  velibTrendZoom: number,
+  velibTrendDay: boolean,
+  trendGraphOff: boolean,
 
   apiBaseV3: string,  
   apiNavitia: string,
@@ -56,5 +64,5 @@ export type ModuleConfiguration = {
 
   messages: Object, //{ key1: value1, ... }
 
-  lastUpdate?: string, // ISO date at which current information has been received
+  lastUpdate?: Moment,
 };

@@ -33,7 +33,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   defaults,
 
   // Define required scripts.
-  getStyles: function() {
+  getStyles: function(): Array<string> {
     return [
       this.file('css/MMM-IDF-STIF-NAVITIA.css'),
       'font-awesome.css',
@@ -41,7 +41,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   },
 
   // Define start sequence.
-  start: function() {
+  start: function(): void {
     Log.info('Starting module: ' + this.name);
 
     enhanceConfiguration(this.config, this.sendSocketNotification.bind(this));
@@ -62,12 +62,12 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   },
 
   // What's being written on top
-  getHeader: function () {
+  getHeader: function (): string {
     return renderHeader(this.data, this.config);
   },
 
   // Override dom generator.
-  getDom: function() {
+  getDom: function(): any {
     const { messages, stations } = this.config;
     const wrapper = renderWrapper(this.loaded, messages);
     const table = document.createElement('table');
@@ -106,7 +106,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
   },
 
   // Intercepts server side events
-  socketNotificationReceived: function(notification, payload) {
+  socketNotificationReceived: function(notification: string, payload: Object): void {
     const { debug } = this.config;
     const { id, lastUpdate, schedules } = payload;
     const lastUpdateMoment = moment(lastUpdate);
@@ -123,14 +123,18 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
           this.velibHistory[id] = localStorage[id] ? JSON.parse(localStorage[id]) : [];
           this.velibHistory[id].push(payload);
           localStorage[id] = JSON.stringify(this.velibHistory[id]);
-          if (debug) {console.log (' *** size of velib History for ' + id + ' is: ' + this.velibHistory[id].length);}
+
+          if (debug) console.log (' *** size of velib History for ' + id + ' is: ' + this.velibHistory[id].length);
+
         } else if (this.velibHistory[id][this.velibHistory[id].length - 1].lastUpdate !== lastUpdateMoment) {
           this.velibHistory[id].push(payload);
           localStorage[id] = JSON.stringify(this.velibHistory[id]);
+
           if (debug) {
             console.log (' *** size of velib History for ' + id + ' is: ' + this.velibHistory[id].length);
             console.log (this.velibHistory[id]);
           }
+
         } else if (debug) {
           console.log(' *** redundant velib payload for ' + id + ' with time ' + lastUpdate + ' && ' + this.velibHistory[id][this.velibHistory[id].length - 1].lastUpdate);
         }
@@ -141,6 +145,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
           console.log(' *** received traffic information for: ' + id);
           console.log(payload);
         }
+
         this.ratpTraffic[id] = payload;
         this.ratpTrafficLastUpdate[id] = lastUpdateMoment;
         this.loaded = true;

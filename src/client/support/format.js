@@ -9,10 +9,10 @@ import type Moment from 'moment';
 /**
  * @returns time with format H:MM:SS from date
  */
-export const toHoursMinutesSeconds = (date?: Date) => {
+export const toHoursMinutesSeconds = (date?: Moment): string => {
   if (!date) return '';
 
-  return moment(date).format('HH:mm:ss');
+  return date.format('HH:mm:ss');
 };
 
 /**

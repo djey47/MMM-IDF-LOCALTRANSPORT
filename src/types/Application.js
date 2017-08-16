@@ -2,6 +2,10 @@
 
 import type { ModuleConfiguration } from './Configuration';
 
+export type Data = {
+  header: string,
+};
+
 export type ComingContext = {
   previousDepInfo: string,
   previousDestination: ?string,

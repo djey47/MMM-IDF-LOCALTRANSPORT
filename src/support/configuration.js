@@ -24,6 +24,12 @@ export const defaults: ModuleConfiguration = {
   oldThreshold: 0.1,
   debug: false,
   velibGraphWidth: 400,
+  velibTrendWidth: 400,
+  velibTrendHeight: 100,
+  velibTrendTimeScale: 3600,
+  velibTrendZoom: 1800,
+  velibTrendDay: false,
+  trendGraphOff: false,
 
   apiBaseV3: 'https://api-ratp.pierre-grimaud.fr/v3/',
   apiNavitia: 'https://api.navitia.io/v1/',

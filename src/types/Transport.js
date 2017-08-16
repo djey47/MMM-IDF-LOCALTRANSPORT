@@ -3,7 +3,6 @@
 /* Module specific defs */
 
 export type Schedule = {
-  message?: string,     // TODO deletion: Deprecated
   destination: string,
   status: ?string,      // See support/status.js
   time?: ?string,       // ISO
