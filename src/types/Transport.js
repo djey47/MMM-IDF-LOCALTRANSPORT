@@ -137,3 +137,13 @@ export type VelibResponse = {
   }],
 };
 
+/* Navitia API defs */
+
+export type NavitiaLineInfo = {
+  code: string,
+};
+
+export type NavitiaLinesResponse = {
+  lines: Array<NavitiaLineInfo>,
+};
+
