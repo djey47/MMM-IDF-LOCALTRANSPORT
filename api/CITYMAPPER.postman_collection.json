@@ -1,0 +1,55 @@
+{
+	"variables": [],
+	"info": {
+		"name": "CITYMAPPER",
+		"_postman_id": "805d522c-3178-7f7c-ebb7-b948b0312187",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ROUTE INFO: TRANSILIEN L",
+			"request": {
+				"url": {
+					"raw": "https://citymapper.com/api/1/routeinfo?route=transilien-l&region_id=fr-paris&key=7fc784633ecf39da737a94b5fa875835%27",
+					"protocol": "https",
+					"host": [
+						"citymapper",
+						"com"
+					],
+					"path": [
+						"api",
+						"1",
+						"routeinfo"
+					],
+					"query": [
+						{
+							"key": "route",
+							"value": "transilien-l",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "region_id",
+							"value": "fr-paris",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "key",
+							"value": "7fc784633ecf39da737a94b5fa875835%27",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
