@@ -32,9 +32,11 @@ export const defaults: ModuleConfiguration = {
   apiAutolib: 'https://opendata.paris.fr/explore/dataset/stations_et_espaces_autolib_de_la_metropole_parisienne/api/',
   apiSncfData: 'https://ressources.data.sncf.com/api/records/1.0/',
   apiSncfNavitia: 'https://api.sncf.com/v1/coverage/sncf/',
+  apiCitymapper: 'https://citymapper.com/api/1/',
   transilienToken: 'Basic',
   navitiaToken: '00000000-0000-0000-000000000000',
   sncfNavitiaToken: '00000000-0000-0000-000000000000',
+  citymapperToken: '00000000000000000000000000000000',
   messages: {
     ago: 'ago',
     loading: 'Loading connections ...',

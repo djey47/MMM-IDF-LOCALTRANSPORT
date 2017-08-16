@@ -53,13 +53,15 @@ const ResponseProcessor = {
       console.log('**');
     }
 
+    const { line, message, title } = result;
     const sentResult: ServerTrafficResponse = {
       id: createIndexFromResponse(data),
       lastUpdate: ResponseProcessor.now().toISOString(),
-      line: result.line,
+      line,
       loaded: true,
       status: ResponseProcessor.getStatus(result),
-      message: result.message,
+      message,
+      summary: title,
     };
     context.sendSocketNotification(NOTIF_TRAFFIC, sentResult);
   },

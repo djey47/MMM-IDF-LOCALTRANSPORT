@@ -23,7 +23,9 @@ export type ServerTrafficResponse = {
   lastUpdate: string,
   loaded: boolean,
   message: string,
+  summary: string,
   status: string,
+  line: string,
 };
 
 export type ServerVelibResponse = {
@@ -146,4 +148,19 @@ export type NavitiaLineInfo = {
 export type NavitiaLinesResponse = {
   lines: Array<NavitiaLineInfo>,
 };
+
+/* Citymapper API defs */
+
+export type CMRouteInfo = {
+  status: {
+    summary: string,
+    description: string,
+    level: number,
+  },
+  name: string,
+}
+
+export type CMRouteInfoResponse = {
+  routes: Array<CMRouteInfo>,
+}
 

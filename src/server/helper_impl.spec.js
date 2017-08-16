@@ -1,6 +1,6 @@
 import NodeHelperImpl from './helper_impl.js';
 import LegacyResponseProcessor from './legacy/ResponseProcessor';
-import TrafficResponseProcessor from './traffic/ResponseProcessor';
+import TrafficResponseProcessor from './legacy/TrafficResponseProcessor';
 import TransilienResponseProcessor from './transilien/ResponseProcessor';
 import VelibResponseProcessor from './velib/ResponseProcessor';
 

@@ -43,12 +43,14 @@ export type ModuleConfiguration = {
   apiNavitia: string,
   apiSncfNavitia: string,
   apiTransilien: string,
-  navitiaToken: string, // get it from own account @navitia.io
-  sncfNavitiaToken: string, // get it from own account @SNCF
-  transilienToken: string, // get it from own account @transilien SNCF
   apiVelib: string,     // add &q=141111 to get info of that station
   apiAutolib: string,   // add '?q=' but no realtime info... for now
   apiSncfData: string,
+  apiCitymapper: string,
+  navitiaToken: string, // get it from own account @navitia.io
+  sncfNavitiaToken: string, // get it from own account @SNCF
+  transilienToken: string, // get it from own account @transilien SNCF
+  citymapperToken: string,
 
   stations: Array<StationConfiguration>,
 

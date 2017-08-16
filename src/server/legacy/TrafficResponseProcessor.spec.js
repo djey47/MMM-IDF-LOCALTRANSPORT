@@ -1,7 +1,7 @@
 /* @flow */
 
 import moment from 'moment-timezone';
-import ResponseProcessor from './ResponseProcessor';
+import ResponseProcessor from './TrafficResponseProcessor';
 import { defaults } from '../../support/configuration';
 
 const sendSocketNotificationMock = jest.fn();
@@ -42,6 +42,7 @@ describe('processTraffic function', () => {
         loaded: true,
         message: 'Trafic normal sur l\'ensemble de la ligne.',
         status: 'OK',
+        summary: 'Trafic normal',
       },
     );
   });

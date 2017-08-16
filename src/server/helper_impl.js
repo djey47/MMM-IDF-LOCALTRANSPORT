@@ -4,9 +4,11 @@ import axios from 'axios';
 import NavitiaResponseProcessor from './navitia/ResponseProcessor';
 import TransilienResponseProcessor from './transilien/ResponseProcessor';
 import LegacyResponseProcessor from './legacy/ResponseProcessor';
-import TrafficResponseProcessor from './traffic/ResponseProcessor';
+import TrafficResponseProcessor from './legacy/TrafficResponseProcessor';
+import TransilienTrafficResponseProcessor from './citymapper/ResponseProcessor';
 import VelibResponseProcessor from './velib/ResponseProcessor';
 import Transilien from '../support/transilien';
+import Citymapper from '../support/api/citymapper';
 import { getNavitiaStopSchedulesUrl } from '../support/navitia';
 import LegacyApi from '../support/legacyApi';
 import {
@@ -23,6 +25,8 @@ const {
 } = LegacyApi;
 
 const { getTransilienDepartUrl } = Transilien;
+
+const { getTransilienRouteInfoUrl } = Citymapper;
 
 /**
  * Custom NodeHelper implementation
@@ -153,7 +157,7 @@ module.exports = {
    * Calls corresponding process function on successful response.
   */
   updateTimetable: function() {
-    const { debug, stations, apiBaseV3, apiVelib, apiNavitia, apiTransilien, navitiaToken, transilienToken } = this.config;
+    const { debug, stations, apiBaseV3, apiVelib, apiNavitia, apiTransilien, apiCitymapper, navitiaToken, transilienToken, citymapperToken } = this.config;
     
     if (debug) console.log (' *** fetching update');
     
@@ -179,6 +183,11 @@ module.exports = {
           this.getResponse(
             getTrafficUrl(apiBaseV3, stopConfig),
             TrafficResponseProcessor.processTraffic);
+          break;
+        case 'transiliensTraffic':
+          this.getResponse(
+            getTransilienRouteInfoUrl(apiCitymapper, stopConfig, citymapperToken),
+            TransilienTrafficResponseProcessor.processTraffic);
           break;
         case 'transiliensNavitia':
           this.getResponse(
