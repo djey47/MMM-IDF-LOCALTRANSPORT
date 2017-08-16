@@ -111,9 +111,6 @@ const resolveStatus = (statusCode: ?string, messages: Object, statusMessageKeys:
   if (!statusCode) return '';
 
   const key = statusMessageKeys[statusCode];
-  console.log(statusCode);
-  console.log(key);
-  console.log(statusMessageKeys);
   return key && translate(key, messages) || translate(MessageKeys.UNAVAILABLE, messages);
 };
 
