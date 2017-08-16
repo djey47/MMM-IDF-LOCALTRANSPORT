@@ -8,6 +8,7 @@ import type Moment from 'moment';
 import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
 import { now } from '../support/date';
 import { translate, MessageKeys } from '../../support/messages';
+import CitymapperApi  from '../../support/api/citymapper';
 import LegacyApi  from '../../support/api/legacy';
 import Navitia  from '../../support/api/navitia';
 import Transilien  from '../../support/api/transilien';
@@ -68,17 +69,20 @@ export const renderHeader = (data: Data, config: ModuleConfiguration): string =>
   return contents;
 };
 
+// TODO merge 2 following functions
 /**
- * @returns HTML for traffic status
+ * @returns HTML for traffic status (legacy)
  */
 export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, config: ModuleConfiguration): any => {
   const { messages } = config;
+  const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);
+  
   const stopIndex = LegacyApi.createTrafficIndexFromStopConfig(stop);
   const row = document.createElement('tr');
 
   const { line, label } = stop;
   const trafficAtStop: ServerTrafficResponse = ratpTraffic[stopIndex];
-  const { message, status } = trafficAtStop ? trafficAtStop : { message: translate(MessageKeys.UNAVAILABLE, messages), status: TrafficStatus.UNKNOWN };
+  const { message, status, summary } = trafficAtStop ? trafficAtStop : { message: unavailableLabel, status: TrafficStatus.UNKNOWN, summary: unavailableLabel };
 
   row.className = classnames('Traffic__item', 'bright', {
     'is-ok': status === TrafficStatus.OK,
@@ -88,7 +92,7 @@ export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, c
   
   const labelCell = document.createElement('td');
   labelCell.className = classnames('align-right');
-  labelCell.innerHTML = label || (line ? line[1].toString() : MessageKeys.UNAVAILABLE);
+  labelCell.innerHTML = label || (line ? line[1].toString() : unavailableLabel);
   row.appendChild(labelCell);
 
   const statusCell = document.createElement('td');
@@ -98,7 +102,46 @@ export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, c
 
   const messageCell = document.createElement('td');
   messageCell.className = 'align-left';
-  messageCell.innerHTML = message;
+  messageCell.innerHTML = message || summary || unavailableLabel;
+  messageCell.colSpan = 2;
+  row.appendChild(messageCell);
+
+  return row;
+};
+
+/**
+ * @returns HTML for traffic status (transiliens via city mapper)
+ */
+export const renderTrafficTransilien = (stop: StationConfiguration, transilienTraffic: Object, config: ModuleConfiguration): any => {
+  const { messages } = config;
+  const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);
+
+  const stopIndex = CitymapperApi.createTrafficIndexFromStopConfig(stop);
+  const row = document.createElement('tr');
+
+  const { line, label } = stop;
+  const trafficAtStop: ServerTrafficResponse = transilienTraffic[stopIndex];
+  const { message, status, summary } = trafficAtStop ? trafficAtStop : { message: unavailableLabel, status: TrafficStatus.UNKNOWN, summary: unavailableLabel};
+
+  row.className = classnames('Traffic__item', 'bright', {
+    'is-ok': status === TrafficStatus.OK,
+    'is-ok-with-work': status === TrafficStatus.OK_WORK,
+    'is-ko': status === TrafficStatus.KO,
+  });
+  
+  const labelCell = document.createElement('td');
+  labelCell.className = classnames('align-right');
+  labelCell.innerHTML = label || (line && typeof(line) === 'string' ? line : unavailableLabel);
+  row.appendChild(labelCell);
+
+  const statusCell = document.createElement('td');
+  statusCell.className = 'align-left';
+  statusCell.innerHTML = resolveStatus(status, messages, TrafficStatusMessageKeys);
+  row.appendChild(statusCell);
+
+  const messageCell = document.createElement('td');
+  messageCell.className = 'align-left';
+  messageCell.innerHTML = message || summary || unavailableLabel;
   messageCell.colSpan = 2;
   row.appendChild(messageCell);
 

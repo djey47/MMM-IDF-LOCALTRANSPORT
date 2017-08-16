@@ -22,6 +22,7 @@ import {
   renderWrapper,
   renderHeader,
   renderTraffic,
+  renderTrafficTransilien,
   renderPublicTransportLegacy,
   renderPublicTransportNavitia,
   renderPublicTransportTransilien,
@@ -48,8 +49,8 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
 
     this.transportSchedules = {};
     this.transportLastUpdate = {};
-    this.ratpTraffic = {};
-    this.ratpTrafficLastUpdate = {};
+    this.allTraffic = {};
+    this.allTrafficLastUpdate = {};
     this.velibHistory = {};
     this.loaded = false;
     this.updateTimer = null;
@@ -77,9 +78,13 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     // TODO use key generator as callback and use single renderer method
     // TODO use table node as parameter and add children in renderer
     stations.forEach((stop) => {
+      // TODO externalize types in config constants
       switch (stop.type) {
         case 'traffic':
-          table.appendChild(renderTraffic(stop, this.ratpTraffic, this.config));
+          table.appendChild(renderTraffic(stop, this.allTraffic, this.config));
+          break;
+        case 'transiliensTraffic':
+          table.appendChild(renderTrafficTransilien(stop, this.allTraffic, this.config));
           break;
         case 'bus':
         case 'metros':
@@ -146,8 +151,8 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
           console.log(payload);
         }
 
-        this.ratpTraffic[id] = payload;
-        this.ratpTrafficLastUpdate[id] = lastUpdateMoment;
+        this.allTraffic[id] = payload;
+        this.allTrafficLastUpdate[id] = lastUpdateMoment;
         this.loaded = true;
         break;
       case NOTIF_UPDATE:

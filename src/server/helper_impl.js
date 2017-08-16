@@ -33,8 +33,6 @@ const { getTransilienRouteInfoUrl } = Citymapper;
  * ES6 module export does not work here...
  */
 module.exports = {
-  loaded: false,
-
   start: function () {
     this.started = false;
   },

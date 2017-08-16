@@ -21,6 +21,16 @@ const CitymapperApi = {
     if(!line || typeof(line) !== 'string') return null;
 
     return `${api}routeinfo?route=transilien-${line.toLowerCase()}&region_id=fr-paris&key=${apiKey}`;
+  },
+
+  /**
+  * @returns index for traffic access (client side)
+  */
+  createTrafficIndexFromStopConfig: function(stopConfig: StationConfiguration): ?string {
+    const { line } = stopConfig;
+    if(!line || typeof(line) !== 'string') return null;    
+
+    return  `traffic/transiliens/${line.toLowerCase()}`;
   },  
 };
 
