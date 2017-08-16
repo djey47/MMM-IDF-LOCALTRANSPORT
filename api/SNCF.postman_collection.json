@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "SNCF",
-		"_postman_id": "3e0317d2-c181-bac1-a5f2-69f9ee4b3953",
+		"_postman_id": "0762ae40-acfd-ebfd-1030-4bdf152fe978",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -44,6 +44,60 @@
 				},
 				"method": "GET",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "SNCF COVERAGE",
+			"request": {
+				"url": "https://api.sncf.com/v1/coverage/sncf/",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic MDEzZTVlOWEtYmM4Yy00ZWFhLWFjOTEtN2I4Yzc5N2I5ZTA0Og==",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "SNCF COVERAGE ALL TRANSILIEN LINES",
+			"request": {
+				"url": "https://api.sncf.com/v1/coverage/sncf/networks/network:sncf/commercial_modes/commercial_mode:transilien/lines",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic MDEzZTVlOWEtYmM4Yy00ZWFhLWFjOTEtN2I4Yzc5N2I5ZTA0Og==",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "SNCF COVERAGE TRAFFIC REPORTS PER LINE",
+			"request": {
+				"url": "https://api.sncf.com/v1/coverage/sncf/lines/line:OCE:SN-87783001-87613422/traffic_reports",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic MDEzZTVlOWEtYmM4Yy00ZWFhLWFjOTEtN2I4Yzc5N2I5ZTA0Og==",
+						"description": ""
+					}
+				],
 				"body": {},
 				"description": ""
 			},

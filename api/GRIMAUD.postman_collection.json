@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "GRIMAUD",
-		"_postman_id": "8efd37a4-f87d-272f-4df0-e5a623f0b5a1",
+		"_postman_id": "8b561889-54f8-5708-d327-a327f31600b1",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -13,7 +13,10 @@
 				"url": "https://api-ratp.pierre-grimaud.fr/v3/traffic",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -24,7 +27,10 @@
 				"url": "https://api-ratp.pierre-grimaud.fr/v3/traffic/metros/3",
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"description": ""
 			},
 			"response": []
@@ -33,6 +39,42 @@
 			"name": "SCHEDULE Metro 3 Pereire",
 			"request": {
 				"url": "https://api-ratp.pierre-grimaud.fr/v3/schedules/metros/3/Pereire/A",
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "SCHEDULE BUS 275 Ulbach",
+			"request": {
+				"url": "https://api-ratp.pierre-grimaud.fr/v3/schedules/bus/275/Ulbach/A",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "SCHEDULE RER A La def",
+			"request": {
+				"url": "https://api-ratp.pierre-grimaud.fr/v3/schedules/rers/A/la+défense+grande+arche/R",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "SCHEDULE RER B Port Royal",
+			"request": {
+				"url": "https://api-ratp.pierre-grimaud.fr/v3/schedules/rers/B/port+royal/R",
 				"method": "GET",
 				"header": [],
 				"body": {},
