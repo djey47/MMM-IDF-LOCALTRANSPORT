@@ -21,7 +21,7 @@ import { defaults, enhanceConfiguration } from '../support/configuration';
 import {
   renderWrapper,
   renderHeader,
-  renderTraffic,
+  renderTrafficLegacy,
   renderTrafficTransilien,
   renderPublicTransportLegacy,
   renderPublicTransportNavitia,
@@ -90,7 +90,7 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     stations.forEach((stop) => {
       switch (stop.type) {
         case TYPE_TRAFFIC_LEGACY:
-          table.appendChild(renderTraffic(stop, this.allTraffic, this.config));
+          table.appendChild(renderTrafficLegacy(stop, this.allTraffic, this.config));
           break;
         case TYPE_TRAFFIC_TRANSILIEN:
           table.appendChild(renderTrafficTransilien(stop, this.allTraffic, this.config));

@@ -5,7 +5,7 @@ import htmlBeautify from 'html-beautify';
 import {
   renderWrapper,
   renderHeader,
-  renderTraffic,
+  renderTrafficLegacy,
   renderTrafficTransilien,
   renderPublicTransport,
   renderNoInfoVelib,
@@ -348,7 +348,7 @@ describe('renderPublicTransport function', () => {
   });
 });
 
-describe('renderTraffic function', () => {
+describe('renderTrafficLegacy function', () => {
   it('should return correct HTML for table row', () => {
     // given
     const stop = {
@@ -365,7 +365,7 @@ describe('renderTraffic function', () => {
     };
     const config = { ...defaults, messages: {} };
     // when
-    const actual = renderTraffic(stop, ratpTraffic, config);
+    const actual = renderTrafficLegacy(stop, ratpTraffic, config);
     // then
     expect(testRender(actual)).toMatchSnapshot();
   });

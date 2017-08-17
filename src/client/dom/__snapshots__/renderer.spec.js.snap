@@ -213,7 +213,7 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
-exports[`renderTraffic function should return correct HTML for table row 1`] = `
+exports[`renderTrafficLegacy function should return correct HTML for table row 1`] = `
 "<tr class=\\"Traffic__item bright is-ok-with-work\\">
    <td class=\\"align-right\\">
       Ulbach Label
