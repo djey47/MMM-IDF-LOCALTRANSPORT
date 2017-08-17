@@ -14,7 +14,6 @@ import type {
   SNCFStationResponse,
   StationInfoHandlerFunction,
   StationInfoResolverFunction,
-  NavitiaLinesResponse,
 } from '../types/Transport';
 import type { ModuleConfiguration } from '../types/Configuration';
 
@@ -143,46 +142,4 @@ export const getStationInfo = function(query: StationInfoQuery, config: ModuleCo
  */
 export const getAllStationInfo = (queries: Array<StationInfoQuery>, config: ModuleConfiguration): Promise<Array<StationInfoResult>> => {
   return Promise.all(queries.map(query => getStationInfo(query, config)));
-};
-
-/**
- * @param {string} letter e.g J,L,M etc...
- * @param {ModuleConfiguration} config
- * @returns Promise to all line codes matching provided letter
- */
-export const getAllTransilienLines = (letter: string, config: ModuleConfiguration): Promise<Array<string>> => {
-  // TODO cached
-  // TODO unit test
-  const effectiveConfig = {
-    ...axiosConfig,
-    headers: {
-      ...axiosConfig.headers,
-      Authorization: config.sncfNavitiaToken,
-    },
-  };
-
-  return new Promise((resolve, reject) => {
-    const query = `${config.apiSncfNavitia}commercial_modes/commercial_mode:transilien/lines?count=1000`;
-    axios.get(query, effectiveConfig)
-      .then(
-        (value) => {
-          const response: NavitiaLinesResponse = value.data;
-
-          if (config.debug) {
-            console.log(response);
-          }
-          
-          const lineCodes = response.lines
-            .map(r => r.code)
-            .filter(c => c === letter);
-
-          resolve(lineCodes);
-        },
-        (error) => {
-          console.error(`** Error invoking API for: ${query}`);
-          console.error(error);
-          
-          reject(error);
-        });
-  });
 };
