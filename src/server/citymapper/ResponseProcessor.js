@@ -9,10 +9,10 @@ import CitymapperApi from '../../support/api/citymapper';
 import { TrafficStatus } from '../../support/status';
 
 import type { Context } from '../../types/Application';
-import type { CMRouteInfoResponse, ServerTrafficResponse } from '../../types/Transport';
+import type { CMRouteInfoResponse, ServerTrafficResponse, CMRouteInfo } from '../../types/Transport';
 
 const { createIndexFromResponse } = CitymapperApi;
-const { UNKNOWN } = TrafficStatus;
+const { OK, KO, UNKNOWN } = TrafficStatus;
 
 const ResponseProcessor = {
   /**
@@ -25,8 +25,13 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  getStatus: (): string => {
-    // TODO use level or summary ?
+  getStatus: (routeInfo: CMRouteInfo): string => {
+    const { status: { level } } = routeInfo;
+
+    if (level === 0) return OK;
+
+    if (level === 1) return KO;
+
     return UNKNOWN;
   },
 
@@ -52,7 +57,7 @@ const ResponseProcessor = {
       lastUpdate: ResponseProcessor.now().toISOString(),
       line: name,
       loaded: true,
-      status: ResponseProcessor.getStatus(),
+      status: ResponseProcessor.getStatus(result),
       message: description,
       summary,
     };

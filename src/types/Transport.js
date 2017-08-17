@@ -21,7 +21,7 @@ export type ServerTrafficResponse = {
   id: string,
   lastUpdate: string,
   loaded: boolean,
-  message: string,
+  message?: string,
   summary: string,
   status: string,
   line: string,
@@ -153,7 +153,7 @@ export type NavitiaLinesResponse = {
 export type CMRouteInfo = {
   status: {
     summary: string,
-    description: string,
+    description?: string,
     level: number,
   },
   name: string,
