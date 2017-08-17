@@ -375,7 +375,7 @@ describe('renderTrafficTransilien function', () => {
   it('should return correct HTML for table row when message', () => {
     // given
     const stop = {
-      type: 'trafficTransiliens',
+      type: 'transiliensTraffic',
       line: 'L',
       label: 'L Label',
     };
@@ -396,7 +396,7 @@ describe('renderTrafficTransilien function', () => {
   it('should return correct HTML for table row when no message', () => {
     // given
     const stop = {
-      type: 'trafficTransiliens',
+      type: 'transiliensTraffic',
       line: 'L',
       label: 'L Label',
     };

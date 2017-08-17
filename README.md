@@ -22,12 +22,17 @@ A module to display:
 * It also uses [Paris Open Data for Velib](https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/) (use it to get the 5 digits stations you will need for the configuration)
 * API examples are provided into `api` subdirectory, as [POSTMAN collections](https://www.getpostman.com/).
 
+## Citymapper realtime API
+To use this API you need to request credentials, please create account [HERE](https://citymapper.3scale.net/).
+
+Once key has been given to you back, you've just to enter it in configuration file for `citymapperToken` value.
+
 ## Transilien realtime API
 To use this API you need to request credentials, please ask by sending email [HERE](mailto:innovation-transilien@sncf.fr?subject=Demande%20acc%C3%A8s%20API%20prochains%20d%C3%A9parts&body=nom,%20pr%C3%A9nom,organisation,utilisation).
 
-Once login/password have been given to you back, generate token value: open a browser window, press F12 and execute following code in console: `window.btoa(unescape(encodeURIComponent('LOGIN:PASSWORD')))`.
+Once login/password have been given to you back, generate token value: open a browser window, press F12 and execute following code in console: `window.btoa(unescape(encodeURIComponent('LOGIN:PASSWORD')))`. Copy result to clipboard.
 
-Finally, transilienToken value to be entered in configuration file will be `Basic GENERATED_TOKEN_VALUE`.
+Finally, `transilienToken` value to be entered in configuration file will be `Basic <pasted value from keyboard>`.
 
 # Install
 
@@ -59,10 +64,11 @@ Finally, transilienToken value to be entered in configuration file will be `Basi
 * `oldThreshold`: 0.1, //if (1+x) of the updateInterval has passed since the last refresh... then the oldUpdateOpacity is applied
 * `debug`: false, //console.log more things to help debugging
 * `stations`: [] // stations/directions to monitor (bus, RERs, tramways and subways), as an array of objects with different properties (see example below):
-  - `type`: Mandatory: Possible values: `['bus', 'rers', 'tramways', 'velib', 'traffic', 'transiliens']`
+  - `type`: Mandatory: Possible values: `['bus', 'rers', 'tramways', 'velib', 'traffic', 'transiliens', 'transiliensTraffic']`
   - `line`: Mandatory for 'bus', 'rers', and 'tramways': typically the official name but you can check through:
     - 'bus-metros-rers-tramways': https://api-ratp.pierre-grimaud.fr/v3/lines/bus, https://api-ratp.pierre-grimaud.fr/v3/lines/rers, https://api-ratp.pierre-grimaud.fr/v3/lines/tramways, https://api-ratp.pierre-grimaud.fr/v3/lines/metros
     - traffic: https://api-ratp.pierre-grimaud.fr/v3/traffic, set the line as: [type, line], such as: ['metros', 6], ['rers', 'A']...
+    - transiliensTraffic: set the line as code, such as: 'L', 'J'...
     - not used for 'transiliens'.
   - `station`: Mandatory: [name of the station] ->
     - for 'bus-rers-tramways-metros', https://api-ratp.pierre-grimaud.fr/v3/stations/{type}/{line}
@@ -73,13 +79,14 @@ Finally, transilienToken value to be entered in configuration file will be `Basi
     - Mandatory for 'metros', 'bus', 'rers' & 'tramways': either 'A' or 'R'
     - Optional for 'velib': ['leaving', 'arriving', '']: indicate if only one value is needed //not in use yet
     - Optional for 'transiliens': shows train matching this destination only (see station repository above)
-    - not used for 'traffic'.
+    - not used for 'traffic' and 'transiliensTraffic'.
   - `uic`: ('transiliens' only) : UIC codes for station and destination (useful when names are not sufficient to identify)
     - Optional, if not provided, station and destination codes will be resolved from names provided above
     - `station` element: code
     - `destination` element (optional): code
   - `label`: Optional, to rename the line differently if needed.
 * `transilienToken`: 'Basic xxxxxxxx' : mandatory to access transilien realtime API (account required, see section above)
+* `citymapperToken`: 'xxxxxxxx' : mandatory to access citymapper realtime API (account required, see section above)
 * `messages`: (see example below) : key-values to convert generic messages to your preferred language.
   - Copy paste all default values and modify to your likings. 
 
@@ -105,6 +112,9 @@ stations: [
   {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L', destination: 'NANTERRE UNIVERSITE'},
   // With UIC codes:
   {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'SAINT NOM LA BRETECHE', uic: { station: '87382002', destination: '87382481'}, label: 'Becon L'},
+
+  // SNCF Transilien Traffic via Citymapper API
+  {type: 'transiliensTraffic', line: 'L'},
 ],
 
 messages: {
