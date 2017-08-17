@@ -64,12 +64,6 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     this.velibHistory = {};
     this.loaded = false;
     this.updateTimer = null;
-
-    const updateCallback = (() => {
-      this.caller = 'updateInterval';
-      this.updateDom();
-    }).bind(this);
-    setInterval(updateCallback, 1000);
   },
 
   // What's being written on top

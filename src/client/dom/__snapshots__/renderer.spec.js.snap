@@ -222,8 +222,11 @@ exports[`renderTrafficLegacy function should return correct HTML for table row 1
       {traffic.okwork}
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">
-      summary
-   </td>
+      <span class=\\"Traffic__title\\">summary</span>
+      <marquee class=\\"Traffic__message\\" scrollamount=\\"10\\" scrolldelay=\\"60\\">
+         message
+      </marquee>
+</td>
 </tr>"
 `;
 
@@ -236,8 +239,11 @@ exports[`renderTrafficTransilien function should return correct HTML for table r
       {unavailable}
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">
-      summary
-   </td>
+      <span class=\\"Traffic__title\\">summary</span>
+      <marquee class=\\"Traffic__message\\" scrollamount=\\"10\\" scrolldelay=\\"60\\">
+         message
+      </marquee>
+</td>
 </tr>"
 `;
 
@@ -250,8 +256,9 @@ exports[`renderTrafficTransilien function should return correct HTML for table r
       {unavailable}
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">
-      summary
-   </td>
+      <span class=\\"Traffic__title\\">summary</span>
+      <marquee class=\\"Traffic__message\\" scrollamount=\\"10\\" scrolldelay=\\"60\\"></marquee>
+</td>
 </tr>"
 `;
 

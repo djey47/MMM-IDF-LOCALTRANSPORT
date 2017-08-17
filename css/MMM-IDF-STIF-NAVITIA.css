@@ -37,4 +37,10 @@
   color: red;
 }
 
-.IDFTransportWrapper .Traffic__item.is-ok {}
+/* .IDFTransportWrapper .Traffic__item.is-ok {} */
+
+.IDFTransportWrapper .Traffic__title {
+  font-weight: bold;
+}
+
+/* .IDFTransportWrapper .Traffic__message {} */

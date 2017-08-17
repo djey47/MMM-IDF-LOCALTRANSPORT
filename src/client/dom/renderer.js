@@ -119,7 +119,7 @@ const renderTraffic = (trafficIndex: ?string, stop: StationConfiguration, traffi
 
   const { line, label } = stop;
   const trafficAtStop: ServerTrafficResponse = traffic[trafficIndex];
-  const { status, summary } = trafficAtStop ? trafficAtStop : { message: unavailableLabel, status: TrafficStatus.UNKNOWN, summary: unavailableLabel };
+  const { status, summary, message } = trafficAtStop ? trafficAtStop : { message: unavailableLabel, status: TrafficStatus.UNKNOWN, summary: unavailableLabel };
 
   row.className = classnames('Traffic__item', 'bright', {
     'is-ok': status === TrafficStatus.OK,
@@ -137,8 +137,17 @@ const renderTraffic = (trafficIndex: ?string, stop: StationConfiguration, traffi
   row.appendChild(statusCell);
 
   const messageCell = document.createElement('td');
+  const summaryPart = document.createElement('span');
+  summaryPart.innerHTML = summary || unavailableLabel;
+  summaryPart.className = 'Traffic__title';
+  const messagePart = document.createElement('marquee');
+  messagePart.innerHTML = message || '';
+  messagePart.className = 'Traffic__message',
+  messagePart.setAttribute('scrollamount', '10');
+  messagePart.setAttribute('scrolldelay', '60');
+  messageCell.appendChild(summaryPart);
+  messageCell.appendChild(messagePart);
   messageCell.className = 'align-left';
-  messageCell.innerHTML = summary || unavailableLabel;
   messageCell.colSpan = 2;
   row.appendChild(messageCell);
 

@@ -26,7 +26,6 @@ export const defaults: ModuleConfiguration = {
   maximumEntries: 2,
   maxTimeOffset: 200,
   updateInterval: 1 * 60 * 1000,
-  animationSpeed: 2000,
   convertToWaitingTime: true,
   initialLoadDelay: 0,
   maxLettersForDestination: 22,
