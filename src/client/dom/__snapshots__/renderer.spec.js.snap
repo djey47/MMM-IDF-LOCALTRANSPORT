@@ -218,7 +218,7 @@ exports[`renderTraffic function should return correct HTML for table row 1`] = `
    <td class=\\"align-right\\">
       Ulbach Label
    </td>
-   <td class=\\"align-left\\">
+   <td>
       {traffic.okwork}
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">
@@ -232,7 +232,7 @@ exports[`renderTrafficTransilien function should return correct HTML for table r
    <td class=\\"align-right\\">
       L Label
    </td>
-   <td class=\\"align-left\\">
+   <td>
       {unavailable}
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">
@@ -246,7 +246,7 @@ exports[`renderTrafficTransilien function should return correct HTML for table r
    <td class=\\"align-right\\">
       L Label
    </td>
-   <td class=\\"align-left\\">
+   <td>
       {unavailable}
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">

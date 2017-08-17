@@ -50,7 +50,7 @@ describe('processTraffic function', () => {
     const data = {
       routes: [{
         status: {
-          level: 1,
+          level: 2,
           summary: 'summary',
           description: 'description',
         },

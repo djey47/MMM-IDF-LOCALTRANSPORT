@@ -96,7 +96,6 @@ export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, c
   row.appendChild(labelCell);
 
   const statusCell = document.createElement('td');
-  statusCell.className = 'align-left';
   statusCell.innerHTML = resolveStatus(status, messages, TrafficStatusMessageKeys);
   row.appendChild(statusCell);
 
@@ -135,7 +134,6 @@ export const renderTrafficTransilien = (stop: StationConfiguration, transilienTr
   row.appendChild(labelCell);
 
   const statusCell = document.createElement('td');
-  statusCell.className = 'align-left';
   statusCell.innerHTML = resolveStatus(status, messages, TrafficStatusMessageKeys);
   row.appendChild(statusCell);
 

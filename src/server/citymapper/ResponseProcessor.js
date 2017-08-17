@@ -12,7 +12,16 @@ import type { Context } from '../../types/Application';
 import type { CMRouteInfoResponse, ServerTrafficResponse, CMRouteInfo } from '../../types/Transport';
 
 const { createIndexFromResponse } = CitymapperApi;
-const { OK, KO, UNKNOWN } = TrafficStatus;
+const { OK, OK_WORK, KO, UNKNOWN } = TrafficStatus;
+
+/**
+ * Association between API levels and statuses
+ */
+const STATUSES = {
+  '0': OK,
+  '1': OK_WORK,
+  '2': KO,
+};
 
 const ResponseProcessor = {
   /**
@@ -28,11 +37,7 @@ const ResponseProcessor = {
   getStatus: (routeInfo: CMRouteInfo): string => {
     const { status: { level } } = routeInfo;
 
-    if (level === 0) return OK;
-
-    if (level === 1) return KO;
-
-    return UNKNOWN;
+    return STATUSES[level.toString()] || UNKNOWN;
   },
 
   /**
