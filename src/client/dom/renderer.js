@@ -82,7 +82,7 @@ export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, c
 
   const { line, label } = stop;
   const trafficAtStop: ServerTrafficResponse = ratpTraffic[stopIndex];
-  const { message, status, summary } = trafficAtStop ? trafficAtStop : { message: unavailableLabel, status: TrafficStatus.UNKNOWN, summary: unavailableLabel };
+  const { status, summary } = trafficAtStop ? trafficAtStop : { message: unavailableLabel, status: TrafficStatus.UNKNOWN, summary: unavailableLabel };
 
   row.className = classnames('Traffic__item', 'bright', {
     'is-ok': status === TrafficStatus.OK,
@@ -102,7 +102,7 @@ export const renderTraffic = (stop: StationConfiguration, ratpTraffic: Object, c
 
   const messageCell = document.createElement('td');
   messageCell.className = 'align-left';
-  messageCell.innerHTML = message || summary || unavailableLabel;
+  messageCell.innerHTML = summary || unavailableLabel;
   messageCell.colSpan = 2;
   row.appendChild(messageCell);
 
@@ -121,7 +121,7 @@ export const renderTrafficTransilien = (stop: StationConfiguration, transilienTr
 
   const { line, label } = stop;
   const trafficAtStop: ServerTrafficResponse = transilienTraffic[stopIndex];
-  const { message, status, summary } = trafficAtStop ? trafficAtStop : { message: unavailableLabel, status: TrafficStatus.UNKNOWN, summary: unavailableLabel};
+  const { status, summary } = trafficAtStop ? trafficAtStop : { message: unavailableLabel, status: TrafficStatus.UNKNOWN, summary: unavailableLabel};
 
   row.className = classnames('Traffic__item', 'bright', {
     'is-ok': status === TrafficStatus.OK,
@@ -141,7 +141,7 @@ export const renderTrafficTransilien = (stop: StationConfiguration, transilienTr
 
   const messageCell = document.createElement('td');
   messageCell.className = 'align-left';
-  messageCell.innerHTML = message || summary || unavailableLabel;
+  messageCell.innerHTML = summary || unavailableLabel;
   messageCell.colSpan = 2;
   row.appendChild(messageCell);
 

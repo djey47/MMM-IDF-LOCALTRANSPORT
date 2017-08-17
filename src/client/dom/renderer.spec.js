@@ -360,6 +360,7 @@ describe('renderTraffic function', () => {
       'traffic/bus/275': {
         status: 'OK_WORK',
         message: 'message',
+        summary: 'summary',
       },
     };
     const config = { ...defaults, messages: {} };

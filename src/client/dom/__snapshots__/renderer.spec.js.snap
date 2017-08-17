@@ -222,7 +222,7 @@ exports[`renderTraffic function should return correct HTML for table row 1`] = `
       {traffic.okwork}
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">
-      message
+      summary
    </td>
 </tr>"
 `;
@@ -236,7 +236,7 @@ exports[`renderTrafficTransilien function should return correct HTML for table r
       {unavailable}
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">
-      message
+      summary
    </td>
 </tr>"
 `;
