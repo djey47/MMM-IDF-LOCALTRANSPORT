@@ -5,14 +5,13 @@ import { translate, MessageKeys } from '../../support/messages';
 
 import type Moment from 'moment';
 
-
 /**
- * @returns time with format H:MM:SS from date
+ * @returns time with format H:MM:SS from moment-compliant string (YYYYMMDDTHHMMSS, ISO...)
  */
-export const toHoursMinutesSeconds = (date?: Moment): string => {
+export const toHoursMinutesSeconds = (date?: string): string => {
   if (!date) return '';
 
-  return date.format('HH:mm:ss');
+  return moment(date).format('HH:mm:ss');
 };
 
 /**

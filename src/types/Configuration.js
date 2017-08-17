@@ -1,7 +1,5 @@
 /* @flow */
 
-import type Moment from 'moment';
-
 /** Types for configuration objects */
 
 export type UICConfiguration = {
@@ -63,5 +61,5 @@ export type ModuleConfiguration = {
 
   messages: Object, //{ key1: value1, ... }
 
-  lastUpdate?: Moment,
+  lastUpdate?: string,
 };

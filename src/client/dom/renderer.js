@@ -52,7 +52,7 @@ export const renderHeader = (data: Data, config: ModuleConfiguration): string =>
 
   let contents = data.header;
   if (showSecondsToNextUpdate) {
-    const timeDifference = lastUpdate ? Math.round((updateInterval - now().valueOf() + lastUpdate.valueOf()) / 1000) : 0;
+    const timeDifference = lastUpdate ? Math.round((updateInterval - now().valueOf() + moment(lastUpdate).valueOf()) / 1000) : 0;
     const secondUnit = translate(MessageKeys.UNITS_SECONDS, messages);
     if (timeDifference > 0) {
       contents += `, ${translate(MessageKeys.NEXT_UPDATE, messages)} ${timeDifference}${secondUnit}`;
