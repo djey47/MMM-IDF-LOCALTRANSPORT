@@ -7,8 +7,21 @@ import type { NotificationSenderFunction } from '../types/Application';
 import type { ModuleConfiguration } from '../types/Configuration';
 import type { StationInfoResult } from '../types/Transport';
 
-const TYPE_TRANSILIEN = 'transiliens';
+/**
+ * All stop configuration types
+ */
+export const TYPE_BUS = 'bus';
+export const TYPE_METRO = 'metros';
+export const TYPE_RER = 'rers';
+export const TYPE_TRAMWAY = 'tramways';
+export const TYPE_TRANSILIEN = 'transiliens';
+export const TYPE_TRAFFIC_LEGACY = 'traffic';
+export const TYPE_TRAFFIC_TRANSILIEN = 'transiliensTraffic';
+export const TYPE_VELIB = 'velib';
 
+/**
+ * Default configuration
+ */
 export const defaults: ModuleConfiguration = {
   maximumEntries: 2,
   maxTimeOffset: 200,

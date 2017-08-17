@@ -28,6 +28,16 @@ import {
   renderPublicTransportTransilien,
   renderVelib,
 } from './dom/renderer';
+import {
+  TYPE_TRAFFIC_LEGACY,
+  TYPE_TRAFFIC_TRANSILIEN,
+  TYPE_BUS,
+  TYPE_METRO,
+  TYPE_RER,
+  TYPE_TRAMWAY,
+  TYPE_TRANSILIEN,
+  TYPE_VELIB,
+} from '../support/configuration';
 
 Module.register('MMM-IDF-STIF-NAVITIA',{
   // Define module defaults
@@ -78,18 +88,17 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
     // TODO use key generator as callback and use single renderer method
     // TODO use table node as parameter and add children in renderer
     stations.forEach((stop) => {
-      // TODO externalize types in config constants
       switch (stop.type) {
-        case 'traffic':
+        case TYPE_TRAFFIC_LEGACY:
           table.appendChild(renderTraffic(stop, this.allTraffic, this.config));
           break;
-        case 'transiliensTraffic':
+        case TYPE_TRAFFIC_TRANSILIEN:
           table.appendChild(renderTrafficTransilien(stop, this.allTraffic, this.config));
           break;
-        case 'bus':
-        case 'metros':
-        case 'tramways':
-        case 'rers':
+        case TYPE_BUS:
+        case TYPE_METRO:
+        case TYPE_TRAMWAY:
+        case TYPE_RER:
           renderPublicTransportLegacy(stop, this.transportSchedules, this.transportLastUpdate, this.config)
             .forEach((row) => table.appendChild(row));
           break;
@@ -97,11 +106,11 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
           renderPublicTransportNavitia(stop, this.transportSchedules, this.transportLastUpdate, this.config)
             .forEach((row) => table.appendChild(row));
           break;
-        case 'transiliens':
+        case TYPE_TRANSILIEN:
           renderPublicTransportTransilien(stop, this.transportSchedules, this.transportLastUpdate, this.config)
             .forEach((row) => table.appendChild(row));
           break;
-        case 'velib':
+        case TYPE_VELIB:
           table.appendChild(renderVelib(stop, this.velibHistory, this.config));
           break;
       }

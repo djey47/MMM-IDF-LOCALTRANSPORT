@@ -15,7 +15,16 @@ import {
   NOTIF_UPDATE,
   NOTIF_SET_CONFIG,
 } from '../support/notifications.js';
-
+import {
+  TYPE_TRAFFIC_LEGACY,
+  TYPE_TRAFFIC_TRANSILIEN,
+  TYPE_BUS,
+  TYPE_METRO,
+  TYPE_RER,
+  TYPE_TRAMWAY,
+  TYPE_TRANSILIEN,
+  TYPE_VELIB,
+} from '../support/configuration';
 import type { StationConfiguration } from '../types/Configuration';
 
 const {
@@ -166,25 +175,25 @@ module.exports = {
     stations.forEach((stopConfig) => {
       const { type } = stopConfig;
       switch (type) {
-        case 'tramways':
-        case 'bus':
-        case 'rers':
-        case 'metros':
+        case TYPE_TRAMWAY:
+        case TYPE_BUS:
+        case TYPE_RER:
+        case TYPE_METRO:
           this.getResponse(
             getScheduleUrl(apiBaseV3, stopConfig),
             LegacyResponseProcessor.processTransport);
           break;
-        case 'velib':
+        case TYPE_VELIB:
           this.getResponse(
             getVelibUrl(apiVelib, stopConfig),
             VelibResponseProcessor.processVelib);
           break;
-        case 'traffic':
+        case TYPE_TRAFFIC_LEGACY:
           this.getResponse(
             getTrafficUrl(apiBaseV3, stopConfig),
             TrafficResponseProcessor.processTraffic);
           break;
-        case 'transiliensTraffic':
+        case TYPE_TRAFFIC_TRANSILIEN:
           this.getResponse(
             getTransilienRouteInfoUrl(apiCitymapper, stopConfig, citymapperToken),
             TransilienTrafficResponseProcessor.processTraffic);
@@ -195,7 +204,7 @@ module.exports = {
             NavitiaResponseProcessor.processTransportNavitia,
             navitiaToken);
           break;        
-        case 'transiliens':
+        case TYPE_TRANSILIEN:
           this.getResponse(
             getTransilienDepartUrl(apiTransilien, stopConfig),
             TransilienResponseProcessor.processTransportTransilien,
