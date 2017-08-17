@@ -11,7 +11,7 @@ import { TrafficStatus } from '../../support/status';
 import type { Context } from '../../types/Application';
 import type { CMRouteInfoResponse, ServerTrafficResponse, CMRouteInfo } from '../../types/Transport';
 
-const { createIndexFromResponse } = CitymapperApi;
+const { createTrafficIndexFromResponse } = CitymapperApi;
 const { OK, OK_WORK, KO, UNKNOWN } = TrafficStatus;
 
 /**
@@ -47,7 +47,6 @@ const ResponseProcessor = {
    * @param {Context} context 
    */
   processTraffic: (data: CMRouteInfoResponse, context: Context): void => {
-    // TODO unit tests
     const [ result ] = data.routes;
 
     if (context.config.debug) {
@@ -58,7 +57,7 @@ const ResponseProcessor = {
     const  { status: { description, summary }, name } = result;
 
     const sentResult: ServerTrafficResponse = {
-      id: createIndexFromResponse(result),
+      id: createTrafficIndexFromResponse(result),
       lastUpdate: ResponseProcessor.now().toISOString(),
       line: name,
       loaded: true,

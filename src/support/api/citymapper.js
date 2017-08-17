@@ -3,13 +3,12 @@
 import type { StationConfiguration } from '../../types/Configuration';
 import type { CMRouteInfo } from '../../types/Transport';
 
-// TODO unit tests
 const CitymapperApi = {
   /**
    * @param {CMRouteInfo} responseData
    * @returns index for results storage (server side)
    */
-  createIndexFromResponse: function (responseData: CMRouteInfo): string {
+  createTrafficIndexFromResponse: function (responseData: CMRouteInfo): string {
     return `traffic/transiliens/${responseData.name.toLowerCase()}`;
   },
 
