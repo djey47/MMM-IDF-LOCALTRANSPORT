@@ -1,5 +1,1 @@
-node_modules/
-flow-typed/
-tools/flow/
-MMM-IDF-STIF-NAVITIA.js
 **/*.spec.js.snap

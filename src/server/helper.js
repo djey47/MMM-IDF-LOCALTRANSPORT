@@ -1,7 +1,7 @@
 /* @flow */
 
 /* Magic Mirror
- * Module: MMM-IDF-STIF-NAVITIA
+ * Module: MMM-IDF-LOCALTRANSPORT
  * Server side part of module.
  */
 

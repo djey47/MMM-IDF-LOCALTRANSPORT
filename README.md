@@ -1,26 +1,29 @@
-# MMM-IDF-STIF-NAVITIA
+# MMM-IDF-LOCALTRANSPORT
 [ ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](http://choosealicense.com/licenses/mit)
-[ ![Codeship Status for djey47/MMM-IDF-STIF-NAVITIA](https://app.codeship.com/projects/323491f0-25bd-0135-db38-2a42d49cc1d5/status?branch=master)](https://app.codeship.com/projects/222476)
+[ ![Codeship Status for djey47/MMM-IDF-LOCALTRANSPORT](https://app.codeship.com/projects/323491f0-25bd-0135-db38-2a42d49cc1d5/status?branch=master)](https://app.codeship.com/projects/222476)
 
-MichMich's MagicMirror2 module to display next transportation means for a configured list of stations/ destinations:
+MichMich's MagicMirror2 module to display next transportation means for a configured list of stations/destinations.
 
 Forked from MMM-Paris-RATP-PG see more detailed information on [github](https://github.com/da4throux/MMM-Paris-RATP-PG).
 
 # Presentation
 A module to display:
-* the different buses, metros, rers & tramways, in order to avoid waiting too much for them when leaving home. 
-* general traffic information for lines of metros, rers & tramways
+* the different buses, metros, rers, tramways & transiliens, in order to avoid waiting too much for them when leaving home
+* general traffic information for lines of metros, rers, tramways & transiliens
 * available docks & bikes in selected Velib stations, along with the trend over the last day (configurable).
 
-# Screenshot
-(obsolete)
-![screenshot](https://github.com/da4throux/MMM-Paris-RATP-PG/blob/master/MMM-Paris-RATP-PG2.png)
+# Screenshots
+![screenshot](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/blob/master/images/MMM-IDF-LOCALTRANSPORT1.png)
+![screenshot](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/blob/master/images/MMM-IDF-LOCALTRANSPORT2.png)
 
 # API
-* It is based on the REST API provided by [TRANSILIEN](https://ressources.data.sncf.com/explore/dataset/api-temps-reel-transilien/) and [SNCF](https://ressources.data.sncf.com)
-* RERs, Metros, Buses and Tramways infos are provided by [P.Grimaud's API](https://github.com/pgrimaud/horaires-ratp-api) via RATP services.
+API examples are provided into `api` subdirectory, as [POSTMAN collections](https://www.getpostman.com/).
+* RERs, Metros, Buses and Tramways infos are provided by [P.Grimaud's API](https://github.com/pgrimaud/horaires-ratp-api) via RATP services
+* Transilien infos are based on the REST API provided by [TRANSILIEN](https://ressources.data.sncf.com/explore/dataset/api-temps-reel-transilien/) and [SNCF](https://ressources.data.sncf.com)
+* Traffic data for transilien comes from [Citymapper API](https://citymapper.com/paris)
 * It also uses [Paris Open Data for Velib](https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/) (use it to get the 5 digits stations you will need for the configuration)
-* API examples are provided into `api` subdirectory, as [POSTMAN collections](https://www.getpostman.com/).
+
+Some infos require FREE subscription to services, see below:
 
 ## Citymapper realtime API
 To use this API you need to request credentials, please create account [HERE](https://citymapper.3scale.net/).
@@ -38,17 +41,18 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
 
 1. Clone repository into `/modules/` inside your MagicMirror folder
 2. Install [yarn](https://yarnpkg.com/en/docs/install)
-3. Run `yarn install` inside `/modules/MMM-IDF-STIF-NAVITIA/` folder
-4. Check that `MMM-IDF-STIF-NAVITIA.js` and `node_helper.js` scripts have been created into current folder
+3. Run `yarn install` inside `/modules/MMM-IDF-LOCALTRANSPORT/` folder
+4. Check that `MMM-IDF-LOCALTRANSPORT.js` and `node_helper.js` scripts have been created into current folder
 5. Add the module to the MagicMirror config:
 ```
 		{
-	        module: 'MMM-IDF-STIF-NAVITIA',
+	        module: 'MMM-IDF-LOCALTRANSPORT',
 	        position: 'bottom_right',
 	        header: 'Connections',
 	        config: { // see below }
     	},
 ```
+6. Make sure all required API keys have been acquired (see previous chapter).
 
 # Specific configuration
 * [`name`]: [default value], //information

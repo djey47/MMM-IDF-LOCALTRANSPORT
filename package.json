@@ -1,10 +1,10 @@
 {
-  "name": "MMM-IDF-STIF-NAVITIA",
+  "name": "MMM-IDF-LOCALTRANSPORT",
   "version": "1.0.0",
-  "description": "Local transport in IDF based on Navitia.io API module for MagicMirror",
+  "description": "Local transport in IDF based on API module for MagicMirror",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/djey47/MMM-IDF-STIFF-NAVITIA"
+    "url": "git+https://github.com/djey47/MMM-IDF-LOCALTRANSPORT"
   },
   "keywords": [
     "magic mirror",
@@ -13,16 +13,17 @@
     "module",
     "paris",
     "STIF",
+    "RATP",
     "transilien",
     "SNCF",
-    "navitia.io"
+    "citymapper.com"
   ],
   "author": "djey47",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/djey47/MMM-IDF-STIFF-NAVITIA/issues"
+    "url": "https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/issues"
   },
-  "homepage": "https://github.com/djey47/MMM-IDF-STIFF-NAVITIA#readme",
+  "homepage": "https://github.com/djey47/MMM-IDF-LOCALTRANSPORT#readme",
   "scripts": {
     "install": "npm run build",
     "build:module": "webpack --config tools/webpack/webpack.config.module.js",

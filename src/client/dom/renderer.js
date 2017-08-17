@@ -10,7 +10,6 @@ import { now } from '../support/date';
 import { translate, MessageKeys } from '../../support/messages';
 import CitymapperApi  from '../../support/api/citymapper';
 import LegacyApi  from '../../support/api/legacy';
-import Navitia  from '../../support/api/navitia';
 import Transilien  from '../../support/api/transilien';
 import {
   Status,
@@ -282,15 +281,6 @@ export const renderPublicTransportLegacy = (stop: StationConfiguration, schedule
   const stopIndex = LegacyApi.createIndexFromStopConfig(stop);
 
   return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
-};
-
-/**
- * @returns HTML for public transport items (rows) via Navitia API
- */
-export const renderPublicTransportNavitia = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: ModuleConfiguration): any[] => {
-  const stopIndex = Navitia.createIndexFromStopConfig(stop);
-
-  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);  
 };
 
 /**

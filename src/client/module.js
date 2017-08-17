@@ -3,7 +3,7 @@
 /* Timetable for Paris local transport Module */
 
 /* Magic Mirror
- * Module: MMM-IDF-STIF-NAVITIA
+ * Module: MMM-IDF-LOCALTRANSPORT
  *
  * Based on script by da4throux
  * MIT Licensed.
@@ -17,14 +17,13 @@ import {
   NOTIF_VELIB,
   NOTIF_TRANSPORT,
 } from '../support/notifications';
-import { defaults, enhanceConfiguration } from '../support/configuration';
+import { MODULE_NAME, defaults, enhanceConfiguration } from '../support/configuration';
 import {
   renderWrapper,
   renderHeader,
   renderTrafficLegacy,
   renderTrafficTransilien,
   renderPublicTransportLegacy,
-  renderPublicTransportNavitia,
   renderPublicTransportTransilien,
   renderVelib,
 } from './dom/renderer';
@@ -39,14 +38,15 @@ import {
   TYPE_VELIB,
 } from '../support/configuration';
 
-Module.register('MMM-IDF-STIF-NAVITIA',{
+// TODO Rename with github repository
+Module.register(MODULE_NAME,{
   // Define module defaults
   defaults,
 
   // Define required scripts.
   getStyles: function(): Array<string> {
     return [
-      this.file('css/MMM-IDF-STIF-NAVITIA.css'),
+      this.file('css/module.css'),
       'font-awesome.css',
     ];
   },
@@ -94,10 +94,6 @@ Module.register('MMM-IDF-STIF-NAVITIA',{
         case TYPE_TRAMWAY:
         case TYPE_RER:
           renderPublicTransportLegacy(stop, this.transportSchedules, this.transportLastUpdate, this.config)
-            .forEach((row) => table.appendChild(row));
-          break;
-        case 'transiliensNavitia':
-          renderPublicTransportNavitia(stop, this.transportSchedules, this.transportLastUpdate, this.config)
             .forEach((row) => table.appendChild(row));
           break;
         case TYPE_TRANSILIEN:

@@ -8,6 +8,11 @@ import type { ModuleConfiguration } from '../types/Configuration';
 import type { StationInfoResult } from '../types/Transport';
 
 /**
+ * Official module name
+ */
+export const MODULE_NAME = 'MMM-IDF-LOCALTRANSPORT';
+
+/**
  * All stop configuration types
  */
 export const TYPE_BUS = 'bus';
@@ -44,16 +49,12 @@ export const defaults: ModuleConfiguration = {
   trendGraphOff: false,
 
   apiBaseV3: 'https://api-ratp.pierre-grimaud.fr/v3/',
-  apiNavitia: 'https://api.navitia.io/v1/',
   apiTransilien: 'http://api.transilien.com/',
   apiVelib: 'https://opendata.paris.fr/api/records/1.0/search/?dataset=stations-velib-disponibilites-en-temps-reel',
   apiAutolib: 'https://opendata.paris.fr/explore/dataset/stations_et_espaces_autolib_de_la_metropole_parisienne/api/',
   apiSncfData: 'https://ressources.data.sncf.com/api/records/1.0/',
-  apiSncfNavitia: 'https://api.sncf.com/v1/coverage/sncf/',
   apiCitymapper: 'https://citymapper.com/api/1/',
   transilienToken: 'Basic',
-  navitiaToken: '00000000-0000-0000-000000000000',
-  sncfNavitiaToken: '00000000-0000-0000-000000000000',
   citymapperToken: '00000000000000000000000000000000',
   messages: {
     ago: 'ago',
@@ -116,10 +117,10 @@ export function handleStationInfoResponse(responses: Array<StationInfoResult>, s
     // TODO use MM2 logger (available in client context ?)
     const { station, destination, uic } = configuration.stations[index];
     if (uic) {
-      console.log('** MMM-IDF-STIF-NAVITIA: Configuration resolved UIC codes:');
+      console.log(`** ${MODULE_NAME}: Configuration resolved UIC codes:`);
       console.log(`station: ${station || '/'} => ${uic.station || '/'} , destination: ${destination || '/'} => ${uic.destination || '/'}`);
     } else {
-      console.error('** MMM-IDF-STIF-NAVITIA: Configuration resolved no UIC codes:');      
+      console.error(`** ${MODULE_NAME}: Configuration resolved no UIC codes:`);      
       console.error(`station: ${station || '/'}, destination: ${destination || '/'}`);
     }
   });
@@ -147,7 +148,7 @@ export function enhanceConfiguration(configuration: ModuleConfiguration, sendSoc
       const { station, destination } = stationConfig;
       
       if(!station) {
-        console.error('** MMM-IDF-STIF-NAVITIA: Configuration does not contain station:');
+        console.error(`** ${MODULE_NAME}: Configuration does not contain station:`);
         console.error(stationConfig);
       }
       

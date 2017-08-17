@@ -5,7 +5,7 @@ const { outputPath, moduleRules, commonPlugins } = require('./webpack.config.com
 module.exports = {
   entry: './src/client/module.js',
   output: {
-    filename: 'MMM-IDF-STIF-NAVITIA.js',
+    filename: 'MMM-IDF-LOCALTRANSPORT.js',
     path: outputPath,
   },
   module: {
