@@ -142,8 +142,8 @@ const renderTraffic = (trafficIndex: ?string, stop: StationConfiguration, traffi
   const messagePart = document.createElement('marquee');
   messagePart.innerHTML = message || '';
   messagePart.className = 'Traffic__message',
-  messagePart.setAttribute('scrollamount', '10');
-  messagePart.setAttribute('scrolldelay', '60');
+  messagePart.setAttribute('scrollamount', '20');
+  messagePart.setAttribute('scrolldelay', '300');
   messageCell.appendChild(summaryPart);
   messageCell.appendChild(messagePart);
   messageCell.className = 'align-left';
