@@ -99,26 +99,30 @@ Example:
 transilienToken: 'Basic bG9naW46cGFzc3dvcmQ=',
 
 stations: [
-  // Legacy API
+  // Next transport at stops (bus, metros, rers, tramways)
   {type: 'bus', line: 38, station: 'observatoire+++port+royal', destination: 'A'},
-  {type: 'rers', line: 'B', station: 'port+royal', destination: 'A'},
-  {type: 'traffic', line: ['rers', 'B']},
-  // Label to avoid confusion with metros line 1:
-  {type: 'traffic', line: ['tramways', 1], label: 'T1'},
-  {type: 'tramways', line: '3a', station: 'georges+brassens', destination: 'R'},
   {type: 'metros', line: '6', station: 'raspail', destination: 'A'},
-  {type: 'velib', station: 5029, destination: 'leaving', label: 'RER'},
+  {type: 'rers', line: 'B', station: 'port+royal', destination: 'A'},
+  {type: 'tramways', line: '3a', station: 'georges+brassens', destination: 'R'},
   
-  // SNCF Transilien API
+  // Next transport at stops (transiliens)
   // With station name only to catch all destinations:
   {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L'},
   // With station and destination names to filter:
-  {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L', destination: 'NANTERRE UNIVERSITE'},
+  {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'NANTERRE UNIVERSITE'},
   // With UIC codes:
-  {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'SAINT NOM LA BRETECHE', uic: { station: '87382002', destination: '87382481'}, label: 'Becon L'},
+  {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'SAINT NOM LA BRETECHE', uic: { station: '87382002', destination: '87382481'} },
 
-  // SNCF Transilien Traffic via Citymapper API
+  // Traffic status (bus, metros, rers, tramways)
+  {type: 'traffic', line: ['rers', 'B']},
+  // Label to avoid confusion with metros line 1:
+  {type: 'traffic', line: ['tramways', 1], label: 'T1'},
+
+  // Traffic status (transiliens)
   {type: 'transiliensTraffic', line: 'L'},
+
+  // Velib station infos
+  {type: 'velib', station: 5029, destination: 'leaving', label: 'RER'},
 ],
 
 messages: {
