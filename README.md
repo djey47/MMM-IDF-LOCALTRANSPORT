@@ -73,12 +73,12 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
     - 'bus-metros-rers-tramways': https://api-ratp.pierre-grimaud.fr/v3/lines/bus, https://api-ratp.pierre-grimaud.fr/v3/lines/rers, https://api-ratp.pierre-grimaud.fr/v3/lines/tramways, https://api-ratp.pierre-grimaud.fr/v3/lines/metros
     - traffic: https://api-ratp.pierre-grimaud.fr/v3/traffic, set the line as: [type, line], such as: ['metros', 6], ['rers', 'A']...
     - transiliensTraffic: set the line as code, such as: 'L', 'J'...
-    - not used for 'transiliens'.
+    - not used for 'transiliens' and 'transiliensTraffic' .
   - `station`: Mandatory: [name of the station] ->
     - for 'bus-rers-tramways-metros', https://api-ratp.pierre-grimaud.fr/v3/stations/{type}/{line}
     - for 'velib', you can search here: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/
     - for 'transiliens', https://ressources.data.sncf.com/explore/dataset/referentiel-gares-voyageurs/?sort=intitule_gare
-    - not used for 'traffic'.
+    - not used for 'traffic' and 'transiliensTraffic'.
   - `destination`: 
     - Mandatory for 'metros', 'bus', 'rers' & 'tramways': either 'A' or 'R'
     - Optional for 'velib': ['leaving', 'arriving', '']: indicate if only one value is needed //not in use yet
@@ -91,8 +91,9 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
   - `label`: Optional, to rename the line differently if needed.
 * `transilienToken`: 'Basic xxxxxxxx' : mandatory to access transilien realtime API (account required, see section above)
 * `citymapperToken`: 'xxxxxxxx' : mandatory to access citymapper realtime API (account required, see section above)
-* `messages`: (see example below) : key-values to convert generic messages to your preferred language.
-  - Copy paste all default values and modify to your likings. 
+* `messages`: (Optional, see example below) : key-values to convert generic messages to your preferred language
+  - If not provided, some default messages are used (in english)
+  - To make changes, paste ALL default values and modify to your likings. 
 
 Example:
 ```javascript
@@ -126,37 +127,35 @@ stations: [
 ],
 
 messages: {
-  messages: {
-    ago: 'ago',
-    loading: 'Loading connections ...',
-    notYet: 'no info yet',
-    nextUpdate: 'next update in',
-    requestedUpdate: 'update requested',
-    unavailable: '-',
-    theorical: '?',
-    status: {
-      approaching: 'Approaching',
-      atplatform: 'At platform',
-      atstop: 'At stop',
-      ontime: '😊⏲',
-      deleted: '😞❌',
-      delayed: '😐⏳',
-      skipped: '❌',
-      terminal: '❌ term',
-    },
-    traffic: {
-      ok: '😊',
-      okwork: '😐',
-      ko: '😞',
-    },    
-    units: {
-      minutes: 'mn',
-      seconds: 's',
-    },
-    velib: {
-      bikes: 'velibs',
-      spaces: 'spaces',
-    },
+  ago: 'ago',
+  loading: 'Loading connections ...',
+  notYet: 'no info yet',
+  nextUpdate: 'next update in',
+  requestedUpdate: 'update requested',
+  unavailable: '-',
+  theorical: '?',
+  status: {
+    approaching: 'Approaching',
+    atplatform: 'At platform',
+    atstop: 'At stop',
+    ontime: '😊⏲',
+    deleted: '😞❌',
+    delayed: '😐⏳',
+    skipped: '❌',
+    terminal: '❌ term',
+  },
+  traffic: {
+    ok: '😊',
+    okwork: '😐',
+    ko: '😞',
+  },    
+  units: {
+    minutes: 'mn',
+    seconds: 's',
+  },
+  velib: {
+    bikes: 'velibs',
+    spaces: 'spaces',
   },
 }
 ```
