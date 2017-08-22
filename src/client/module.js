@@ -38,7 +38,6 @@ import {
   TYPE_VELIB,
 } from '../support/configuration';
 
-// TODO Rename with github repository
 Module.register(MODULE_NAME,{
   // Define module defaults
   defaults,

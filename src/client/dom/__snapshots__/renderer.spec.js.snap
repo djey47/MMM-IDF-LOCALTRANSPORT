@@ -223,7 +223,7 @@ exports[`renderTrafficLegacy function should return correct HTML for table row 1
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">
       <span class=\\"Traffic__title\\">summary</span>
-      <marquee class=\\"Traffic__message\\" scrollamount=\\"20\\" scrolldelay=\\"300\\">
+      <marquee class=\\"Traffic__message\\" scrollamount=\\"50\\" scrolldelay=\\"1000\\">
          message
       </marquee>
 </td>
@@ -240,7 +240,7 @@ exports[`renderTrafficTransilien function should return correct HTML for table r
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">
       <span class=\\"Traffic__title\\">summary</span>
-      <marquee class=\\"Traffic__message\\" scrollamount=\\"20\\" scrolldelay=\\"300\\">
+      <marquee class=\\"Traffic__message\\" scrollamount=\\"50\\" scrolldelay=\\"1000\\">
          message
       </marquee>
 </td>
@@ -257,7 +257,7 @@ exports[`renderTrafficTransilien function should return correct HTML for table r
    </td>
    <td class=\\"align-left\\" colspan=\\"2\\">
       <span class=\\"Traffic__title\\">summary</span>
-      <marquee class=\\"Traffic__message\\" scrollamount=\\"20\\" scrolldelay=\\"300\\"></marquee>
+      <marquee class=\\"Traffic__message\\" scrollamount=\\"50\\" scrolldelay=\\"1000\\"></marquee>
 </td>
 </tr>"
 `;

@@ -27,6 +27,10 @@ import type { Schedule, ServerVelibResponse, ServerTrafficResponse } from '../..
 const CELLS_COUNT = 4;
 const INDEX_STATUS = 3;
 
+/** Scrolling configuration */
+const SCROLL_AMOUNT = 50;   // in pixels
+const SCROLL_DELAY = 1000;  // in millisecs
+
 /**
  * @returns HTML for main wrapper
  */
@@ -142,8 +146,8 @@ const renderTraffic = (trafficIndex: ?string, stop: StationConfiguration, traffi
   const messagePart = document.createElement('marquee');
   messagePart.innerHTML = message || '';
   messagePart.className = 'Traffic__message',
-  messagePart.setAttribute('scrollamount', '20');
-  messagePart.setAttribute('scrolldelay', '300');
+  messagePart.setAttribute('scrollamount', SCROLL_AMOUNT.toString());
+  messagePart.setAttribute('scrolldelay', SCROLL_DELAY.toString());
   messageCell.appendChild(summaryPart);
   messageCell.appendChild(messagePart);
   messageCell.className = 'align-left';
@@ -390,7 +394,7 @@ export const renderTrendInfoVelib = (stop: StationConfiguration, station: Server
       }
     }
   }
-  ctx.font = Math.round(height / 5) + 'px ' + ctx.font.split(' ').slice(-1)[0];
+  ctx.font = `${Math.round(height / 5)}px ${ctx.font.split(' ').slice(-1)[0]}`;
   ctx.fillStyle = 'grey';
   ctx.textAlign = 'center';
   ctx.fillText(label || name, width / 2, Math.round(height / 5));
@@ -398,10 +402,10 @@ export const renderTrendInfoVelib = (stop: StationConfiguration, station: Server
   ctx.fillText(bike.toString(), 10, height - 10);
   ctx.fillText(empty.toString(), 10, Math.round(height / 5) + 10);
   if (velibTrendDay) {
+    const text = `${Math.round(velibTrendZoom / 60)}${translate(MessageKeys.UNITS_MINUTES)}`;
     ctx.font = Math.round(height / 10) + 'px ' + ctx.font.split(' ').slice(-1)[0];
-    // TODO use translation keys
-    ctx.fillText(Math.round(velibTrendZoom / 60) + 'mn', width * 5 / 6, height / 2);
-    ctx.fillText(Math.round(velibTrendZoom / 60) + 'mn', width / 6, height / 2);
+    ctx.fillText(text, width * 5 / 6, height / 2);
+    ctx.fillText(text, width / 6, height / 2);
     ctx.strokeStyle = 'grey';
     ctx.setLineDash([5, 15]);
     ctx.beginPath();
