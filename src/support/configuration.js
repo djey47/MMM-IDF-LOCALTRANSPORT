@@ -13,6 +13,11 @@ import type { StationInfoResult } from '../types/Transport';
 export const MODULE_NAME = 'MMM-IDF-LOCALTRANSPORT';
 
 /**
+ * Id of wrapper DOM node
+ */
+export const WRAPPER_ID = 'IDFTransportWrapper';
+
+/**
  * All stop configuration types
  */
 export const TYPE_BUS = 'bus';

@@ -18,6 +18,7 @@ import {
   MessageKeys as StatusMessageKeys,
   TrafficMessageKeys as TrafficStatusMessageKeys,
 }  from '../../support/status';
+import { WRAPPER_ID } from '../../support/configuration';
 
 import type { Data, ComingContext } from '../../types/Application';
 import type { ModuleConfiguration, StationConfiguration } from '../../types/Configuration';
@@ -32,6 +33,7 @@ const INDEX_STATUS = 3;
  */
 export const renderWrapper = (loaded: boolean, messages?: Object): any => {
   const wrapper = document.createElement('div');
+  wrapper.id = WRAPPER_ID;
 
   if (loaded) {
     wrapper.className = 'IDFTransportWrapper';

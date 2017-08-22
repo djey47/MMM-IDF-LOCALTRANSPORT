@@ -293,10 +293,10 @@ exports[`renderVelib function should return correct HTML when no history 1`] = `
 </tr>"
 `;
 
-exports[`renderWrapper function should return correct HTML when loaded 1`] = `"<div class=\\"IDFTransportWrapper\\"></div>"`;
+exports[`renderWrapper function should return correct HTML when loaded 1`] = `"<div id=\\"IDFTransportWrapper\\" class=\\"IDFTransportWrapper\\"></div>"`;
 
 exports[`renderWrapper function should return correct HTML when not loaded 1`] = `
-"<div class=\\"dimmed light small\\">
+"<div id=\\"IDFTransportWrapper\\" class=\\"dimmed light small\\">
    {loading}
 </div>"
 `;
