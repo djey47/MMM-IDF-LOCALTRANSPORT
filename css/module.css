@@ -43,4 +43,23 @@
   font-weight: bold;
 }
 
-/* .IDFTransportWrapper .Traffic__message {} */
+.IDFTransportWrapper .Traffic__messageContainer {
+  width: 100%;
+  height: 25px;
+  overflow: hidden;
+  position: relative;
+}
+
+.IDFTransportWrapper .Traffic__messageContents {
+  position: absolute;
+  top: 0;
+  left: 100%;
+  height: inherit;
+  white-space: nowrap;
+  animation: marquee 20s linear infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}

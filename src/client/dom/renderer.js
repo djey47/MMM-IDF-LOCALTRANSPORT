@@ -27,10 +27,6 @@ import type { Schedule, ServerVelibResponse, ServerTrafficResponse } from '../..
 const CELLS_COUNT = 4;
 const INDEX_STATUS = 3;
 
-/** Scrolling configuration */
-const SCROLL_AMOUNT = 50;   // in pixels
-const SCROLL_DELAY = 1000;  // in millisecs
-
 /**
  * @returns HTML for main wrapper
  */
@@ -143,13 +139,14 @@ const renderTraffic = (trafficIndex: ?string, stop: StationConfiguration, traffi
   const summaryPart = document.createElement('span');
   summaryPart.innerHTML = summary || unavailableLabel;
   summaryPart.className = 'Traffic__title';
-  const messagePart = document.createElement('marquee');
-  messagePart.innerHTML = message || '';
-  messagePart.className = 'Traffic__message',
-  messagePart.setAttribute('scrollamount', SCROLL_AMOUNT.toString());
-  messagePart.setAttribute('scrolldelay', SCROLL_DELAY.toString());
+  const messageContainer = document.createElement('div');
+  messageContainer.className = 'Traffic__messageContainer';
+  const messageContents = document.createElement('div');
+  messageContents.innerHTML = message || '';
+  messageContents.className = 'Traffic__messageContents';
+  messageContainer.appendChild(messageContents);
   messageCell.appendChild(summaryPart);
-  messageCell.appendChild(messagePart);
+  messageCell.appendChild(messageContainer);
   messageCell.className = 'align-left';
   messageCell.colSpan = 2;
   row.appendChild(messageCell);
