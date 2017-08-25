@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Main component should render correctly at initial state 1`] = `
+<div
+  className="Main dimmed light small"
+>
+  <p>
+    {loading}
+  </p>
+</div>
+`;

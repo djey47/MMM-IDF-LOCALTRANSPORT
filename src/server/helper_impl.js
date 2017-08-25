@@ -10,6 +10,7 @@ import Citymapper from '../support/api/citymapper';
 import LegacyApi from '../support/api/legacy';
 import Transilien from '../support/api/transilien';
 import {
+  NOTIF_INIT,
   NOTIF_UPDATE,
   NOTIF_SET_CONFIG,
 } from '../support/notifications.js';
@@ -57,6 +58,8 @@ module.exports = {
 
       this.started = true;
       this.scheduleUpdate(initialLoadDelay);
+
+      this.sendSocketNotification(NOTIF_INIT);      
     }
   },
 

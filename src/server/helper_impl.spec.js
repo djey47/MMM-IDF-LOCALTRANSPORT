@@ -64,7 +64,7 @@ describe('socketNotificationReceived function', () => {
     expect(NodeHelperImpl.config).toBeFalsy();
   });
 
-  it('should set started to true and received configuration', () => {
+  it('should set started to true and received configuration, then dispatch INIT notif', () => {
     // given
     NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;
     const config = {
@@ -77,6 +77,7 @@ describe('socketNotificationReceived function', () => {
     expect(NodeHelperImpl.started).toEqual(true);
     expect(NodeHelperImpl.config).toEqual(config);
     expect(scheduleUpdateMock).toHaveBeenCalledWith(1000);
+    expect(sendSocketNotificationMock).toHaveBeenCalledWith('INIT');
   });
 });
 

@@ -1,3 +1,9 @@
+/* CSS Reset */
+ul {
+  list-style-type: none;
+}
+
+/* Own components */
 .IDFTransportWrapper {
   font-size: 75%;
   line-height: 65px;

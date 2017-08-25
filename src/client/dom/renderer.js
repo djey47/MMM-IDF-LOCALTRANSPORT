@@ -1,10 +1,13 @@
 /* @flow */
 
+import React from 'react';
 import moment from 'moment-timezone';
 import classnames from 'classnames';
+import ReactDOM from 'react-dom';
 
 import type Moment from 'moment';
 
+import Main from '../components/Main/Main';
 import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
 import { now } from '../support/date';
 import { translate, MessageKeys } from '../../support/messages';
@@ -31,17 +34,11 @@ const INDEX_STATUS = 3;
 /**
  * @returns HTML for main wrapper
  */
-export const renderWrapper = (loaded: boolean, messages?: Object): any => {
+export const renderWrapper = (): any => {
   const wrapper = document.createElement('div');
   wrapper.id = WRAPPER_ID;
-
-  if (loaded) {
-    wrapper.className = 'IDFTransportWrapper';
-  } else {
-    wrapper.innerHTML = translate(MessageKeys.LOADING, messages);
-    wrapper.className = classnames('dimmed', 'light', 'small');
-  }
-
+  wrapper.className = 'IDFTransportWrapper';
+  
   return wrapper;
 };
 
@@ -68,6 +65,14 @@ export const renderHeader = (data: Data, config: ModuleConfiguration): string =>
   }
 
   return contents;
+};
+
+/** REACT gateway helper */
+export const renderMainComponent = (config: ModuleConfiguration, newData?: Object, dataKind?: string): void => {
+  ReactDOM.render(
+    <Main config={config} newData={newData} dataKind={dataKind} />,
+    document.getElementById(WRAPPER_ID)
+  );
 };
 
 /**

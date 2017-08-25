@@ -36,16 +36,9 @@ const testRender = (element: any): String => {
 };
 
 describe('renderWrapper function', () => {
-  it('should return correct HTML when not loaded', () => {
+  it('should return correct HTML', () => {
     // given-when
-    const actual = renderWrapper(false);
-    // then
-    expect(testRender(actual)).toMatchSnapshot();
-  });
-
-  it('should return correct HTML when loaded', () => {
-    // given-when
-    const actual = renderWrapper(true);
+    const actual = renderWrapper();
     // then
     expect(testRender(actual)).toMatchSnapshot();
   });

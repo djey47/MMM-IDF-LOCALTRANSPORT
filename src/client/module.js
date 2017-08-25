@@ -12,14 +12,19 @@
 import moment from 'moment-timezone';
 
 import {
+  NOTIF_INIT,
+  NOTIF_DOM_OBJECTS_CREATED,  
   NOTIF_UPDATE,
+  NOTIF_TRAFFIC,
 } from '../support/notifications';
 import { MODULE_NAME, defaults, enhanceConfiguration } from '../support/configuration';
 import {
   renderWrapper,
   renderHeader,
+  renderMainComponent,
 } from './dom/renderer';
-import ModuleBoostrap from './support/bootstrap';
+import { DATA_TRAFFIC } from './support/dataKind';
+
 
 Module.register(MODULE_NAME,{
   // Define module defaults
@@ -65,32 +70,44 @@ Module.register(MODULE_NAME,{
    * When module is loaded (configuration updated server-side), will start REACT engine.
    */
   getDom: function(): any {
-    if (this.loaded) {
-      ModuleBoostrap(this.config);
-      this.viewEngineStarted = true;
-    }
-
-    if (this.loaded || this.viewEngineStarted) {
+    if (this.viewEngineStarted) {
       return;
     }
-  
-    return renderWrapper(this.loaded, this.config.messages);
+    return renderWrapper();
+  },
+
+  /**
+   * Intercepts local events
+   */
+  notificationReceived: function(notification: string): void {
+    if (notification === NOTIF_DOM_OBJECTS_CREATED) {
+      renderMainComponent(this.config);
+      this.viewEngineStarted = true;
+    }
   },
 
   /**
    * Intercepts server side events
    */ 
   socketNotificationReceived: function(notification: string, payload: Object): void {
-    if (notification !== NOTIF_UPDATE) {
-      return;
-    }
+    if (this.config.debug)  console.log(`** MMM-IDF-LOCALTRANSPORT: socketNotificationReceived: ${notification}`);
 
-    const { lastUpdate } = payload;
-    const lastUpdateMoment = moment(lastUpdate);
+    // TODO remove?
     this.caller = notification;
 
-    this.config.lastUpdate = lastUpdateMoment;
-    this.loaded = true;
-    this.updateDom();
+    // TODO switch case
+    if (notification === NOTIF_INIT) {
+      this.updateDom();
+      this.loaded = true;
+    }
+
+    if (notification === NOTIF_UPDATE) {
+      const { lastUpdate } = payload;
+      this.config.lastUpdate = moment(lastUpdate);      
+    }
+
+    if (notification === NOTIF_TRAFFIC) {
+      renderMainComponent(this.config, payload, DATA_TRAFFIC);
+    }
   },
 });

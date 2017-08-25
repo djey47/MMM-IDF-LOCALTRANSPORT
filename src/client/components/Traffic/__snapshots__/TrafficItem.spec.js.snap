@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TrafficItem component should render correctly with provided data 1`] = `
+<li
+  className="TrafficItem bright is-ok"
+>
+  <span
+    className="TrafficItem__label"
+  >
+    L line
+  </span>
+  <span
+    className="TrafficItem__status"
+  >
+    {traffic.ok}
+  </span>
+  <span
+    className="TrafficItem__infos"
+  >
+    <span
+      className="TrafficItem__title"
+    >
+      Summary
+    </span>
+    <div
+      className="TrafficItem__messageContainer"
+    >
+      <div
+        className="TrafficItem__messageContents"
+      >
+        Message
+      </div>
+    </div>
+  </span>
+</li>
+`;
+
+exports[`TrafficItem component should render correctly with provided data with KO status 1`] = `
+<li
+  className="TrafficItem bright is-ko"
+>
+  <span
+    className="TrafficItem__label"
+  >
+    L
+  </span>
+  <span
+    className="TrafficItem__status"
+  >
+    {traffic.ko}
+  </span>
+  <span
+    className="TrafficItem__infos"
+  >
+    <span
+      className="TrafficItem__title"
+    >
+      Summary
+    </span>
+    <div
+      className="TrafficItem__messageContainer"
+    >
+      <div
+        className="TrafficItem__messageContents"
+      >
+        Message
+      </div>
+    </div>
+  </span>
+</li>
+`;
+
+exports[`TrafficItem component should render correctly with provided data without custom label 1`] = `
+<li
+  className="TrafficItem bright is-ok"
+>
+  <span
+    className="TrafficItem__label"
+  >
+    L
+  </span>
+  <span
+    className="TrafficItem__status"
+  >
+    {traffic.ok}
+  </span>
+  <span
+    className="TrafficItem__infos"
+  >
+    <span
+      className="TrafficItem__title"
+    >
+      Summary
+    </span>
+    <div
+      className="TrafficItem__messageContainer"
+    >
+      <div
+        className="TrafficItem__messageContents"
+      >
+        Message
+      </div>
+    </div>
+  </span>
+</li>
+`;
