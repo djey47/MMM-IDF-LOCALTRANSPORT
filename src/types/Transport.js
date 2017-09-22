@@ -1,6 +1,13 @@
 /* @flow */
 
+import type { StationConfiguration } from './Configuration';
+
 /* Module specific defs */
+
+export type TableEntry = {
+  data: ServerTrafficResponse|ServerScheduleResponse,
+  stop: StationConfiguration,
+};
 
 export type Schedule = {
   destination: string,
