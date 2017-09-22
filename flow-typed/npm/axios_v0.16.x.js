@@ -1,5 +1,5 @@
-// flow-typed signature: c66ffd047058e4721afb3d9fedb38f07
-// flow-typed version: b43dff3e0e/axios_v0.16.x/flow_>=v0.25.x
+// flow-typed signature: f285c927f7d16d32a7e2030a3b3c7f87
+// flow-typed version: d634799bc1/axios_v0.16.x/flow_>=v0.25.x
 
 declare module 'axios' {
   declare interface ProxyConfig {
@@ -65,7 +65,7 @@ declare module 'axios' {
     statusText: string,
     request: http$ClientRequest | XMLHttpRequest
   }
-  declare type $AxiosXHR<T> = $AxiosXHR<T>;
+  declare type $AxiosXHR<T> = AxiosXHR<T>;
   declare class AxiosInterceptorIdent extends String {}
   declare class AxiosRequestInterceptor<T> {
     use(
