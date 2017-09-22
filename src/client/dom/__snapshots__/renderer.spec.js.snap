@@ -213,61 +213,6 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
-exports[`renderTrafficLegacy function should return correct HTML for table row 1`] = `
-"<tr class=\\"Traffic__item bright is-ok-with-work\\">
-   <td class=\\"align-right\\">
-      Ulbach Label
-   </td>
-   <td>
-      {traffic.okwork}
-   </td>
-   <td class=\\"align-left\\" colspan=\\"2\\">
-      <span class=\\"Traffic__title\\">summary</span>
-      <div class=\\"Traffic__messageContainer\\">
-         <div class=\\"Traffic__messageContents\\">
-            message
-         </div>
-</div>
-</td>
-</tr>"
-`;
-
-exports[`renderTrafficTransilien function should return correct HTML for table row when message 1`] = `
-"<tr class=\\"Traffic__item bright\\">
-   <td class=\\"align-right\\">
-      L Label
-   </td>
-   <td>
-      {unavailable}
-   </td>
-   <td class=\\"align-left\\" colspan=\\"2\\">
-      <span class=\\"Traffic__title\\">summary</span>
-      <div class=\\"Traffic__messageContainer\\">
-         <div class=\\"Traffic__messageContents\\">
-            message
-         </div>
-</div>
-</td>
-</tr>"
-`;
-
-exports[`renderTrafficTransilien function should return correct HTML for table row when no message 1`] = `
-"<tr class=\\"Traffic__item bright\\">
-   <td class=\\"align-right\\">
-      L Label
-   </td>
-   <td>
-      {unavailable}
-   </td>
-   <td class=\\"align-left\\" colspan=\\"2\\">
-      <span class=\\"Traffic__title\\">summary</span>
-      <div class=\\"Traffic__messageContainer\\">
-         <div class=\\"Traffic__messageContents\\"></div>
-</div>
-</td>
-</tr>"
-`;
-
 exports[`renderVelib function should return correct HTML when history with trend 1`] = `"<tr></tr>"`;
 
 exports[`renderVelib function should return correct HTML when history without trend 1`] = `

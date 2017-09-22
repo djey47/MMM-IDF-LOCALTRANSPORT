@@ -5,8 +5,6 @@ import htmlBeautify from 'html-beautify';
 import {
   renderWrapper,
   renderHeader,
-  renderTrafficLegacy,
-  renderTrafficTransilien,
   renderPublicTransport,
   renderNoInfoVelib,
   renderVelib,
@@ -338,72 +336,6 @@ describe('renderPublicTransport function', () => {
     const actual = renderPublicTransport(stopConfigTransilien, 'gare/87382002/depart', {}, {}, config);
     // then
     expect(testRender(actual)).toMatchSnapshot();    
-  });
-});
-
-describe('renderTrafficLegacy function', () => {
-  it('should return correct HTML for table row', () => {
-    // given
-    const stop = {
-      type: 'traffic',
-      line: ['BUS', 275],
-      label: 'Ulbach Label',
-    };
-    const ratpTraffic = {
-      'traffic/bus/275': {
-        status: 'OK_WORK',
-        message: 'message',
-        summary: 'summary',
-      },
-    };
-    const config = { ...defaults, messages: {} };
-    // when
-    const actual = renderTrafficLegacy(stop, ratpTraffic, config);
-    // then
-    expect(testRender(actual)).toMatchSnapshot();
-  });
-});
-
-describe('renderTrafficTransilien function', () => {
-  it('should return correct HTML for table row when message', () => {
-    // given
-    const stop = {
-      type: 'transiliensTraffic',
-      line: 'L',
-      label: 'L Label',
-    };
-    const transilienTraffic = {
-      'traffic/transiliens/l': {
-        status: 'UNKNOWN',
-        message: 'message',
-        summary: 'summary',
-      },
-    };
-    const config = { ...defaults, messages: {} };
-    // when
-    const actual = renderTrafficTransilien(stop, transilienTraffic, config);
-    // then
-    expect(testRender(actual)).toMatchSnapshot();
-  });
-
-  it('should return correct HTML for table row when no message', () => {
-    // given
-    const stop = {
-      type: 'transiliensTraffic',
-      line: 'L',
-      label: 'L Label',
-    };
-    const transilienTraffic = {
-      'traffic/transiliens/l': {
-        status: 'UNKNOWN',
-        summary: 'summary',
-      },
-    };
-    const config = { ...defaults, messages: {} };
-    // when
-    const actual = renderTrafficTransilien(stop, transilienTraffic, config);
-    // then
-    expect(testRender(actual)).toMatchSnapshot();
   });
 });
 

@@ -11,21 +11,18 @@ import Main from '../components/Main/Main';
 import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
 import { now } from '../support/date';
 import { translate, MessageKeys } from '../../support/messages';
-import CitymapperApi  from '../../support/api/citymapper';
 import LegacyApi  from '../../support/api/legacy';
 import Transilien  from '../../support/api/transilien';
 import {
   Status,
-  TrafficStatus,
   TimeModes,
   MessageKeys as StatusMessageKeys,
-  TrafficMessageKeys as TrafficStatusMessageKeys,
 }  from '../../support/status';
 import { WRAPPER_ID } from '../../support/configuration';
 
 import type { Data, ComingContext } from '../../types/Application';
 import type { ModuleConfiguration, StationConfiguration } from '../../types/Configuration';
-import type { Schedule, ServerVelibResponse, ServerTrafficResponse } from '../../types/Transport';
+import type { Schedule, ServerVelibResponse } from '../../types/Transport';
 
 /** Table cells configuration */
 const CELLS_COUNT = 4;
@@ -67,24 +64,14 @@ export const renderHeader = (data: Data, config: ModuleConfiguration): string =>
   return contents;
 };
 
-/** REACT gateway helper */
+/**
+ * REACT gateway helper
+ */
 export const renderMainComponent = (config: ModuleConfiguration, newData?: Object, dataKind?: string): void => {
   ReactDOM.render(
     <Main config={config} newData={newData} dataKind={dataKind} />,
     document.getElementById(WRAPPER_ID)
   );
-};
-
-/**
- * @private
- */
-const resolveLine = (line: ?Array<string|number>|?string): ?string => {
-  if (line && typeof(line) === 'object') {
-    return line.length === 2 ? line[1].toString() : null;
-  } else if (line) {
-    return line.toString();
-  }
-  return null;
 };
 
 /**
@@ -112,69 +99,6 @@ const resolveName = (firstLine: boolean, stop: StationConfiguration, messages: O
   if (station) return station.toString();
 
   return translate(MessageKeys.UNAVAILABLE, messages);
-};
-
-/**
- * @private
- */
-const renderTraffic = (trafficIndex: ?string, stop: StationConfiguration, traffic: Object, config: ModuleConfiguration): any => {
-  const { messages } = config;
-  const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);
-  
-  const row = document.createElement('tr');
-
-  const { line, label } = stop;
-  const trafficAtStop: ServerTrafficResponse = traffic[trafficIndex];
-  const { status, summary, message } = trafficAtStop ? trafficAtStop : { message: unavailableLabel, status: TrafficStatus.UNKNOWN, summary: unavailableLabel };
-
-  row.className = classnames('Traffic__item', 'bright', {
-    'is-ok': status === TrafficStatus.OK,
-    'is-ok-with-work': status === TrafficStatus.OK_WORK,
-    'is-ko': status === TrafficStatus.KO,
-  });
-
-  const labelCell = document.createElement('td');
-  labelCell.className = classnames('align-right');
-  labelCell.innerHTML = label || resolveLine(line) || unavailableLabel;
-  row.appendChild(labelCell);
-
-  const statusCell = document.createElement('td');
-  statusCell.innerHTML = resolveStatus(status, messages, TrafficStatusMessageKeys);
-  row.appendChild(statusCell);
-
-  const messageCell = document.createElement('td');
-  const summaryPart = document.createElement('span');
-  summaryPart.innerHTML = summary || unavailableLabel;
-  summaryPart.className = 'Traffic__title';
-  const messageContainer = document.createElement('div');
-  messageContainer.className = 'Traffic__messageContainer';
-  const messageContents = document.createElement('div');
-  messageContents.innerHTML = message || '';
-  messageContents.className = 'Traffic__messageContents';
-  messageContainer.appendChild(messageContents);
-  messageCell.appendChild(summaryPart);
-  messageCell.appendChild(messageContainer);
-  messageCell.className = 'align-left';
-  messageCell.colSpan = 2;
-  row.appendChild(messageCell);
-
-  return row;
-};
-
-/**
- * @returns HTML for traffic status (legacy)
- */
-export const renderTrafficLegacy = (stop: StationConfiguration, ratpTraffic: Object, config: ModuleConfiguration): any => {
-  const trafficIndex = LegacyApi.createTrafficIndexFromStopConfig(stop);
-  return renderTraffic(trafficIndex, stop, ratpTraffic, config);
-};
-
-/**
- * @returns HTML for traffic status (transiliens via city mapper)
- */
-export const renderTrafficTransilien = (stop: StationConfiguration, transilienTraffic: Object, config: ModuleConfiguration): any => {
-  const trafficIndex = CitymapperApi.createTrafficIndexFromStopConfig(stop);
-  return renderTraffic(trafficIndex, stop, transilienTraffic, config);
 };
 
 /**
