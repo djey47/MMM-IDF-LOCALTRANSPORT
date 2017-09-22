@@ -1,4 +1,6 @@
 /* CSS Reset */
+
+/* TODO move to own css file */
 ul {
   list-style-type: none;
 }
