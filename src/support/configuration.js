@@ -3,8 +3,10 @@
 import { getAllStationInfo } from './railwayRepository';
 import { NOTIF_SET_CONFIG } from './notifications';
 
+import { resolveIndexFromStopConfig } from './api/api';
+
 import type { NotificationSenderFunction } from '../types/Application';
-import type { ModuleConfiguration } from '../types/Configuration';
+import type { ModuleConfiguration, StationConfiguration } from '../types/Configuration';
 import type { StationInfoResult } from '../types/Transport';
 
 /**
@@ -170,4 +172,13 @@ export function enhanceConfiguration(configuration: ModuleConfiguration, sendSoc
   } else {
     sendSocketNotification(NOTIF_SET_CONFIG, configuration);
   }
+}
+
+/**
+ * @returns StationConfiguration with provided identifier if it exists, undefined otherwise.
+ */
+export function fetchStopConfiguration(config: ModuleConfiguration, id: string): StationConfiguration {
+  const { stations } = config;
+  const result = stations.filter(station => resolveIndexFromStopConfig(station) === id);
+  return result[0];
 }

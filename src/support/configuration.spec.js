@@ -1,6 +1,6 @@
 /* @flow */
 
-import { defaults, enhanceConfiguration, handleStationInfoResponse } from './configuration';
+import { defaults, enhanceConfiguration, handleStationInfoResponse, fetchStopConfiguration } from './configuration';
 
 let mockGetAllStationInfo = jest.fn();
 const mockThen = jest.fn();
@@ -154,5 +154,44 @@ describe('enhanceConfiguration function', () => {
     // then
     expect(mockGetAllStationInfo).not.toHaveBeenCalled();
     expect(mockSendSocketNotification).toHaveBeenCalledWith('SET_CONFIG', currentConfig);
+  });
+});
+
+describe('fetchStopConfiguration function', () => {
+  it('should return undefined when station configuration does not exist', () => {
+    // given
+    const stations = [{
+      type: 'transiliensTraffic',
+      line: 'L',
+    }];    
+    const currentConfig = { ...defaults, stations };
+    const mockResolveIndexFromStopConfig = jest.fn(() => 'traffic/transiliens/l');
+    jest.mock('./api/api', () => ({
+      resolveIndexFromStopConfig: () => mockResolveIndexFromStopConfig(),
+    }));
+    // when
+    const actual = fetchStopConfiguration(currentConfig, 'traffic/transiliens/u');
+    // then
+    expect(actual).toBeUndefined();
+  });
+
+  it('should return existing configuration', () => {
+    // given
+    const stations = [{
+      type: 'transiliensTraffic',
+      line: 'L',
+    }];    
+    const currentConfig = { ...defaults, stations };
+    const mockResolveIndexFromStopConfig = jest.fn(() => 'traffic/transiliens/l');
+    jest.mock('./api/api', () => ({
+      resolveIndexFromStopConfig: () => mockResolveIndexFromStopConfig(),
+    }));
+    // when
+    const actual = fetchStopConfiguration(currentConfig, 'traffic/transiliens/l');
+    // then
+    expect(actual).toEqual({
+      type: 'transiliensTraffic',
+      line: 'L',
+    });
   });
 });
