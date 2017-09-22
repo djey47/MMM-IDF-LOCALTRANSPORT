@@ -4,14 +4,6 @@ import React, { PureComponent } from 'react';
 
 import TrafficItem from './TrafficItem';
 
-import type { ServerTrafficResponse } from '../../../types/Transport';
-import type { StationConfiguration } from '../../../types/Configuration';
-
-type TrafficEntry = {
-  data: ServerTrafficResponse,
-  stop: StationConfiguration,
-};
-
 type PropsType = {
   entries: Object,
   messages: Object,
@@ -21,9 +13,6 @@ type StateType = {};
 
 /**
  * List of traffic information items
- * 
- * @class Traffic
- * @extends {PureComponent<PropsType, StateType>}
  */
 class Traffic extends PureComponent {
   props: PropsType;
@@ -38,7 +27,7 @@ class Traffic extends PureComponent {
     return (
       <ul className="Traffic">
         {Object.keys(entries).map(index => {
-          const { data, stop: { label } }: TrafficEntry = entries[index];
+          const { data, stop: { label } } = entries[index];
           return <TrafficItem key={index} data={data} label={label} messages={messages} />;
         })}
       </ul>
