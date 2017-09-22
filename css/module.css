@@ -27,15 +27,15 @@ ul {
   width: 400px;
 }
 
-.IDFTransportWrapper .Schedules__item.is-delayed {
+.IDFTransportWrapper .SchedulesItem__schedule.is-delayed {
   color: orange;
 }
 
-.IDFTransportWrapper .Schedules__item.is-deleted {
+.IDFTransportWrapper .SchedulesItem__schedule.is-deleted {
   color: red;
 }
 
-/* .IDFTransportWrapper .Schedules__item.is-ontime {} */
+/* .IDFTransportWrapper .SchedulesItem__schedule.is-ontime {} */
 
 .IDFTransportWrapper .TrafficItem.is-ok-with-work {
   color: orange;

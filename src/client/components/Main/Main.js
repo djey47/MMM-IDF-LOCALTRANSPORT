@@ -4,8 +4,9 @@ import React, { PureComponent } from 'react';
 import classnames from 'classnames';
 
 import Traffic from '../Traffic/Traffic';
+import Schedules from '../Schedules/Schedules';
 import { translate, MessageKeys } from '../../../support/messages';
-import { DATA_TRAFFIC } from '../../support/dataKind';
+import { DATA_TRAFFIC, DATA_TRANSPORT } from '../../support/dataKind';
 import { fetchStopConfiguration } from '../../../support/configuration';
 
 import type { ModuleConfiguration } from '../../../types/Configuration';
@@ -18,11 +19,12 @@ type PropTypes = {
 
 type StateType = {
   trafficEntries: Object,
+  schedulesEntries: Object,
   isReady: boolean,
 };
 
 /**
- * Main component for local transport information
+ * Main component for local Schedules information
  */
 class Main extends PureComponent {
   props: PropTypes;
@@ -35,6 +37,7 @@ class Main extends PureComponent {
 
     this.state = {
       trafficEntries: {},
+      schedulesEntries: {},
       isReady: false,
     };
   }
@@ -43,7 +46,7 @@ class Main extends PureComponent {
     const { dataKind, newData} = nextProps;
     if(!newData) return;
 
-    const { trafficEntries } = this.state;
+    const { trafficEntries, schedulesEntries } = this.state;
     const { id } = newData; 
     const stopConfig = fetchStopConfiguration(this.props.config, id);
     const newEntry = {};
@@ -62,7 +65,15 @@ class Main extends PureComponent {
           isReady: true,
         });
         break;
-      default:
+      case DATA_TRANSPORT:
+        this.setState({
+          schedulesEntries: {
+            ...schedulesEntries,
+            ...newEntry,
+          },
+          isReady: true,
+        });
+        break;
     }
   }
 
@@ -76,8 +87,8 @@ class Main extends PureComponent {
   }
 
   render() {
-    const { config: { messages } } = this.props;
-    const { isReady, trafficEntries } = this.state;
+    const { config, config: { messages } } = this.props;
+    const { isReady, trafficEntries, schedulesEntries } = this.state;
     return (
       <div className={classnames('Main', 'dimmed', 'light', 'small')}>
         { !isReady &&
@@ -85,6 +96,9 @@ class Main extends PureComponent {
         }
         { !!Object.keys(trafficEntries).length &&
           <Traffic entries={trafficEntries} messages={messages} />
+        }
+        { !!Object.keys(schedulesEntries).length &&
+          <Schedules entries={schedulesEntries} config={config} />
         }
       </div>
     );

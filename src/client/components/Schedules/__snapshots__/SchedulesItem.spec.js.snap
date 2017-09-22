@@ -1,0 +1,304 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SchedulesItem component should render correctly with provided schedules 1`] = `
+<li
+  className="SchedulesItem"
+>
+  <ul
+    className="SchedulesItem__schedules"
+  >
+    <li
+      className="SchedulesItem__schedule bright"
+    >
+      <span
+        className="SchedulesItem__name"
+      >
+        BUS,275
+      </span>
+      <span
+        className="SchedulesItem__destination"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        La Défense
+      </span>
+      <span
+        className="SchedulesItem__status"
+      >
+        
+      </span>
+      <span
+        className="SchedulesItem__departure"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        13:00
+      </span>
+    </li>
+    <li
+      className="SchedulesItem__schedule bright"
+    >
+      <span
+        className="SchedulesItem__name"
+      >
+        BUS,275
+      </span>
+      <span
+        className="SchedulesItem__destination"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        Place Charras
+      </span>
+      <span
+        className="SchedulesItem__status"
+      >
+        
+      </span>
+      <span
+        className="SchedulesItem__departure"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        13:05
+      </span>
+    </li>
+  </ul>
+</li>
+`;
+
+exports[`SchedulesItem component should render correctly with schedule and convert to waiting time 1`] = `
+<li
+  className="SchedulesItem"
+>
+  <ul
+    className="SchedulesItem__schedules"
+  >
+    <li
+      className="SchedulesItem__schedule bright"
+    >
+      <span
+        className="SchedulesItem__name"
+      >
+        BUS,275
+      </span>
+      <span
+        className="SchedulesItem__destination"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        La Défense
+      </span>
+      <span
+        className="SchedulesItem__status"
+      >
+        
+      </span>
+      <span
+        className="SchedulesItem__departure"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        15 {units.minutes}
+      </span>
+    </li>
+    <li
+      className="SchedulesItem__schedule bright"
+    >
+      <span
+        className="SchedulesItem__name"
+      >
+        BUS,275
+      </span>
+      <span
+        className="SchedulesItem__destination"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        Place Charras
+      </span>
+      <span
+        className="SchedulesItem__status"
+      >
+        
+      </span>
+      <span
+        className="SchedulesItem__departure"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        30 {units.minutes}
+      </span>
+    </li>
+  </ul>
+</li>
+`;
+
+exports[`SchedulesItem component should render correctly with schedule and mission code 1`] = `
+<li
+  className="SchedulesItem"
+>
+  <ul
+    className="SchedulesItem__schedules"
+  >
+    <li
+      className="SchedulesItem__schedule bright"
+    >
+      <span
+        className="SchedulesItem__name"
+      >
+        L
+      </span>
+      <span
+        className="SchedulesItem__destination"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        Saint-Lazare
+      </span>
+      <span
+        className="SchedulesItem__status"
+      >
+        POPU
+      </span>
+      <span
+        className="SchedulesItem__departure"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        13:00
+      </span>
+    </li>
+  </ul>
+</li>
+`;
+
+exports[`SchedulesItem component should render correctly with schedule and status info 1`] = `
+<li
+  className="SchedulesItem"
+>
+  <ul
+    className="SchedulesItem__schedules"
+  >
+    <li
+      className="SchedulesItem__schedule bright is-delayed"
+    >
+      <span
+        className="SchedulesItem__name"
+      >
+        A
+      </span>
+      <span
+        className="SchedulesItem__destination"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        La Défense
+      </span>
+      <span
+        className="SchedulesItem__status"
+      >
+        UAPY {status.delayed}
+      </span>
+      <span
+        className="SchedulesItem__departure"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        13:00
+      </span>
+    </li>
+  </ul>
+</li>
+`;
+
+exports[`SchedulesItem component should render correctly with schedule and theorical time mode 1`] = `
+<li
+  className="SchedulesItem"
+>
+  <ul
+    className="SchedulesItem__schedules"
+  >
+    <li
+      className="SchedulesItem__schedule bright"
+    >
+      <span
+        className="SchedulesItem__name"
+      >
+        BUS,275
+      </span>
+      <span
+        className="SchedulesItem__destination"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        La Défense
+      </span>
+      <span
+        className="SchedulesItem__status"
+      >
+        
+      </span>
+      <span
+        className="SchedulesItem__departure"
+        style={
+          Object {
+            "opacity": "1",
+          }
+        }
+      >
+        13:00{theorical}
+      </span>
+    </li>
+  </ul>
+</li>
+`;
+
+exports[`SchedulesItem component should render correctly without schedule 1`] = `
+<li
+  className="SchedulesItem"
+>
+  <ul
+    className="SchedulesItem__schedules"
+  />
+</li>
+`;

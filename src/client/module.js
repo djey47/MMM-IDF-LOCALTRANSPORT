@@ -14,6 +14,7 @@ import {
   NOTIF_DOM_OBJECTS_CREATED,  
   NOTIF_UPDATE,
   NOTIF_TRAFFIC,
+  NOTIF_TRANSPORT,
 } from '../support/notifications';
 import { 
   MODULE_NAME,
@@ -27,6 +28,7 @@ import {
 } from './dom/renderer';
 import {
   DATA_TRAFFIC,
+  DATA_TRANSPORT,
 } from './support/dataKind';
 
 
@@ -109,6 +111,9 @@ Module.register(MODULE_NAME,{
         break;
       case NOTIF_TRAFFIC:
         renderMainComponent(this.config, payload, DATA_TRAFFIC);
+        break;
+      case NOTIF_TRANSPORT:
+        renderMainComponent(this.config, payload, DATA_TRANSPORT);
         break;
     }
   },
