@@ -1,8 +1,6 @@
 /* @flow */
 
-/* Timetable for Paris local transport Module */
-
-/* Magic Mirror
+/* Magic Mirror: Timetable for Paris local transport Module
  * Module: MMM-IDF-LOCALTRANSPORT
  *
  * Based on script by da4throux
@@ -17,20 +15,28 @@ import {
   NOTIF_UPDATE,
   NOTIF_TRAFFIC,
 } from '../support/notifications';
-import { MODULE_NAME, defaults, enhanceConfiguration } from '../support/configuration';
+import { 
+  MODULE_NAME,
+  defaults,
+  enhanceConfiguration,
+} from '../support/configuration';
 import {
   renderWrapper,
   renderHeader,
   renderMainComponent,
 } from './dom/renderer';
-import { DATA_TRAFFIC } from './support/dataKind';
+import {
+  DATA_TRAFFIC,
+} from './support/dataKind';
 
 
 Module.register(MODULE_NAME,{
   // Define module defaults
   defaults,
 
-  // Define required scripts.
+  /**
+   * Defines required scripts.
+   */ 
   getStyles: function(): Array<string> {
     return [
       this.file('css/module.css'), // TODO remove when css properly bundled
@@ -80,6 +86,8 @@ Module.register(MODULE_NAME,{
    * Intercepts local events
    */
   notificationReceived: function(notification: string): void {
+    if (this.config.debug) Log.info(`**${this.name} notificationReceived: ${notification}`);
+
     if (notification === NOTIF_DOM_OBJECTS_CREATED) {
       renderMainComponent(this.config);
       this.viewEngineStarted = true;
@@ -90,24 +98,18 @@ Module.register(MODULE_NAME,{
    * Intercepts server side events
    */ 
   socketNotificationReceived: function(notification: string, payload: Object): void {
-    if (this.config.debug)  console.log(`** MMM-IDF-LOCALTRANSPORT: socketNotificationReceived: ${notification}`);
+    if (this.config.debug) Log.info(`**${this.name} socketNotificationReceived: ${notification}`);
 
-    // TODO remove?
-    this.caller = notification;
-
-    // TODO switch case
-    if (notification === NOTIF_INIT) {
-      this.updateDom();
-      this.loaded = true;
-    }
-
-    if (notification === NOTIF_UPDATE) {
-      const { lastUpdate } = payload;
-      this.config.lastUpdate = moment(lastUpdate);      
-    }
-
-    if (notification === NOTIF_TRAFFIC) {
-      renderMainComponent(this.config, payload, DATA_TRAFFIC);
+    switch(notification) {
+      case NOTIF_INIT:
+        this.loaded = true;
+        break;
+      case NOTIF_UPDATE:
+        this.config.lastUpdate = moment(payload.lastUpdate);
+        break;
+      case NOTIF_TRAFFIC:
+        renderMainComponent(this.config, payload, DATA_TRAFFIC);
+        break;
     }
   },
 });
