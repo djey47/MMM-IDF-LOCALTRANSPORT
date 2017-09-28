@@ -2,13 +2,15 @@
 
 import React from 'react';
 import classnames from 'classnames';
+import kebabCase from 'lodash/kebabCase';
 
 import { translate, MessageKeys } from '../../../support/messages';
 import { Status, MessageKeys as StatusMessageKeys, TimeModes } from '../../../support/status';
 import { toWaitingTime, toHoursMinutes } from '../../support/format';
 import { now } from '../../support/date';
 
-import type { ServerScheduleResponse } from '../../../types/Transport';
+import type Moment from 'moment';
+import type { ServerScheduleResponse, Schedule } from '../../../types/Transport';
 import type { ModuleConfiguration, StationConfiguration } from '../../../types/Configuration';
 
 // TODO style
@@ -18,15 +20,14 @@ type PropTypes = {
   data: ServerScheduleResponse,
   stop: StationConfiguration,
   config: ModuleConfiguration,
+  lastUpdate?: Moment,
 };
 
 /**
  * @private
  */
-const resolveName = (/*firstLine: boolean, */stop: StationConfiguration, messages: Object): string => {
+const resolveName = (stop: StationConfiguration, messages: Object): string => {
   const { line, label, station } = stop;
-
-  // if (!firstLine) return ' ';
 
   if (label) return label;
 
@@ -48,20 +49,56 @@ const resolveStatus = (statusCode: ?string, messages: Object, statusMessageKeys:
 };
 
 /**
+ * @private
+ */
+const resolveSingleTime = (time?: ?string, config: ModuleConfiguration,  nowMoment: Moment): string => {
+  const { convertToWaitingTime, messages } = config;
+
+  if (!time) return translate(MessageKeys.UNAVAILABLE, messages);
+  
+  if (convertToWaitingTime) return toWaitingTime(time, nowMoment, messages);
+
+  return toHoursMinutes(time);
+};
+
+/**
+ * @private
+ */
+const resolveDepartures = (schedule: Schedule, config: ModuleConfiguration, nowMoment: Moment): string => {
+  const { time, times } = schedule;
+
+  if (config.concatenateArrivals && times) {
+    return times.map(t => resolveSingleTime(t, config, nowMoment)).join(' / ');
+  } 
+  
+  return resolveSingleTime(time, config, nowMoment);
+};
+
+/**
+ * @private
+ */
+const computeOpacity = (nowMoment: Moment, lastUpdateMoment?: Moment, config: ModuleConfiguration): string => {
+  // TODO unit test
+  let opacity = '1';
+
+  const { oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity } = config;
+  const effectiveThreshold = oldUpdateThreshold ? oldUpdateThreshold : updateInterval * (1 + oldThreshold);  
+  if (lastUpdateMoment && nowMoment.diff(lastUpdateMoment).valueOf() > effectiveThreshold) {
+    opacity = oldUpdateOpacity.toString();
+  }
+  
+  return opacity;
+};
+  
+/**
  * A traffic info item
  */
-const SchedulesItem = ({ data, stop, config }: PropTypes) => {
-  // TODO: comingLastUpdate
+const SchedulesItem = ({ data, stop, config, lastUpdate }: PropTypes) => {
   const { schedules } = data;
   const {
     messages,
     maxLettersForDestination,
     maxLettersForTime,
-    convertToWaitingTime,
-    oldUpdateThreshold,
-    oldUpdateOpacity,
-    oldThreshold,
-    updateInterval, 
   } = config;
   const nowMoment = now();  
 
@@ -75,26 +112,12 @@ const SchedulesItem = ({ data, stop, config }: PropTypes) => {
             'is-deleted': status === Status.DELETED,
             'is-ontime': status === Status.ON_TIME,
           });
-          let depInfo;
-          if (!time) {
-            depInfo = translate(MessageKeys.UNAVAILABLE, messages);
-          } else if (convertToWaitingTime) {
-            depInfo = toWaitingTime(time, nowMoment, messages);
-          } else {
-            depInfo = toHoursMinutes(time);
-          }
-          // TODO set into state
-          const comingLastUpdate = now();
+          const depInfo = resolveDepartures(schedule, config, nowMoment);
           const theoricalSuffix = timeMode === TimeModes.THEORICAL ? translate(MessageKeys.THEORICAL, messages) : '';
-          const effectiveThreshold = oldUpdateThreshold ? oldUpdateThreshold : updateInterval * (1 + oldThreshold);
-          let opacity = '1';
-          if (nowMoment.diff(comingLastUpdate).valueOf() > effectiveThreshold) {
-            opacity = oldUpdateOpacity.toString();
-          }
-          const effectiveCode = code || '';
+          const opacity = computeOpacity(nowMoment, lastUpdate, config);
 
           return (
-            <li className={itemClassName} key={`${effectiveCode}-${time || '0'}`}>
+            <li className={itemClassName} key={`${kebabCase(destination)}-${time || '0'}`}>
               <span className="SchedulesItem__name">
                 {resolveName(stop, messages)}
               </span>
@@ -102,7 +125,7 @@ const SchedulesItem = ({ data, stop, config }: PropTypes) => {
                 {destination.substr(0, maxLettersForDestination)}
               </span>
               <span className="SchedulesItem__status">
-                {`${effectiveCode} ${resolveStatus(status, messages, StatusMessageKeys)}`.trim()}
+                {`${code || ''} ${resolveStatus(status, messages, StatusMessageKeys)}`.trim()}
               </span>
               <span className="SchedulesItem__departure" style={{ opacity }}>
                 {depInfo.concat(theoricalSuffix).substr(0, maxLettersForTime)}

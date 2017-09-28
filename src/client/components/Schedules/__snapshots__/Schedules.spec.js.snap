@@ -15,3 +15,13 @@ exports[`Schedules component should render correctly with provided data 1`] = `
   </li>
 </ul>
 `;
+
+exports[`Schedules component should render correctly with provided data and arrival concatenation 1`] = `
+<ul
+  className="Schedules"
+>
+  <li>
+    SchedulesItem component
+  </li>
+</ul>
+`;

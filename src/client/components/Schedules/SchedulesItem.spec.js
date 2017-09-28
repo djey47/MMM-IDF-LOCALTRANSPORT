@@ -15,6 +15,8 @@ beforeAll(() => {
 
 describe('SchedulesItem component', () => {
   const baseConfig = {
+    oldUpdateThreshold: 60,
+    oldUpdateOpacity: 0.5, 
     convertToWaitingTime: false,
     maxLettersForDestination: 256,
     maximumEntries: 3,
@@ -35,7 +37,7 @@ describe('SchedulesItem component', () => {
 
     // when
     const component = renderer.create(
-      <SchedulesItem data={data} stop={{}} config={baseConfig} />,
+      <SchedulesItem data={data} stop={{}} config={baseConfig} lastUpdate={{}} />,
     );
 
     // then
@@ -58,6 +60,52 @@ describe('SchedulesItem component', () => {
     // when
     const component = renderer.create(
       <SchedulesItem data={data} stop={stop} config={baseConfig} />,
+    );
+
+    // then
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('should render correctly with provided schedules and update threshold elapsed', () => {
+    // given
+    const data = {
+      schedules: [{
+        time: '2017-07-16T13:00:00.000Z',
+        destination: 'La Défense',
+      }],
+    };
+    const lastUpdate = moment('2017-07-16T07:50:40.000');        
+
+    // when
+    const component = renderer.create(
+      <SchedulesItem data={data} stop={stop} config={baseConfig} lastUpdate={lastUpdate} />,
+    );
+
+    // then
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('should render correctly with provided schedules and concatenate arrivals', () => {
+    // given
+    const data = {
+      schedules: [{
+        times: ['2017-07-16T13:00:00.000Z', '2017-07-16T13:05:00.000Z', '2017-07-16T13:10:00.000Z'],
+        destination: 'La Défense',
+      },{
+        times: ['2017-07-16T13:05:00.000Z', '2017-07-16T13:10:00.000Z', '2017-07-16T13:15:00.000Z'],
+        destination: 'Place Charras',       
+      }],
+    };
+    const config = {
+      ...baseConfig,
+      concatenateArrivals: true,
+    };
+
+    // when
+    const component = renderer.create(
+      <SchedulesItem data={data} stop={stop} config={config} />,
     );
 
     // then

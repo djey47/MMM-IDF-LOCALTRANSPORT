@@ -20,6 +20,7 @@ type PropTypes = {
 type StateType = {
   trafficEntries: Object,
   schedulesEntries: Object,
+  lastUpdate: Object,
   isReady: boolean,
 };
 
@@ -38,6 +39,7 @@ class Main extends PureComponent {
     this.state = {
       trafficEntries: {},
       schedulesEntries: {},
+      lastUpdate: {},
       isReady: false,
     };
   }
@@ -49,10 +51,19 @@ class Main extends PureComponent {
     const { trafficEntries, schedulesEntries } = this.state;
     const { id } = newData; 
     const stopConfig = fetchStopConfiguration(this.props.config, id);
-    const newEntry = {};
-    newEntry[id] = {
-      data: newData,
-      stop: stopConfig,
+    
+    this.setState({
+      lastUpdate: {
+        ...this.state.lastUpdate,
+        [id]: newData.lastUpdate,
+      },
+    });
+    
+    const newEntry = {
+      [id]: {
+        data: newData,
+        stop: stopConfig,
+      },
     };
 
     switch (dataKind) {
@@ -88,7 +99,7 @@ class Main extends PureComponent {
 
   render() {
     const { config, config: { messages } } = this.props;
-    const { isReady, trafficEntries, schedulesEntries } = this.state;
+    const { isReady, trafficEntries, schedulesEntries, lastUpdate } = this.state;
     return (
       <div className={classnames('Main', 'dimmed', 'light', 'small')}>
         { !isReady &&
@@ -98,7 +109,7 @@ class Main extends PureComponent {
           <Traffic entries={trafficEntries} messages={messages} />
         }
         { !!Object.keys(schedulesEntries).length &&
-          <Schedules entries={schedulesEntries} config={config} />
+          <Schedules entries={schedulesEntries} config={config} lastUpdateInfo={lastUpdate} />
         }
       </div>
     );

@@ -11,11 +11,12 @@ export type TableEntry = {
 
 export type Schedule = {
   destination: string,
-  status: ?string,      // See support/status.js
-  time?: ?string,       // ISO
-  timeMode?: string,    // See support/status.js
-  code?: ?string,       // Mission code for trains
-  info?: ?string,       // Additional information, not applicable for transiliens
+  status: ?string,        // See support/status.js
+  time?: ?string,         // ISO
+  times?: ?Array<string>, // ISO, for concatenated arrivals
+  timeMode?: string,      // See support/status.js
+  code?: ?string,         // Mission code for trains
+  info?: ?string,         // Additional information, not applicable for transiliens
 };
 
 export type ServerScheduleResponse = {

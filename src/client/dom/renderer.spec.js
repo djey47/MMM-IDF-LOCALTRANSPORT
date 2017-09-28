@@ -5,7 +5,6 @@ import htmlBeautify from 'html-beautify';
 import {
   renderWrapper,
   renderHeader,
-  renderPublicTransport,
   renderNoInfoVelib,
   renderVelib,
 } from './renderer.js';
@@ -92,104 +91,6 @@ describe('renderHeader function', () => {
     const actual = renderHeader(data, config);
     // then
     expect(actual).toMatchSnapshot();
-  });
-});
-
-describe('renderPublicTransport function', () => {
-  mockNow.mockImplementation(() => moment('2017-05-30T12:45:00Z'));
-  const stop = {
-    line: ['BUS', 275],
-    station: 'Ulbach',
-    destination: 'La+Defense',
-  };
-  const stopIndex = 'bus,275/Ulbach/La+Defense';
-  const baseConfig = {
-    ...defaults,
-    convertToWaitingTime: false,
-    maxLettersForDestination: 256,
-    maximumEntries: 3,
-    messages: {},
-  };
-
-  it('should return correct HTML when schedule and concatenate arrivals', () => {
-    // given
-    const schedules = {
-      [stopIndex]: [{
-        time: '2017-07-16T13:00:00.000Z',
-        destination: 'Place Charras',
-      },{
-        time: '2017-07-16T13:15:00.000Z',
-        destination: 'La Défense',       
-      },{
-        time: '2017-07-16T13:30:00.000Z',
-        destination: 'La Défense',       
-      }],
-    };
-    const lastUpdate = {
-      [stopIndex]: '2017-05-30T15:00:00.000Z',
-    };
-    const config = {
-      ...baseConfig,
-      concatenateArrivals: true,
-    };
-    // when
-    const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
-    // then
-    expect(testRender(actual)).toMatchSnapshot();    
-  });
-
-  it('should return correct HTML when schedules and concatenate arrivals for transilien', () => {
-    // given
-    const stopIndexTransilien = 'gare/87382002/depart';
-    const stopConfigTransilien = {
-      type: 'transiliens',
-      label: 'Becon',
-      station: 'Becon Les Bruyeres',
-      destination: 'Saint Nom La breteche',
-      uic: {
-        station: '87382002',
-        destination: '87382481',
-      },
-    };
-    const schedulesTransilien = {
-      [stopIndexTransilien]: [{
-        destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
-        code: 'SEBU',
-        time: '2017-07-26T11:20:00.000Z',
-      },
-      {
-        destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
-        code: 'SEBU',
-        time: '2017-07-26T11:35:00.000Z',
-      },
-      {
-        destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
-        code: 'SEBU',
-        time: '2017-07-26T11:50:00.000Z',
-      },
-      {
-        destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
-        code: 'SEBU',
-        time: '2017-07-26T12:05:00.000Z',
-      },
-      {
-        destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
-        code: 'SEBU',
-        time: '2017-07-26T12:20:00.000Z',
-      }],
-    };
-    const lastUpdateTransilien = {
-      [stopIndexTransilien]: '2017-07-26T13:17:00.000Z',
-    };
-    const config = {
-      ...baseConfig,
-      concatenateArrivals: true,
-    };
-    // when
-    const actual = renderPublicTransport(stopConfigTransilien, stopIndexTransilien, schedulesTransilien, lastUpdateTransilien, config);
-    // then
-    expect(actual.length).toEqual(1);
-    expect(testRender(actual)).toMatchSnapshot();    
   });
 });
 

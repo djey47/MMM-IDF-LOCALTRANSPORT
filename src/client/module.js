@@ -41,7 +41,7 @@ Module.register(MODULE_NAME,{
    */ 
   getStyles: function(): Array<string> {
     return [
-      this.file('css/module.css'), // TODO remove when css properly bundled
+      this.file('css/module.css'), // TODO replace with bundle
       'font-awesome.css',
     ];
   },

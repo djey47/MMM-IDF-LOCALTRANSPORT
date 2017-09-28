@@ -2,31 +2,20 @@
 
 import React from 'react';
 import moment from 'moment-timezone';
-import classnames from 'classnames';
 import ReactDOM from 'react-dom';
 
-import type Moment from 'moment';
-
 import Main from '../components/Main/Main';
-import { toHoursMinutesSeconds, toWaitingTime, toHoursMinutes } from '../support/format';
+import { toHoursMinutesSeconds } from '../support/format';
 import { now } from '../support/date';
 import { translate, MessageKeys } from '../../support/messages';
-import LegacyApi  from '../../support/api/legacy';
-import Transilien  from '../../support/api/transilien';
-import {
-  Status,
-  TimeModes,
-  MessageKeys as StatusMessageKeys,
-}  from '../../support/status';
 import { WRAPPER_ID } from '../../support/configuration';
 
-import type { Data, ComingContext } from '../../types/Application';
+import type { Data } from '../../types/Application';
 import type { ModuleConfiguration, StationConfiguration } from '../../types/Configuration';
-import type { Schedule, ServerVelibResponse } from '../../types/Transport';
+import type { ServerVelibResponse } from '../../types/Transport';
 
 /** Table cells configuration */
 const CELLS_COUNT = 4;
-const INDEX_STATUS = 3;
 
 /**
  * @returns HTML for main wrapper
@@ -72,156 +61,6 @@ export const renderMainComponent = (config: ModuleConfiguration, newData?: Objec
     <Main config={config} newData={newData} dataKind={dataKind} />,
     document.getElementById(WRAPPER_ID)
   );
-};
-
-/**
- * @private
- */
-const resolveStatus = (statusCode: ?string, messages: Object, statusMessageKeys: Object): string => {
-  if (!statusCode) return '';
-
-  const key = statusMessageKeys[statusCode];
-  return key && translate(key, messages) || translate(MessageKeys.UNAVAILABLE, messages);
-};
-
-/**
- * @private
- */
-const resolveName = (firstLine: boolean, stop: StationConfiguration, messages: Object): string => {
-  const { line, label, station } = stop;
-
-  if (!firstLine) return ' ';
-
-  if (label) return label;
-
-  if (line) return line.toString();
-
-  if (station) return station.toString();
-
-  return translate(MessageKeys.UNAVAILABLE, messages);
-};
-
-/**
- * @private
- */
-const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, comingTransport: Schedule, comingLastUpdate: Moment, previous: ComingContext, config: ModuleConfiguration): ?any => {
-  const { messages, concatenateArrivals, convertToWaitingTime, maxLettersForDestination, maxLettersForTime, oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity } = config;
-  const nowMoment = now();
-
-  const row = document.createElement('tr');
-
-  const nameCell = document.createElement('td');
-  nameCell.className = classnames('align-right');
-  nameCell.innerHTML = resolveName(firstLine, stop, messages);
-  row.appendChild(nameCell);
-
-  if(!comingTransport) return row;
-
-  const {
-    status,
-    destination,
-    time,
-    timeMode,
-    code,
-  } = comingTransport;
-
-  row.className = classnames('Schedules__item', 'bright', {
-    'is-delayed': status === Status.DELAYED,
-    'is-deleted': status === Status.DELETED,
-    'is-ontime': status === Status.ON_TIME,
-  });
-
-  const destinationCell = document.createElement('td');
-  destinationCell.innerHTML = destination.substr(0, maxLettersForDestination);
-  destinationCell.className = 'align-left';
-  row.appendChild(destinationCell);
-
-  const statCell = document.createElement('td');
-  statCell.innerHTML = `${code || ''} ${resolveStatus(status, messages, StatusMessageKeys)}`.trim();
-  row.appendChild(statCell);
-
-  const depCell = document.createElement('td');
-  depCell.className = '';  
-  let depInfo;
-  if (!time) {
-    depInfo = translate(MessageKeys.UNAVAILABLE, messages);
-  } else if (convertToWaitingTime) {
-    depInfo = toWaitingTime(time, nowMoment, messages);
-  } else {
-    depInfo = toHoursMinutes(time);
-  }
-  const theoricalSuffix = timeMode === TimeModes.THEORICAL ? translate(MessageKeys.THEORICAL, messages) : '';
-  depCell.innerHTML = depInfo.concat(theoricalSuffix).substr(0, maxLettersForTime);
-  row.appendChild(depCell);
-
-  const effectiveThreshold = oldUpdateThreshold ? oldUpdateThreshold : updateInterval * (1 + oldThreshold);
-  if (nowMoment.subtract(comingLastUpdate).valueOf() > effectiveThreshold) {
-    destinationCell.style.opacity = depCell.style.opacity = oldUpdateOpacity.toString();
-  }
-
-  const { previousDestination, previousRow } = previous;
-  if (concatenateArrivals 
-      && !firstLine 
-      && destination === previousDestination) {
-    previous.previousDepInfo += ` / ${depInfo}`;
-    if (previousRow) {
-      previousRow.getElementsByTagName('td')[INDEX_STATUS].innerHTML = previous.previousDepInfo;
-    }
-    return null;
-  } else {
-    previous.previousRow = row;
-    previous.previousDepInfo = depInfo;
-    previous.previousDestination = destination;
-    return row;
-  }
-};
-
-/**
- * @returns HTML for public transport items (rows) for any API
- */
-export const renderPublicTransport = (stop: StationConfiguration, stopIndex: ?string, schedules: Object, lastUpdate: Object, config: ModuleConfiguration) => {
-  const { maximumEntries, messages } = config;
-  const rows = [];
-  const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);
-  const coming: Array<Schedule> = schedules[stopIndex] || [ {
-    message: unavailableLabel,
-    destination: unavailableLabel,
-    code: null,
-    status: null,
-    timeMode: TimeModes.UNDEFINED,
-    time: null,
-  } ];
-  const comingLastUpdate: Moment = lastUpdate[stopIndex];
-  const previous: ComingContext = {
-    previousRow: null,
-    previousDestination: null,
-    previousDepInfo: '',
-  };
-  let firstLine = true;
-  for (let comingIndex = 0; (comingIndex < maximumEntries) && (comingIndex < coming.length); comingIndex++) {
-    const row = renderComingTransport(firstLine, stop, coming[comingIndex], comingLastUpdate, previous, config);
-    if (row) rows.push(row);
-    firstLine = false;
-  }
-  return rows;
-};
-
-/**
- * @returns HTML for public transport items (rows) via classical API (Grimaud v3)
- */
-export const renderPublicTransportLegacy = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: ModuleConfiguration): any[] => {
-  const stopIndex = LegacyApi.createIndexFromStopConfig(stop);
-
-  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
-};
-
-/**
- * @returns HTML for public transport items (rows) via Transilien API
- */
-export const renderPublicTransportTransilien = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: ModuleConfiguration): any[] => {
-  const stopIndex = Transilien.createIndexFromStopConfig(stop);
-
-  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);  
 };
 
 /**
