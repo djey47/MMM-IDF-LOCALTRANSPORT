@@ -3,14 +3,13 @@
 /* TODO move to own css file */
 ul {
   list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* Own components */
 .IDFTransportWrapper {
-  font-size: 75%;
-  line-height: 65px;
-  display: inline-block;
-  transform: translate(0, -3px);
+  width: 100%;
 }
 
 .IDFTransportWrapper .red {
@@ -24,7 +23,11 @@ ul {
 }
 
 .IDFTransportWrapper .Schedules {
-  width: 400px;
+  margin: 8px 0;
+}
+
+.IDFTransportWrapper .SchedulesItem {
+  display: flex;
 }
 
 .IDFTransportWrapper .SchedulesItem__schedule.is-delayed {
@@ -37,6 +40,35 @@ ul {
 
 /* .IDFTransportWrapper .SchedulesItem__schedule.is-ontime {} */
 
+.IDFTransportWrapper .SchedulesItem__name {
+  font-weight: bold;
+  flex: 2;
+  padding: 0 4px;
+}
+
+.IDFTransportWrapper .SchedulesItem__destination {
+  flex: 3;
+  padding: 0 4px;
+}
+
+.IDFTransportWrapper .SchedulesItem__status {
+  flex: 1;
+  padding: 0 4px;
+}
+
+.IDFTransportWrapper .SchedulesItem__departure {
+  flex: 16;
+  padding: 0 4px;
+}
+
+.IDFTransportWrapper .Traffic {
+  margin: 8px 0;
+}
+
+.IDFTransportWrapper .TrafficItem {
+  display: flex;
+}
+
 .IDFTransportWrapper .TrafficItem.is-ok-with-work {
   color: orange;
 }
@@ -47,27 +79,42 @@ ul {
 
 /* .IDFTransportWrapper .Traffic__item.is-ok {} */
 
-.IDFTransportWrapper .Traffic__title {
+.IDFTransportWrapper .TrafficItem__label {
+  width: calc(100% / 4);
   font-weight: bold;
+  padding: 0 4px;
 }
 
-.IDFTransportWrapper .Traffic__messageContainer {
-  width: 100%;
+.IDFTransportWrapper .TrafficItem__status {
+  width: calc(100% / 16);
+  padding: 0 4px;
+}
+
+.IDFTransportWrapper .TrafficItem__infos {
+  width: calc(100% * 11 / 16);
+  padding: 0 4px;
+  display: block;
+}
+
+.IDFTransportWrapper .TrafficItem__title {
+  display: block;
+}
+
+.IDFTransportWrapper .TrafficItem__messageContainer {
+  display: block;
   height: 25px;
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
 }
 
-.IDFTransportWrapper .Traffic__messageContents {
+.IDFTransportWrapper .TrafficItem__messageContents {
   position: absolute;
-  top: 0;
-  left: 100%;
-  height: inherit;
-  white-space: nowrap;
-  animation: marquee 20s linear infinite;
+  bottom: 0;
+  left: 0;
+  animation: marquee 15s linear infinite;
 }
 
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
 }
