@@ -13,15 +13,10 @@ type PropsType = {
   lastUpdateInfo: Object,
 };
 
-type StateType = {};
-
 /**
  * List of schedule items (next arrivals)
  */
-class Schedules extends PureComponent {
-  props: PropsType;
-  state: StateType;
-
+class Schedules extends PureComponent<PropsType> {
   static defaultProps = {
     entries: {},
   }

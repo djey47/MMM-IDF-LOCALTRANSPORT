@@ -29,10 +29,7 @@ type StateType = {
 /**
  * Main component for local Schedules information
  */
-class Main extends PureComponent {
-  props: PropTypes;
-  state: StateType;
-
+class Main extends PureComponent<PropTypes, StateType> {
   static defaultProps = {}
 
   constructor(props: PropTypes) {

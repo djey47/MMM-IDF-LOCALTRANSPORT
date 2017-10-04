@@ -14,10 +14,7 @@ type StateType = {};
 /**
  * List of traffic information items
  */
-class Velib extends PureComponent {
-  props: PropsType;
-  state: StateType;
-
+class Velib extends PureComponent<PropsType, StateType> {
   static defaultProps = {
     entries: {},
   }

@@ -14,10 +14,7 @@ type StateType = {};
 /**
  * List of traffic information items
  */
-class Traffic extends PureComponent {
-  props: PropsType;
-  state: StateType;
-
+class Traffic extends PureComponent<PropsType, StateType> {
   static defaultProps = {
     entries: {},
   }
