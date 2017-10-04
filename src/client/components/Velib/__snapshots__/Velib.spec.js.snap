@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Velib component should render correctly with no data 1`] = `
+<ul
+  className="Velib"
+/>
+`;
+
+exports[`Velib component should render correctly with provided data 1`] = `
+<ul
+  className="Velib"
+>
+  <div>
+    Velib Item
+  </div>
+</ul>
+`;

@@ -5,8 +5,9 @@ import classnames from 'classnames';
 
 import Traffic from '../Traffic/Traffic';
 import Schedules from '../Schedules/Schedules';
+import Velib from '../Velib/Velib';
 import { translate, MessageKeys } from '../../../support/messages';
-import { DATA_TRAFFIC, DATA_TRANSPORT } from '../../support/dataKind';
+import * as DataKind from '../../support/dataKind';
 import { fetchStopConfiguration } from '../../../support/configuration';
 
 import type { ModuleConfiguration } from '../../../types/Configuration';
@@ -20,6 +21,7 @@ type PropTypes = {
 type StateType = {
   trafficEntries: Object,
   schedulesEntries: Object,
+  velibHistory: Object,
   lastUpdate: Object,
   isReady: boolean,
 };
@@ -39,6 +41,7 @@ class Main extends PureComponent {
     this.state = {
       trafficEntries: {},
       schedulesEntries: {},
+      velibHistory: {},
       lastUpdate: {},
       isReady: false,
     };
@@ -48,7 +51,7 @@ class Main extends PureComponent {
     const { dataKind, newData} = nextProps;
     if(!newData) return;
 
-    const { trafficEntries, schedulesEntries } = this.state;
+    const { trafficEntries, schedulesEntries, velibHistory } = this.state;
     const { id } = newData; 
     const stopConfig = fetchStopConfiguration(this.props.config, id);
     
@@ -67,7 +70,7 @@ class Main extends PureComponent {
     };
 
     switch (dataKind) {
-      case DATA_TRAFFIC:
+      case DataKind.DATA_TRAFFIC:
         this.setState({
           trafficEntries: {
             ...trafficEntries,
@@ -76,10 +79,19 @@ class Main extends PureComponent {
           isReady: true,
         });
         break;
-      case DATA_TRANSPORT:
+      case DataKind.DATA_TRANSPORT:
         this.setState({
           schedulesEntries: {
             ...schedulesEntries,
+            ...newEntry,
+          },
+          isReady: true,
+        });
+        break;
+      case DataKind.DATA_VELIB:
+        this.setState({
+          velibHistory: {
+            ...velibHistory,
             ...newEntry,
           },
           isReady: true,
@@ -99,7 +111,7 @@ class Main extends PureComponent {
 
   render() {
     const { config, config: { messages } } = this.props;
-    const { isReady, trafficEntries, schedulesEntries, lastUpdate } = this.state;
+    const { isReady, trafficEntries, schedulesEntries, velibHistory, lastUpdate } = this.state;
     return (
       <div className={classnames('Main', 'dimmed', 'light', 'small')}>
         { !isReady &&
@@ -110,6 +122,9 @@ class Main extends PureComponent {
         }
         { !!Object.keys(schedulesEntries).length &&
           <Schedules entries={schedulesEntries} config={config} lastUpdateInfo={lastUpdate} />
+        }
+        { !!Object.keys(velibHistory).length &&
+          <Velib entries={velibHistory} config={config} />
         }
       </div>
     );

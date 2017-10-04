@@ -9,13 +9,7 @@
 
 import moment from 'moment-timezone';
 
-import {
-  NOTIF_INIT,
-  NOTIF_DOM_OBJECTS_CREATED,  
-  NOTIF_UPDATE,
-  NOTIF_TRAFFIC,
-  NOTIF_TRANSPORT,
-} from '../support/notifications';
+import * as Notifications from '../support/notifications';
 import { 
   MODULE_NAME,
   defaults,
@@ -26,10 +20,7 @@ import {
   renderHeader,
   renderMainComponent,
 } from './dom/renderer';
-import {
-  DATA_TRAFFIC,
-  DATA_TRANSPORT,
-} from './support/dataKind';
+import * as DataKind from './support/dataKind';
 
 
 Module.register(MODULE_NAME,{
@@ -90,7 +81,7 @@ Module.register(MODULE_NAME,{
   notificationReceived: function(notification: string): void {
     if (this.config.debug) Log.info(`**${this.name} notificationReceived: ${notification}`);
 
-    if (notification === NOTIF_DOM_OBJECTS_CREATED) {
+    if (notification === Notifications.NOTIF_DOM_OBJECTS_CREATED) {
       renderMainComponent(this.config);
       this.viewEngineStarted = true;
     }
@@ -103,17 +94,20 @@ Module.register(MODULE_NAME,{
     if (this.config.debug) Log.info(`**${this.name} socketNotificationReceived: ${notification}`);
 
     switch(notification) {
-      case NOTIF_INIT:
+      case Notifications.NOTIF_INIT:
         this.loaded = true;
         break;
-      case NOTIF_UPDATE:
+      case Notifications.NOTIF_UPDATE:
         this.config.lastUpdate = moment(payload.lastUpdate);
         break;
-      case NOTIF_TRAFFIC:
-        renderMainComponent(this.config, payload, DATA_TRAFFIC);
+      case Notifications.NOTIF_TRAFFIC:
+        renderMainComponent(this.config, payload, DataKind.DATA_TRAFFIC);
         break;
-      case NOTIF_TRANSPORT:
-        renderMainComponent(this.config, payload, DATA_TRANSPORT);
+      case Notifications.NOTIF_TRANSPORT:
+        renderMainComponent(this.config, payload, DataKind.DATA_TRANSPORT);
+        break;
+      case Notifications.NOTIF_VELIB:
+        renderMainComponent(this.config, payload, DataKind.DATA_VELIB);
         break;
     }
   },
