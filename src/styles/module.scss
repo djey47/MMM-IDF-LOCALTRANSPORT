@@ -1,8 +1,9 @@
-/* @define IDFTransportWrapper */
+/** @define IDFTransportWrapper */
 
 .IDFTransportWrapper {
   width: 100%;
 
+  /* stylelint-disable plugin/selector-bem-pattern */
   .red {
     color: red;
   }
@@ -12,4 +13,5 @@
     border-width: 1px 1px 0;
     margin-top: 1ex;
   }
+  /* stylelint-enable plugin/selector-bem-pattern */
 }

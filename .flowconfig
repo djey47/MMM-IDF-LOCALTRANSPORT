@@ -1,5 +1,8 @@
 [ignore]
 
+# Stylelint needs update to be compatible, wait for it and remove this line
+.*/node_modules/stylelint/.*
+
 [include]
 
 [libs]
