@@ -8,8 +8,7 @@ import { TrafficStatus, TrafficMessageKeys } from '../../../support/status';
 
 import type { ServerTrafficResponse } from '../../../types/Transport';
 
-// TODO style
-// import './Traffic.css';
+import './TrafficItem.scss';
 
 type PropTypes = {
   data: ServerTrafficResponse,

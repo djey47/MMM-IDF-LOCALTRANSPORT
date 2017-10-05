@@ -1,6 +1,7 @@
 /** Configuration for client-side webpack bundle **/
 
-const { outputPath, moduleRules, commonPlugins } = require('./webpack.config.common.js');
+const { outputPath, commonRules, commonPlugins } = require('./webpack.config.common.js');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: './src/client/module.js',
@@ -9,7 +10,16 @@ module.exports = {
     path: outputPath,
   },
   module: {
-    rules: moduleRules,
+    rules: commonRules.concat([{
+      test: /\.(css|scss)$/,
+      exclude: /(node_modules)/,
+      loader: ExtractTextPlugin.extract({
+        use: 'css-loader!sass-loader',
+        fallback: 'style-loader',
+      }),
+    }]),
   },
-  plugins: commonPlugins,  
+  plugins: commonPlugins.concat([
+    new ExtractTextPlugin('styles.css'),    
+  ]),
 };

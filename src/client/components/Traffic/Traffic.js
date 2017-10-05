@@ -4,6 +4,8 @@ import React, { PureComponent } from 'react';
 
 import TrafficItem from './TrafficItem';
 
+import './Traffic.scss';
+
 type PropsType = {
   entries: Object,
   messages: Object,

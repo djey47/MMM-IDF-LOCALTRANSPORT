@@ -6,7 +6,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 
 module.exports = {
   outputPath: path.resolve(appRootPath),
-  moduleRules: [
+  commonRules: [
     {
       test: /\.js$/,
       exclude: /(node_modules)/,

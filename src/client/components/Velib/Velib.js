@@ -4,6 +4,8 @@ import React, { PureComponent } from 'react';
 
 import type { ModuleConfiguration } from '../../../types/Configuration';
 
+import './Velib.scss';
+
 type PropsType = {
   entries: Object,
   config: ModuleConfiguration,

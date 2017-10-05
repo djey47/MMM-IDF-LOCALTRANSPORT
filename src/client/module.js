@@ -32,7 +32,7 @@ Module.register(MODULE_NAME,{
    */ 
   getStyles: function(): Array<string> {
     return [
-      this.file('css/module.css'), // TODO replace with bundle
+      this.file('styles.css'),      // Bundle
       'font-awesome.css',
     ];
   },

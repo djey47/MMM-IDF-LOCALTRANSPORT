@@ -1,0 +1,56 @@
+
+/* @define TrafficItem */
+
+.TrafficItem {
+  display: flex;
+}
+
+.TrafficItem.is-ok-with-work {
+  color: orange;
+}
+
+.TrafficItem.is-ko {
+  color: red;
+}
+
+/* .Traffic__item.is-ok {} */
+
+.TrafficItem__label {
+  width: calc(100% / 4);
+  font-weight: bold;
+  padding: 0 4px;
+}
+
+.TrafficItem__status {
+  width: calc(100% / 16);
+  padding: 0 4px;
+}
+
+.TrafficItem__infos {
+  width: calc(100% * 11 / 16);
+  padding: 0 4px;
+  display: block;
+}
+
+.TrafficItem__title {
+  display: block;
+}
+
+.TrafficItem__messageContainer {
+  display: block;
+  height: 25px;
+  position: relative;
+  overflow: hidden;
+}
+
+.TrafficItem__messageContents {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  animation: v-marquee 15s linear infinite;
+}
+
+@keyframes v-marquee {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}

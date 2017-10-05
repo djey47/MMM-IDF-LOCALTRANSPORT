@@ -1,6 +1,6 @@
 /** Configuration for server-side webpack bundle **/
 
-const { outputPath, moduleRules, commonPlugins } = require('./webpack.config.common.js');
+const { outputPath, commonRules, commonPlugins } = require('./webpack.config.common.js');
 
 module.exports = {
   target: 'node',
@@ -12,7 +12,7 @@ module.exports = {
   },
   externals: [ 'node_helper' ], // MM2 provided
   module: { 
-    rules: moduleRules,
+    rules: commonRules.concat([]),
   },
-  plugins: commonPlugins,
+  plugins: commonPlugins.concat([]),
 };

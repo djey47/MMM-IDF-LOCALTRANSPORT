@@ -1,0 +1,36 @@
+/* @define SchedulesItem */
+
+.SchedulesItem {
+  display: flex;
+}
+
+.SchedulesItem__schedule.is-delayed {
+  color: orange;
+}
+
+.SchedulesItem__schedule.is-deleted {
+  color: red;
+}
+
+/* .SchedulesItem__schedule.is-ontime {} */
+
+.SchedulesItem__name {
+  font-weight: bold;
+  flex: 2;
+  padding: 0 4px;
+}
+
+.SchedulesItem__destination {
+  flex: 3;
+  padding: 0 4px;
+}
+
+.SchedulesItem__status {
+  flex: 1;
+  padding: 0 4px;
+}
+
+.SchedulesItem__departure {
+  flex: 16;
+  padding: 0 4px;
+}

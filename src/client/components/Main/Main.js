@@ -12,6 +12,10 @@ import { fetchStopConfiguration } from '../../../support/configuration';
 
 import type { ModuleConfiguration } from '../../../types/Configuration';
 
+import '../../../styles/reset.scss';
+import '../../../styles/module.scss';
+import './Main.scss';
+
 type PropTypes = {
   config: ModuleConfiguration,
   newData: ?Object,

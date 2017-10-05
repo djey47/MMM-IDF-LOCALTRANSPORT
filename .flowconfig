@@ -8,3 +8,13 @@
 tools/flow/
 
 [options]
+
+# Supported source file extensions
+module.file_ext=.js
+module.file_ext=.scss
+
+# This is so that we can import static files in our webpack supported components and not have flow throw a hissy fit.
+module.name_mapper.extension='scss' -> 'empty/object'
+
+[version]
+0.53.1

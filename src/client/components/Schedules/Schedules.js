@@ -7,6 +7,8 @@ import reduceByDestination from '../../support/schedules';
 
 import type { ModuleConfiguration } from '../../../types/Configuration';
 
+import './Schedules.scss';
+
 type PropsType = {
   entries: Object,
   config: ModuleConfiguration,

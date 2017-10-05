@@ -13,8 +13,7 @@ import type Moment from 'moment';
 import type { ServerScheduleResponse, Schedule } from '../../../types/Transport';
 import type { ModuleConfiguration, StationConfiguration } from '../../../types/Configuration';
 
-// TODO style
-// import './Traffic.css';
+import './SchedulesItem.scss';
 
 type PropTypes = {
   data: ServerScheduleResponse,
