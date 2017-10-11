@@ -4,6 +4,14 @@
   display: flex;
 }
 
+.SchedulesItem__schedules {
+  width: 100%;
+}
+
+.SchedulesItem__schedule {
+  display: flex;
+}
+
 .SchedulesItem__schedule.is-delayed {
   color: orange;
 }
@@ -16,21 +24,21 @@
 
 .SchedulesItem__name {
   font-weight: bold;
-  flex: 2;
+  width: calc(100% / 4);
   padding: 0 4px;
 }
 
 .SchedulesItem__destination {
-  flex: 3;
+  width: calc(100% / 4);
   padding: 0 4px;
 }
 
 .SchedulesItem__status {
-  flex: 1;
+  width: calc(100% / 16);
   padding: 0 4px;
 }
 
 .SchedulesItem__departure {
-  flex: 16;
+  width: calc(100% * 7 / 16);
   padding: 0 4px;
 }
