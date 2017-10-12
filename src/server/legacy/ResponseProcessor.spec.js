@@ -13,7 +13,7 @@ describe('dataToSchedule function', () => {
     result: {
       schedules: [{
         code: 'ZEUS',
-        message: 'Train à quai',
+        message: 'Train à quai V.1',
         destination: 'St-Germain-en-Laye. Poissy. Cergy.',
       },{
         code: 'TEDU',
@@ -27,6 +27,10 @@ describe('dataToSchedule function', () => {
         code: 'BINA',
         message: 'Train terminus V.1',
         destination: 'Boissy-St-Léger. Marne-la-Vallée.',
+      },{
+        code: 'ZEUS',
+        message: 'A l\'approche voie B',
+        destination: 'St-Germain-en-Laye. Poissy. Cergy.',
       }],
     },
     _metadata: {
@@ -110,8 +114,14 @@ describe('dataToSchedule function', () => {
           status: 'TERMINAL',
           code: 'BINA',
           info: null,          
-        },
-      ],
+        },{
+          destination: 'St-Germain-en-Laye. Poissy. Cergy.',
+          time: null,
+          timeMode: 'UNDEFINED',
+          status: 'APPROACHING',
+          code: 'ZEUS',
+          info: null,          
+        }],
     };
     expect(actual).toEqual(expected);
   });
