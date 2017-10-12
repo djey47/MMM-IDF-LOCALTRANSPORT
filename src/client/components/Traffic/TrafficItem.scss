@@ -1,6 +1,8 @@
 
 /** @define TrafficItem */
 
+$message-height: 25px;
+
 .TrafficItem {
   display: flex;
 }
@@ -38,7 +40,7 @@
 
 .TrafficItem__messageContainer {
   display: block;
-  height: 25px;
+  height: $message-height;
   position: relative;
   overflow: hidden;
 }
@@ -51,6 +53,6 @@
 }
 
 @keyframes v-marquee {
-  from { transform: translateY(0); }
-  to { transform: translateY(-100%); }
+  from { transform: translateY(100%); }
+  to { transform: translateY(-$message-height); }
 }
