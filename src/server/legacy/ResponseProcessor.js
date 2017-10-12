@@ -30,25 +30,26 @@ const {
   UNDEFINED,
 } = TimeModes;
 
-/**
- * Association between API messages and statuses
- */
-const STATUSES = {
-  // TODO DELETED?
-  'A l\'arret': AT_STOP,              // Bus
-  'Train a l\'approche': APPROACHING, // Metro
-  'Train à l\'approche': APPROACHING, // RER
-  'Train a quai': AT_PLATFORM,        // Metro
-  'Train à quai': AT_PLATFORM,        // RER
-  'Train retarde': DELAYED,           // Metro
-  'Train retardé': DELAYED,           // RER
-};
-
 const REGEX_RER_TIME = /\d{1,2}:\d{1,2}\s?.*/;
 const REGEX_METRO_TIME = /\d+ mn/;
 const MESSAGE_BYPASSED = 'DEVIATION';
 const MESSAGE_UNSERVED = 'ARRET NON DESSERVI';
 const MESSAGE_TERMINAL = 'Train terminus';
+const MESSAGE_AT_PLATFORM_RER = 'Train à quai';
+const MESSAGE_APPROACHING_RER = 'A l\'approche';
+
+/**
+ * Association between API messages and statuses
+ */
+const STATUSES = {
+  'A l\'arret': AT_STOP,                    // Bus
+  'Train a l\'approche': APPROACHING,       // Metro
+  'Train a quai': AT_PLATFORM,              // Metro
+  'Train retarde': DELAYED,                 // Metro
+  'Train retardé': DELAYED,                 // RER
+  [MESSAGE_APPROACHING_RER]: APPROACHING,   // RER
+  [MESSAGE_AT_PLATFORM_RER]: AT_PLATFORM,   // RER
+};
 
 const ResponseProcessor = {
   /**
@@ -84,6 +85,10 @@ const ResponseProcessor = {
     if (message.indexOf(MESSAGE_UNSERVED) !== -1 || message.indexOf(MESSAGE_BYPASSED) !== -1) return SKIPPED;
 
     if (message.indexOf(MESSAGE_TERMINAL) !== -1) return TERMINAL;
+
+    if (message.indexOf(MESSAGE_AT_PLATFORM_RER) !== -1) return AT_PLATFORM;
+    
+    if (message.indexOf(MESSAGE_APPROACHING_RER) !== -1) return APPROACHING;
 
     return STATUSES[message] || UNKNOWN;
   },
