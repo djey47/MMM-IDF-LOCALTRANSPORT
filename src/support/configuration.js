@@ -97,6 +97,12 @@ export const defaults: ModuleConfiguration = {
   },
 
   stations: [],
+
+  blockOrder: {
+    traffic: 1,
+    schedules: 2,
+    velib: 3,
+  },   
 };
 
 /**

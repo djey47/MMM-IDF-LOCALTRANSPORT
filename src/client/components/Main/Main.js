@@ -110,22 +110,34 @@ class Main extends PureComponent<PropTypes, StateType> {
     return true;
   }
 
+  orderBlocks(blocks: Array<any>): Array<any> {
+    const { config: { blockOrder }} = this.props;
+    const [ traffic, schedules, velib ] = blocks;
+    const ordered = [ null, null, null ];
+    ordered[blockOrder.traffic - 1] = traffic;
+    ordered[blockOrder.schedules - 1] = schedules;
+    ordered[blockOrder.velib - 1] = velib;
+    return ordered;
+  }
+
   render() {
     const { config, config: { messages } } = this.props;
     const { isReady, trafficEntries, schedulesEntries, velibHistory, lastUpdate } = this.state;
+    const blocks = [
+      !!Object.keys(trafficEntries).length &&
+        <Traffic entries={trafficEntries} messages={messages} />,
+      !!Object.keys(schedulesEntries).length &&
+        <Schedules entries={schedulesEntries} config={config} lastUpdateInfo={lastUpdate} />,
+      !!Object.keys(velibHistory).length &&
+        <Velib entries={velibHistory} config={config} />,
+    ];
     return (
       <div className={classnames('Main', 'dimmed', 'light', 'small')}>
         { !isReady &&
           <p>{translate(MessageKeys.LOADING, messages)}</p>
         }
-        { !!Object.keys(trafficEntries).length &&
-          <Traffic entries={trafficEntries} messages={messages} />
-        }
-        { !!Object.keys(schedulesEntries).length &&
-          <Schedules entries={schedulesEntries} config={config} lastUpdateInfo={lastUpdate} />
-        }
-        { !!Object.keys(velibHistory).length &&
-          <Velib entries={velibHistory} config={config} />
+        {
+          this.orderBlocks(blocks)
         }
       </div>
     );

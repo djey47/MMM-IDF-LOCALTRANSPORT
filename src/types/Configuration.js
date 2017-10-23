@@ -20,6 +20,14 @@ export type StationConfiguration = {
 
 };
 
+export type BlockOrdering = {
+
+  traffic: number,
+  schedules: number,
+  velib: number,
+
+};
+
 export type ModuleConfiguration = {
 
   maximumEntries: number, //if the APIs sends several results for the incoming transport how many should be displayed
@@ -58,4 +66,6 @@ export type ModuleConfiguration = {
   messages: Object, //{ key1: value1, ... }
 
   lastUpdate?: string,
+
+  blockOrder: BlockOrdering,
 };

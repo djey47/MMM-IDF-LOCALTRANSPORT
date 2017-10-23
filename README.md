@@ -94,6 +94,9 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
 * `messages`: (Optional, see example below) : key-values to convert generic messages to your preferred language
   - If not provided, some default messages are used (in english)
   - To make changes, paste ALL default values and modify to your likings. 
+* `blockOrder`: (Optional, see example below) : rank of each information blocks (traffic, schedules, velib) into the dashboard
+  - 1 sets at the top, 3 at the bottom
+  - If not provided, default ranking is applied.
 
 Example:
 ```javascript
@@ -157,5 +160,11 @@ messages: {
     bikes: 'velibs',
     spaces: 'spaces',
   },
-}
+},
+
+blockOrder: {
+  traffic: 1,
+  schedules: 2,
+  velib: 3,
+},
 ```
