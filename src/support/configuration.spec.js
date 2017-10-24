@@ -86,7 +86,7 @@ describe('handleStationInfoResponse function', () => {
 describe('enhanceConfiguration function', () => {
   it('should do nothing when no stations provided', () => {
     // given
-    const currentConfig = Object.assign({}, defaults);
+    const currentConfig = { ...defaults };
     // when
     enhanceConfiguration(currentConfig, mockSendSocketNotification);
     // then
@@ -101,7 +101,7 @@ describe('enhanceConfiguration function', () => {
       station: 'becon',
       destination: 'la defense',
     }];
-    const currentConfig = Object.assign({}, defaults, { stations });
+    const currentConfig = { ... defaults, stations };
     // when
     enhanceConfiguration(currentConfig, mockSendSocketNotification);
     // then
@@ -110,7 +110,16 @@ describe('enhanceConfiguration function', () => {
       stationValue: 'becon',
       destinationValue: 'la defense',
     }];
-    expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, currentConfig);
+    const enhancedConfig = {
+      ...currentConfig,
+      stations: [{
+        order: 1,
+        type: 'transiliens',
+        station: 'becon',
+        destination: 'la defense',
+      }],
+    };
+    expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, enhancedConfig);
     expect(mockThen).toHaveBeenCalled();
   });
 
@@ -124,7 +133,7 @@ describe('enhanceConfiguration function', () => {
         station: 'UIC1',
       },
     }];
-    const currentConfig = Object.assign({}, defaults, { stations });
+    const currentConfig = { ...defaults, stations };
     // when
     enhanceConfiguration(currentConfig, mockSendSocketNotification);
     // then
@@ -133,7 +142,19 @@ describe('enhanceConfiguration function', () => {
       stationValue: 'becon',
       destinationValue: 'la defense',
     }];
-    expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, currentConfig);
+    const enhancedConfig = {
+      ...currentConfig,
+      stations: [{
+        order: 1,
+        type: 'transiliens',
+        station: 'becon',
+        destination: 'la defense',
+        uic: {
+          station: 'UIC1',
+        },        
+      }],
+    };
+    expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, enhancedConfig);
     expect(mockThen).toHaveBeenCalled();
   });
 
@@ -148,12 +169,25 @@ describe('enhanceConfiguration function', () => {
         destination: '8738221',
       },
     }];
-    const currentConfig = Object.assign({}, defaults, { stations });
+    const currentConfig = { ...defaults, stations };
     // when
     enhanceConfiguration(currentConfig, mockSendSocketNotification);
     // then
+    const enhancedConfig = {
+      ...currentConfig,
+      stations: [{
+        order: 1,
+        type: 'transiliens',
+        station: 'becon',
+        destination: 'la defense',
+        uic: {
+          station: '8738200',
+          destination: '8738221',
+        },     
+      }],
+    };    
     expect(mockGetAllStationInfo).not.toHaveBeenCalled();
-    expect(mockSendSocketNotification).toHaveBeenCalledWith('SET_CONFIG', currentConfig);
+    expect(mockSendSocketNotification).toHaveBeenCalledWith('SET_CONFIG', enhancedConfig);
   });
 });
 

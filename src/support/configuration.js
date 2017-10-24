@@ -108,9 +108,9 @@ export const defaults: ModuleConfiguration = {
 /**
  * Callback to handle async response.
  * Exported for testing.
- * @param {Array<Object>} responses 
- * @param {Function} sendSocketNotification 
- * @param {Object} configuration 
+ * @param responses 
+ * @param sendSocketNotification 
+ * @param configuration 
  */
 export function handleStationInfoResponse(responses: Array<StationInfoResult>, sendSocketNotification: NotificationSenderFunction, configuration: ModuleConfiguration) {
   const { debug } = configuration;
@@ -144,13 +144,22 @@ export function handleStationInfoResponse(responses: Array<StationInfoResult>, s
 /**
  * Resolves useful information from module configuration (station UIC ...)
  * Sends configuration to server-side via sockets.
- * @param {Object} configuration configuration to be enhanced
- * @param {Function} sendSocketNotification callback to notification handler
+ * @param configuration configuration to be enhanced
+ * @param sendSocketNotification callback to notification handler
  */
 export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: (notification: string, payload: Object) => void) {
   const { stations } = configuration;
+  // Resolve stop order
+  const orderedStations = stations.map((station, index) => {
+    return {
+      ...station,
+      order: index + 1,
+    };
+  });
+  configuration.stations = orderedStations;
+
   // Stations for transilien: retrieve UIC
-  const queries = stations
+  const queries = orderedStations
     .filter(stationConfig => stationConfig.type === TYPE_TRANSILIEN)
     .filter(stationConfig => {
       // Do not resolve to UIC codes if already provided
