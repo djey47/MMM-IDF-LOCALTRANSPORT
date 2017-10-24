@@ -11,7 +11,7 @@ exports[`Schedules component should render correctly with provided data 1`] = `
   className="Schedules"
 >
   <li>
-    SchedulesItem component
+    SchedulesItem component: 
   </li>
 </ul>
 `;
@@ -21,7 +21,22 @@ exports[`Schedules component should render correctly with provided data and arri
   className="Schedules"
 >
   <li>
-    SchedulesItem component
+    SchedulesItem component: 
+  </li>
+</ul>
+`;
+
+exports[`Schedules component should render correctly with provided datas and order 1`] = `
+<ul
+  className="Schedules"
+>
+  <li>
+    SchedulesItem component: 
+    1
+  </li>
+  <li>
+    SchedulesItem component: 
+    2
   </li>
 </ul>
 `;

@@ -35,15 +35,28 @@ class Schedules extends PureComponent<PropsType> {
   }
 
   /**
+   * @private
+   */
+  sortEntriesByOrder = (entries: Object) => {
+    return Object.keys(entries)
+      .map(index => ({
+        ...entries[index],
+        index,
+      }))
+      .sort((entry1, entry2) => entry1.stop.order - entry2.stop.order);
+  }
+
+  /**
    * @returns Markup
    */
   render() {
     const { config, lastUpdateInfo } = this.props;
     const processedEntries = this.processEntries();
+    const sortedEntries = this.sortEntriesByOrder(processedEntries);
     return (
       <ul className="Schedules">
-        {Object.keys(processedEntries).map(index => {
-          const { data, stop } = processedEntries[index];
+        {sortedEntries.map(entry => {
+          const { data, stop, index } = entry;
           return <SchedulesItem key={index} data={data} stop={stop} config={config} lastUpdate={lastUpdateInfo[index]} />;
         })}
       </ul>

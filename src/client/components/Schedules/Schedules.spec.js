@@ -4,7 +4,8 @@ import moment from 'moment-timezone';
 
 import Schedules from './Schedules';
 
-jest.mock('./SchedulesItem', () => () => <li>SchedulesItem component</li>);
+jest.mock('./SchedulesItem', () =>
+  ({ stop: { order } }) => <li>SchedulesItem component: {order}</li>);
 
 describe('Schedules component', () => {
   const updateInfo = {
@@ -27,6 +28,44 @@ describe('Schedules component', () => {
       '/1/': {
         data,
         stop,
+      },
+    };
+
+    // when
+    const component = renderer.create(
+      <Schedules entries={entries} config={{}} lastUpdateInfo={updateInfo} />,
+    );
+
+    // then
+    const tree = component.toJSON();
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('should render correctly with provided datas and order', () => {
+    // given
+    const stop1 = {
+      line: 'L',
+      order: 2,
+    };
+    const stop2 = {
+      line: 'U',
+      order: 1,
+    };
+    const data = {
+      schedules: [{
+        status: 'OK',
+        summary: 'Summary',
+        message: 'Message',
+      }],
+    };
+    const entries = {
+      '/1/': {
+        data,
+        stop: stop1,
+      },
+      '/2/': {
+        data,
+        stop: stop2,
       },
     };
 
