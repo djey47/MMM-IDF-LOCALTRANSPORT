@@ -290,21 +290,25 @@ describe('renderPublicTransport function', () => {
         destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
         code: 'SEBU',
         time: '2017-07-26T11:20:00.000Z',
+        status: 'ON_TIME',
       },
       {
         destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
         code: 'SEBU',
         time: '2017-07-26T11:35:00.000Z',
+        status: 'DELAYED',
       },
       {
         destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
         code: 'SEBU',
         time: '2017-07-26T11:50:00.000Z',
+        status: 'DELETED',
       },
       {
         destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',
         code: 'SEBU',
         time: '2017-07-26T12:05:00.000Z',
+        status: 'UNKNOWN',
       },
       {
         destination: 'SAINT-NOM LA BRETECHE FORET DE MARLY',

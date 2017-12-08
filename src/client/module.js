@@ -45,6 +45,7 @@ Module.register(MODULE_NAME,{
   // Define required scripts.
   getStyles: function(): Array<string> {
     return [
+      this.file('css/reset.css'),
       this.file('css/module.css'),
       'font-awesome.css',
     ];
