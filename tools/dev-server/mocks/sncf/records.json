@@ -1,0 +1,159 @@
+{
+  "87382002": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "55250d0a4e3e1125a4068ec126323a9019947a64",
+    "fields": {
+        "commune": "Courbevoie",
+        "code_insee_commune": "92026",
+        "libelle": "BECON LES BRUYERES",
+        "libelle_sms_gare": "Bécon-Les-B.",
+        "adresse": "Rue Madira - 92400 Courbevoie",
+        "x_lambert_ii_etendu": 595017,
+        "y_lambert_ii_etendu": 2434148,
+        "uic7": "8738200",
+        "code_uic": "87382002",
+        "zone_navigo": 3,
+        "coord_gps_wgs84": [
+            48.9055805862,
+            2.26857173893
+        ],
+        "libelle_stif_info_voyageurs": "GARE DE BECON LES BRUYERES",
+        "nom_gare": "Bécon les Bruyères",
+        "libelle_point_d_arret": "BECON LESBRUYERES",
+        "gare_non_sncf": 0
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.26857173893,
+            48.9055805862
+        ]
+    },
+    "record_timestamp": "2016-04-23T20:00:41+00:00"    
+  },
+  "CHAVILLE RIVE DROITE": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "48b03139dc1b8bce6fb5e2b639a62a40d5829c55",
+    "fields": {
+        "commune": "Chaville",
+        "code_insee_commune": "92022",
+        "libelle": "CHAVILLE RIVE DROITE",
+        "libelle_sms_gare": "Chaville-RD",
+        "adresse": "32 Rue Carnot 92370 Chaville",
+        "x_lambert_ii_etendu": 589075,
+        "y_lambert_ii_etendu": 2423759,
+        "uic7": "8738233",
+        "code_uic": "87382333",
+        "zone_navigo": 3,
+        "coord_gps_wgs84": [
+            48.812136312,
+            2.18783398094
+        ],
+        "libelle_stif_info_voyageurs": "GARE DE CHAVILLE RIVE DROITE",
+        "nom_gare": "Chaville Rive Droite",
+        "libelle_point_d_arret": "CHAVILLE RIVE DROITE",
+        "gare_non_sncf": 0
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.18783398094,
+            48.812136312
+        ]
+    },
+    "record_timestamp": "2016-04-23T20:00:41+00:00"
+  },
+  "CHAVILLE RIVE GAUCHE": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "842fa7da44a5026ffc0c17354dba941e6c9f1621",
+    "fields": {
+        "commune": "Chaville",
+        "code_insee_commune": "92022",
+        "libelle": "CHAVILLE RIVE GAUCHE",
+        "libelle_sms_gare": "Chaville RG",
+        "adresse": "29 Rue Anatole France 92370 Chaville",
+        "x_lambert_ii_etendu": 589120,
+        "y_lambert_ii_etendu": 2422941,
+        "uic7": "8739320",
+        "code_uic": "87393207",
+        "zone_navigo": 3,
+        "coord_gps_wgs84": [
+            48.8047850879,
+            2.18846743145
+        ],
+        "libelle_stif_info_voyageurs": "GARE DE CHAVILLE RIVE GAUCHE",
+        "nom_gare": "Chaville Rive Gauche",
+        "libelle_point_d_arret": "CHAVILLE RIVE GAUCHE",
+        "gare_non_sncf": 0
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.18846743145,
+            48.8047850879
+        ]
+    },
+    "record_timestamp": "2016-04-23T20:00:41+00:00"
+  },
+  "GARE ST LAZARE": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "3b6282467003365ca4734252301163bec0ec72c3",
+    "fields": {
+        "commune": "Paris",
+        "code_insee_commune": "75109",
+        "libelle": "PARIS SAINT-LAZARE",
+        "x_lambert_ii_etendu": 599136,
+        "y_lambert_ii_etendu": 2430783,
+        "uic7": "8738400",
+        "code_uic": "87384008",
+        "zone_navigo": 1,
+        "coord_gps_wgs84": [
+            48.875357836,
+            2.32473327749
+        ],
+        "libelle_stif_info_voyageurs": "GARE ST LAZARE",
+        "nom_gare": "Paris Saint-Lazare",
+        "libelle_point_d_arret": "PARIS SAINT-LAZARE (GARE SAINT-LAZARE)",
+        "gare_non_sncf": 0
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.32473327749,
+            48.875357836
+        ]
+    },
+    "record_timestamp": "2016-04-23T20:00:41+00:00"
+  },
+  "MONTPARNASSE": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "73e1bc343f983e401df24b505f01a41efbf15efe",
+    "fields": {
+        "commune": "Paris",
+        "code_insee_commune": "75114",
+        "libelle": "PARIS MONTPARNASSE",
+        "adresse": "Place Raoul Dautry",
+        "x_lambert_ii_etendu": 598749,
+        "y_lambert_ii_etendu": 2426905,
+        "uic7": "8739100",
+        "code_uic": "87391003",
+        "zone_navigo": 1,
+        "coord_gps_wgs84": [
+            48.8405039394,
+            2.3194723448
+        ],
+        "libelle_stif_info_voyageurs": "GARE MONTPARNASSE",
+        "nom_gare": "Paris Montparnasse",
+        "libelle_point_d_arret": "PARIS MONTPARNASSE (GARE MONTPARNASSE)",
+        "gare_non_sncf": 0
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.3194723448,
+            48.8405039394
+        ]
+    },
+    "record_timestamp": "2016-04-23T20:00:41+00:00"
+  }
+}

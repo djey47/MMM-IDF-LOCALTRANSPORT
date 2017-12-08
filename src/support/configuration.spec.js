@@ -84,7 +84,7 @@ describe('handleStationInfoResponse function', () => {
 });
 
 describe('enhanceConfiguration function', () => {
-  it('should do nothing when no stations provided', () => {
+  it('should not request data when no stations provided', () => {
     // given
     const currentConfig = Object.assign({}, defaults);
     // when
@@ -155,4 +155,15 @@ describe('enhanceConfiguration function', () => {
     expect(mockGetAllStationInfo).not.toHaveBeenCalled();
     expect(mockSendSocketNotification).toHaveBeenCalledWith('SET_CONFIG', currentConfig);
   });
+
+  it('should override endpoints when devMode enabled', () => {
+    // given
+    const currentConfig =  { ...defaults, devMode: true };
+    // when
+    enhanceConfiguration(currentConfig, mockSendSocketNotification);
+    // then
+    expect(mockSendSocketNotification.mock.calls.length).toEqual(1);
+    const actualConfig = mockSendSocketNotification.mock.calls[0][1];
+    expect(actualConfig.apiBaseV3).toEqual('http://localhost:8088/legacy/');
+  });  
 });

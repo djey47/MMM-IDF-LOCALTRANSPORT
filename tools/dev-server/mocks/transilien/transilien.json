@@ -1,0 +1,7 @@
+{
+  "path": "/transilien/*",
+  "method": "get",
+  "template": {
+    "need": "JSON!"
+  }
+}

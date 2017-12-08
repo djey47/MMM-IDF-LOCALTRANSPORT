@@ -1,0 +1,17 @@
+{
+  "path": "/legacy/traffic/tramways/*",
+  "method": "get",
+  "template": {
+    "result": {
+      "line": "1",
+      "slug": "normal",
+      "title": "Trafic normal",
+      "message": "Trafic normal sur l'ensemble de la ligne."
+    },
+    "_metadata": {
+        "call": "GET /traffic",
+        "date": "2017-12-08T13:56:06+01:00",
+        "version": 3
+    }
+  }
+}

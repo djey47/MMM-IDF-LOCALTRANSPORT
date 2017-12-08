@@ -1,0 +1,193 @@
+{
+  "path": "/legacy/traffic",
+  "method": "get",
+  "template": {
+    "result": {
+        "metros": [
+            {
+                "line": "1",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "2",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "3",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "3B",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "4",
+                "slug": "normal_trav",
+                "title": "Travaux",
+                "message": "Ts les jours l'arrêt n'est pas marqué à Chatelet jusqu'au 07/03/18. (travaux de modernisation)"
+            },
+            {
+                "line": "5",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "6",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "7",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "7B",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "8",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "9",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "10",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "11",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "12",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "13",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "14",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            }
+        ],
+        "rers": [
+            {
+                "line": "A",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "B",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "C",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "D",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "E",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            }
+        ],
+        "tramways": [
+            {
+                "line": "1",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "2",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "3A",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "3B",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "5",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "6",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "7",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            },
+            {
+                "line": "8",
+                "slug": "normal",
+                "title": "Trafic normal",
+                "message": "Trafic normal sur l'ensemble de la ligne."
+            }
+        ]
+    },
+    "_metadata": {
+        "call": "GET /traffic",
+        "date": "2017-12-08T13:56:06+01:00",
+        "version": 3
+    }
+  }
+}
