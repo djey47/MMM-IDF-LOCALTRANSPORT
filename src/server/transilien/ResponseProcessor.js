@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 import type Moment from 'moment';
 
 import { NOTIF_TRANSPORT } from '../../support/notifications';
-import xmlToJson from '../../support/xml';
+import { xmlToJson, isXml } from '../../support/xml';
 import Transilien from '../../support/api/transilien'; 
 import { getAllStationInfo } from '../../support/railwayRepository';
 import { Status, TimeModes } from '../../support/status';
@@ -137,27 +137,33 @@ const ResponseProcessor = {
   /**
    * Handles Transilien realtime response
    * 
-   * @param {string} xmlData data received from Transilien XML API
+   * @param {string} data data received from Transilien API (XML or JSON)
    * @param {Object} context whole module context
    * @param {Object} stopConfig associated stop configuration
    */
-  processTransportTransilien: function(xmlData: string, context: Object, stopConfig: StationConfiguration) {
+  processTransportTransilien: function(data: ?string, context: Object, stopConfig: StationConfiguration) {
     const { config, config: { debug } } = context;
-    const data: ?TransilienResponse = xmlToJson(xmlData);
 
     if (debug) {
-      console.log (' *** processTransportTransilien XML data');
-      console.log (xmlData);
-      console.log (' *** processTransportTransilien JSON data');
+      console.log (' *** processTransportTransilien data');
       console.log (data);
     }
 
     if (!data) return;
 
-    getAllStationInfo(ResponseProcessor.passagesToInfoQueries(data.passages), config)
+    const jsonData: ?TransilienResponse = isXml(data) ? xmlToJson(data) : JSON.parse(data);
+
+    if (debug) {
+      console.log (' *** processTransportTransilien JSON data');
+      console.log (jsonData);
+    }
+    
+    if (!jsonData) return;
+
+    getAllStationInfo(ResponseProcessor.passagesToInfoQueries(jsonData.passages), config)
       .then(stationInfos => {
         context.loaded = true;
-        context.sendSocketNotification(NOTIF_TRANSPORT, ResponseProcessor.dataToSchedule(data, stopConfig, stationInfos));
+        context.sendSocketNotification(NOTIF_TRANSPORT, ResponseProcessor.dataToSchedule(jsonData, stopConfig, stationInfos));
       })
       .catch(error => console.error(error));
   },
