@@ -3,10 +3,57 @@
 import moment from 'moment-timezone';
 import ResponseProcessor from './ResponseProcessor';
 
+const mockGetAllStationInfo = jest.fn();
+jest.mock('../../support/railwayRepository', () => ({
+  getAllStationInfo: (infoQueries, config) => mockGetAllStationInfo(infoQueries, config),
+}));
+
 beforeAll(() => {
   moment.tz.setDefault('UTC');
   ResponseProcessor.now = jest.fn(() => moment('2017-06-20T12:45:23.968Z'));
 });
+
+beforeEach(() => {
+  mockGetAllStationInfo.mockReset();
+  mockGetAllStationInfo.mockImplementation(() => ({
+    then: () => ({
+      catch: () => {},
+    }),
+  }));
+});
+
+const jsonData = {
+  passages:{
+    '$':{
+      gare:'87382002',
+    },
+    train:[
+      {
+        date:{
+          '$':{
+            mode:'R',
+          },
+          _:'20/06/2017 12:46',
+        },
+        etat:'Retardé',
+        miss:'POPI',
+        num:'135140',
+        term:'87384008',
+      },
+      {
+        date:{
+          '$':{
+            mode:'T',
+          },
+          _:'20/06/2017 13:41',
+        },
+        miss:'PEBU',
+        num:'134626',
+        term:'87384008',
+      },
+    ],
+  },
+};
 
 describe('passagesToInfoQueries function', () => {
   it('should return empty array when incorrect data', () => {
@@ -49,38 +96,6 @@ describe('passagesToInfoQueries function', () => {
 });
 
 describe('dataToSchedule function', () => {
-  const data = {
-    passages:{
-      '$':{
-        gare:'87382002',
-      },
-      train:[
-        {
-          date:{
-            '$':{
-              mode:'R',
-            },
-            _:'20/06/2017 12:46',
-          },
-          etat:'Retardé',
-          miss:'POPI',
-          num:'135140',
-          term:'87384008',
-        },
-        {
-          date:{
-            '$':{
-              mode:'T',
-            },
-            _:'20/06/2017 13:41',
-          },
-          miss:'PEBU',
-          num:'134626',
-          term:'87384008',
-        },
-      ],
-    },
-  };
   const stationInfos = [{
     index: 0,
     stationInfo: {
@@ -107,7 +122,7 @@ describe('dataToSchedule function', () => {
 
   it('should convert data correctly', () => {
     // given-when
-    const actual = ResponseProcessor.dataToSchedule(data, stopConfig, stationInfos);
+    const actual = ResponseProcessor.dataToSchedule(jsonData, stopConfig, stationInfos);
     // then
     const expected = {
       id: 'gare/87382002/87384008/depart',
@@ -133,7 +148,7 @@ describe('dataToSchedule function', () => {
 
   it('should return all schedules with given destination', () => {
     // given-when
-    const actual = ResponseProcessor.dataToSchedule(data, stopConfig, stationInfos);
+    const actual = ResponseProcessor.dataToSchedule(jsonData, stopConfig, stationInfos);
     // then
     // $FlowFixMe: always valid
     expect(actual.schedules.length).toEqual(2);
@@ -151,11 +166,54 @@ describe('dataToSchedule function', () => {
       },
       label: 'Becon L (trans)',
     };
-
     // when
-    const actual = ResponseProcessor.dataToSchedule(data, stopConfigFiltered, stationInfos);
+    const actual = ResponseProcessor.dataToSchedule(jsonData, stopConfigFiltered, stationInfos);
     // then
     // $FlowFixMe: always valid
     expect(actual.schedules.length).toEqual(0);
+  });
+});
+
+describe('processTransportTransilien function', () => {
+  const stopConfig = {
+    type: 'transiliens',
+    station: 'becon',
+    destination: 'paris saint lazare',
+    uic: {
+      station: '87382002',
+      destination: '87384008',
+    },
+    label: 'Becon L (trans)',
+  };
+  const context = { config: { debug: false }};
+  const expectedQueries = [{
+    index: 0,
+    stationValue: '87384008',
+  }, {
+    index: 1,
+    stationValue: '87384008',
+  }];
+
+  it('should not process without response data', () => {
+    // given-when
+    ResponseProcessor.processTransportTransilien(null, context, stopConfig);
+    // then
+    expect(mockGetAllStationInfo).not.toHaveBeenCalledWith();
+  });
+
+  it('should process XML data correctly', () => {
+    // given
+    const xmlData = '<?xml version="1.0" encoding="UTF-8"?><passages gare="87384008"><train><date mode="R">20/06/2017 12:46</date><num>135140</num><miss>POPI</miss><term>87384008</term><etat>Retardé</etat></train><train><date mode="R">20/06/2017 12:46</date><num>135140</num><miss>POPI</miss><term>87384008</term><etat>Retardé</etat></train></passages>';
+    // when
+    ResponseProcessor.processTransportTransilien(xmlData, context, stopConfig);
+    // then
+    expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, context.config);
+  });
+
+  it('should process JSON data correctly', () => {
+    // given-when
+    ResponseProcessor.processTransportTransilien(JSON.stringify(jsonData), context, stopConfig);
+    // then
+    expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, context.config);
   });
 });

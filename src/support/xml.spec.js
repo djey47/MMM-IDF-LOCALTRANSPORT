@@ -1,6 +1,6 @@
 /* @flow */
 
-import xmlToJson from './xml';
+import { xmlToJson, isXml } from './xml';
 
 describe('xmlToJson function', () => {
   it('should return null when unparsable data', () => {
@@ -80,5 +80,32 @@ describe('xmlToJson function', () => {
         ],
       },
     });
+  });
+});
+
+describe('isXml function', () => {
+  it('should return false when null data', () => {
+    // given-when
+    const actual = isXml(null);
+    // then
+    expect(actual).toBeFalsy();
+  });
+
+  it('should return false with JSON', () => {
+    // given
+    const json = '{ test: true }';
+    // when
+    const actual = isXml(json);
+    // then
+    expect(actual).toBeFalsy();
+  });
+
+  it('should return true with XML', () => {
+    // given
+    const xml = '<?xml version="1.0" encoding="UTF-8"?><passages />';
+    // when
+    const actual = xmlToJson(xml);
+    // then
+    expect(actual).toBeTruthy();
   });
 });
