@@ -67,6 +67,7 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
 * `oldUpdateOpacity`: 0.5, //when a displayed time age has reached a threshold their display turns darker (i.e. less reliable)
 * `oldThreshold`: 0.1, //if (1+x) of the updateInterval has passed since the last refresh... then the oldUpdateOpacity is applied
 * `debug`: false, //console.log more things to help debugging
+* `devMode`: false, // uses mocked API responses from dev-server to help with development (see Dev Server below)
 * `stations`: [] // stations/directions to monitor (bus, RERs, tramways and subways), as an array of objects with different properties (see example below):
   - `type`: Mandatory: Possible values: `['bus', 'rers', 'tramways', 'velib', 'traffic', 'transiliens', 'transiliensTraffic']`
   - `line`: Mandatory for 'bus', 'rers', and 'tramways': typically the official name but you can check through:
@@ -159,3 +160,13 @@ messages: {
   },
 }
 ```
+
+# Dev server
+
+When running module with *devMode* set to `true`, calls to API will automatically use pre-made responses, located as JSON/JS files under **tools/dev-server/mocks** folder.
+
+This feature helps module developer with simulating some cases, or working when no internet connexion is available.
+
+To get the benefits of this mode, dev server has to be started first. Type `npm run dev-server` or `yarn dev-server`. Then start MM2 with proper configuration.
+
+Once started, dev server listens to requests on http://localhost:8088/.

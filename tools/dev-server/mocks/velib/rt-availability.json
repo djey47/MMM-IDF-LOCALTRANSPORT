@@ -1,0 +1,46 @@
+{
+  "path": "/velib*",
+  "method": "get",
+  "template": {  
+    "nhits": 1,
+    "parameters": {
+        "dataset": [
+            "stations-velib-disponibilites-en-temps-reel"
+        ],
+        "timezone": "UTC",
+        "q": "901",
+        "rows": 10,
+        "format": "json"
+    },
+    "records": [
+        {
+            "datasetid": "stations-velib-disponibilites-en-temps-reel",
+            "recordid": "467b06f8e0b314a246b5afc65601a50006dc34ee",
+            "fields": {
+                "status": "OPEN",
+                "contract_name": "Paris",
+                "name": "00901 -PORT SOLFERINO (STATION MOBILE)",
+                "bonus": "False",
+                "bike_stands": 20,
+                "number": 901,
+                "last_update": "2017-12-19T15:28:37+00:00",
+                "available_bike_stands": 0,
+                "banking": "True",
+                "available_bikes": 19,
+                "address": "BERGES DE SEINE, SOUS LA PASSERELLE SENGHOR AU PORT DE SOLFERINO - 75007 PARIS",
+                "position": [
+                    48.86138,
+                    2.32442
+                ]
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.32442,
+                    48.86138
+                ]
+            }
+        }
+    ]
+  }
+}

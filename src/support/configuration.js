@@ -40,6 +40,7 @@ export const defaults: ModuleConfiguration = {
   oldUpdateOpacity: 0.5,
   oldThreshold: 0.1,
   debug: false,
+  devMode: false,
   velibGraphWidth: 400,
   velibTrendWidth: 400,
   velibTrendHeight: 100,
@@ -93,6 +94,18 @@ export const defaults: ModuleConfiguration = {
 };
 
 /**
+ * Default configuration for development environment
+ */
+const devDefaults = {
+  apiBaseV3: 'http://localhost:8088/legacy/',
+  apiTransilien: 'http://localhost:8088/transilien/',  
+  apiSncfData: 'http://localhost:8088/sncf/',
+  apiCitymapper: 'http://localhost:8088/citymapper/',
+  apiVelib: 'http://localhost:8088/velib/',
+  apiAutolib: 'http://localhost:8088/autolib/',  
+};
+
+/**
  * Callback to handle async response.
  * Exported for testing.
  * @param {Array<Object>} responses 
@@ -104,8 +117,7 @@ export function handleStationInfoResponse(responses: Array<StationInfoResult>, s
 
   responses.forEach(response => {
     if (debug) {
-      console.log('** getAllStationInfo response:');
-      console.dir(response);
+      console.log('** All stations info response from SNCF', response);
     }
 
     const { index, stationInfo, destinationInfo } = response;
@@ -135,7 +147,11 @@ export function handleStationInfoResponse(responses: Array<StationInfoResult>, s
  * @param {Function} sendSocketNotification callback to notification handler
  */
 export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: (notification: string, payload: Object) => void) {
-  const { stations } = configuration;
+  const { stations, devMode } = configuration;
+
+  // Overrides API endpoints in development mode
+  const effectiveConfiguration = devMode ? { ...configuration, ...devDefaults } : { ...configuration };
+
   // Stations for transilien: retrieve UIC
   const queries = stations
     .filter(stationConfig => stationConfig.type === TYPE_TRANSILIEN)
@@ -160,9 +176,9 @@ export function enhanceConfiguration(configuration: ModuleConfiguration, sendSoc
     });
 
   if (queries.length) {
-    getAllStationInfo(queries, configuration)
-      .then(responses => handleStationInfoResponse(responses, sendSocketNotification, configuration));
+    getAllStationInfo(queries, effectiveConfiguration)
+      .then(responses => handleStationInfoResponse(responses, sendSocketNotification, effectiveConfiguration));
   } else {
-    sendSocketNotification(NOTIF_SET_CONFIG, configuration);
+    sendSocketNotification(NOTIF_SET_CONFIG, effectiveConfiguration);
   }
 }

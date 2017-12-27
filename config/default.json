@@ -1,0 +1,6 @@
+{
+  "dev-server": {
+    "mocksDirectory": "tools/dev-server/mocks",
+    "port": "8088"
+  }
+}

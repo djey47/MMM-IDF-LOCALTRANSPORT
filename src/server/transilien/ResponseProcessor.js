@@ -141,7 +141,7 @@ const ResponseProcessor = {
    * @param {Object} context whole module context
    * @param {Object} stopConfig associated stop configuration
    */
-  processTransportTransilien: function(data: ?string, context: Object, stopConfig: StationConfiguration) {
+  processTransportTransilien: function(data: string | TransilienResponse, context: Object, stopConfig: StationConfiguration) {
     const { config, config: { debug } } = context;
 
     if (debug) {
@@ -151,7 +151,7 @@ const ResponseProcessor = {
 
     if (!data) return;
 
-    const jsonData: ?TransilienResponse = isXml(data) ? xmlToJson(data) : JSON.parse(data);
+    const jsonData: ?any = isXml(data) ? xmlToJson(data.toString()) : data;
 
     if (debug) {
       console.log (' *** processTransportTransilien JSON data');

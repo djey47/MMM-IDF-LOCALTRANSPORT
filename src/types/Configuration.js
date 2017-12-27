@@ -36,6 +36,7 @@ export type ModuleConfiguration = {
   oldThreshold: number, //if (1+x) of the updateInterval has passed since the last refresh... then the oldUpdateOpacity is applied
   oldUpdateThreshold?: number, // ???
   debug: boolean, //console.log more things to help debugging
+  devMode: boolean, // will use mocked API responses instead of using real services
   velibGraphWidth: number, //Height will follow
   velibTrendWidth: number,
   velibTrendHeight: number,

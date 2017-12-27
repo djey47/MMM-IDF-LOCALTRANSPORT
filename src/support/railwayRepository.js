@@ -45,7 +45,7 @@ export const handleInfoResponsesOnSuccess = function (responses:  Array<SNCFStat
   const [ stationResponse, destinationResponse ] = responses;
 
   if (debug) {
-    console.log(responses);
+    console.log('** Station info responses from SNCF', responses);
   }
 
   if (isInfoReceived(stationResponse)) {

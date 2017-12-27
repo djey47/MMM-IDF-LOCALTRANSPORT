@@ -93,7 +93,7 @@ describe('isXml function', () => {
 
   it('should return false with JSON', () => {
     // given
-    const json = '{ test: true }';
+    const json = { test: true };
     // when
     const actual = isXml(json);
     // then

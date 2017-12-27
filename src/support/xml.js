@@ -22,6 +22,6 @@ export function xmlToJson(xml: string): ?Object {
 /**
  * @returns true if provided string is XML format (very simple analysis), false otherwise. 
  */
-export function isXml(data: ?string): boolean {
-  return !!data && data.startsWith('<');
+export function isXml(data: ?string | ?Object): boolean {
+  return !!data && typeof(data) === 'string' && data.startsWith('<');
 }

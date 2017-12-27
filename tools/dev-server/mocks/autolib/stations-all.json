@@ -1,0 +1,1386 @@
+{
+  "path": "/autolib*",
+  "method": "get",
+  "template": {  
+    "nhits": 1058,
+    "parameters": {
+      "dataset": [
+          "stations_et_espaces_autolib_de_la_metropole_parisienne"
+      ],
+      "timezone": "UTC",
+      "rows": 10,
+      "format": "json",
+      "facet": [
+          "ville",
+          "cp",
+          "type"
+      ]
+    },
+    "records": [
+        {
+            "datasetid": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+            "recordid": "e705644ed0a77a83175d370322203cfd91871964",
+            "fields": {
+                "ville": "Créteil",
+                "id_dsp": "94028-11",
+                "id_autolib": "Créteil/Gabriel Fauré/18",
+                "adresse": "18 Rue Gabriel Fauré",
+                "xy": [
+                    48.778418,
+                    2.462495
+                ],
+                "prises_autolib": 6,
+                "cp": 94000,
+                "type": "Voirie"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.462495,
+                    48.778418
+                ]
+            },
+            "record_timestamp": "2016-08-27T16:20:20+00:00"
+        },
+        {
+            "datasetid": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+            "recordid": "3dae0e1f72e3a317d5260d2cd282fc60fbe5f127",
+            "fields": {
+                "ville": "Créteil",
+                "id_dsp": "94028-16",
+                "id_autolib": "Créteil/Denfert Rochereau/12",
+                "adresse": "12 rue Denfert Rochereau",
+                "xy": [
+                    48.791289,
+                    2.450388
+                ],
+                "prises_autolib": 6,
+                "cp": 94000,
+                "type": "Voirie"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.450388,
+                    48.791289
+                ]
+            },
+            "record_timestamp": "2016-08-27T16:20:20+00:00"
+        },
+        {
+            "datasetid": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+            "recordid": "064140901cf236ce0539fd614582d89073b54fdd",
+            "fields": {
+                "ville": "Joinville-le-Pont",
+                "id_dsp": "94042-03",
+                "id_autolib": "Joinville-le-Pont/8 mai 1945/1",
+                "adresse": "1 place du 8 mai 1945",
+                "xy": [
+                    48.816095,
+                    2.466227
+                ],
+                "prises_autolib": 6,
+                "cp": 94340,
+                "type": "Voirie",
+                "abri": "1.0"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.466227,
+                    48.816095
+                ]
+            },
+            "record_timestamp": "2016-08-27T16:20:20+00:00"
+        },
+        {
+            "datasetid": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+            "recordid": "55dfb060574db0f7622e6eb130cf984c96062b18",
+            "fields": {
+                "ville": "Limeil-Brévannes",
+                "id_dsp": "94044-05",
+                "id_autolib": "Limeil-Brévannes/Saint John Perse/20",
+                "adresse": "20 Rue Saint John Perse",
+                "xy": [
+                    48.751046,
+                    2.473095
+                ],
+                "prises_autolib": 7,
+                "cp": 94450,
+                "type": "Voirie"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.473095,
+                    48.751046
+                ]
+            },
+            "record_timestamp": "2016-08-27T16:20:20+00:00"
+        },
+        {
+            "datasetid": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+            "recordid": "e9ff627367a61c17f7c814ccd3f90c0a5bfac299",
+            "fields": {
+                "ville": "Nogent-sur-Marne",
+                "prises_tiers_t3": 1,
+                "id_dsp": "94052-03",
+                "id_autolib": "Nogent-sur-Marne/Port/27",
+                "adresse": "27 rue du Port",
+                "xy": [
+                    48.833134,
+                    2.489646
+                ],
+                "prises_autolib": 6,
+                "cp": 94130,
+                "type": "Voirie"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.489646,
+                    48.833134
+                ]
+            },
+            "record_timestamp": "2016-08-27T16:20:20+00:00"
+        },
+        {
+            "datasetid": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+            "recordid": "2ae78a3b666d0b0a2d82cdf963dab28a722537c3",
+            "fields": {
+                "ville": "Rungis",
+                "prises_tiers_t3": 1,
+                "id_dsp": "94065-02",
+                "id_autolib": "Rungis/Robert Schuman/43",
+                "adresse": "43 avenue Robert Schuman",
+                "xy": [
+                    48.746163,
+                    2.354847
+                ],
+                "prises_autolib": 5,
+                "cp": 94150,
+                "type": "Voirie"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.354847,
+                    48.746163
+                ]
+            },
+            "record_timestamp": "2016-08-27T16:20:20+00:00"
+        },
+        {
+            "datasetid": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+            "recordid": "ad859bf119a21618f6a2c74ca5cddbfbeadcb472",
+            "fields": {
+                "ville": "Saint-Mandé",
+                "id_dsp": "94067-01",
+                "id_autolib": "Saint-Mandé/Galliéni/178",
+                "adresse": "178 Avenue Galliéni",
+                "xy": [
+                    48.846866,
+                    2.417283
+                ],
+                "prises_autolib": 6,
+                "cp": 94160,
+                "type": "Voirie",
+                "abri": "1.0"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.417283,
+                    48.846866
+                ]
+            },
+            "record_timestamp": "2016-08-27T16:20:20+00:00"
+        },
+        {
+            "datasetid": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+            "recordid": "f1e231df823335756f395234c66bdfc1fcf3f0b8",
+            "fields": {
+                "ville": "Saint-Mandé",
+                "id_dsp": "94067-09",
+                "id_autolib": "Saint-Mandé/Daumesnil/11",
+                "adresse": "11 avenue Daumesnil",
+                "xy": [
+                    48.833829,
+                    2.41388
+                ],
+                "prises_autolib": 7,
+                "cp": 94160,
+                "type": "Voirie"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.41388,
+                    48.833829
+                ]
+            },
+            "record_timestamp": "2016-08-27T16:20:20+00:00"
+        },
+        {
+            "datasetid": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+            "recordid": "379ede1eadf379aadde2068f5d217ff4f4e451f2",
+            "fields": {
+                "ville": "Villejuif",
+                "id_dsp": "94076-03",
+                "id_autolib": "Villejuif/Paul Vaillant Couturier/9",
+                "adresse": "9 boulevard Paul Vaillant Couturier",
+                "xy": [
+                    48.795373,
+                    2.367326
+                ],
+                "prises_autolib": 6,
+                "cp": 94800,
+                "type": "Voirie",
+                "abri": "1.0"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.367326,
+                    48.795373
+                ]
+            },
+            "record_timestamp": "2016-08-27T16:20:20+00:00"
+        },
+        {
+            "datasetid": "stations_et_espaces_autolib_de_la_metropole_parisienne",
+            "recordid": "0613b7ba68ee5908fbc961bbcb93b5b8afd00ffd",
+            "fields": {
+                "ville": "Villejuif",
+                "id_dsp": "94076-08",
+                "id_autolib": "Villejuif/Épi d'Or/2",
+                "adresse": "2 avenue de l'Épi d’Or",
+                "xy": [
+                    48.782401,
+                    2.352617
+                ],
+                "prises_autolib": 6,
+                "cp": 94800,
+                "type": "Voirie"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    2.352617,
+                    48.782401
+                ]
+            },
+            "record_timestamp": "2016-08-27T16:20:20+00:00"
+        }
+    ],
+    "facet_groups": [
+        {
+            "name": "ville",
+            "facets": [
+                {
+                    "name": "Paris",
+                    "path": "Paris",
+                    "count": 600,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Nanterre",
+                    "path": "Nanterre",
+                    "count": 33,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Issy-les-Moulineaux",
+                    "path": "Issy-les-Moulineaux",
+                    "count": 21,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Créteil",
+                    "path": "Créteil",
+                    "count": 19,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Rueil-Malmaison",
+                    "path": "Rueil-Malmaison",
+                    "count": 19,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Colombes",
+                    "path": "Colombes",
+                    "count": 18,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Asnières-sur-Seine",
+                    "path": "Asnières-sur-Seine",
+                    "count": 16,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Boulogne-Billancourt",
+                    "path": "Boulogne-Billancourt",
+                    "count": 13,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Drancy",
+                    "path": "Drancy",
+                    "count": 13,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Suresnes",
+                    "path": "Suresnes",
+                    "count": 13,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Clamart",
+                    "path": "Clamart",
+                    "count": 11,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Montreuil",
+                    "path": "Montreuil",
+                    "count": 11,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Villejuif",
+                    "path": "Villejuif",
+                    "count": 11,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Saint-Ouen",
+                    "path": "Saint-Ouen",
+                    "count": 10,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Alfortville",
+                    "path": "Alfortville",
+                    "count": 9,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Gennevilliers",
+                    "path": "Gennevilliers",
+                    "count": 9,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Malakoff",
+                    "path": "Malakoff",
+                    "count": 9,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Bagneux",
+                    "path": "Bagneux",
+                    "count": 8,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Levallois-Perret",
+                    "path": "Levallois-Perret",
+                    "count": 8,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Aulnay-sous-bois",
+                    "path": "Aulnay-sous-bois",
+                    "count": 7,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Châtillon",
+                    "path": "Châtillon",
+                    "count": 7,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Bagnolet",
+                    "path": "Bagnolet",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Cachan",
+                    "path": "Cachan",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Fontenay-aux-Roses",
+                    "path": "Fontenay-aux-Roses",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "La Garenne-Colombes",
+                    "path": "La Garenne-Colombes",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Meudon",
+                    "path": "Meudon",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Rosny-sous-Bois",
+                    "path": "Rosny-sous-Bois",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Vanves",
+                    "path": "Vanves",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Arcueil",
+                    "path": "Arcueil",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Châtenay-Malabry",
+                    "path": "Châtenay-Malabry",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Courbevoie",
+                    "path": "Courbevoie",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Le Chesnay",
+                    "path": "Le Chesnay",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Limeil-Brévannes",
+                    "path": "Limeil-Brévannes",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Pantin",
+                    "path": "Pantin",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Puteaux",
+                    "path": "Puteaux",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Sceaux",
+                    "path": "Sceaux",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Antony",
+                    "path": "Antony",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Clichy-la-garenne",
+                    "path": "Clichy-la-garenne",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Le Bourget",
+                    "path": "Le Bourget",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Montrouge",
+                    "path": "Montrouge",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Noisy-le-Sec",
+                    "path": "Noisy-le-Sec",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Plessis-Robinson",
+                    "path": "Plessis-Robinson",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Saint-Mandé",
+                    "path": "Saint-Mandé",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Sèvres",
+                    "path": "Sèvres",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Argenteuil",
+                    "path": "Argenteuil",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Bezons",
+                    "path": "Bezons",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Charenton-le-Pont",
+                    "path": "Charenton-le-Pont",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Chaville",
+                    "path": "Chaville",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Joinville-le-Pont",
+                    "path": "Joinville-le-Pont",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Les Lilas",
+                    "path": "Les Lilas",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Maisons-Alfort",
+                    "path": "Maisons-Alfort",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Nogent-sur-Marne",
+                    "path": "Nogent-sur-Marne",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Romainville",
+                    "path": "Romainville",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Rungis",
+                    "path": "Rungis",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Saint-Cloud",
+                    "path": "Saint-Cloud",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Verrières-le-Buisson",
+                    "path": "Verrières-le-Buisson",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Vincennes",
+                    "path": "Vincennes",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Vélizy-Villacoublay",
+                    "path": "Vélizy-Villacoublay",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Yerres",
+                    "path": "Yerres",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Bois-Colombes",
+                    "path": "Bois-Colombes",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Champigny-sur-Marne",
+                    "path": "Champigny-sur-Marne",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Garches",
+                    "path": "Garches",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Meudon-la-Forêt",
+                    "path": "Meudon-la-Forêt",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Neuilly Plaisance",
+                    "path": "Neuilly Plaisance",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Neuilly-Plaisance",
+                    "path": "Neuilly-Plaisance",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Neuilly-sur-Seine",
+                    "path": "Neuilly-sur-Seine",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Saint-Maurice",
+                    "path": "Saint-Maurice",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Ville-d'Avray",
+                    "path": "Ville-d'Avray",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Villeneuve-la-Garenne",
+                    "path": "Villeneuve-la-Garenne",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Vélizy Villacoublay",
+                    "path": "Vélizy Villacoublay",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Épinay-sur-Seine",
+                    "path": "Épinay-sur-Seine",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Aubervilliers",
+                    "path": "Aubervilliers",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Bourg-la-Reine",
+                    "path": "Bourg-la-Reine",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Clichy-sous-Bois",
+                    "path": "Clichy-sous-Bois",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Enghien les Bains",
+                    "path": "Enghien les Bains",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Enghien-les-Bains",
+                    "path": "Enghien-les-Bains",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Le Blanc-Mesnil",
+                    "path": "Le Blanc-Mesnil",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Le Pré-Saint-Gervais",
+                    "path": "Le Pré-Saint-Gervais",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Montfermeil",
+                    "path": "Montfermeil",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Neuilly sur Seine",
+                    "path": "Neuilly sur Seine",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Vaucresson",
+                    "path": "Vaucresson",
+                    "count": 1,
+                    "state": "displayed"
+                }
+            ]
+        },
+        {
+            "name": "cp",
+            "facets": [
+                {
+                    "name": "75015",
+                    "path": "75015",
+                    "count": 60,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75016",
+                    "path": "75016",
+                    "count": 48,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75017",
+                    "path": "75017",
+                    "count": 42,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75013",
+                    "path": "75013",
+                    "count": 40,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75020",
+                    "path": "75020",
+                    "count": 39,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75012",
+                    "path": "75012",
+                    "count": 36,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75014",
+                    "path": "75014",
+                    "count": 36,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75019",
+                    "path": "75019",
+                    "count": 35,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75008",
+                    "path": "75008",
+                    "count": 33,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92000",
+                    "path": "92000",
+                    "count": 33,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75011",
+                    "path": "75011",
+                    "count": 32,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75018",
+                    "path": "75018",
+                    "count": 32,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75007",
+                    "path": "75007",
+                    "count": 25,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75010",
+                    "path": "75010",
+                    "count": 25,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75009",
+                    "path": "75009",
+                    "count": 23,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92130",
+                    "path": "92130",
+                    "count": 21,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75005",
+                    "path": "75005",
+                    "count": 19,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75006",
+                    "path": "75006",
+                    "count": 19,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92500",
+                    "path": "92500",
+                    "count": 19,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94000",
+                    "path": "94000",
+                    "count": 19,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92700",
+                    "path": "92700",
+                    "count": 18,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75004",
+                    "path": "75004",
+                    "count": 17,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92600",
+                    "path": "92600",
+                    "count": 16,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75003",
+                    "path": "75003",
+                    "count": 15,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92100",
+                    "path": "92100",
+                    "count": 13,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92150",
+                    "path": "92150",
+                    "count": 13,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93700",
+                    "path": "93700",
+                    "count": 13,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75002",
+                    "path": "75002",
+                    "count": 12,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92140",
+                    "path": "92140",
+                    "count": 11,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93100",
+                    "path": "93100",
+                    "count": 11,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94800",
+                    "path": "94800",
+                    "count": 11,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75001",
+                    "path": "75001",
+                    "count": 10,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93400",
+                    "path": "93400",
+                    "count": 10,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92220",
+                    "path": "92220",
+                    "count": 9,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92230",
+                    "path": "92230",
+                    "count": 9,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92240",
+                    "path": "92240",
+                    "count": 9,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94140",
+                    "path": "94140",
+                    "count": 9,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92300",
+                    "path": "92300",
+                    "count": 8,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92320",
+                    "path": "92320",
+                    "count": 7,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93600",
+                    "path": "93600",
+                    "count": 7,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92170",
+                    "path": "92170",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92190",
+                    "path": "92190",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92210",
+                    "path": "92210",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92250",
+                    "path": "92250",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92260",
+                    "path": "92260",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93110",
+                    "path": "93110",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93170",
+                    "path": "93170",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94230",
+                    "path": "94230",
+                    "count": 6,
+                    "state": "displayed"
+                },
+                {
+                    "name": "78140",
+                    "path": "78140",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "78150",
+                    "path": "78150",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92290",
+                    "path": "92290",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92330",
+                    "path": "92330",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92400",
+                    "path": "92400",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92800",
+                    "path": "92800",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93500",
+                    "path": "93500",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94110",
+                    "path": "94110",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94450",
+                    "path": "94450",
+                    "count": 5,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92120",
+                    "path": "92120",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92160",
+                    "path": "92160",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92310",
+                    "path": "92310",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92350",
+                    "path": "92350",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93130",
+                    "path": "93130",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93350",
+                    "path": "93350",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93360",
+                    "path": "93360",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94160",
+                    "path": "94160",
+                    "count": 4,
+                    "state": "displayed"
+                },
+                {
+                    "name": "91330",
+                    "path": "91330",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "91370",
+                    "path": "91370",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92200",
+                    "path": "92200",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92370",
+                    "path": "92370",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93230",
+                    "path": "93230",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93260",
+                    "path": "93260",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94130",
+                    "path": "94130",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94150",
+                    "path": "94150",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94220",
+                    "path": "94220",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94340",
+                    "path": "94340",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94700",
+                    "path": "94700",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "95100",
+                    "path": "95100",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "95870",
+                    "path": "95870",
+                    "count": 3,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92270",
+                    "path": "92270",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92360",
+                    "path": "92360",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92390",
+                    "path": "92390",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92410",
+                    "path": "92410",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93800",
+                    "path": "93800",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94300",
+                    "path": "94300",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94410",
+                    "path": "94410",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94500",
+                    "path": "94500",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "95880",
+                    "path": "95880",
+                    "count": 2,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75112",
+                    "path": "75112",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "75116",
+                    "path": "75116",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92280",
+                    "path": "92280",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92340",
+                    "path": "92340",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92380",
+                    "path": "92380",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "92420",
+                    "path": "92420",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93150",
+                    "path": "93150",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93300",
+                    "path": "93300",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93310",
+                    "path": "93310",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93370",
+                    "path": "93370",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "93390",
+                    "path": "93390",
+                    "count": 1,
+                    "state": "displayed"
+                },
+                {
+                    "name": "94080",
+                    "path": "94080",
+                    "count": 1,
+                    "state": "displayed"
+                }
+            ]
+        },
+        {
+            "name": "type",
+            "facets": [
+                {
+                    "name": "Voirie",
+                    "path": "Voirie",
+                    "count": 1017,
+                    "state": "displayed"
+                },
+                {
+                    "name": "Parking",
+                    "path": "Parking",
+                    "count": 41,
+                    "state": "displayed"
+                }
+            ]
+        }
+    ]
+  }
+}
