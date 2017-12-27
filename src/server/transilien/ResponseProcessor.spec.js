@@ -194,13 +194,6 @@ describe('processTransportTransilien function', () => {
     stationValue: '87384008',
   }];
 
-  it('should not process without response data', () => {
-    // given-when
-    ResponseProcessor.processTransportTransilien(null, context, stopConfig);
-    // then
-    expect(mockGetAllStationInfo).not.toHaveBeenCalledWith();
-  });
-
   it('should process XML data correctly', () => {
     // given
     const xmlData = '<?xml version="1.0" encoding="UTF-8"?><passages gare="87384008"><train><date mode="R">20/06/2017 12:46</date><num>135140</num><miss>POPI</miss><term>87384008</term><etat>Retardé</etat></train><train><date mode="R">20/06/2017 12:46</date><num>135140</num><miss>POPI</miss><term>87384008</term><etat>Retardé</etat></train></passages>';
@@ -212,7 +205,7 @@ describe('processTransportTransilien function', () => {
 
   it('should process JSON data correctly', () => {
     // given-when
-    ResponseProcessor.processTransportTransilien(JSON.stringify(jsonData), context, stopConfig);
+    ResponseProcessor.processTransportTransilien(jsonData, context, stopConfig);
     // then
     expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, context.config);
   });
