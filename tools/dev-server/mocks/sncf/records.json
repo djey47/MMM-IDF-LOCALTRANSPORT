@@ -31,6 +31,100 @@
     },
     "record_timestamp": "2016-04-23T20:00:41+00:00"    
   },
+  "87382481": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "c2dfb1b08eb6b5d304b8d623e42889fc591424eb",
+    "fields": {
+        "commune": "L'Etang-la-Ville",
+        "code_insee_commune": "78224",
+        "libelle": "SAINT-NOM LA BRETECHE FORET DE MARLY",
+        "libelle_sms_gare": "St Nom la B",
+        "adresse": "Route de Saint Nom la Bretèche 78620 L'Etang La Ville",
+        "x_lambert_ii_etendu": 579039,
+        "y_lambert_ii_etendu": 2429991,
+        "uic7": "8738248",
+        "code_uic": "87382481",
+        "zone_navigo": 5,
+        "coord_gps_wgs84": [
+            48.8678965333,
+            2.05095165696
+        ],
+        "libelle_stif_info_voyageurs": "GARE DE ST NOM LA BRETECHE FORET DE MARLY",
+        "nom_gare": "Saint-Nom-la-Bretèche Forêt de Marly",
+        "libelle_point_d_arret": "SAINT-NOM LA BRETECHE FORET DE MARLY",
+        "gare_non_sncf": 0
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.05095165696,
+            48.8678965333
+        ]
+    },
+    "record_timestamp": "2016-04-23T20:00:41+00:00"
+  },
+  "87384008": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "3b6282467003365ca4734252301163bec0ec72c3",
+    "fields": {
+        "commune": "Paris",
+        "code_insee_commune": "75109",
+        "libelle": "PARIS SAINT-LAZARE",
+        "x_lambert_ii_etendu": 599136,
+        "y_lambert_ii_etendu": 2430783,
+        "uic7": "8738400",
+        "code_uic": "87384008",
+        "zone_navigo": 1,
+        "coord_gps_wgs84": [
+            48.875357836,
+            2.32473327749
+        ],
+        "libelle_stif_info_voyageurs": "GARE ST LAZARE",
+        "nom_gare": "Paris Saint-Lazare",
+        "libelle_point_d_arret": "PARIS SAINT-LAZARE (GARE SAINT-LAZARE)",
+        "gare_non_sncf": 0
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.32473327749,
+            48.875357836
+        ]
+    },
+    "record_timestamp": "2016-04-23T20:00:41+00:00"
+  },
+  "87386318": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "ac9b05cd8f20601dad71fb6474dc6fad13092290",
+    "fields": {
+        "commune": "Nanterre",
+        "code_insee_commune": "92050",
+        "libelle": "NANTERRE UNIVERSITE",
+        "libelle_sms_gare": "Nanterre-U.",
+        "adresse": "33 Boulevard des Provinces Françaises 92000 Nanterre",
+        "x_lambert_ii_etendu": 591099,
+        "y_lambert_ii_etendu": 2433704,
+        "uic7": "8738631",
+        "code_uic": "87386318",
+        "zone_navigo": 3,
+        "coord_gps_wgs84": [
+            48.9015475909,
+            2.21516720292
+        ],
+        "libelle_stif_info_voyageurs": "GARE DE NANTERRE UNIVERSITE",
+        "nom_gare": "Nanterre Université",
+        "libelle_point_d_arret": "NANTERRE UNIVERSITE",
+        "gare_non_sncf": 0
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.21516720292,
+            48.9015475909
+        ]
+    },
+    "record_timestamp": "2016-04-23T20:00:41+00:00"
+  },
   "CHAVILLE RIVE DROITE": {
     "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
     "recordid": "48b03139dc1b8bce6fb5e2b639a62a40d5829c55",
@@ -121,6 +215,38 @@
         "coordinates": [
             2.32473327749,
             48.875357836
+        ]
+    },
+    "record_timestamp": "2016-04-23T20:00:41+00:00"
+  },
+  "LE VAL D'OR": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "d48e618af1984cf7ed572a5eb575c2e832970599",
+    "fields": {
+        "commune": "Saint-Cloud",
+        "code_insee_commune": "92064",
+        "libelle": "LE VAL D'OR",
+        "libelle_sms_gare": "Le Val-d'Or",
+        "adresse": "33, Avenue Alfred Belmontet 92210 Saint Cloud",
+        "x_lambert_ii_etendu": 591209,
+        "y_lambert_ii_etendu": 2428737,
+        "uic7": "8738236",
+        "code_uic": "87382366",
+        "zone_navigo": 3,
+        "coord_gps_wgs84": [
+            48.8569094152,
+            2.21677050352
+        ],
+        "libelle_stif_info_voyageurs": "GARE DU VAL D OR",
+        "nom_gare": "Le Val d'Or",
+        "libelle_point_d_arret": "LE VAL D'OR",
+        "gare_non_sncf": 0
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.21677050352,
+            48.8569094152
         ]
     },
     "record_timestamp": "2016-04-23T20:00:41+00:00"
