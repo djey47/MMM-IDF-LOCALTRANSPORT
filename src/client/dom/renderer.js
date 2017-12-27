@@ -173,7 +173,7 @@ export const renderTrafficTransilien = (stop: StationConfiguration, transilienTr
  * @private
  */
 const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, comingTransport: Schedule, comingLastUpdate: Moment, comingContext: ComingContext, config: ModuleConfiguration): ?any => {
-  const { messages, concatenateArrivals, convertToWaitingTime, maxLettersForDestination, maxLettersForTime, oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity } = config;
+  const { messages, concatenateArrivals, convertToWaitingTime, maxLettersForDestination, maxLettersForTime, oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity, maximumEntries } = config;
   const nowMoment = now();
 
   const row = document.createElement('tr');
@@ -254,14 +254,21 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
     return row;
   }
   
-  if (itemListElement) comingContext.previousDepItems.forEach(item => itemListElement.appendChild(item));
+  if (itemListElement) comingContext.previousDepItems
+    .every((item, index) => {
+      if (index === maximumEntries) return false;
+
+      itemListElement.appendChild(item);
+      
+      return true;
+    });
 };
 
 /**
  * @returns HTML for public transport items (rows) for any API
  */
 export const renderPublicTransport = (stop: StationConfiguration, stopIndex: ?string, schedules: Object, lastUpdate: Object, config: ModuleConfiguration) => {
-  const { maximumEntries, messages } = config;
+  const { concatenateArrivals, maximumEntries, messages } = config;
   const rows = [];
   const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);
   const coming: Array<Schedule> = schedules[stopIndex] || [ {
@@ -278,12 +285,16 @@ export const renderPublicTransport = (stop: StationConfiguration, stopIndex: ?st
     previousDestination: null,
     previousDepItems: [],
   };
-  let firstLine = true;
-  for (let comingIndex = 0; (comingIndex < maximumEntries) && (comingIndex < coming.length); comingIndex++) {
-    const row = renderComingTransport(firstLine, stop, coming[comingIndex], comingLastUpdate, previous, config);
+
+  coming.every((item, index) => {
+    if (!concatenateArrivals && index === maximumEntries) return false;
+    
+    const row = renderComingTransport(index === 0, stop, item, comingLastUpdate, previous, config);
     if (row) rows.push(row);
-    firstLine = false;
-  }
+
+    return true;
+  });
+
   return rows;
 };
 

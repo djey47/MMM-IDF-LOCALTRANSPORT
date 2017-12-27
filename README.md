@@ -55,8 +55,8 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
 6. Make sure all required API keys have been acquired (see previous chapter).
 
 # Specific configuration
-* [`name`]: [default value], //information
-* `maximumEntries`: 2, //if the APIs sends several results for the incoming transport how many should be displayed
+* [`name`]: [default value], // information
+* `maximumEntries`: 2, // if APIs send several results for the incoming transport how many should be displayed. Also applies to concatenated arrivals
 * `initialLoadDelay`: 0, //time in ms before first request
 * `updateInterval`: 60000, //time in ms between pulling request for new times (update request)
 * `convertToWaitingTime`: true, // messages received from API can be 'hh:mm' in that case convert it in the waiting time 'x mn'
