@@ -1,3 +1,4 @@
+/** MODULE RULES **/
 .IDFTransportWrapper {
   font-size: 75%;
   line-height: 65px;
@@ -19,15 +20,26 @@
   width: 400px;
 }
 
-.IDFTransportWrapper .Schedules__item.is-delayed {
+.IDFTransportWrapper .Schedules__departureItem {
+  display: inline;
+}
+
+.IDFTransportWrapper .Schedules__departureItem:not(:first-of-type)::before {
+  content: ' / ';
+  color: white;
+}
+
+.IDFTransportWrapper .Schedules__departureItem.is-delayed,
+.IDFTransportWrapper .Schedules__state.is-delayed {
   color: orange;
 }
 
-.IDFTransportWrapper .Schedules__item.is-deleted {
+.IDFTransportWrapper .Schedules__departureItem.is-deleted,
+.IDFTransportWrapper .Schedules__state.is-deleted {
   color: red;
 }
 
-/* .IDFTransportWrapper .Schedules__item.is-ontime {} */
+/* .IDFTransportWrapper .Schedules__departure.is-ontime {} */
 
 .IDFTransportWrapper .Traffic__item.is-ok-with-work {
   color: orange;

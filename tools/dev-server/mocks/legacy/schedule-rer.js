@@ -1,8 +1,7 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 const { addMinutesAndFormat, generateCallInfo } = require('../utils');
 
 const getSchedules = () => {
-  const now = moment();
   return [
     {
       'code': 'KALI',
@@ -11,27 +10,27 @@ const getSchedules = () => {
     },
     {
       'code': 'SOSO',
-      'message': addMinutesAndFormat(now, 10),
+      'message': addMinutesAndFormat(moment(), 10),
       'destination': 'Robinson',
     },
     {
       'code': 'PINA',
-      'message': addMinutesAndFormat(now, 2),
+      'message': addMinutesAndFormat(moment(), 2),
       'destination': 'Saint-Remy-les-Chevreuse',
     },
     {
       'code': 'KANE',
-      'message': addMinutesAndFormat(now, 3),
+      'message': addMinutesAndFormat(moment(), 3),
       'destination': 'Massy-Palaiseau',
     },
     {
       'code': 'SOME',
-      'message': addMinutesAndFormat(now, 6),
+      'message': addMinutesAndFormat(moment(), 6),
       'destination': 'Robinson',
     },
     {
       'code': 'PINA',
-      'message': addMinutesAndFormat(now, 4),
+      'message': addMinutesAndFormat(moment(), 4),
       'destination': 'Saint-Remy-les-Chevreuse',
     },
   ];

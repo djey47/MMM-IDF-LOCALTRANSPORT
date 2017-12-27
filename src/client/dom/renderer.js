@@ -25,7 +25,6 @@ import type { Schedule, ServerVelibResponse, ServerTrafficResponse } from '../..
 
 /** Table cells configuration */
 const CELLS_COUNT = 4;
-const INDEX_STATUS = 3;
 
 /**
  * @returns HTML for main wrapper
@@ -173,7 +172,7 @@ export const renderTrafficTransilien = (stop: StationConfiguration, transilienTr
 /**
  * @private
  */
-const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, comingTransport: Schedule, comingLastUpdate: Moment, previous: ComingContext, config: ModuleConfiguration): ?any => {
+const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, comingTransport: Schedule, comingLastUpdate: Moment, comingContext: ComingContext, config: ModuleConfiguration): ?any => {
   const { messages, concatenateArrivals, convertToWaitingTime, maxLettersForDestination, maxLettersForTime, oldUpdateThreshold, updateInterval, oldThreshold, oldUpdateOpacity } = config;
   const nowMoment = now();
 
@@ -194,23 +193,29 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
     code,
   } = comingTransport;
 
-  row.className = classnames('Schedules__item', 'bright', {
-    'is-delayed': status === Status.DELAYED,
-    'is-deleted': status === Status.DELETED,
-    'is-ontime': status === Status.ON_TIME,
-  });
+  row.className = classnames('Schedules__item', 'bright');
 
   const destinationCell = document.createElement('td');
   destinationCell.innerHTML = destination.substr(0, maxLettersForDestination);
   destinationCell.className = 'align-left';
   row.appendChild(destinationCell);
 
+  const subClassName = classnames({
+    'is-delayed': status === Status.DELAYED,
+    'is-deleted': status === Status.DELETED,
+    'is-ontime': status === Status.ON_TIME,
+  });
+
   const statCell = document.createElement('td');
   statCell.innerHTML = `${code || ''} ${resolveStatus(status, messages, StatusMessageKeys)}`.trim();
+  statCell.className = classnames('Schedules__state', subClassName);
   row.appendChild(statCell);
 
   const depCell = document.createElement('td');
-  depCell.className = '';  
+  const depItems = document.createElement('ul');
+  const depItem = document.createElement('li');
+  depItem.className = classnames('Schedules__departureItem', subClassName);
+  
   let depInfo;
   if (!time) {
     depInfo = translate(MessageKeys.UNAVAILABLE, messages);
@@ -220,29 +225,36 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
     depInfo = toHoursMinutes(time);
   }
   const theoricalSuffix = timeMode === TimeModes.THEORICAL ? translate(MessageKeys.THEORICAL, messages) : '';
-  depCell.innerHTML = depInfo.concat(theoricalSuffix).substr(0, maxLettersForTime);
+  depItem.innerHTML = depInfo.concat(theoricalSuffix).substr(0, maxLettersForTime);
+
+  if (!concatenateArrivals) depItems.appendChild(depItem);
+
+  depCell.appendChild(depItems);
   row.appendChild(depCell);
 
   const effectiveThreshold = oldUpdateThreshold ? oldUpdateThreshold : updateInterval * (1 + oldThreshold);
   if (nowMoment.subtract(comingLastUpdate).valueOf() > effectiveThreshold) {
-    destinationCell.style.opacity = depCell.style.opacity = oldUpdateOpacity.toString();
+    destinationCell.style.opacity = depItem.style.opacity = oldUpdateOpacity.toString();
   }
 
-  const { previousDestination, previousRow } = previous;
-  if (concatenateArrivals 
-      && !firstLine 
-      && destination === previousDestination) {
-    previous.previousDepInfo += ` / ${depInfo}`;
-    if (previousRow) {
-      previousRow.getElementsByTagName('td')[INDEX_STATUS].innerHTML = previous.previousDepInfo;
-    }
-    return null;
-  } else {
-    previous.previousRow = row;
-    previous.previousDepInfo = depInfo;
-    previous.previousDestination = destination;
+  // No concatenation
+  if (!concatenateArrivals) return row;
+
+  // With concatenation
+  const { previousDestination, itemListElement } = comingContext;
+  comingContext.previousDepItems.push(depItem);
+  
+  if (firstLine || destination !== previousDestination) {
+    depItems.appendChild(depItem);
+    
+    comingContext.itemListElement = depItems;
+    comingContext.previousDepItems = [depItem];
+    comingContext.previousDestination = destination;
+
     return row;
   }
+  
+  if (itemListElement) comingContext.previousDepItems.forEach(item => itemListElement.appendChild(item));
 };
 
 /**
@@ -262,9 +274,9 @@ export const renderPublicTransport = (stop: StationConfiguration, stopIndex: ?st
   } ];
   const comingLastUpdate: Moment = lastUpdate[stopIndex];
   const previous: ComingContext = {
-    previousRow: null,
+    itemListElement: null,
     previousDestination: null,
-    previousDepInfo: '',
+    previousDepItems: [],
   };
   let firstLine = true;
   for (let comingIndex = 0; (comingIndex < maximumEntries) && (comingIndex < coming.length); comingIndex++) {

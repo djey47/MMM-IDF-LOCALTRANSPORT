@@ -7,9 +7,9 @@ export type Data = {
 };
 
 export type ComingContext = {
-  previousDepInfo: string,
   previousDestination: ?string,
-  previousRow: ?any,
+  itemListElement: ?any,
+  previousDepItems: Array<any>,
 };
 
 export type NotificationSenderFunction = (notification: string, payload: Object) => void;

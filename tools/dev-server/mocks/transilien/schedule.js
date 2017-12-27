@@ -1,13 +1,12 @@
-const moment = require('moment');
+const moment = require('moment-timezone');
 const { addMinutesAndFormatWithDate } = require('../utils');
 
 const getTrain = () => {
-  const now = moment();
   return [
     {
       date:{
         '$':{ mode:'R' },
-        _: addMinutesAndFormatWithDate(now, 10),
+        _: addMinutesAndFormatWithDate(moment(), 10),
       },
       etat:'Retardé',
       miss:'POPI',
@@ -17,7 +16,7 @@ const getTrain = () => {
     {
       date:{
         '$':{ mode:'R' },
-        _: addMinutesAndFormatWithDate(now, 20),
+        _: addMinutesAndFormatWithDate(moment(), 20),
       },
       miss:'PEBU',
       num:'134626',
@@ -26,7 +25,17 @@ const getTrain = () => {
     {
       date:{
         '$':{ mode:'R' },
-        _: addMinutesAndFormatWithDate(now, 30),
+        _: addMinutesAndFormatWithDate(moment(), 25),
+      },
+      etat:'Supprimé',
+      miss:'PEBU',
+      num:'134627',
+      term:'87384008',
+    },
+    {
+      date:{
+        '$':{ mode:'R' },
+        _: addMinutesAndFormatWithDate(moment(), 30),
       },
       miss:'NOPE',
       num:'135183',

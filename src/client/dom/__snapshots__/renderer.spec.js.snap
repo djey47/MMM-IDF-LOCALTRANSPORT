@@ -33,10 +33,14 @@ exports[`renderPublicTransport function should return correct HTML when no sched
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          {unavailable}
       </td>
-      <td></td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         {unavailable}
-      </td>
+      <td class=\\"Schedules__state\\"></td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               {unavailable}
+            </li>
+</ul>
+</td>
 </tr>
 </table>"
 `;
@@ -50,10 +54,14 @@ exports[`renderPublicTransport function should return correct HTML when no sched
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          {unavailable}
       </td>
-      <td></td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         {unavailable}
-      </td>
+      <td class=\\"Schedules__state\\"></td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               {unavailable}
+            </li>
+</ul>
+</td>
 </tr>
 </table>"
 `;
@@ -67,20 +75,28 @@ exports[`renderPublicTransport function should return correct HTML when schedule
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          La Défense
       </td>
-      <td></td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         13:00
-      </td>
+      <td class=\\"Schedules__state\\"></td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               13:00
+            </li>
+</ul>
+</td>
 </tr>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\"></td>
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          Place Charras
       </td>
-      <td></td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         13:05
-      </td>
+      <td class=\\"Schedules__state\\"></td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               13:05
+            </li>
+</ul>
+</td>
 </tr>
 </table>"
 `;
@@ -94,20 +110,31 @@ exports[`renderPublicTransport function should return correct HTML when schedule
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          Place Charras
       </td>
-      <td></td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         13:00
-      </td>
+      <td class=\\"Schedules__state\\"></td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               13:00
+            </li>
+</ul>
+</td>
 </tr>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\"></td>
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          La Défense
       </td>
-      <td></td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         13:15 / 13:30
-      </td>
+      <td class=\\"Schedules__state\\"></td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               13:15
+            </li>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               13:30
+            </li>
+</ul>
+</td>
 </tr>
 </table>"
 `;
@@ -121,20 +148,28 @@ exports[`renderPublicTransport function should return correct HTML when schedule
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          La Défense
       </td>
-      <td></td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         15 {units.minutes}
-      </td>
+      <td class=\\"Schedules__state\\"></td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               15 {units.minutes}
+            </li>
+</ul>
+</td>
 </tr>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\"></td>
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          Place Charras
       </td>
-      <td></td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         30 {units.minutes}
-      </td>
+      <td class=\\"Schedules__state\\"></td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               30 {units.minutes}
+            </li>
+</ul>
+</td>
 </tr>
 </table>"
 `;
@@ -148,31 +183,39 @@ exports[`renderPublicTransport function should return correct HTML when schedule
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          La Défense
       </td>
-      <td>
+      <td class=\\"Schedules__state\\">
          POPU
       </td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         13:00
-      </td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               13:00
+            </li>
+</ul>
+</td>
 </tr>
 </table>"
 `;
 
 exports[`renderPublicTransport function should return correct HTML when schedule and status info 1`] = `
 "<table>
-   <tr class=\\"Schedules__item bright is-delayed\\">
+   <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\">
          A
       </td>
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          La Défense
       </td>
-      <td>
+      <td class=\\"Schedules__state is-delayed\\">
          UAPY {status.delayed}
       </td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         13:00
-      </td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem is-delayed\\" style=\\"opacity: 0.5;\\">
+               13:00
+            </li>
+</ul>
+</td>
 </tr>
 </table>"
 `;
@@ -186,10 +229,14 @@ exports[`renderPublicTransport function should return correct HTML when schedule
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          La Défense
       </td>
-      <td></td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         13:00{theorical}
-      </td>
+      <td class=\\"Schedules__state\\"></td>
+      <td>
+         <ul>
+            <li class=\\"Schedules__departureItem\\" style=\\"opacity: 0.5;\\">
+               13:00{theorical}
+            </li>
+</ul>
+</td>
 </tr>
 </table>"
 `;
@@ -203,12 +250,22 @@ exports[`renderPublicTransport function should return correct HTML when schedule
       <td class=\\"align-left\\" style=\\"opacity: 0.5;\\">
          SAINT-NOM LA BRETECHE FORET DE MARLY
       </td>
+      <td class=\\"Schedules__state is-ontime\\">
+         SEBU {status.ontime}
+      </td>
       <td>
-         SEBU
-      </td>
-      <td class=\\"\\" style=\\"opacity: 0.5;\\">
-         11:20 / 11:35 / 11:50
-      </td>
+         <ul>
+            <li class=\\"Schedules__departureItem is-ontime\\" style=\\"opacity: 0.5;\\">
+               11:20
+            </li>
+            <li class=\\"Schedules__departureItem is-delayed\\" style=\\"opacity: 0.5;\\">
+               11:35
+            </li>
+            <li class=\\"Schedules__departureItem is-deleted\\" style=\\"opacity: 0.5;\\">
+               11:50
+            </li>
+</ul>
+</td>
 </tr>
 </table>"
 `;
