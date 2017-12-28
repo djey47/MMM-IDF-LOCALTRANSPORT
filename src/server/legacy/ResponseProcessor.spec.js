@@ -16,13 +16,13 @@ describe('dataToSchedule function', () => {
         message: 'Train à quai V.1',
         destination: 'St-Germain-en-Laye. Poissy. Cergy.',
       },{
-        code: 'TEDU',
+        code: 'ZEUS',
         message: '17:10',
         destination: 'St-Germain-en-Laye. Poissy. Cergy.',
       },{
-        code: 'ZEUS',
+        code: 'DEFI',
         message: '17:17 Départ voie B',
-        destination: 'St-Germain-en-Laye. Poissy. Cergy.',
+        destination: 'La Defense.',
       },{
         code: 'BINA',
         message: 'Train terminus V.1',
@@ -87,6 +87,20 @@ describe('dataToSchedule function', () => {
       lastUpdate: '2017-07-16T00:00:00.000Z',
       schedules: [
         {
+          destination: 'Boissy-St-Léger. Marne-la-Vallée.',
+          time: null,
+          timeMode: 'UNDEFINED',
+          status: 'TERMINAL',
+          code: 'BINA',
+          info: null,          
+        },{
+          destination: 'La Defense.',
+          time: '2017-07-16T17:17:00.000Z',
+          timeMode: 'REALTIME',
+          status: 'ON_TIME',
+          code: 'DEFI',
+          info: 'Départ voie B',          
+        },{
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',
           time: null,
           timeMode: 'UNDEFINED',
@@ -98,21 +112,7 @@ describe('dataToSchedule function', () => {
           time: '2017-07-16T17:10:00.000Z',
           timeMode: 'REALTIME',
           status: 'ON_TIME',
-          code: 'TEDU',
-          info: null,          
-        },{
-          destination: 'St-Germain-en-Laye. Poissy. Cergy.',
-          time: '2017-07-16T17:17:00.000Z',
-          timeMode: 'REALTIME',
-          status: 'ON_TIME',
           code: 'ZEUS',
-          info: 'Départ voie B',          
-        },{
-          destination: 'Boissy-St-Léger. Marne-la-Vallée.',
-          time: null,
-          timeMode: 'UNDEFINED',
-          status: 'TERMINAL',
-          code: 'BINA',
           info: null,          
         },{
           destination: 'St-Germain-en-Laye. Poissy. Cergy.',

@@ -137,15 +137,17 @@ const ResponseProcessor = {
     
     const {result: {schedules}} = data;
 
-    const targetSchedules: Array<Schedule> = schedules.map((schedule: LegacySchedule) => (
-      {
+    const targetSchedules: Array<Schedule> = schedules
+      .map((schedule: LegacySchedule): Schedule => ({
         ...ResponseProcessor.getTimeInfo(schedule),
         code: schedule.code || null,
         destination: schedule.destination,
         status: ResponseProcessor.getStatus(schedule),
         info: ResponseProcessor.getAdditionalInfo(schedule),
-      }
-    ));
+      }))
+      .sort(({destination: d1}: Schedule, {destination: d2}: Schedule) => {
+        return d1.localeCompare(d2);
+      });
 
     const response: ServerScheduleResponse = {
       id: createIndexFromResponse(data),
