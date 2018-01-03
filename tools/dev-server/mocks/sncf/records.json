@@ -219,6 +219,38 @@
     },
     "record_timestamp": "2016-04-23T20:00:41+00:00"
   },
+  "LA DEFENSE GRANDE ARCHE": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "6afb7a7be3de654e8c1223f205f5955c207e57a5",
+    "fields": {
+        "commune": "Courbevoie",
+        "code_insee_commune": "92062",
+        "libelle": "LA DEFENSE GRANDE ARCHE",
+        "libelle_sms_gare": "La Défense",
+        "adresse": "Rue Carpeaux - 92800 Puteaux",
+        "x_lambert_ii_etendu": 592793,
+        "y_lambert_ii_etendu": 2432805,
+        "uic7": "8738221",
+        "code_uic": "87382218",
+        "zone_navigo": 3,
+        "coord_gps_wgs84": [
+            48.8934895769,
+            2.23827508094
+        ],
+        "libelle_stif_info_voyageurs": "GARE DE LA DEFENSE",
+        "nom_gare": "La Défense",
+        "libelle_point_d_arret": "LA DEFENSE GRANDE ARCHE",
+        "gare_non_sncf": 0
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.23827508094,
+            48.8934895769
+        ]
+    },
+    "record_timestamp": "2016-04-23T20:00:41+00:00"
+  },
   "LE VAL D'OR": {
     "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
     "recordid": "d48e618af1984cf7ed572a5eb575c2e832970599",

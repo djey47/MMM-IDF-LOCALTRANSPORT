@@ -24,13 +24,14 @@ export const toHoursMinutes = (date?: string): string => {
 };
 
 /**
- * @return waiting time in minutes from transport time ISO
+ * @return waiting time in minutes from startMoment to transportTime ISO
  */
-export const toWaitingTime = (transportTime?: string, now: Moment, messages: Object): string => {
-  const endDate = moment(transportTime);
-  if (!endDate.isValid()) return transportTime || '';
-  const startDate = moment(now);
+export const toWaitingTime = (transportTime?: string, startMoment: Moment, messages: Object): string => {
+  const endMoment = moment(transportTime);
+  if (!endMoment.isValid()) return transportTime || '';
 
-  let waitingTime = Math.floor(endDate.diff(startDate) / 1000 / 60);
-  return `${waitingTime > 0 ? waitingTime : 0} ${translate(MessageKeys.UNITS_MINUTES, messages)}`;
+  let waitingTime = Math.floor(endMoment.diff(startMoment) / 1000 / 60);
+
+  if (waitingTime >= 0) return `${waitingTime} ${translate(MessageKeys.UNITS_MINUTES, messages)}`;
+  return translate(MessageKeys.UNAVAILABLE, messages);
 };

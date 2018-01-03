@@ -49,11 +49,11 @@ describe('toHoursMinutes function', () => {
 describe('toWaitingTime function', () => {
   const now = moment('2017-07-16T23:10:00.000Z');
 
-  it('should return 0 when arrival time has expired', () => {
+  it('should return N/A when arrival time has expired', () => {
     // given-when
     const actual = toWaitingTime('2017-07-16T23:08:00.000Z', now, {});
     // then
-    expect(actual).toEqual('0 {units.minutes}');
+    expect(actual).toEqual('{unavailable}');
   });
 
   it('should return duration in minutes when proper time given', () => {
