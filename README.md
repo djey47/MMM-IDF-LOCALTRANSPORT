@@ -13,8 +13,8 @@ A module to display:
 * available docks & bikes in selected Velib stations, along with the trend over the last day (configurable).
 
 # Screenshots
-![screenshot](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/blob/master/images/MMM-IDF-LOCALTRANSPORT1.png)
-![screenshot](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/blob/master/images/MMM-IDF-LOCALTRANSPORT2.png)
+![screenshot](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/raw/master/images/MMM-Paris-RATP-PG.png)
+![screenshot](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/raw/master/images/MMM-Paris-RATP-PG2.png)
 
 # API
 API examples are provided into `api` subdirectory, as [POSTMAN collections](https://www.getpostman.com/).
