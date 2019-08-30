@@ -74,6 +74,7 @@
     "flow-typed": "^2.1.5",
     "husky": "^0.14.3",
     "jest": "^20.0.4",
+    "jest-cli": "^24.9.0",
     "nodemon": "^1.12.5",
     "webpack": "^3.5.5",
     "webpack-bundle-analyzer": "^2.9.0"
