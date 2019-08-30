@@ -1,7 +1,7 @@
 {
   "presets": [
     [
-      "env",
+      "@babel/preset-env",
       {
         "targets": {
           "chrome": 58,
@@ -9,7 +9,6 @@
         }
       }
     ],
-    "react"
-  ],
-  "plugins": ["transform-object-rest-spread"]
+    "@babel/preset-flow"
+  ]
 }
