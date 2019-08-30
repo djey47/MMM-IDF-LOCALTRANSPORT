@@ -40,8 +40,7 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
 # Install
 
 1. Clone repository into `/modules/` inside your MagicMirror folder
-2. Install [yarn](https://yarnpkg.com/en/docs/install)
-3. Run `yarn install` inside `/modules/MMM-IDF-LOCALTRANSPORT/` folder
+3. Run `npm install` inside `/modules/MMM-IDF-LOCALTRANSPORT/` folder
 4. Check that `MMM-IDF-LOCALTRANSPORT.js` and `node_helper.js` scripts have been created into current folder
 5. Add the module to the MagicMirror config:
 ```
@@ -80,7 +79,7 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
     - for 'velib', you can search here: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/
     - for 'transiliens', https://ressources.data.sncf.com/explore/dataset/referentiel-gares-voyageurs/?sort=intitule_gare
     - not used for 'traffic' and 'transiliensTraffic'.
-  - `destination`: 
+  - `destination`:
     - Mandatory for 'metros', 'bus', 'rers' & 'tramways': either 'A' or 'R'
     - Optional for 'velib': ['leaving', 'arriving', '']: indicate if only one value is needed //not in use yet
     - Optional for 'transiliens': shows train matching this destination only (see station repository above)
@@ -94,7 +93,7 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
 * `citymapperToken`: 'xxxxxxxx' : mandatory to access citymapper realtime API (account required, see section above)
 * `messages`: (Optional, see example below) : key-values to convert generic messages to your preferred language
   - If not provided, some default messages are used (in english)
-  - To make changes, paste ALL default values and modify to your likings. 
+  - To make changes, paste ALL default values and modify to your likings.
 
 Example:
 ```javascript
@@ -106,7 +105,7 @@ stations: [
   {type: 'metros', line: '6', station: 'raspail', destination: 'A'},
   {type: 'rers', line: 'B', station: 'port+royal', destination: 'A'},
   {type: 'tramways', line: '3a', station: 'georges+brassens', destination: 'R'},
-  
+
   // Next transport at stops (transiliens)
   // With station name only to catch all destinations:
   {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L'},
@@ -149,7 +148,7 @@ messages: {
     ok: '😊',
     okwork: '😐',
     ko: '😞',
-  },    
+  },
   units: {
     minutes: 'mn',
     seconds: 's',
@@ -167,6 +166,6 @@ When running module with *devMode* set to `true`, calls to API will automaticall
 
 This feature helps module developer with simulating some cases, or working when no internet connexion is available.
 
-To get the benefits of this mode, dev server has to be started first. Type `npm run dev-server` or `yarn dev-server`. Then start MM2 with proper configuration.
+To get the benefits of this mode, dev server has to be started first. Type `npm run dev-server`. Then start MM2 with proper configuration.
 
 Once started, dev server listens to requests on http://localhost:8088/.
