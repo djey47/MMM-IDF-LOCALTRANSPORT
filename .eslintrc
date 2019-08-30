@@ -8,14 +8,14 @@
     "browser": true,
     "es6": true,
     "node": true
-  },    
+  },
   "rules": {
     "strict": 2,
     "indent": ["error", 2, { "SwitchCase": 1 }],
     "quotes": [2, "single", "avoid-escape"],
     "semi": ["error", "always"],
     "comma-dangle": ["error", "always-multiline"],
-    "no-console": ["warn", { "allow": ["warn", "error"] }]    
+    "no-console": ["off", { "allow": ["warn", "error"] }]
   },
   "globals": {
     // Following are symbols from testing libraries
@@ -30,5 +30,5 @@
     // Following are MM2's symbols
     "Module": false,
     "Log": false
-  }  
+  }
 }
