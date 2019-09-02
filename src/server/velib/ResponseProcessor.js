@@ -8,11 +8,12 @@ import type { ServerVelibResponse, VelibResponse } from '../../types/Transport';
 const ResponseProcessor = {
   /**
    * Handles Velib realtime response
-   * 
-   * @param {VelibResponse} data 
-   * @param {Context} context 
+   *
+   * @param {VelibResponse} data
+   * @param {Context} context
    */
   processVelib: (data: VelibResponse, context: Context): void => {
+    // eslint-disable-next-line camelcase
     const { number, name, bike_stands, available_bike_stands, available_bikes, last_update } = data.records[0].fields;
     const velibInfo: ServerVelibResponse = {
       id: number,

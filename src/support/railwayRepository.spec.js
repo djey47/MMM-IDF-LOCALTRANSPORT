@@ -131,7 +131,7 @@ describe('handleInfoResponsesOnSuccess function', () => {
       destinationInfo: {
         libelle: 'st cloud',
         code_uic: 'UIC2',
-      }, 
+      },
     });
     expect(getInfoFromCache('Becon')).toEqual({ libelle: 'becon', code_uic: 'UIC1' });
     expect(getInfoFromCache('St Cloud')).toEqual({ libelle: 'st cloud', code_uic: 'UIC2' });
@@ -165,7 +165,7 @@ describe('handleInfoResponsesOnSuccess function', () => {
       },
       destinationInfo: null,
     });
-    expect(getInfoFromCache('Becon')).toEqual({ libelle: 'becon', code_uic: 'UIC1' });    
+    expect(getInfoFromCache('Becon')).toEqual({ libelle: 'becon', code_uic: 'UIC1' });
   });
 
   it('should resolve to null when wrong response', () => {

@@ -196,6 +196,7 @@ describe('processTransportTransilien function', () => {
 
   it('should process XML data correctly', () => {
     // given
+    // eslint-disable-next-line max-len
     const xmlData = '<?xml version="1.0" encoding="UTF-8"?><passages gare="87384008"><train><date mode="R">20/06/2017 12:46</date><num>135140</num><miss>POPI</miss><term>87384008</term><etat>Retardé</etat></train><train><date mode="R">20/06/2017 12:46</date><num>135140</num><miss>POPI</miss><term>87384008</term><etat>Retardé</etat></train></passages>';
     // when
     ResponseProcessor.processTransportTransilien(xmlData, context, stopConfig);

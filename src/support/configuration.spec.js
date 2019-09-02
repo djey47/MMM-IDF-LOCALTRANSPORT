@@ -31,7 +31,7 @@ describe('handleStationInfoResponse function', () => {
       type: 'transiliens',
       station: 'la defense',
       destination: 'becon',
-    }];    
+    }];
     const currentConfig = Object.assign({}, defaults, { stations });
     const responses = [{
       index: 0,
@@ -64,7 +64,7 @@ describe('handleStationInfoResponse function', () => {
     const stations = [{
       type: 'transiliens',
       station: 'becon',
-    }];    
+    }];
     const currentConfig = Object.assign({}, defaults, { stations });
     const responses = [{
       index: 0,
@@ -165,5 +165,5 @@ describe('enhanceConfiguration function', () => {
     expect(mockSendSocketNotification.mock.calls.length).toEqual(1);
     const actualConfig = mockSendSocketNotification.mock.calls[0][1];
     expect(actualConfig.apiBaseV3).toEqual('http://localhost:8088/legacy/');
-  });  
+  });
 });

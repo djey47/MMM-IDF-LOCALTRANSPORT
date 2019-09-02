@@ -33,6 +33,7 @@ describe('xmlToJson function', () => {
 
   it('should return correct JSON (complex case)', () => {
     // given
+    // eslint-disable-next-line max-len
     const xml = '<?xml version="1.0" encoding="UTF-8"?><passages gare="87382002"><train><date mode="R">20/06/2017 12:46</date><num>135140</num><miss>POPI</miss><term>87384008</term><etat>Retardé</etat></train><train><date mode="R">20/06/2017 13:41</date><num>134626</num><miss>PEBU</miss><term>87384008</term></train><train><date mode="R">20/06/2017 13:41</date><num>135183</num><miss>NOPE</miss><term>87386318</term></train></passages>';
     // when
     const actual = xmlToJson(xml);

@@ -98,19 +98,19 @@ export const defaults: ModuleConfiguration = {
  */
 const devDefaults = {
   apiBaseV3: 'http://localhost:8088/legacy/',
-  apiTransilien: 'http://localhost:8088/transilien/',  
+  apiTransilien: 'http://localhost:8088/transilien/',
   apiSncfData: 'http://localhost:8088/sncf/',
   apiCitymapper: 'http://localhost:8088/citymapper/',
   apiVelib: 'http://localhost:8088/velib/',
-  apiAutolib: 'http://localhost:8088/autolib/',  
+  apiAutolib: 'http://localhost:8088/autolib/',
 };
 
 /**
  * Callback to handle async response.
  * Exported for testing.
- * @param {Array<Object>} responses 
- * @param {Function} sendSocketNotification 
- * @param {Object} configuration 
+ * @param {Array<Object>} responses
+ * @param {Function} sendSocketNotification
+ * @param {Object} configuration
  */
 export function handleStationInfoResponse(responses: Array<StationInfoResult>, sendSocketNotification: NotificationSenderFunction, configuration: ModuleConfiguration) {
   const { debug } = configuration;
@@ -132,7 +132,7 @@ export function handleStationInfoResponse(responses: Array<StationInfoResult>, s
       console.log(`** ${MODULE_NAME}: Configuration resolved UIC codes:`);
       console.log(`station: ${station || '/'} => ${uic.station || '/'} , destination: ${destination || '/'} => ${uic.destination || '/'}`);
     } else {
-      console.error(`** ${MODULE_NAME}: Configuration resolved no UIC codes:`);      
+      console.error(`** ${MODULE_NAME}: Configuration resolved no UIC codes:`);
       console.error(`station: ${station || '/'}, destination: ${destination || '/'}`);
     }
   });
@@ -157,17 +157,17 @@ export function enhanceConfiguration(configuration: ModuleConfiguration, sendSoc
     .filter(stationConfig => stationConfig.type === TYPE_TRANSILIEN)
     .filter(stationConfig => {
       // Do not resolve to UIC codes if already provided
-      const { destination, uic } = stationConfig;      
+      const { destination, uic } = stationConfig;
       return !uic || !uic.station || destination && !uic.destination;
     })
     .map((stationConfig, index)  => {
       const { station, destination } = stationConfig;
-      
+
       if(!station) {
         console.error(`** ${MODULE_NAME}: Configuration does not contain station:`);
         console.error(stationConfig);
       }
-      
+
       return {
         index,
         stationValue: station || '?',

@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 import type Moment from 'moment';
 
 import { NOTIF_TRAFFIC } from '../../support/notifications.js';
-import LegacyApi from '../../support/api/legacy'; 
+import LegacyApi from '../../support/api/legacy';
 import { TrafficStatus } from '../../support/status';
 
 import type { Context } from '../../types/Application';
@@ -40,9 +40,9 @@ const ResponseProcessor = {
 
   /**
    * Handles Traffic realtime response
-   * 
-   * @param {LegacyTrafficResponse} data 
-   * @param {Context} context 
+   *
+   * @param {LegacyTrafficResponse} data
+   * @param {Context} context
    */
   processTraffic: (data: LegacyTrafficResponse, context: Context): void => {
     const { result } = data;

@@ -15,7 +15,7 @@ export type StationConfiguration = {
   label?: string,
   station?: string,
   destination?: string,
-  uic?: UICConfiguration, 
+  uic?: UICConfiguration,
   line?: string|Array<number|string>,
 
 };
@@ -45,7 +45,7 @@ export type ModuleConfiguration = {
   velibTrendDay: boolean,
   trendGraphOff: boolean,
 
-  apiBaseV3: string,  
+  apiBaseV3: string,
   apiTransilien: string,
   apiVelib: string,     // add &q=141111 to get info of that station
   apiAutolib: string,   // add '?q=' but no realtime info... for now

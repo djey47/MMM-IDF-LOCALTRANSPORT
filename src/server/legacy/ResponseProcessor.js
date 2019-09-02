@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 import type Moment from 'moment';
 
 import { NOTIF_TRANSPORT } from '../../support/notifications';
-import LegacyApi from '../../support/api/legacy'; 
+import LegacyApi from '../../support/api/legacy';
 import { Status, TimeModes } from '../../support/status';
 
 import type { Context } from '../../types/Application';
@@ -14,7 +14,7 @@ import type { LegacySchedule, LegacyResponse, Schedule, ServerScheduleResponse }
 
 const { createIndexFromResponse } = LegacyApi;
 
-const { 
+const {
   APPROACHING,
   AT_PLATFORM,
   AT_STOP,
@@ -65,11 +65,11 @@ const ResponseProcessor = {
   getAdditionalInfo: function(schedule: LegacySchedule): ?string {
     const { message } = schedule;
 
-    if (!REGEX_RER_TIME.test(message)) return null;
+    if (!REGEX_RER_TIME.test(message)) {return null;}
 
     const splittedMessage = message.split(' ');
-    if (splittedMessage.length < 2) return null;
-    
+    if (splittedMessage.length < 2) {return null;}
+
     const [, ...info] = splittedMessage;
     return info.join(' ');
   },
@@ -80,15 +80,15 @@ const ResponseProcessor = {
   getStatus: function(schedule: LegacySchedule): string {
     const { message } = schedule;
 
-    if (REGEX_METRO_TIME.test(message) || REGEX_RER_TIME.test(message)) return ON_TIME;
+    if (REGEX_METRO_TIME.test(message) || REGEX_RER_TIME.test(message)) {return ON_TIME;}
 
-    if (message.indexOf(MESSAGE_UNSERVED) !== -1 || message.indexOf(MESSAGE_BYPASSED) !== -1) return SKIPPED;
+    if (message.indexOf(MESSAGE_UNSERVED) !== -1 || message.indexOf(MESSAGE_BYPASSED) !== -1) {return SKIPPED;}
 
-    if (message.indexOf(MESSAGE_TERMINAL) !== -1) return TERMINAL;
+    if (message.indexOf(MESSAGE_TERMINAL) !== -1) {return TERMINAL;}
 
-    if (message.indexOf(MESSAGE_AT_PLATFORM_RER) !== -1) return AT_PLATFORM;
-    
-    if (message.indexOf(MESSAGE_APPROACHING_RER) !== -1) return APPROACHING;
+    if (message.indexOf(MESSAGE_AT_PLATFORM_RER) !== -1) {return AT_PLATFORM;}
+
+    if (message.indexOf(MESSAGE_APPROACHING_RER) !== -1) {return APPROACHING;}
 
     return STATUSES[message] || UNKNOWN;
   },
@@ -133,8 +133,8 @@ const ResponseProcessor = {
    * @private
    */
   dataToSchedule: function(data: LegacyResponse): ServerScheduleResponse|{} {
-    if (!data.result) return {};
-    
+    if (!data.result) {return {};}
+
     const {result: {schedules}} = data;
 
     const targetSchedules: Array<Schedule> = schedules
@@ -160,16 +160,16 @@ const ResponseProcessor = {
 
   /**
    * Handles realtime response
-   * 
-   * @param {any} data 
-   * @param {any} context 
+   *
+   * @param {any} data
+   * @param {any} context
    */
   processTransport: function(data: LegacyResponse, context: Context) {
     if (context.config.debug) {
       console.log (' *** processTransport data');
       console.log (data);
     }
-    
+
     context.loaded = true;
     context.sendSocketNotification(NOTIF_TRANSPORT, ResponseProcessor.dataToSchedule(data));
   },

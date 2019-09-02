@@ -17,7 +17,7 @@ const CitymapperApi = {
    */
   getTransilienRouteInfoUrl: function (api: string, stopConfig: StationConfiguration, apiKey: string): ?string {
     const { line } = stopConfig;
-    if(!line || typeof(line) !== 'string') return null;
+    if(!line || typeof(line) !== 'string') {return null;}
 
     return `${api}routeinfo?route=transilien-${line.toLowerCase()}&region_id=fr-paris&key=${apiKey}`;
   },
@@ -27,10 +27,10 @@ const CitymapperApi = {
   */
   createTrafficIndexFromStopConfig: function(stopConfig: StationConfiguration): ?string {
     const { line } = stopConfig;
-    if(!line || typeof(line) !== 'string') return null;    
+    if(!line || typeof(line) !== 'string') {return null;}
 
     return  `traffic/transiliens/${line.toLowerCase()}`;
-  },  
+  },
 };
 
 export default CitymapperApi;

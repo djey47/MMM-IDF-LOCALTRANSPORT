@@ -64,7 +64,7 @@ export type LegacySchedule = {
 export type LegacyResponse = {
   _metadata: {
     call: string,
-  },  
+  },
   result: {
     schedules: Array<LegacySchedule>,
   },
@@ -133,7 +133,7 @@ export type VelibResponse = {
       bike_stands: number,
       available_bike_stands: number,
       available_bikes: number,
-      last_update: string,      
+      last_update: string,
     }
   }],
 };

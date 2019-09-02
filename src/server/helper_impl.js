@@ -121,7 +121,7 @@ module.exports = {
           console.log (' *** no response received');
         }
       }
-    
+
     }
 
     this.scheduleRetry();
@@ -153,7 +153,7 @@ module.exports = {
       headers.Authorization = authToken;
     }
 
-    if (debug) console.log (` *** fetching: ${url}`);
+    if (debug) {console.log (` *** fetching: ${url}`);}
 
     axios.get(url, { headers })
       .then((response => this.handleAPIResponse(url, processFunction, response, stopConfig)).bind(this))
@@ -165,9 +165,9 @@ module.exports = {
   */
   updateTimetable: function() {
     const { debug, stations, apiBaseV3, apiVelib, apiTransilien, apiCitymapper, transilienToken, citymapperToken } = this.config;
-    
-    if (debug) console.log (' *** fetching update');
-    
+
+    if (debug) {console.log (' *** fetching update');}
+
     this.sendSocketNotification(NOTIF_UPDATE, { lastUpdate : new Date()});
 
     stations.forEach((stopConfig) => {
@@ -202,9 +202,9 @@ module.exports = {
             TransilienResponseProcessor.processTransportTransilien,
             transilienToken,
             stopConfig);
-          break;        
+          break;
         default:
-          if (debug) console.log(` *** unknown request: ${type}`);
+          if (debug) {console.log(` *** unknown request: ${type}`);}
       }
     });
   },

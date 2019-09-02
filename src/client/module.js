@@ -128,7 +128,7 @@ Module.register(MODULE_NAME,{
           this.velibHistory[id].push(payload);
           localStorage[id] = JSON.stringify(this.velibHistory[id]);
 
-          if (debug) console.log (' *** size of velib History for ' + id + ' is: ' + this.velibHistory[id].length);
+          if (debug) {console.log (' *** size of velib History for ' + id + ' is: ' + this.velibHistory[id].length);}
 
         } else if (this.velibHistory[id][this.velibHistory[id].length - 1].lastUpdate !== lastUpdateMoment) {
           this.velibHistory[id].push(payload);

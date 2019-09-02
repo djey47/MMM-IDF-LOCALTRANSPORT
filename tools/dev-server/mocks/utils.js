@@ -6,7 +6,7 @@ function extractLineFromRoute(route) {
   return line || '';
 }
 
-/** 
+/**
  * Legacy API
  */
 function addMinutesAndFormat(mmt, minutes) {
@@ -17,7 +17,7 @@ function generateCallInfo(type, query) {
   return `GET /${type}/${query[0]}`;
 }
 
-/** 
+/**
  * Transilien API
  */
 function addMinutesAndFormatWithDate(mmt, minutes) {

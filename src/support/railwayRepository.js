@@ -50,17 +50,17 @@ export const handleInfoResponsesOnSuccess = function (responses:  Array<SNCFStat
 
   if (isInfoReceived(stationResponse)) {
     const isDestinationInfoReceived = isInfoReceived(destinationResponse);
-    
+
     if (debug) {
       console.log(`** Info found for station '${stationValue}'`);
-      if (isDestinationInfoReceived) console.log(`** Info found for destination '${destinationValue || ''}'`);
+      if (isDestinationInfoReceived) {console.log(`** Info found for destination '${destinationValue || ''}'`);}
     }
 
     const stationInfo = stationResponse.data.records[0].fields;
     putInfoInCache(stationValue, stationInfo);
-  
+
     const destinationInfo = isDestinationInfoReceived ? destinationResponse.data.records[0].fields : null;
-    if (destinationValue && destinationInfo) putInfoInCache(destinationValue, destinationInfo);
+    if (destinationValue && destinationInfo) {putInfoInCache(destinationValue, destinationInfo);}
 
     resolveCallback({
       index,
@@ -68,8 +68,8 @@ export const handleInfoResponsesOnSuccess = function (responses:  Array<SNCFStat
       destinationInfo,
     });
   } else {
-  
-    if (debug) console.log(`** No station info found for '${stationValue}'`);
+
+    if (debug) {console.log(`** No station info found for '${stationValue}'`);}
 
     resolveCallback(null);
   }
@@ -90,17 +90,17 @@ const getCachedCallbackForStationInfo = function(index: number, stationInfo: SNC
 };
 
 /**
- * @private 
+ * @private
  */
 const getCallbackForStationInfo = function(query: StationInfoQuery, config: ModuleConfiguration): StationInfoHandlerFunction {
-  const { stationValue, destinationValue } = query;  
+  const { stationValue, destinationValue } = query;
   const { apiSncfData, debug } = config;
   return (resolve, reject) => {
     const axiosPromises = [];
     // Mandatory: station
     axiosPromises.push(axios.get(getInfoUrl(apiSncfData, stationValue), axiosConfig));
     // Not mandatory: destination
-    if (destinationValue) axiosPromises.push(axios.get(getInfoUrl(apiSncfData, destinationValue), axiosConfig));
+    if (destinationValue) {axiosPromises.push(axios.get(getInfoUrl(apiSncfData, destinationValue), axiosConfig));}
 
     axios.all(axiosPromises)
       .then(
@@ -122,7 +122,7 @@ const getCallbackForStationInfo = function(query: StationInfoQuery, config: Modu
  */
 export const getStationInfo = function(query: StationInfoQuery, config: ModuleConfiguration): Promise<StationInfoResult> {
   const { index, stationValue, destinationValue } = query;
-  
+
   const stationInfo = getInfoFromCache(stationValue);
   const destinationInfo = destinationValue ? getInfoFromCache(destinationValue) : null;
   let callback;

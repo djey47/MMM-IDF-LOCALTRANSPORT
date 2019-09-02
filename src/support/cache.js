@@ -17,7 +17,7 @@ export const getInfoFromCache = function(query: string): ?SNCFStationInfo {
  * Adds or update value in cache
  */
 export const putInfoInCache = function(query: string, stationInfo: SNCFStationInfo) {
-  if (!query || !stationInfo) return;
+  if (!query || !stationInfo) {return;}
 
   infoCache[query] = stationInfo;
 };

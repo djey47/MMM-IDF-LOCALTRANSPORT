@@ -26,7 +26,7 @@ describe('processVelib function', () => {
       available_bikes: 0,
       address: '18 RUE CASSINI - 75014 PARIS',
       position: [48.8375492922, 2.33598303047],
-    };    
+    };
     const data = {
       records: [ { fields } ],
     };
@@ -41,7 +41,7 @@ describe('processVelib function', () => {
       loaded: true,
       name: '14111 - DENFERT-ROCHEREAU CASSINI',
       total: 24,
-    };    
+    };
     expect(sendSocketNotificationMock).toHaveBeenCalledWith('VELIB', expected);
   });
 });

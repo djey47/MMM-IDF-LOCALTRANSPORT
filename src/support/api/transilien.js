@@ -18,7 +18,7 @@ const Transilien = {
    */
   createIndexFromStopConfig: function (stopConfig: StationConfiguration): ?string {
     const { uic } = stopConfig;
-    if (!uic) return null;
+    if (!uic) {return null;}
 
     const { station, destination } = uic;
     return `gare/${station || ''}/${destination || ''}/depart`;
@@ -29,7 +29,7 @@ const Transilien = {
    */
   getTransilienDepartUrl: function (apiTransilien: string, stopConfig: StationConfiguration): ?string {
     const { uic } = stopConfig;
-    if(!uic) return null;
+    if(!uic) {return null;}
 
     const { station } = uic;
     return `${apiTransilien}gare/${station || ''}/depart`;

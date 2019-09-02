@@ -6,7 +6,7 @@ import type Moment from 'moment';
 
 import { NOTIF_TRANSPORT } from '../../support/notifications';
 import { xmlToJson, isXml } from '../../support/xml';
-import Transilien from '../../support/api/transilien'; 
+import Transilien from '../../support/api/transilien';
 import { getAllStationInfo } from '../../support/railwayRepository';
 import { Status, TimeModes } from '../../support/status';
 
@@ -56,12 +56,12 @@ const ResponseProcessor = {
   now: function(): Moment {
     return moment();
   },
- 
+
   /**
    * @private
    */
   getStatus: function(etat?: string): string {
-    if (!etat) return ON_TIME;
+    if (!etat) {return ON_TIME;}
     return STATUSES[etat] || UNKNOWN;
   },
 
@@ -79,13 +79,13 @@ const ResponseProcessor = {
    * @private
    */
   passagesToInfoQueries: function(passages: ?TransilienPassage): Array<StationInfoQuery> {
-    if (!passages) return [];
+    if (!passages) {return [];}
 
     return passages.train
       .map(({ term }, index) => ({
         index,
         stationValue: term,
-      }));    
+      }));
   },
 
   /**
@@ -94,10 +94,10 @@ const ResponseProcessor = {
   dataToSchedule: function(data: TransilienResponse, stopConfig: StationConfiguration, stationInfos: Array<StationInfoResult>): ServerScheduleResponse|{} {
     const { uic } = stopConfig;
 
-    if (!data.passages || !uic) return {};
+    if (!data.passages || !uic) {return {};}
 
     const { destination } = uic;
-    const { passages: {train} } = data;    
+    const { passages: {train} } = data;
     const schedules = train
       .map((t, index): any => {
         const { date: {_, $: { mode }}, term, miss, etat } = t;
@@ -108,7 +108,7 @@ const ResponseProcessor = {
             destination: stationInfos[index].stationInfo.libelle,
             status: ResponseProcessor.getStatus(etat),
             code: miss,
-          };        
+          };
         }
 
         // Reject train not matching wanted destination
@@ -120,7 +120,7 @@ const ResponseProcessor = {
         if (firstCriteria === 0) {
           const moment1 = moment(schedule1.time);
           const moment2 = moment(schedule2.time);
-          return moment1.isBefore(moment2) ? -1 : 1; 
+          return moment1.isBefore(moment2) ? -1 : 1;
         }
         return firstCriteria;
       });
@@ -136,7 +136,7 @@ const ResponseProcessor = {
 
   /**
    * Handles Transilien realtime response
-   * 
+   *
    * @param {string} data data received from Transilien API (XML or JSON)
    * @param {Object} context whole module context
    * @param {Object} stopConfig associated stop configuration
@@ -149,7 +149,7 @@ const ResponseProcessor = {
       console.log (data);
     }
 
-    if (!data) return;
+    if (!data) {return;}
 
     const jsonData: ?any = isXml(data) ? xmlToJson(data.toString()) : data;
 
@@ -157,8 +157,8 @@ const ResponseProcessor = {
       console.log (' *** processTransportTransilien JSON data');
       console.log (jsonData);
     }
-    
-    if (!jsonData) return;
+
+    if (!jsonData) {return;}
 
     getAllStationInfo(ResponseProcessor.passagesToInfoQueries(jsonData.passages), config)
       .then(stationInfos => {

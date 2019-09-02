@@ -83,7 +83,7 @@ const resolveLine = (line: ?Array<string|number>|?string): ?string => {
  * @private
  */
 const resolveStatus = (statusCode: ?string, messages: Object, statusMessageKeys: Object): string => {
-  if (!statusCode) return '';
+  if (!statusCode) {return '';}
 
   const key = statusMessageKeys[statusCode];
   return key && translate(key, messages) || translate(MessageKeys.UNAVAILABLE, messages);
@@ -95,13 +95,13 @@ const resolveStatus = (statusCode: ?string, messages: Object, statusMessageKeys:
 const resolveName = (firstLine: boolean, stop: StationConfiguration, messages: Object): string => {
   const { line, label, station } = stop;
 
-  if (!firstLine) return ' ';
+  if (!firstLine) {return ' ';}
 
-  if (label) return label;
+  if (label) {return label;}
 
-  if (line) return line.toString();
+  if (line) {return line.toString();}
 
-  if (station) return station.toString();
+  if (station) {return station.toString();}
 
   return translate(MessageKeys.UNAVAILABLE, messages);
 };
@@ -112,7 +112,7 @@ const resolveName = (firstLine: boolean, stop: StationConfiguration, messages: O
 const renderTraffic = (trafficIndex: ?string, stop: StationConfiguration, traffic: Object, config: ModuleConfiguration): any => {
   const { messages } = config;
   const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);
-  
+
   const row = document.createElement('tr');
 
   const { line, label } = stop;
@@ -183,7 +183,7 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
   nameCell.innerHTML = resolveName(firstLine, stop, messages);
   row.appendChild(nameCell);
 
-  if(!comingTransport) return row;
+  if(!comingTransport) {return row;}
 
   const {
     status,
@@ -215,7 +215,7 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
   const depItems = document.createElement('ul');
   const depItem = document.createElement('li');
   depItem.className = classnames('Schedules__departureItem', subClassName);
-  
+
   let depInfo;
   if (!time) {
     depInfo = translate(MessageKeys.UNAVAILABLE, messages);
@@ -227,7 +227,7 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
   const theoricalSuffix = timeMode === TimeModes.THEORICAL ? translate(MessageKeys.THEORICAL, messages) : '';
   depItem.innerHTML = depInfo.concat(theoricalSuffix).substr(0, maxLettersForTime);
 
-  if (!concatenateArrivals) depItems.appendChild(depItem);
+  if (!concatenateArrivals) {depItems.appendChild(depItem);}
 
   depCell.appendChild(depItems);
   row.appendChild(depCell);
@@ -238,30 +238,30 @@ const renderComingTransport = (firstLine: boolean, stop: StationConfiguration, c
   }
 
   // No concatenation
-  if (!concatenateArrivals) return row;
+  if (!concatenateArrivals) {return row;}
 
   // With concatenation
   const { previousDestination, itemListElement } = comingContext;
   comingContext.previousDepItems.push(depItem);
-  
+
   if (firstLine || destination !== previousDestination) {
     depItems.appendChild(depItem);
-    
+
     comingContext.itemListElement = depItems;
     comingContext.previousDepItems = [depItem];
     comingContext.previousDestination = destination;
 
     return row;
   }
-  
-  if (itemListElement) comingContext.previousDepItems
+
+  if (itemListElement) {comingContext.previousDepItems
     .every((item, index) => {
-      if (index === maximumEntries) return false;
+      if (index === maximumEntries) {return false;}
 
       itemListElement.appendChild(item);
-      
+
       return true;
-    });
+    });}
 };
 
 /**
@@ -287,10 +287,10 @@ export const renderPublicTransport = (stop: StationConfiguration, stopIndex: ?st
   };
 
   coming.every((item, index) => {
-    if (!concatenateArrivals && index === maximumEntries) return false;
-    
+    if (!concatenateArrivals && index === maximumEntries) {return false;}
+
     const row = renderComingTransport(index === 0, stop, item, comingLastUpdate, previous, config);
-    if (row) rows.push(row);
+    if (row) {rows.push(row);}
 
     return true;
   });
@@ -313,7 +313,7 @@ export const renderPublicTransportLegacy = (stop: StationConfiguration, schedule
 export const renderPublicTransportTransilien = (stop: StationConfiguration, schedules: Object, lastUpdate: Object, config: ModuleConfiguration): any[] => {
   const stopIndex = Transilien.createIndexFromStopConfig(stop);
 
-  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);  
+  return renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
 };
 
 /**
@@ -322,7 +322,7 @@ export const renderPublicTransportTransilien = (stop: StationConfiguration, sche
 export const renderNoInfoVelib = (stop: StationConfiguration, messages?: Object): any => {
   const { label, station } = stop;
   const row = document.createElement('tr');
-  
+
   const messageCell = document.createElement('td');
   messageCell.className = 'bright';
   messageCell.innerHTML = `${label || station || MessageKeys.UNAVAILABLE} ${translate(MessageKeys.NOT_YET, messages)}`;
@@ -435,13 +435,13 @@ export const renderTrendInfoVelib = (stop: StationConfiguration, station: Server
     ctx.moveTo(width / 3, 0);
     ctx.lineTo(width / 3, 100);
     ctx.stroke();
-    
+
     // TODO compute properly (use moment)
     // var hourMark = new Date(); var alpha;
     // hourMark.setMinutes(0); hourMark.setSeconds(0);
     // alpha = (hourMark - nowMoment + 24 * 60 * 60 * 1000 - effectiveZoom * 1000) / (24 * 60 * 60 * 1000 - 2 * effectiveZoom * 1000);
     // alpha = (hourMark - nowMoment + effectiveZoom * 1000) / (24 * 60 * 60 * 1000) * width;
-    
+
     // for (var h = 0; h < 24; h = h + 2) {
     //   ctx.fillStyle = 'red';
     //   ctx.textAlign = 'center';

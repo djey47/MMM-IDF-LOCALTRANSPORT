@@ -30,11 +30,11 @@ export const MessageKeys = {
 };
 
 /**
- * @param {*} key 
- * @param {*} messages 
+ * @param {*} key
+ * @param {*} messages
  * @returns Translated message if corresponding key was found in messages section.
  */
 export const translate = function(key: string, messages: ?Object) {
-  if (!key || !messages || !/^{.*}/.test(key)) return key;
+  if (!key || !messages || !/^{.*}/.test(key)) {return key;}
   return _get(messages, key.slice(1, -1), key);
 };

@@ -135,7 +135,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, {}, config);
     // then
-    expect(testRender(actual)).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when schedule', () => {
@@ -146,7 +146,7 @@ describe('renderPublicTransport function', () => {
         destination: 'La Défense',
       },{
         time: '2017-07-16T13:05:00.000Z',
-        destination: 'Place Charras',       
+        destination: 'Place Charras',
       }],
     };
     const lastUpdate = {
@@ -155,7 +155,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig);
     // then
-    expect(testRender(actual)).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when schedule and status info', () => {
@@ -180,7 +180,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(rerStop, rerStopIndex, schedules, lastUpdate, baseConfig);
     // then
-    expect(testRender(actual)).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when schedule and mission code', () => {
@@ -199,7 +199,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig);
     // then
-    expect(testRender(actual)).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when schedule and theorical time mode', () => {
@@ -217,7 +217,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, baseConfig);
     // then
-    expect(testRender(actual)).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when schedule and convert to waiting time', () => {
@@ -229,7 +229,7 @@ describe('renderPublicTransport function', () => {
         destination: 'La Défense',
       },{
         time: '2017-05-30T13:15:00.000Z',
-        destination: 'Place Charras',       
+        destination: 'Place Charras',
       }],
     };
     const lastUpdate = {
@@ -242,7 +242,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
     // then
-    expect(testRender(actual)).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when schedule and concatenate arrivals', () => {
@@ -253,10 +253,10 @@ describe('renderPublicTransport function', () => {
         destination: 'Place Charras',
       },{
         time: '2017-07-16T13:15:00.000Z',
-        destination: 'La Défense',       
+        destination: 'La Défense',
       },{
         time: '2017-07-16T13:30:00.000Z',
-        destination: 'La Défense',       
+        destination: 'La Défense',
       }],
     };
     const lastUpdate = {
@@ -269,7 +269,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stop, stopIndex, schedules, lastUpdate, config);
     // then
-    expect(testRender(actual)).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when schedules and concatenate arrivals for transilien', () => {
@@ -327,7 +327,7 @@ describe('renderPublicTransport function', () => {
     const actual = renderPublicTransport(stopConfigTransilien, stopIndexTransilien, schedulesTransilien, lastUpdateTransilien, config);
     // then
     expect(actual.length).toEqual(1);
-    expect(testRender(actual)).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();
   });
 
   it('should return correct HTML when no schedule and no custom label for transilien', () => {
@@ -348,7 +348,7 @@ describe('renderPublicTransport function', () => {
     // when
     const actual = renderPublicTransport(stopConfigTransilien, 'gare/87382002/depart', {}, {}, config);
     // then
-    expect(testRender(actual)).toMatchSnapshot();    
+    expect(testRender(actual)).toMatchSnapshot();
   });
 });
 

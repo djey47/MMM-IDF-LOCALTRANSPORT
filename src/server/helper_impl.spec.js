@@ -56,7 +56,7 @@ describe('start function', () => {
 describe('socketNotificationReceived function', () => {
   it('should keep started to false if unexpected notification', () => {
     // given
-    delete(NodeHelperImpl.config);    
+    delete(NodeHelperImpl.config);
     // when
     NodeHelperImpl.socketNotificationReceived('HELLO');
     // then
@@ -133,7 +133,7 @@ describe('updateTimetable function', () => {
         },
       }],
     };
-    NodeHelperImpl.getResponse = getResponseMock;  
+    NodeHelperImpl.getResponse = getResponseMock;
     const transilienStopConfig = NodeHelperImpl.config.stations[4];
     // when
     NodeHelperImpl.updateTimetable();
@@ -193,7 +193,7 @@ describe('getResponse function', () => {
 describe('handleApiResponse function', () => {
   it('should not invoke processFunction but schedule next update when response KO', () => {
     // given
-    NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;    
+    NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;
     // when
     NodeHelperImpl.handleAPIResponse('http://api/schedules/bus/275/Ulbach/A', processFunctionMock, null);
     // then
@@ -203,7 +203,7 @@ describe('handleApiResponse function', () => {
 
   it('should invoke processFunction and schedule next update when response OK and module loaded', () => {
     // given
-    NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;    
+    NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;
     NodeHelperImpl.loaded = true;
     const response = {
       data: {},
@@ -217,7 +217,7 @@ describe('handleApiResponse function', () => {
 
   it('should invoke processFunction and schedule next update when response OK and module not loaded', () => {
     // given
-    NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;    
+    NodeHelperImpl.scheduleUpdate = scheduleUpdateMock;
     const response = {
       data: {},
     };
