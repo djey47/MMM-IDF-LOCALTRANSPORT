@@ -27,10 +27,12 @@ describe('handleStationInfoResponse function', () => {
       type: 'transiliens',
       station: 'becon',
       destination: 'la defense',
+      uic: null,
     }, {
       type: 'transiliens',
       station: 'la defense',
       destination: 'becon',
+      uic: null,
     }];
     const currentConfig = Object.assign({}, defaults, { stations });
     const responses = [{
@@ -64,6 +66,7 @@ describe('handleStationInfoResponse function', () => {
     const stations = [{
       type: 'transiliens',
       station: 'becon',
+      uic: null,
     }];
     const currentConfig = Object.assign({}, defaults, { stations });
     const responses = [{

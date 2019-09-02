@@ -15,7 +15,7 @@ export type StationConfiguration = {
   label?: string,
   station?: string,
   destination?: string,
-  uic?: UICConfiguration,
+  uic?: ?UICConfiguration,
   line?: string|Array<number|string>,
 
 };
