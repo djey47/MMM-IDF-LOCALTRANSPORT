@@ -36,7 +36,7 @@
     "analyze:helper": "npm run build:helper && webpack-bundle-analyzer stats.json .",
     "lint": "npm run lint:scripts",
     "lint:scripts": "eslint src tools/dev-server && flow check",
-    "flow": "flow",
+    "flow": "flow check",
     "flow:typings": "flow-typed update",
     "test": "jest --config ./tools/test/jest.default.json",
     "jest:watch:module": "jest --config ./tools/test/jest.client.json --watch",
