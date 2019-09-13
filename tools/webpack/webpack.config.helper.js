@@ -11,7 +11,7 @@ module.exports = {
     libraryTarget: 'umd',
   },
   externals: [ 'node_helper' ], // MM2 provided
-  module: { 
+  module: {
     rules: moduleRules,
   },
   plugins: commonPlugins,

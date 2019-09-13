@@ -37,9 +37,8 @@ const { getTransilienRouteInfoUrl } = Citymapper;
 
 /**
  * Custom NodeHelper implementation
- * ES6 module export does not work here...
  */
-module.exports = {
+export default {
   start: function () {
     this.started = false;
   },

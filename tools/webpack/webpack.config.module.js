@@ -11,5 +11,5 @@ module.exports = {
   module: {
     rules: moduleRules,
   },
-  plugins: commonPlugins,  
+  plugins: commonPlugins,
 };
