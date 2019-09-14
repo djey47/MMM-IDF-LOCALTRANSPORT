@@ -1,4 +1,4 @@
-// flow-typed signature: a1c805f130cea1b414c2e3c62f6b4105
+// flow-typed signature: 8125297fb4698834e2f8dd04a0ce2883
 // flow-typed version: <<STUB>>/node-forge_vlatest/flow_v0.106.3
 
 /**
@@ -39,6 +39,10 @@ declare module 'node-forge/lib/aes' {
 }
 
 declare module 'node-forge/lib/aesCipherSuites' {
+  declare module.exports: any;
+}
+
+declare module 'node-forge/lib/asn1-validator' {
   declare module.exports: any;
 }
 
@@ -249,6 +253,9 @@ declare module 'node-forge/lib/aes.js' {
 }
 declare module 'node-forge/lib/aesCipherSuites.js' {
   declare module.exports: $Exports<'node-forge/lib/aesCipherSuites'>;
+}
+declare module 'node-forge/lib/asn1-validator.js' {
+  declare module.exports: $Exports<'node-forge/lib/asn1-validator'>;
 }
 declare module 'node-forge/lib/asn1.js' {
   declare module.exports: $Exports<'node-forge/lib/asn1'>;

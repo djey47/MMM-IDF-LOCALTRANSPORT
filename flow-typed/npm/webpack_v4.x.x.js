@@ -1,14 +1,17 @@
-// flow-typed signature: e83d8c935213b2ded091b3c22acb780b
-// flow-typed version: c6154227d1/webpack_v4.x.x/flow_>=v0.104.x
+// flow-typed signature: c34847f74c3e5da9195f19f282881637
+// flow-typed version: d14eb225e8/webpack_v4.x.x/flow_>=v0.104.x
 
 import * as http from 'http';
 import fs from 'fs';
 
 declare module 'webpack' {
-  declare class WebpackError extends Error {
+  declare class $WebpackError extends Error {
     constructor(message: string): WebpackError;
     inspect(): string;
+    details: string;
   }
+
+  declare type WebpackError = $WebpackError;
 
   declare interface Stats {
     hasErrors(): boolean;
