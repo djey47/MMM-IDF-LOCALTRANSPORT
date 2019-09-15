@@ -147,7 +147,9 @@ export function handleStationInfoResponse(responses: Array<StationInfoResult>, s
  * @param {Function} sendSocketNotification callback to notification handler
  */
 export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: (notification: string, payload: Object) => void) {
-  const { stations, devMode } = configuration;
+  const { stations, devMode, debug } = configuration;
+
+  if (debug) { console.log(`** ${MODULE_NAME}: Enhancing configuration for stations:`, stations); }
 
   // Overrides API endpoints in development mode
   const effectiveConfiguration = devMode ? { ...configuration, ...devDefaults } : { ...configuration };
@@ -176,9 +178,11 @@ export function enhanceConfiguration(configuration: ModuleConfiguration, sendSoc
     });
 
   if (queries.length) {
+    if (debug) { console.log(`** ${MODULE_NAME}: UIC to be resolved:`, queries); }
     getAllStationInfo(queries, effectiveConfiguration)
       .then(responses => handleStationInfoResponse(responses, sendSocketNotification, effectiveConfiguration));
   } else {
+    if (debug) { console.log(`** ${MODULE_NAME}: No UIC to be resolved, sending current configuration`); }
     sendSocketNotification(NOTIF_SET_CONFIG, effectiveConfiguration);
   }
 }

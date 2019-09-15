@@ -53,7 +53,7 @@ Module.register(MODULE_NAME,{
 
   // Define start sequence.
   start: function(): void {
-    Log.info('Starting module: ' + this.name);
+    Log.info(`Starting module: ${this.name}`);
 
     enhanceConfiguration(this.config, this.sendSocketNotification.bind(this));
 
