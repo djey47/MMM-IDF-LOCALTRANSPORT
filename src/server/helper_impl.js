@@ -44,7 +44,7 @@ const httpsAgent = tunnel.httpsOverHttp({
 /**
  * Custom NodeHelper implementation
  */
-export default {
+export const ModuleDefinitions = {
   start: function () {
     this.started = false;
   },
@@ -56,7 +56,7 @@ export default {
       this.config = payload;
 
       if (debug) {
-        console.log (' *** config set in node_helper: ');
+        console.log ('*** config set in node_helper: ');
         console.log ( payload );
       }
 

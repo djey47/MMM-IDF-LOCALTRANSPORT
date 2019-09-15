@@ -4,11 +4,11 @@
  * Module: MMM-IDF-LOCALTRANSPORT
  * Server side part of module.
  */
+// ES6 module export does not work here...
 
 // $FlowFixMe: provided dependency (MM2)
 const NodeHelper = require('node_helper');
 
-const NodeHelperImpl = require('./helper_impl.js');
+const { ModuleDefinitions } = require('./helper_impl.js');
 
-// ES6 module export does not work here...
-module.exports = NodeHelper.create(NodeHelperImpl);
+module.exports = NodeHelper.create(ModuleDefinitions);
