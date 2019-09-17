@@ -50,7 +50,7 @@ export const defaults: ModuleConfiguration = {
   trendGraphOff: false,
 
   apiBaseV3: 'https://api-ratp.pierre-grimaud.fr/v3/',
-  apiTransilien: 'http://api.transilien.com/',
+  apiTransilien: 'https://api.transilien.com/',
   apiVelib: 'https://opendata.paris.fr/api/records/1.0/search/?dataset=stations-velib-disponibilites-en-temps-reel',
   apiAutolib: 'https://opendata.paris.fr/explore/dataset/stations_et_espaces_autolib_de_la_metropole_parisienne/api/',
   apiSncfData: 'https://ressources.data.sncf.com/api/records/1.0/',
