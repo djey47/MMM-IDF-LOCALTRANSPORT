@@ -382,6 +382,7 @@ export const renderTrendInfoVelib = (stop: StationConfiguration, station: Server
   const ctx = trendGraph.getContext('2d');
   if (!ctx) { return rowTrend; }
 
+  // TODO Missing unit test for section below... mock ctx...
   const nowMoment = now();
   const { label } = stop;
   const currentStation: Array<ServerVelibResponse> = velibHistory[stop.station];
