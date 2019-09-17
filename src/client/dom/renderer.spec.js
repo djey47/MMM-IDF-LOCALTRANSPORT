@@ -23,6 +23,9 @@ jest.mock('../support/date', () => ({
 beforeAll(() => {
   moment.tz.setDefault('UTC');
   mockNow.mockImplementation(() => moment());
+
+  // Fixes JSDOM lib error, see https://github.com/jsdom/jsdom/issues/1782
+  window.HTMLCanvasElement.prototype.getContext = () => (null);
 });
 
 const testRender = (element: any): String => {
