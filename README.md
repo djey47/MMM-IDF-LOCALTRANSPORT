@@ -169,3 +169,9 @@ This feature helps module developer with simulating some cases, or working when 
 To get the benefits of this mode, dev server has to be started first. Type `npm run dev-server`. Then start MM2 with proper configuration.
 
 Once started, dev server listens to requests on http://localhost:8088/.
+
+# Proxy
+
+When accessing to Internet via proxy, module handles this automatically, by using *proxy* setting from NPM config.
+
+Custom proxy settings from module configuration might be taken into account in a future release, when needed.
