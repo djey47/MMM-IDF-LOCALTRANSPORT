@@ -79,7 +79,10 @@ const ResponseProcessor = {
    * @private
    */
   passagesToInfoQueries: function(passages: ?TransilienPassage): Array<StationInfoQuery> {
-    if (!passages) {return [];}
+    if (!passages || !passages.train) {
+      console.log(' *** passagesToInfoQueries: nothing to parse from passages:', passages);
+      return [];
+    }
 
     return passages.train
       .map(({ term }, index) => ({
@@ -141,31 +144,29 @@ const ResponseProcessor = {
    * @param {Object} context whole module context
    * @param {Object} stopConfig associated stop configuration
    */
-  processTransportTransilien: function(data: string | TransilienResponse, context: Object, stopConfig: StationConfiguration) {
-    const { config, config: { debug } } = context;
+  processTransportTransilien: async function(data: string | TransilienResponse, context: Object, stopConfig: StationConfiguration) {
+    const { config, config: { debug }, sendSocketNotification } = context;
 
-    if (debug) {
-      console.log (' *** processTransportTransilien data');
-      console.log (data);
-    }
+    if (debug) { console.log (' *** processTransportTransilien data', data); }
 
-    if (!data) {return;}
+    if (!data) { return; }
 
     const jsonData: ?any = isXml(data) ? xmlToJson(data.toString()) : data;
 
-    if (debug) {
-      console.log (' *** processTransportTransilien JSON data');
-      console.log (jsonData);
+    if (debug) { console.log (' *** processTransportTransilien JSON data', jsonData); }
+
+    if (!jsonData) { return; }
+
+    try {
+      const stationInfos = await getAllStationInfo(ResponseProcessor.passagesToInfoQueries(jsonData.passages), config);
+
+      // eslint-disable-next-line require-atomic-updates
+      context.loaded = true;
+
+      sendSocketNotification(NOTIF_TRANSPORT, ResponseProcessor.dataToSchedule(jsonData, stopConfig, stationInfos));
+    } catch(error) {
+      console.error(' *** processTransportTransilien caught error', error);
     }
-
-    if (!jsonData) {return;}
-
-    getAllStationInfo(ResponseProcessor.passagesToInfoQueries(jsonData.passages), config)
-      .then(stationInfos => {
-        context.loaded = true;
-        context.sendSocketNotification(NOTIF_TRANSPORT, ResponseProcessor.dataToSchedule(jsonData, stopConfig, stationInfos));
-      })
-      .catch(error => console.error(error));
   },
 };
 
