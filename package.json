@@ -54,6 +54,7 @@
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.26",
     "node-forge": "latest",
+    "tunnel": "0.0.6",
     "xml2js": "^0.4.21"
   },
   "devDependencies": {

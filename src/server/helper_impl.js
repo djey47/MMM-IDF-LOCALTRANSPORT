@@ -1,6 +1,7 @@
 /* @flow */
 
 import axios from 'axios';
+import tunnel from 'tunnel';
 import TransilienResponseProcessor from './transilien/ResponseProcessor';
 import LegacyResponseProcessor from './legacy/ResponseProcessor';
 import TrafficResponseProcessor from './legacy/TrafficResponseProcessor';
@@ -23,6 +24,7 @@ import {
   TYPE_TRANSILIEN,
   TYPE_VELIB,
 } from '../support/configuration';
+import { getProxySettings } from './support/network';
 import type { StationConfiguration } from '../types/Configuration';
 
 const {
@@ -34,6 +36,10 @@ const {
 const { getTransilienDepartUrl } = Transilien;
 
 const { getTransilienRouteInfoUrl } = Citymapper;
+
+const httpsAgent = tunnel.httpsOverHttp({
+  proxy: getProxySettings(),
+});
 
 /**
  * Custom NodeHelper implementation
@@ -154,7 +160,7 @@ export default {
 
     if (debug) {console.log (` *** fetching: ${url}`);}
 
-    axios.get(url, { headers })
+    axios.get(url, { httpsAgent, headers })
       .then((response => this.handleAPIResponse(url, processFunction, response, stopConfig)).bind(this))
       .catch((error => this.handleAPIError(error)).bind(this));
   },
