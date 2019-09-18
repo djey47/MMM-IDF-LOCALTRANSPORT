@@ -1,10 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renderHeader function should return correct header when complete configuration 1`] = `"Connections, {nextUpdate} 45{units.seconds} @ 10:23:40"`;
+exports[`renderHeader function should return correct header when complete configuration 1`] = `"Connections, {nextUpdate} 45{units.seconds} @ 08:23:40"`;
+
+exports[`renderHeader function should return correct header when complete configuration and elapsed update interval 1`] = `"Connections, {requestedUpdate} 20{units.seconds} {ago} @ 08:23:40"`;
 
 exports[`renderHeader function should return correct header when incomplete configuration 1 1`] = `"Connections, {nextUpdate} 45{units.seconds}"`;
 
-exports[`renderHeader function should return correct header when incomplete configuration 2 1`] = `"Connections @ 10:23:40"`;
+exports[`renderHeader function should return correct header when incomplete configuration 2 1`] = `"Connections @ 08:23:40"`;
 
 exports[`renderHeader function should return simple string when silent configuration 1`] = `"Connections"`;
 

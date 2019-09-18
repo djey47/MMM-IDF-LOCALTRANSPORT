@@ -58,7 +58,7 @@ describe('renderHeader function', () => {
   const baseConfig = {
     ...defaults,
     messages: {},
-    lastUpdate: moment('2017-07-27T08:23:40.000Z'),
+    lastUpdate: '2017-07-27T08:23:40.000Z',
     showLastUpdateTime: false,
     showSecondsToNextUpdate: false,
   };
@@ -69,6 +69,16 @@ describe('renderHeader function', () => {
   it('should return correct header when complete configuration', () => {
     // given
     mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
+    const config: ModuleConfiguration = { ...baseConfig, showLastUpdateTime: true, showSecondsToNextUpdate: true };
+    // when
+    const actual = renderHeader(data, config);
+    // then
+    expect(actual).toMatchSnapshot();
+  });
+
+  it('should return correct header when complete configuration and elapsed update interval', () => {
+    // given
+    mockNow.mockImplementation(() => moment('2017-07-27T08:25:00Z'));
     const config: ModuleConfiguration = { ...baseConfig, showLastUpdateTime: true, showSecondsToNextUpdate: true };
     // when
     const actual = renderHeader(data, config);
