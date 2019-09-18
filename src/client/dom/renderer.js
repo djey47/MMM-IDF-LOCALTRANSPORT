@@ -48,23 +48,18 @@ export const renderWrapper = (loaded: boolean, messages?: Object): any => {
 export const renderHeader = (data: Data, config: ModuleConfiguration): string => {
   const { updateInterval, showLastUpdateTime, lastUpdate, showSecondsToNextUpdate, messages } = config;
 
-  let contents = data.header;
+  let displayedSecondsToLastUpdate = '';
   if (showSecondsToNextUpdate) {
-    const timeDifference = lastUpdate ? Math.round((updateInterval - now().valueOf() + moment(lastUpdate).valueOf()) / 1000) : 0;
+    const timeDifference = lastUpdate ? Math.round((updateInterval - now().diff(moment(lastUpdate)).valueOf()) / 1000) : 0;
     const secondUnit = translate(MessageKeys.UNITS_SECONDS, messages);
-    if (timeDifference > 0) {
-      contents += `, ${translate(MessageKeys.NEXT_UPDATE, messages)} ${timeDifference}${secondUnit}`;
-    } else if (timeDifference < 0) {
-      // TODO when is it supposed to happen? => add unit test if necessary
-      contents += `, ${translate(MessageKeys.REQ_UPDATE, messages)} ${Math.abs(timeDifference)}${secondUnit} ${translate(MessageKeys.AGO, messages)}`;
-    }
+    displayedSecondsToLastUpdate = timeDifference > 0 ?
+      `, ${translate(MessageKeys.NEXT_UPDATE, messages)} ${timeDifference}${secondUnit}`
+      : `, ${translate(MessageKeys.REQ_UPDATE, messages)} ${Math.abs(timeDifference)}${secondUnit} ${translate(MessageKeys.AGO, messages)}`;
   }
 
-  if (showLastUpdateTime) {
-    contents += (lastUpdate ? ` @ ${toHoursMinutesSeconds(lastUpdate)}` : '');
-  }
+  const displayedLastUpdateTime = showLastUpdateTime && lastUpdate ?  ` @ ${toHoursMinutesSeconds(lastUpdate)}` : '';
 
-  return contents;
+  return `${data.header}${displayedSecondsToLastUpdate}${displayedLastUpdateTime}`;
 };
 
 /**

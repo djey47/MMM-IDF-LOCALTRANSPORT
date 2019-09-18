@@ -106,10 +106,7 @@ const getCallbackForStationInfo = function(query: StationInfoQuery, config: Modu
       .then(
         (responses) => handleInfoResponsesOnSuccess(responses, resolve, query, debug),
         (error) => {
-          console.error('** Error invoking API for:');
-          console.error(query);
-          console.error(error);
-
+          console.error('** getCallbackForStationInfo: error invoking API for:', query, error);
           reject(error);
         });
   };
