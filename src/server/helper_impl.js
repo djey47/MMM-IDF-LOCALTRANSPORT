@@ -39,6 +39,7 @@ const { getTransilienRouteInfoUrl } = Citymapper;
 
 const httpsAgent = tunnel.httpsOverHttp({
   proxy: getProxySettings(),
+  rejectUnauthorized: false,
 });
 
 /**
