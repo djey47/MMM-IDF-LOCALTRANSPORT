@@ -29,7 +29,7 @@
             48.9055805862
         ]
     },
-    "record_timestamp": "2016-04-23T20:00:41+00:00"    
+    "record_timestamp": "2016-04-23T20:00:41+00:00"
   },
   "87382481": {
     "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
@@ -124,6 +124,38 @@
         ]
     },
     "record_timestamp": "2016-04-23T20:00:41+00:00"
+  },
+  "BECON LES BRUYERES": {
+    "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",
+    "recordid": "55250d0a4e3e1125a4068ec126323a9019947a64",
+    "fields": {
+        "commune": "Courbevoie",
+        "libelle_point_d_arret": "BECON LESBRUYERES",
+        "code_insee_commune": "92026",
+        "libelle": "BECON LES BRUYERES",
+        "libelle_sms_gare": "Bécon-Les-B.",
+        "adresse": "Rue Madira - 92400 Courbevoie",
+        "x_lambert_ii_etendu": 595017,
+        "gare_non_sncf": 0,
+        "uic7": "873820",
+        "code_uic": "87382002",
+        "zone_navigo": 3,
+        "coord_gps_wgs84": [
+            48.9055805862,
+            2.26857173893
+        ],
+        "libelle_stif_info_voyageurs": "GARE DE BECON LES BRUYERES",
+        "nom_gare": "Bécon les Bruyères",
+        "y_lambert_ii_etendu": 2434148
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [
+            2.26857173893,
+            48.9055805862
+        ]
+    },
+    "record_timestamp": "2019-02-13T15:53:26.497000+00:00"
   },
   "CHAVILLE RIVE DROITE": {
     "datasetid": "sncf-gares-et-arrets-transilien-ile-de-france",

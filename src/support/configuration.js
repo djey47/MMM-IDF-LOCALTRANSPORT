@@ -50,7 +50,7 @@ export const defaults: ModuleConfiguration = {
   trendGraphOff: false,
 
   apiBaseV3: 'https://api-ratp.pierre-grimaud.fr/v3/',
-  apiTransilien: 'http://api.transilien.com/',
+  apiTransilien: 'https://api.transilien.com/',
   apiVelib: 'https://opendata.paris.fr/api/records/1.0/search/?dataset=stations-velib-disponibilites-en-temps-reel',
   apiAutolib: 'https://opendata.paris.fr/explore/dataset/stations_et_espaces_autolib_de_la_metropole_parisienne/api/',
   apiSncfData: 'https://ressources.data.sncf.com/api/records/1.0/',
@@ -147,7 +147,9 @@ export function handleStationInfoResponse(responses: Array<StationInfoResult>, s
  * @param {Function} sendSocketNotification callback to notification handler
  */
 export function enhanceConfiguration(configuration: ModuleConfiguration, sendSocketNotification: (notification: string, payload: Object) => void) {
-  const { stations, devMode } = configuration;
+  const { stations, devMode, debug } = configuration;
+
+  if (debug) { console.log(`** ${MODULE_NAME}: Enhancing configuration for stations:`, stations); }
 
   // Overrides API endpoints in development mode
   const effectiveConfiguration = devMode ? { ...configuration, ...devDefaults } : { ...configuration };
@@ -176,9 +178,11 @@ export function enhanceConfiguration(configuration: ModuleConfiguration, sendSoc
     });
 
   if (queries.length) {
+    if (debug) { console.log(`** ${MODULE_NAME}: UIC to be resolved:`, queries); }
     getAllStationInfo(queries, effectiveConfiguration)
       .then(responses => handleStationInfoResponse(responses, sendSocketNotification, effectiveConfiguration));
   } else {
+    if (debug) { console.log(`** ${MODULE_NAME}: No UIC to be resolved, sending current configuration`); }
     sendSocketNotification(NOTIF_SET_CONFIG, effectiveConfiguration);
   }
 }

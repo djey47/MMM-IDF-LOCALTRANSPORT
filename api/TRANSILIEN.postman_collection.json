@@ -1,26 +1,25 @@
 {
-	"variables": [],
 	"info": {
+		"_postman_id": "44c2faf0-f5f7-4ab8-ac44-4f7b262d25b1",
 		"name": "TRANSILIEN",
-		"_postman_id": "f9aae024-b5f4-cbc5-402b-9015e7460354",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
 	"item": [
 		{
 			"name": "Next departures from station",
 			"request": {
-				"url": "http://api.transilien.com/gare/87382002/depart/",
 				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Basic dG5odG42MzU6ZDlDNHJzM1k=",
-						"description": ""
+						"value": "=Basic {{transilien_token}}"
 					}
 				],
-				"body": {},
-				"description": ""
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "http://api.transilien.com/gare/87382002/depart/"
 			},
 			"response": []
 		}

@@ -1,4 +1,4 @@
-import ModuleDefinitions from './helper_impl';
+import { ModuleDefinitions } from './helper_impl';
 import LegacyResponseProcessor from './legacy/ResponseProcessor';
 import TrafficResponseProcessor from './legacy/TrafficResponseProcessor';
 import TransilienResponseProcessor from './transilien/ResponseProcessor';
@@ -55,7 +55,10 @@ describe('helper implementation', () => {
   describe('proxy initialization', () => {
     it('should invoke tunnel', () => {
       // given-when-then
-      expect(mockTunnel.httpsOverHttp).toHaveBeenCalledWith({ proxy: undefined });
+      expect(mockTunnel.httpsOverHttp).toHaveBeenCalledWith({
+        proxy: undefined,
+        rejectUnauthorized: false,
+      });
     });
   });
 

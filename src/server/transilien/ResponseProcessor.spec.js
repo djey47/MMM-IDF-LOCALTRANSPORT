@@ -204,6 +204,16 @@ describe('processTransportTransilien function', () => {
     expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, context.config);
   });
 
+  it('should process XML data when no trains', () => {
+    // given
+    // eslint-disable-next-line max-len
+    const xmlData = '<?xml version="1.0" encoding="UTF-8"?><passages gare="87384008"></passages>';
+    // when
+    ResponseProcessor.processTransportTransilien(xmlData, context, stopConfig);
+    // then
+    expect(mockGetAllStationInfo).toHaveBeenCalledWith([], context.config);
+  });
+
   it('should process JSON data correctly', () => {
     // given-when
     ResponseProcessor.processTransportTransilien(jsonData, context, stopConfig);
