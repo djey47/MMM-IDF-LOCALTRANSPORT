@@ -1,4 +1,4 @@
-// flow-typed signature: cfc295dbcbca84cf5b2501874509d6bb
+// flow-typed signature: 07c3fec5e6ce1bcd85a718467ecd038c
 // flow-typed version: <<STUB>>/node-forge_vlatest/flow_v0.53.1
 
 /**
@@ -42,7 +42,15 @@ declare module 'node-forge/lib/aesCipherSuites' {
   declare module.exports: any;
 }
 
+declare module 'node-forge/lib/asn1-validator' {
+  declare module.exports: any;
+}
+
 declare module 'node-forge/lib/asn1' {
+  declare module.exports: any;
+}
+
+declare module 'node-forge/lib/baseN' {
   declare module.exports: any;
 }
 
@@ -54,11 +62,11 @@ declare module 'node-forge/lib/cipherModes' {
   declare module.exports: any;
 }
 
-declare module 'node-forge/lib/debug' {
+declare module 'node-forge/lib/des' {
   declare module.exports: any;
 }
 
-declare module 'node-forge/lib/des' {
+declare module 'node-forge/lib/ed25519' {
   declare module.exports: any;
 }
 
@@ -82,7 +90,7 @@ declare module 'node-forge/lib/index.all' {
   declare module.exports: any;
 }
 
-declare module 'node-forge/lib/index' {
+declare module 'node-forge/lib' {
   declare module.exports: any;
 }
 
@@ -202,10 +210,6 @@ declare module 'node-forge/lib/ssh' {
   declare module.exports: any;
 }
 
-declare module 'node-forge/lib/task' {
-  declare module.exports: any;
-}
-
 declare module 'node-forge/lib/tls' {
   declare module.exports: any;
 }
@@ -242,8 +246,14 @@ declare module 'node-forge/lib/aes.js' {
 declare module 'node-forge/lib/aesCipherSuites.js' {
   declare module.exports: $Exports<'node-forge/lib/aesCipherSuites'>;
 }
+declare module 'node-forge/lib/asn1-validator.js' {
+  declare module.exports: $Exports<'node-forge/lib/asn1-validator'>;
+}
 declare module 'node-forge/lib/asn1.js' {
   declare module.exports: $Exports<'node-forge/lib/asn1'>;
+}
+declare module 'node-forge/lib/baseN.js' {
+  declare module.exports: $Exports<'node-forge/lib/baseN'>;
 }
 declare module 'node-forge/lib/cipher.js' {
   declare module.exports: $Exports<'node-forge/lib/cipher'>;
@@ -251,11 +261,11 @@ declare module 'node-forge/lib/cipher.js' {
 declare module 'node-forge/lib/cipherModes.js' {
   declare module.exports: $Exports<'node-forge/lib/cipherModes'>;
 }
-declare module 'node-forge/lib/debug.js' {
-  declare module.exports: $Exports<'node-forge/lib/debug'>;
-}
 declare module 'node-forge/lib/des.js' {
   declare module.exports: $Exports<'node-forge/lib/des'>;
+}
+declare module 'node-forge/lib/ed25519.js' {
+  declare module.exports: $Exports<'node-forge/lib/ed25519'>;
 }
 declare module 'node-forge/lib/forge.js' {
   declare module.exports: $Exports<'node-forge/lib/forge'>;
@@ -272,8 +282,11 @@ declare module 'node-forge/lib/http.js' {
 declare module 'node-forge/lib/index.all.js' {
   declare module.exports: $Exports<'node-forge/lib/index.all'>;
 }
+declare module 'node-forge/lib/index' {
+  declare module.exports: $Exports<'node-forge/lib'>;
+}
 declare module 'node-forge/lib/index.js' {
-  declare module.exports: $Exports<'node-forge/lib/index'>;
+  declare module.exports: $Exports<'node-forge/lib'>;
 }
 declare module 'node-forge/lib/jsbn.js' {
   declare module.exports: $Exports<'node-forge/lib/jsbn'>;
@@ -361,9 +374,6 @@ declare module 'node-forge/lib/socket.js' {
 }
 declare module 'node-forge/lib/ssh.js' {
   declare module.exports: $Exports<'node-forge/lib/ssh'>;
-}
-declare module 'node-forge/lib/task.js' {
-  declare module.exports: $Exports<'node-forge/lib/task'>;
 }
 declare module 'node-forge/lib/tls.js' {
   declare module.exports: $Exports<'node-forge/lib/tls'>;

@@ -1,4 +1,4 @@
-// flow-typed signature: f74512429d26ca5c43dc626b64f9a547
+// flow-typed signature: e453e27b063a88cdf7a0e4f55d355f6e
 // flow-typed version: <<STUB>>/app-root-dir_v^1.0.2/flow_v0.53.1
 
 /**
@@ -22,11 +22,14 @@ declare module 'app-root-dir' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'app-root-dir/lib/index' {
+declare module 'app-root-dir/lib' {
   declare module.exports: any;
 }
 
 // Filename aliases
+declare module 'app-root-dir/lib/index' {
+  declare module.exports: $Exports<'app-root-dir/lib'>;
+}
 declare module 'app-root-dir/lib/index.js' {
-  declare module.exports: $Exports<'app-root-dir/lib/index'>;
+  declare module.exports: $Exports<'app-root-dir/lib'>;
 }

@@ -1,4 +1,4 @@
-// flow-typed signature: 750630327adc1beeedc985d199d0dae0
+// flow-typed signature: 615eb9372256f54c2b1bc14c4ab8223b
 // flow-typed version: <<STUB>>/moment-timezone_v^0.5.13/flow_v0.53.1
 
 /**
@@ -22,6 +22,22 @@ declare module 'moment-timezone' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
+declare module 'moment-timezone/builds/moment-timezone-with-data-10-year-range' {
+  declare module.exports: any;
+}
+
+declare module 'moment-timezone/builds/moment-timezone-with-data-10-year-range.min' {
+  declare module.exports: any;
+}
+
+declare module 'moment-timezone/builds/moment-timezone-with-data-1970-2030' {
+  declare module.exports: any;
+}
+
+declare module 'moment-timezone/builds/moment-timezone-with-data-1970-2030.min' {
+  declare module.exports: any;
+}
+
 declare module 'moment-timezone/builds/moment-timezone-with-data-2012-2022' {
   declare module.exports: any;
 }
@@ -51,6 +67,18 @@ declare module 'moment-timezone/moment-timezone' {
 }
 
 // Filename aliases
+declare module 'moment-timezone/builds/moment-timezone-with-data-10-year-range.js' {
+  declare module.exports: $Exports<'moment-timezone/builds/moment-timezone-with-data-10-year-range'>;
+}
+declare module 'moment-timezone/builds/moment-timezone-with-data-10-year-range.min.js' {
+  declare module.exports: $Exports<'moment-timezone/builds/moment-timezone-with-data-10-year-range.min'>;
+}
+declare module 'moment-timezone/builds/moment-timezone-with-data-1970-2030.js' {
+  declare module.exports: $Exports<'moment-timezone/builds/moment-timezone-with-data-1970-2030'>;
+}
+declare module 'moment-timezone/builds/moment-timezone-with-data-1970-2030.min.js' {
+  declare module.exports: $Exports<'moment-timezone/builds/moment-timezone-with-data-1970-2030.min'>;
+}
 declare module 'moment-timezone/builds/moment-timezone-with-data-2012-2022.js' {
   declare module.exports: $Exports<'moment-timezone/builds/moment-timezone-with-data-2012-2022'>;
 }

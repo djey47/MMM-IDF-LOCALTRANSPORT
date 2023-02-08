@@ -1,4 +1,4 @@
-// flow-typed signature: 6218952fe9282dfd826a6ae756cdbc19
+// flow-typed signature: 3b7666c7a7ad8dc236730dae0a2cd185
 // flow-typed version: <<STUB>>/babel-preset-env_v^1.6.0/flow_v0.53.1
 
 /**
@@ -34,7 +34,7 @@ declare module 'babel-preset-env/lib/default-includes' {
   declare module.exports: any;
 }
 
-declare module 'babel-preset-env/lib/index' {
+declare module 'babel-preset-env/lib' {
   declare module.exports: any;
 }
 
@@ -68,8 +68,11 @@ declare module 'babel-preset-env/data/plugin-features.js' {
 declare module 'babel-preset-env/lib/default-includes.js' {
   declare module.exports: $Exports<'babel-preset-env/lib/default-includes'>;
 }
+declare module 'babel-preset-env/lib/index' {
+  declare module.exports: $Exports<'babel-preset-env/lib'>;
+}
 declare module 'babel-preset-env/lib/index.js' {
-  declare module.exports: $Exports<'babel-preset-env/lib/index'>;
+  declare module.exports: $Exports<'babel-preset-env/lib'>;
 }
 declare module 'babel-preset-env/lib/module-transformations.js' {
   declare module.exports: $Exports<'babel-preset-env/lib/module-transformations'>;

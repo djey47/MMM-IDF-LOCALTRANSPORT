@@ -1,4 +1,4 @@
-// flow-typed signature: babe172ee674107af12a9e920ce2831e
+// flow-typed signature: 08bf3f584ff66256985e89a67b1d9f4d
 // flow-typed version: <<STUB>>/husky_v^0.14.3/flow_v0.53.1
 
 /**
@@ -22,7 +22,7 @@ declare module 'husky' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'husky/__tests__/index' {
+declare module 'husky/__tests__' {
   declare module.exports: any;
 }
 
@@ -59,8 +59,11 @@ declare module 'husky/src/utils/is-husky' {
 }
 
 // Filename aliases
+declare module 'husky/__tests__/index' {
+  declare module.exports: $Exports<'husky/__tests__'>;
+}
 declare module 'husky/__tests__/index.js' {
-  declare module.exports: $Exports<'husky/__tests__/index'>;
+  declare module.exports: $Exports<'husky/__tests__'>;
 }
 declare module 'husky/bin/install.js' {
   declare module.exports: $Exports<'husky/bin/install'>;

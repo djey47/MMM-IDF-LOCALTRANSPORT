@@ -1,4 +1,4 @@
-// flow-typed signature: fff839ea265c7caee6b7b37948308d1b
+// flow-typed signature: 5dafac98fa1beb5f8f299e743a9e6b7a
 // flow-typed version: <<STUB>>/html-beautify_v^1.0.4/flow_v0.53.1
 
 /**
@@ -22,7 +22,7 @@ declare module 'html-beautify' {
  * require those files directly. Feel free to delete any files that aren't
  * needed.
  */
-declare module 'html-beautify/dist/index' {
+declare module 'html-beautify/dist' {
   declare module.exports: any;
 }
 
@@ -30,7 +30,7 @@ declare module 'html-beautify/dist/lib/html-beautify' {
   declare module.exports: any;
 }
 
-declare module 'html-beautify/src/index' {
+declare module 'html-beautify/src' {
   declare module.exports: any;
 }
 
@@ -43,14 +43,20 @@ declare module 'html-beautify/webpack.config' {
 }
 
 // Filename aliases
+declare module 'html-beautify/dist/index' {
+  declare module.exports: $Exports<'html-beautify/dist'>;
+}
 declare module 'html-beautify/dist/index.js' {
-  declare module.exports: $Exports<'html-beautify/dist/index'>;
+  declare module.exports: $Exports<'html-beautify/dist'>;
 }
 declare module 'html-beautify/dist/lib/html-beautify.js' {
   declare module.exports: $Exports<'html-beautify/dist/lib/html-beautify'>;
 }
+declare module 'html-beautify/src/index' {
+  declare module.exports: $Exports<'html-beautify/src'>;
+}
 declare module 'html-beautify/src/index.js' {
-  declare module.exports: $Exports<'html-beautify/src/index'>;
+  declare module.exports: $Exports<'html-beautify/src'>;
 }
 declare module 'html-beautify/src/lib/html-beautify.js' {
   declare module.exports: $Exports<'html-beautify/src/lib/html-beautify'>;

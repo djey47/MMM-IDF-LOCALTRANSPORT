@@ -1,4 +1,4 @@
-// flow-typed signature: 9af18f71fc760eebce4aa374dc3d0024
+// flow-typed signature: 659b6c74f2524ee98c3b0bc2bb4be216
 // flow-typed version: <<STUB>>/babel-core_v^6.26.0/flow_v0.53.1
 
 /**
@@ -70,11 +70,15 @@ declare module 'babel-core/lib/tools/build-external-helpers' {
   declare module.exports: any;
 }
 
-declare module 'babel-core/lib/transformation/file/index' {
+declare module 'babel-core/lib/transformation/file' {
   declare module.exports: any;
 }
 
 declare module 'babel-core/lib/transformation/file/logger' {
+  declare module.exports: any;
+}
+
+declare module 'babel-core/lib/transformation/file/merge-map' {
   declare module.exports: any;
 }
 
@@ -90,7 +94,7 @@ declare module 'babel-core/lib/transformation/file/options/config' {
   declare module.exports: any;
 }
 
-declare module 'babel-core/lib/transformation/file/options/index' {
+declare module 'babel-core/lib/transformation/file/options' {
   declare module.exports: any;
 }
 
@@ -177,11 +181,17 @@ declare module 'babel-core/lib/store.js' {
 declare module 'babel-core/lib/tools/build-external-helpers.js' {
   declare module.exports: $Exports<'babel-core/lib/tools/build-external-helpers'>;
 }
+declare module 'babel-core/lib/transformation/file/index' {
+  declare module.exports: $Exports<'babel-core/lib/transformation/file'>;
+}
 declare module 'babel-core/lib/transformation/file/index.js' {
-  declare module.exports: $Exports<'babel-core/lib/transformation/file/index'>;
+  declare module.exports: $Exports<'babel-core/lib/transformation/file'>;
 }
 declare module 'babel-core/lib/transformation/file/logger.js' {
   declare module.exports: $Exports<'babel-core/lib/transformation/file/logger'>;
+}
+declare module 'babel-core/lib/transformation/file/merge-map.js' {
+  declare module.exports: $Exports<'babel-core/lib/transformation/file/merge-map'>;
 }
 declare module 'babel-core/lib/transformation/file/metadata.js' {
   declare module.exports: $Exports<'babel-core/lib/transformation/file/metadata'>;
@@ -192,8 +202,11 @@ declare module 'babel-core/lib/transformation/file/options/build-config-chain.js
 declare module 'babel-core/lib/transformation/file/options/config.js' {
   declare module.exports: $Exports<'babel-core/lib/transformation/file/options/config'>;
 }
+declare module 'babel-core/lib/transformation/file/options/index' {
+  declare module.exports: $Exports<'babel-core/lib/transformation/file/options'>;
+}
 declare module 'babel-core/lib/transformation/file/options/index.js' {
-  declare module.exports: $Exports<'babel-core/lib/transformation/file/options/index'>;
+  declare module.exports: $Exports<'babel-core/lib/transformation/file/options'>;
 }
 declare module 'babel-core/lib/transformation/file/options/option-manager.js' {
   declare module.exports: $Exports<'babel-core/lib/transformation/file/options/option-manager'>;

@@ -1,4 +1,4 @@
-// flow-typed signature: 3776925c1d52327216ef3e0bd161b882
+// flow-typed signature: db4c871b2426d85bbb2306d2040dfa94
 // flow-typed version: <<STUB>>/flow-typed_v^2.1.5/flow_v0.53.1
 
 /**
@@ -51,10 +51,6 @@ declare module 'flow-typed/dist/commands/update' {
 }
 
 declare module 'flow-typed/dist/commands/validateDefs' {
-  declare module.exports: any;
-}
-
-declare module 'flow-typed/dist/commands/version' {
   declare module.exports: any;
 }
 
@@ -114,7 +110,7 @@ declare module 'flow-typed/dist/lib/stubUtils' {
   declare module.exports: any;
 }
 
-declare module 'flow-typed/dist/lib/validationErrors' {
+declare module 'flow-typed/dist/lib/ValidationError' {
   declare module.exports: any;
 }
 
@@ -142,9 +138,6 @@ declare module 'flow-typed/dist/commands/update.js' {
 }
 declare module 'flow-typed/dist/commands/validateDefs.js' {
   declare module.exports: $Exports<'flow-typed/dist/commands/validateDefs'>;
-}
-declare module 'flow-typed/dist/commands/version.js' {
-  declare module.exports: $Exports<'flow-typed/dist/commands/version'>;
 }
 declare module 'flow-typed/dist/lib/cacheRepoUtils.js' {
   declare module.exports: $Exports<'flow-typed/dist/lib/cacheRepoUtils'>;
@@ -188,6 +181,6 @@ declare module 'flow-typed/dist/lib/semver.js' {
 declare module 'flow-typed/dist/lib/stubUtils.js' {
   declare module.exports: $Exports<'flow-typed/dist/lib/stubUtils'>;
 }
-declare module 'flow-typed/dist/lib/validationErrors.js' {
-  declare module.exports: $Exports<'flow-typed/dist/lib/validationErrors'>;
+declare module 'flow-typed/dist/lib/ValidationError.js' {
+  declare module.exports: $Exports<'flow-typed/dist/lib/ValidationError'>;
 }

@@ -1,4 +1,4 @@
-// flow-typed signature: 176639f009a7614b77791921d8a9e870
+// flow-typed signature: f777cca118b26915c9c624c1b1e7ec84
 // flow-typed version: <<STUB>>/babel-loader_v^7.1.1/flow_v0.53.1
 
 /**
@@ -26,7 +26,7 @@ declare module 'babel-loader/lib/fs-cache' {
   declare module.exports: any;
 }
 
-declare module 'babel-loader/lib/index' {
+declare module 'babel-loader/lib' {
   declare module.exports: any;
 }
 
@@ -50,8 +50,11 @@ declare module 'babel-loader/lib/utils/relative' {
 declare module 'babel-loader/lib/fs-cache.js' {
   declare module.exports: $Exports<'babel-loader/lib/fs-cache'>;
 }
+declare module 'babel-loader/lib/index' {
+  declare module.exports: $Exports<'babel-loader/lib'>;
+}
 declare module 'babel-loader/lib/index.js' {
-  declare module.exports: $Exports<'babel-loader/lib/index'>;
+  declare module.exports: $Exports<'babel-loader/lib'>;
 }
 declare module 'babel-loader/lib/resolve-rc.js' {
   declare module.exports: $Exports<'babel-loader/lib/resolve-rc'>;

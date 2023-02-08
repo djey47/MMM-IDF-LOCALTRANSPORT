@@ -1,4 +1,4 @@
-// flow-typed signature: 9b9f4b2213dcf5733183fc4dac75db5a
+// flow-typed signature: c6fcb4dbbe2201d72df987c30802d8f8
 // flow-typed version: <<STUB>>/eslint-plugin-flowtype_v^2.35.0/flow_v0.53.1
 
 /**
@@ -26,7 +26,27 @@ declare module 'eslint-plugin-flowtype/bin/readmeAssertions' {
   declare module.exports: any;
 }
 
-declare module 'eslint-plugin-flowtype/dist/index' {
+declare module 'eslint-plugin-flowtype/dist' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyle' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyle/isSimpleType' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyle/needWrap' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyleComplexType' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyleSimpleType' {
   declare module.exports: any;
 }
 
@@ -46,7 +66,23 @@ declare module 'eslint-plugin-flowtype/dist/rules/genericSpacing' {
   declare module.exports: any;
 }
 
+declare module 'eslint-plugin-flowtype/dist/rules/newlineAfterFlowAnnotation' {
+  declare module.exports: any;
+}
+
 declare module 'eslint-plugin-flowtype/dist/rules/noDupeKeys' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/noExistentialType' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/noFlowFixMeComments' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/noMutableArray' {
   declare module.exports: any;
 }
 
@@ -58,6 +94,10 @@ declare module 'eslint-plugin-flowtype/dist/rules/noTypesMissingFileAnnotation' 
   declare module.exports: any;
 }
 
+declare module 'eslint-plugin-flowtype/dist/rules/noUnusedExpressions' {
+  declare module.exports: any;
+}
+
 declare module 'eslint-plugin-flowtype/dist/rules/noWeakTypes' {
   declare module.exports: any;
 }
@@ -66,11 +106,19 @@ declare module 'eslint-plugin-flowtype/dist/rules/objectTypeDelimiter' {
   declare module.exports: any;
 }
 
+declare module 'eslint-plugin-flowtype/dist/rules/requireExactType' {
+  declare module.exports: any;
+}
+
 declare module 'eslint-plugin-flowtype/dist/rules/requireParameterType' {
   declare module.exports: any;
 }
 
 declare module 'eslint-plugin-flowtype/dist/rules/requireReturnType' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/requireTypesAtTop' {
   declare module.exports: any;
 }
 
@@ -126,7 +174,11 @@ declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing/evaluateTypic
   declare module.exports: any;
 }
 
-declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing/index' {
+declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing/evaluateVariables' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing' {
   declare module.exports: any;
 }
 
@@ -135,6 +187,10 @@ declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing/reporter' {
 }
 
 declare module 'eslint-plugin-flowtype/dist/rules/typeIdMatch' {
+  declare module.exports: any;
+}
+
+declare module 'eslint-plugin-flowtype/dist/rules/typeImportStyle' {
   declare module.exports: any;
 }
 
@@ -170,7 +226,7 @@ declare module 'eslint-plugin-flowtype/dist/utilities/getTokenBeforeParens' {
   declare module.exports: any;
 }
 
-declare module 'eslint-plugin-flowtype/dist/utilities/index' {
+declare module 'eslint-plugin-flowtype/dist/utilities' {
   declare module.exports: any;
 }
 
@@ -198,8 +254,29 @@ declare module 'eslint-plugin-flowtype/dist/utilities/spacingFixers' {
 declare module 'eslint-plugin-flowtype/bin/readmeAssertions.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/bin/readmeAssertions'>;
 }
+declare module 'eslint-plugin-flowtype/dist/index' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist'>;
+}
 declare module 'eslint-plugin-flowtype/dist/index.js' {
-  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/index'>;
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyle/index' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/arrayStyle'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyle/index.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/arrayStyle'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyle/isSimpleType.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/arrayStyle/isSimpleType'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyle/needWrap.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/arrayStyle/needWrap'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyleComplexType.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/arrayStyleComplexType'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/arrayStyleSimpleType.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/arrayStyleSimpleType'>;
 }
 declare module 'eslint-plugin-flowtype/dist/rules/booleanStyle.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/booleanStyle'>;
@@ -213,8 +290,20 @@ declare module 'eslint-plugin-flowtype/dist/rules/delimiterDangle.js' {
 declare module 'eslint-plugin-flowtype/dist/rules/genericSpacing.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/genericSpacing'>;
 }
+declare module 'eslint-plugin-flowtype/dist/rules/newlineAfterFlowAnnotation.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/newlineAfterFlowAnnotation'>;
+}
 declare module 'eslint-plugin-flowtype/dist/rules/noDupeKeys.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/noDupeKeys'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/noExistentialType.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/noExistentialType'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/noFlowFixMeComments.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/noFlowFixMeComments'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/noMutableArray.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/noMutableArray'>;
 }
 declare module 'eslint-plugin-flowtype/dist/rules/noPrimitiveConstructorTypes.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/noPrimitiveConstructorTypes'>;
@@ -222,17 +311,26 @@ declare module 'eslint-plugin-flowtype/dist/rules/noPrimitiveConstructorTypes.js
 declare module 'eslint-plugin-flowtype/dist/rules/noTypesMissingFileAnnotation.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/noTypesMissingFileAnnotation'>;
 }
+declare module 'eslint-plugin-flowtype/dist/rules/noUnusedExpressions.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/noUnusedExpressions'>;
+}
 declare module 'eslint-plugin-flowtype/dist/rules/noWeakTypes.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/noWeakTypes'>;
 }
 declare module 'eslint-plugin-flowtype/dist/rules/objectTypeDelimiter.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/objectTypeDelimiter'>;
 }
+declare module 'eslint-plugin-flowtype/dist/rules/requireExactType.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/requireExactType'>;
+}
 declare module 'eslint-plugin-flowtype/dist/rules/requireParameterType.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/requireParameterType'>;
 }
 declare module 'eslint-plugin-flowtype/dist/rules/requireReturnType.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/requireReturnType'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/requireTypesAtTop.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/requireTypesAtTop'>;
 }
 declare module 'eslint-plugin-flowtype/dist/rules/requireValidFileAnnotation.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/requireValidFileAnnotation'>;
@@ -273,14 +371,23 @@ declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing/evaluateTypeC
 declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing/evaluateTypical.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/typeColonSpacing/evaluateTypical'>;
 }
+declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing/evaluateVariables.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/typeColonSpacing/evaluateVariables'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing/index' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/typeColonSpacing'>;
+}
 declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing/index.js' {
-  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/typeColonSpacing/index'>;
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/typeColonSpacing'>;
 }
 declare module 'eslint-plugin-flowtype/dist/rules/typeColonSpacing/reporter.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/typeColonSpacing/reporter'>;
 }
 declare module 'eslint-plugin-flowtype/dist/rules/typeIdMatch.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/typeIdMatch'>;
+}
+declare module 'eslint-plugin-flowtype/dist/rules/typeImportStyle.js' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/typeImportStyle'>;
 }
 declare module 'eslint-plugin-flowtype/dist/rules/unionIntersectionSpacing.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/rules/unionIntersectionSpacing'>;
@@ -306,8 +413,11 @@ declare module 'eslint-plugin-flowtype/dist/utilities/getTokenAfterParens.js' {
 declare module 'eslint-plugin-flowtype/dist/utilities/getTokenBeforeParens.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/utilities/getTokenBeforeParens'>;
 }
+declare module 'eslint-plugin-flowtype/dist/utilities/index' {
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/utilities'>;
+}
 declare module 'eslint-plugin-flowtype/dist/utilities/index.js' {
-  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/utilities/index'>;
+  declare module.exports: $Exports<'eslint-plugin-flowtype/dist/utilities'>;
 }
 declare module 'eslint-plugin-flowtype/dist/utilities/isFlowFile.js' {
   declare module.exports: $Exports<'eslint-plugin-flowtype/dist/utilities/isFlowFile'>;
