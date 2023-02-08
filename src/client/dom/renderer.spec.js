@@ -22,7 +22,7 @@ jest.mock('../support/date', () => ({
 
 beforeAll(() => {
   moment.tz.setDefault('UTC');
-  mockNow.mockImplementation(() => moment());
+  // mockNow.mockImplementation(() => moment());
 });
 
 const testRender = (element: any): String => {
@@ -52,10 +52,10 @@ describe('renderWrapper function', () => {
 });
 
 describe('renderHeader function', () => {
-  const baseConfig = {
+  const baseConfig: ModuleConfiguration = {
     ...defaults,
     messages: {},
-    lastUpdate: moment('2017-07-27T08:23:40.000Z'),
+    lastUpdate: '2017-07-27T08:23:40.000Z',
     showLastUpdateTime: false,
     showSecondsToNextUpdate: false,
   };
@@ -63,9 +63,13 @@ describe('renderHeader function', () => {
     header: 'Connections',
   };
 
+  beforeEach(() => {
+    mockNow.mockReset();
+    mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
+  });
+
   it('should return correct header when complete configuration', () => {
     // given
-    mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
     const config: ModuleConfiguration = { ...baseConfig, showLastUpdateTime: true, showSecondsToNextUpdate: true };
     // when
     const actual = renderHeader(data, config);
@@ -75,7 +79,6 @@ describe('renderHeader function', () => {
 
   it('should return correct header when incomplete configuration 1', () => {
     // given
-    mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
     const config: ModuleConfiguration = { ...baseConfig, showSecondsToNextUpdate: true };
     // when
     const actual = renderHeader(data, config);
@@ -85,7 +88,6 @@ describe('renderHeader function', () => {
 
   it('should return correct header when incomplete configuration 2', () => {
     // given
-    mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
     const config: ModuleConfiguration = { ...baseConfig, showLastUpdateTime: true };
     // when
     const actual = renderHeader(data, config);
@@ -95,7 +97,6 @@ describe('renderHeader function', () => {
 
   it('should return simple string when silent configuration', () => {
     // given
-    mockNow.mockImplementation(() => moment('2017-07-27T08:23:55Z'));
     const config: ModuleConfiguration = { ...baseConfig, showLastUpdateTime: false };
     // when
     const actual = renderHeader(data, config);
