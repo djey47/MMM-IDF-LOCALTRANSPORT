@@ -40,8 +40,8 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
 # Install
 
 1. Clone repository into `/modules/` inside your MagicMirror folder
-2. Install [yarn](https://yarnpkg.com/en/docs/install)
-3. Run `yarn install` inside `/modules/MMM-IDF-LOCALTRANSPORT/` folder
+2. Install and enable node *18.12.1* via [nvm](https://github.com/nvm-sh/nvm)
+3. Run `npm install` inside `/modules/MMM-IDF-LOCALTRANSPORT/` folder
 4. Check that `MMM-IDF-LOCALTRANSPORT.js` and `node_helper.js` scripts have been created into current folder
 5. Add the module to the MagicMirror config:
 ```
@@ -167,7 +167,7 @@ When running module with *devMode* set to `true`, calls to API will automaticall
 
 This feature helps module developer with simulating some cases, or working when no internet connexion is available.
 
-To get the benefits of this mode, dev server has to be started first. Type `npm run dev-server` or `yarn dev-server`. Then start MM2 with proper configuration.
+To get the benefits of this mode, dev server has to be started first. Type `npm run dev-server`. Then start MM2 with proper configuration.
 
 Once started, dev server listens to requests on http://localhost:8088/.
 
