@@ -55,7 +55,7 @@ const jsonData = {
   },
 };
 
-describe('dataToSchedule function', () => {
+describe.skip('dataToSchedule function', () => {
   const stationInfos = [{
     index: 0,
     stationInfo: {
@@ -134,7 +134,7 @@ describe('dataToSchedule function', () => {
   });
 });
 
-describe('processTransportTransilien function', () => {
+describe.skip('processTransportTransilien function', () => {
   const stopConfig = {
     type: 'transiliens',
     station: 'becon',

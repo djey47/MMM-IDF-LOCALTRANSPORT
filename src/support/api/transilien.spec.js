@@ -2,10 +2,12 @@
 
 import Transilien from './transilien';
 
+import type { StationConfiguration } from '../../types/Configuration';
+
 const {
   createIndexFromResponseLegacy,
   createIndexFromStopConfig,
-  getTransilienDepartUrl,
+  getTransilienStopMonitoringUrl,
 } = Transilien;
 
 const baseStopConfig = {
@@ -13,94 +15,63 @@ const baseStopConfig = {
   station: 'Becon',
 };
 
-describe('createIndexFromResponseLegacyfunction', () => {
-  it('should return correct index', () => {
-    // given
-    const response = {
-      passages:{
-        '$':{
-          gare:'87382002',
-        },
-        train:[],
-      },
-    };
-    // when
-    const actual = createIndexFromResponseLegacy(response);
-    // then
-    expect(actual).toEqual('gare/87382002//depart');
-  });
-
-  it('should return correct index with destination', () => {
-    // given
-    const response = {
-      passages:{
-        '$':{
-          gare:'87382002',
-        },
-        train:[],
-      },
-    };
-    // when
-    const actual = createIndexFromResponseLegacy(response, 'dest');
-    // then
-    expect(actual).toEqual('gare/87382002/dest/depart');
-  });
-});
-
 describe('createIndexFromStopConfig function', () => {
-  it('should return null when no UIC codes resolved', () => {
+  it('should return default value when no refs resolved', () => {
     // given
-    const stopConfig = {
+    const stopConfig: StationConfiguration = {
       ...baseStopConfig,
     };
     // when
     const actual = createIndexFromStopConfig(stopConfig);
     // then
-    expect(actual).toBeNull();
+    expect(actual).toBe('ligne/no-data/gare/no-data//stop-monitoring');
   });
 
   it('should return correct index', () => {
     // given
-    const stopConfig = {
+    const stopConfig: StationConfiguration = {
       ...baseStopConfig,
-      uic: {
-        station: '87382002',
+      transilienRefData: {
+        stopAreaRef: '46689',
+        lineRef: 'C01736',
       },
     };
     // when
     const actual = createIndexFromStopConfig(stopConfig);
     // then
-    expect(actual).toEqual('gare/87382002//depart');
+    expect(actual).toEqual('ligne/C01736/gare/46689//stop-monitoring');
   });
 
   it('should return correct index with destination', () => {
     // given
-    const stopConfig = {
+    const stopConfig: StationConfiguration = {
       ...baseStopConfig,
-      uic: {
-        station: '87382002',
-        destination: '87382210',
+      transilienRefData: {
+        stopAreaRef: '46689',
+        lineRef: 'C01736',
+        destinationRef: '11111',
       },
     };
     // when
     const actual = createIndexFromStopConfig(stopConfig);
     // then
-    expect(actual).toEqual('gare/87382002/87382210/depart');
+    expect(actual).toEqual('ligne/C01736/gare/46689/11111/stop-monitoring');
   });
 });
 
-describe('getTransilienDepartUrl function', () => {
+describe('getTransilienStopMonitoringUrl function', () => {
   it('should return correct URL', () => {
     // given
-    const stopConfig = {
+    const stopConfig: StationConfiguration = {
       ...baseStopConfig,
-      uic: {
-        station: '87382002',
+      transilienRefData: {
+        stopAreaRef: '46689',
+        lineRef: 'C01736',
       },
     };
     // when
-    const actual = getTransilienDepartUrl('http://transilien.api/', stopConfig);
+    const actual = getTransilienStopMonitoringUrl('http://transilien.api/', stopConfig);
     // then
-    expect(actual).toEqual('http://transilien.api/gare/87382002/depart');
+    expect(actual).toEqual('http://transilien.api/stop-monitoring?MonitoringRef=STIF:StopArea:SP:46689:&LineRef=STIF:Line::C01736:');
   });
 });

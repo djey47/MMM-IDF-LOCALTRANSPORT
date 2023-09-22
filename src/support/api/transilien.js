@@ -8,10 +8,10 @@ const Transilien = {
    */
   createIndexFromStopConfig: function (stopConfig: StationConfiguration) {
     const { transilienRefData } = stopConfig;
-    if (!transilienRefData) return 'gare/no-data//depart';
+    if (!transilienRefData) return 'ligne/no-data/gare/no-data//stop-monitoring';
 
-    const { stopAreaRef, destinationRef } = transilienRefData;
-    return `gare/${stopAreaRef || ''}/${destinationRef || ''}/depart`;
+    const { stopAreaRef, destinationRef, lineRef } = transilienRefData;
+    return `ligne/${lineRef || ''}/gare/${stopAreaRef || ''}/${destinationRef || ''}/stop-monitoring`;
   },
 
   /**

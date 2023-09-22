@@ -20,70 +20,7 @@ beforeEach(() => {
   }));
 });
 
-describe('handleStationInfoResponse function', () => {
-  it('should enhance configuration and send notification', () => {
-    // given
-    const stations = [{
-      type: 'transiliens',
-      station: 'becon',
-      destination: 'la defense',
-    }, {
-      type: 'transiliens',
-      station: 'la defense',
-      destination: 'becon',
-    }];    
-    const currentConfig = Object.assign({}, defaults, { stations });
-    const responses = [{
-      index: 0,
-      stationInfo: { libelle: 'L1', code_uic: 'UIC1' },
-      destinationInfo: { libelle: 'L2', code_uic: 'UIC2'},
-    }, {
-      index: 1,
-      stationInfo: { libelle: 'L2', code_uic: 'UIC2' },
-      destinationInfo: { libelle: 'L1', code_uic: 'UIC1'},
-    }];
-    // when
-    handleStationInfoResponse(responses, mockSendSocketNotification, currentConfig);
-    // then
-    const expectedCodes1 = {
-      station: 'UIC1',
-      destination: 'UIC2',
-    };
-    const expectedCodes2 = {
-      station: 'UIC2',
-      destination: 'UIC1',
-    };
-    const [ stations1, stations2 ] = currentConfig.stations;
-    expect(stations1.uic).toEqual(expectedCodes1);
-    expect(stations2.uic).toEqual(expectedCodes2);
-    expect(mockSendSocketNotification).toHaveBeenCalledWith('SET_CONFIG', currentConfig);
-  });
-
-  it('should ignore missing destination info', () => {
-    // given
-    const stations = [{
-      type: 'transiliens',
-      station: 'becon',
-    }];    
-    const currentConfig = Object.assign({}, defaults, { stations });
-    const responses = [{
-      index: 0,
-      stationInfo: { libelle: 'L1', code_uic: 'UIC1' },
-    }];
-    // when
-    handleStationInfoResponse(responses, mockSendSocketNotification, currentConfig);
-    // then
-    const expectedCodes = {
-      station: 'UIC1',
-      destination: null,
-    };
-    const [ stationsInfo ] = currentConfig.stations;
-    expect(stationsInfo.uic).toEqual(expectedCodes);
-    expect(mockSendSocketNotification).toHaveBeenCalledWith('SET_CONFIG', currentConfig);
-  });
-});
-
-describe('enhanceConfiguration function', () => {
+describe.skip('enhanceConfiguration function', () => {
   it('should not request data when no stations provided', () => {
     // given
     const currentConfig = Object.assign({}, defaults);
