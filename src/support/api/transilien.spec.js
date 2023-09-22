@@ -1,9 +1,9 @@
-/* @flow */
+/* @flow-disabled */
 
 import Transilien from './transilien';
 
 const {
-  createIndexFromResponse,
+  createIndexFromResponseLegacy,
   createIndexFromStopConfig,
   getTransilienDepartUrl,
 } = Transilien;
@@ -13,7 +13,7 @@ const baseStopConfig = {
   station: 'Becon',
 };
 
-describe('createIndexFromResponse function', () => {
+describe('createIndexFromResponseLegacyfunction', () => {
   it('should return correct index', () => {
     // given
     const response = {
@@ -25,7 +25,7 @@ describe('createIndexFromResponse function', () => {
       },
     };
     // when
-    const actual = createIndexFromResponse(response);
+    const actual = createIndexFromResponseLegacy(response);
     // then
     expect(actual).toEqual('gare/87382002//depart');
   });
@@ -41,7 +41,7 @@ describe('createIndexFromResponse function', () => {
       },
     };
     // when
-    const actual = createIndexFromResponse(response, 'dest');
+    const actual = createIndexFromResponseLegacy(response, 'dest');
     // then
     expect(actual).toEqual('gare/87382002/dest/depart');
   });

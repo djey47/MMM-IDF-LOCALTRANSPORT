@@ -1,32 +1,37 @@
 /* @flow */
 
-import type { SNCFStationInfo } from '../types/Transport';
+type RefDataCacheOptions = {
+  isStopArea: boolean,
+}
 
 /** Very basic cache implementation **/
 
-const infoCache = {};
+const refDataCache = {};
 
 /**
  * @returns cached value for query if it exists, null otherwise
  */
-export const getInfoFromCache = function(query: string): ?SNCFStationInfo {
-  return query ? infoCache[query] : null;
+export const getRefDataFromCache = function(type: string, query: string, options?: RefDataCacheOptions): ?string {
+  const key = buildRefDataCacheKey(type, query, options);
+  return refDataCache[key] || null;
 };
 
 /**
  * Adds or update value in cache
  */
-export const putInfoInCache = function(query: string, stationInfo: SNCFStationInfo) {
-  if (!query || !stationInfo) return;
-
-  infoCache[query] = stationInfo;
+export const putRefDataInCache = function(type: string, query: string, options?: RefDataCacheOptions, refValue: string) {
+  if (!refValue) return;
+  const key = buildRefDataCacheKey(type, query, options);
+  refDataCache[key] = refValue;
 };
 
 /**
  * Clears all values in cache
  */
-export const resetInfoCache = function() {
-  for (const prop of Object.keys(infoCache)) {
-    delete infoCache[prop];
+export const resetRefDataCache = function() {
+  for (const prop of Object.keys(refDataCache)) {
+    delete refDataCache[prop];
   }
 };
+
+const buildRefDataCacheKey = (type: string, query: string, options?: RefDataCacheOptions) => `${type}-${query}-${options && options.isStopZone ? 'isStopZone' : ''}`;

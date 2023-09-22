@@ -2,22 +2,19 @@
 
 /** Types for configuration objects */
 
-export type UICConfiguration = {
-
-  station: ?string,
-  destination?: ?string,
-
-};
+export type TransilienRefDataConfiguration = {
+  lineRef: string,
+  stopAreaRef: string,
+  destinationRef: string,
+}
 
 export type StationConfiguration = {
-
   type?: string,
   label?: string,
   station?: string,
   destination?: string,
-  uic?: UICConfiguration, 
   line?: string|Array<number|string>,
-
+  transilienRefData?: TransilienRefDataConfiguration,
 };
 
 export type ModuleConfiguration = {
@@ -49,9 +46,8 @@ export type ModuleConfiguration = {
   apiTransilien: string,
   apiVelib: string,     // add &q=141111 to get info of that station
   apiAutolib: string,   // add '?q=' but no realtime info... for now
-  apiSncfData: string,
   apiCitymapper: string,
-  transilienToken: string, // get it from own account @transilien SNCF
+  transilienToken: string, // get it from own account @IDF Mobilites (https://data.iledefrance-mobilites.fr)
   citymapperToken: string,
 
   stations: Array<StationConfiguration>,

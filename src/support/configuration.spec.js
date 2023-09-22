@@ -1,4 +1,4 @@
-/* @flow */
+/* @flow-disabled */
 
 import { defaults, enhanceConfiguration, handleStationInfoResponse } from './configuration';
 

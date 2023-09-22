@@ -1,4 +1,4 @@
-/* @flow */
+/* @flow-disabled */
 
 import moment from 'moment-timezone';
 import ResponseProcessor from './ResponseProcessor';
@@ -54,46 +54,6 @@ const jsonData = {
     ],
   },
 };
-
-describe('passagesToInfoQueries function', () => {
-  it('should return empty array when incorrect data', () => {
-    // given-when
-    const actual = ResponseProcessor.passagesToInfoQueries();
-    // then
-    expect(actual).toEqual([]);
-  });
-
-  it('should return queries when correct data', () => {
-    // given
-    const passages = {
-      '$':{
-        gare:'87382002',
-      },
-      train:[
-        {
-          date:{
-            '$':{
-              mode:'R',
-            },
-            _:'20/06/2017 12:46',
-          },
-          etat:'Retardé',
-          miss:'POPI',
-          num:'135140',
-          term:'87384008',
-        },
-      ],
-    };
-    // when
-    const actual = ResponseProcessor.passagesToInfoQueries(passages);
-    // then
-    const expected = [{
-      index: 0,
-      stationValue: '87384008',
-    }];
-    expect(actual).toEqual(expected);
-  });
-});
 
 describe('dataToSchedule function', () => {
   const stationInfos = [{
