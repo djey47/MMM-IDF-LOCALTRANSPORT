@@ -213,7 +213,7 @@
     },
     {
         "id_line": "C01745",
-        "name_line": "TER Bourgogne - Franche-Comt\u00e9",
+        "name_line": "TER Bourgogne - Franche-Comte",
         "shortname_line": "TER",
         "transportmode": "rail",
         "transportsubmode": "regionalRail",
@@ -230,7 +230,7 @@
         "audiblesigns_available": "unknown",
         "visualsigns_available": "unknown",
         "id_groupoflines": "A02171",
-        "shortname_groupoflines": "TER Bourgogne - Franche-Comt\u00e9 (Ligne R)",
+        "shortname_groupoflines": "TER Bourgogne - Franche-Comte (Ligne R)",
         "notice_title": null,
         "notice_text": null,
         "picto": null,
