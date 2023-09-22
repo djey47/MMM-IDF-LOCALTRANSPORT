@@ -45,7 +45,8 @@ const ResponseProcessor = {
   getGeneralInfo: function (arrivalPlatform: TransilienValue, isVehicleAtStop: boolean) {
     // TODO wordings?
     const trainStatus = isVehicleAtStop ? 'stopped at' : 'heading to';
-    return `Train ${trainStatus} platform ${arrivalPlatform.value}`;
+    const platform = arrivalPlatform ? arrivalPlatform.value : 'N/A';
+    return `Train ${trainStatus} platform ${platform}`;
   },  
   
   /**
