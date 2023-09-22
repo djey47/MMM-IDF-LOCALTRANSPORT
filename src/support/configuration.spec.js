@@ -1,6 +1,6 @@
 /* @flow-disabled */
 
-import { defaults, enhanceConfiguration, handleStationInfoResponse } from './configuration';
+import { defaults, enhanceConfiguration } from './configuration';
 
 let mockGetAllStationInfo = jest.fn();
 const mockThen = jest.fn();

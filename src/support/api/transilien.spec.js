@@ -5,7 +5,6 @@ import Transilien from './transilien';
 import type { StationConfiguration } from '../../types/Configuration';
 
 const {
-  createIndexFromResponseLegacy,
   createIndexFromStopConfig,
   getTransilienStopMonitoringUrl,
 } = Transilien;
