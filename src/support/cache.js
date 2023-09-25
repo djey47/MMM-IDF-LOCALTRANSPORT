@@ -12,6 +12,8 @@ const refDataCache = {};
  * @returns cached value for query if it exists, null otherwise
  */
 export const getRefDataFromCache = function(type: string, query: string, options?: RefDataCacheOptions): ?string {
+  // console.log('cache::getRefDataFromCache', { refDataCache });
+
   const key = buildRefDataCacheKey(type, query, options);
   return refDataCache[key] || null;
 };
@@ -20,6 +22,8 @@ export const getRefDataFromCache = function(type: string, query: string, options
  * Adds or update value in cache
  */
 export const putRefDataInCache = function(type: string, query: string, options?: RefDataCacheOptions, refValue: string) {
+  // console.log('cache::putRefDataInCache', { refDataCache });
+
   if (!refValue) return;
   const key = buildRefDataCacheKey(type, query, options);
   refDataCache[key] = refValue;
@@ -34,4 +38,4 @@ export const resetRefDataCache = function() {
   }
 };
 
-const buildRefDataCacheKey = (type: string, query: string, options?: RefDataCacheOptions) => `${type}-${query}-${options && options.isStopZone ? 'isStopZone' : ''}`;
+const buildRefDataCacheKey = (type: string, query: string, options?: RefDataCacheOptions) => `${type}-${query}-${options && options.isStopArea ? 'isStopArea' : ''}`;
