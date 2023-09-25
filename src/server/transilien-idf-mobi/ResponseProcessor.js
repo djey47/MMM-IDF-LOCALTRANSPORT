@@ -69,6 +69,14 @@ const ResponseProcessor = {
     };
   },
 
+  createDefaultSchedule: function (): Schedule {
+    const defaultSchedule: Schedule = {
+      destination: '',
+      status: Status.TERMINATED,
+    };
+    return defaultSchedule;
+  },
+
   /**
    * @private
    */
@@ -141,10 +149,12 @@ const ResponseProcessor = {
         return firstCriteria;
       });
 
+    const effectiveSchedules = schedules.length ? schedules : [ResponseProcessor.createDefaultSchedule()];
+
     const response: ServerScheduleResponse = {
       id: createIndexFromStopConfig(stopConfig),
       lastUpdate: ResponseProcessor.now().toISOString(),
-      schedules,
+      schedules: effectiveSchedules,
     };
 
     // console.log({ response });
