@@ -21,7 +21,7 @@ export const getRefDataFromCache = function(type: string, query: string, options
 /**
  * Adds or update value in cache
  */
-export const putRefDataInCache = function(type: string, query: string, options?: RefDataCacheOptions, refValue: string) {
+export const putRefDataInCache = function(type: string, query: string, options?: RefDataCacheOptions, refValue?: string) {
   // console.log('cache::putRefDataInCache', { refDataCache });
 
   if (!refValue) return;

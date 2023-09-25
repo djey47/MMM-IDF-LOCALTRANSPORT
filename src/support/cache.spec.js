@@ -1,3 +1,5 @@
+/* @flow */
+
 import { getRefDataFromCache, putRefDataInCache, resetRefDataCache } from './cache';
 
 describe('cache support functions', () => {
