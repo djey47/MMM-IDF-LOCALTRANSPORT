@@ -3,9 +3,9 @@
 /** Types for configuration objects */
 
 export type TransilienRefDataConfiguration = {
-  lineRef: string,
-  stopAreaRef: string,
-  destinationRef: string,
+  lineRef?: string,
+  stopAreaRef?: string,
+  destinationRef?: string,
 }
 
 export type StationConfiguration = {

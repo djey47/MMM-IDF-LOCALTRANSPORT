@@ -72,6 +72,7 @@ export const defaults: ModuleConfiguration = {
       delayed: '😐⏳',
       skipped: '❌',
       terminal: '❌ term',
+      terminated: '🌙 no service',
     },
     traffic: {
       ok: '😊',
@@ -126,9 +127,14 @@ export function enhanceConfiguration(configuration: ModuleConfiguration, sendSoc
       const { station, destination, line } = stationConfig;
       
       if(!station) {
-        console.error(`** ${MODULE_NAME}: Configuration does not contain station:`);
-        console.error(stationConfig);
-      } else {
+        console.error(`** ${MODULE_NAME}: Stop configuration does not contain station:`, stationConfig);
+      }
+
+      if(!line) {
+        console.error(`** ${MODULE_NAME}: Stop configuration does not contain line:`, stationConfig);
+      }
+
+      if (station && line) {
         const query: RefDataQuery = {
           lineValue: typeof line === 'string' ? line : '?',
           stationValue: station || '?',
