@@ -109,6 +109,22 @@ const resolveName = (firstLine: boolean, stop: StationConfiguration, messages: O
 /**
  * @private
  */
+const handleMarqueeAnimationStyleRules = (messageContents: HTMLDivElement, message?: string) => {
+  if (!message || !messageContents) {
+    return;
+  }
+  const duration = Math.ceil(message.length * .05);
+  messageContents.style.animationDuration = `${duration}s`;
+  messageContents.style.animationName = 'marquee';
+  messageContents.style.animationIterationCount = 'infinite';
+  messageContents.style.animationTimingFunction = 'linear';
+
+  // console.log('render::handleAnimationStyleRules', { message, duration });
+};
+
+/**
+ * @private
+ */
 const renderTraffic = (trafficIndex: ?string, stop: StationConfiguration, traffic: Object, config: ModuleConfiguration): any => {
   const { messages } = config;
   const unavailableLabel = translate(MessageKeys.UNAVAILABLE, messages);
@@ -140,9 +156,12 @@ const renderTraffic = (trafficIndex: ?string, stop: StationConfiguration, traffi
   summaryPart.className = 'Traffic__title';
   const messageContainer = document.createElement('div');
   messageContainer.className = 'Traffic__messageContainer';
+  
   const messageContents = document.createElement('div');
+  handleMarqueeAnimationStyleRules(messageContents, message);
   messageContents.innerHTML = message || '';
   messageContents.className = 'Traffic__messageContents';
+  
   messageContainer.appendChild(messageContents);
   messageCell.appendChild(summaryPart);
   messageCell.appendChild(messageContainer);
