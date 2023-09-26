@@ -93,34 +93,38 @@ export type TransilienValue = {
   value: string,
 }
 
+export type TransilienMonitoredVisit = {
+  MonitoredVehicleJourney: {
+    DestinationRef: TransilienValue,
+    DestinationName: TransilienValue[],
+    DirectionName: TransilienValue[],
+    JourneyNote: TransilienValue[],
+    MonitoredCall: {
+      DestinationDisplay: TransilienValue[],
+      ExpectedArrivalTime: string,
+      ExpectedDepartureTime: string,
+      AimedArrivalTime: string,
+      ArrivalPlatformName: TransilienValue,
+      ArrivalStatus: string,
+      VehicleAtStop: boolean,
+    },
+    TrainNumbers: {
+      TrainNumberRef: TransilienValue[],
+    }
+  }
+};
+
+export type TransilienStopMonitoringDelivery = {
+  MonitoredStopVisit: Array<TransilienMonitoredVisit>,
+};
+
 export type TransilienStopMonitoringResponse = {
   Siri: {
     ServiceDelivery: {
-      StopMonitoringDelivery: [{
-        MonitoredStopVisit: [{
-          MonitoredVehicleJourney: {
-            DestinationRef: TransilienValue,
-            DestinationName: TransilienValue[],
-            DirectionName: TransilienValue[],
-            JourneyNote: TransilienValue[],
-            MonitoredCall: {
-              DestinationDisplay: TransilienValue[],
-              ExpectedArrivalTime: string,
-              ExpectedDepartureTime: string,
-              AimedArrivalTime: string,
-              ArrivalPlatformName: TransilienValue,
-              ArrivalStatus: string,
-              VehicleAtStop: boolean,
-            },
-            TrainNumbers: {
-              TrainNumberRef: TransilienValue[],
-            }
-          }
-        }]
-      }]
+      StopMonitoringDelivery: Array<TransilienStopMonitoringDelivery>,
     }
   }
-}
+};
 
 /* Velib API defs */
 

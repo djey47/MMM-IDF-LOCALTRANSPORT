@@ -52,8 +52,24 @@ const ResponseProcessor = {
   /**
    * @private
    */
-  getStatus: function (etat?: string): string {
-    if (!etat) return UNKNOWN;
+  getStatus: function (etat?: string, aimedArrivalTime?: string, expectedArrivalTime?: string): string {
+    // console.log('ResponseProcessor::getStatus', { etat, aimedArrivalTime, expectedArrivalTime });
+    
+    if (!aimedArrivalTime && !expectedArrivalTime) return UNKNOWN;
+
+    // Automatic delay recognition (beta). Delay is taken into account starting from 5 minutes.
+    const delayedMoment = moment(aimedArrivalTime).clone().add(5, 'minutes');
+    const isTrainLate = moment(expectedArrivalTime).isAfter(delayedMoment);
+
+    // console.log('ResponseProcessor::getStatus', { isTrainLate }, delayedMoment.toISOString(), moment(expectedArrivalTime).toISOString());
+
+    if (isTrainLate) {
+      return Status.DELAYED;
+    }
+
+    if (!etat) {
+      return UNKNOWN;
+    }
     return STATUSES[etat] || UNKNOWN;
   },
 
@@ -69,6 +85,9 @@ const ResponseProcessor = {
     };
   },
 
+  /**
+   * @private
+   */
   createDefaultSchedule: function (): Schedule {
     const defaultSchedule: Schedule = {
       destination: '',
@@ -96,6 +115,9 @@ const ResponseProcessor = {
         const { MonitoredVehicleJourney: journey } = sv;
         const { DestinationRef: destRef } = journey;
         const parsedDestRef = decodeRefValue(destRef.value);
+
+        // console.log('dataToSchedule:: filter 1',  {destRef, parsedDestRef});
+
         return !stopConfig.transilienRefData 
           || !stopConfig.transilienRefData.destinationRef
           || parsedDestRef.ref === stopConfig.transilienRefData.destinationRef;
@@ -121,6 +143,7 @@ const ResponseProcessor = {
           JourneyNote: journeyNotes,
           DestinationName: destinations,
           MonitoredCall: {
+            AimedArrivalTime: aimedArrivalTime,
             ExpectedArrivalTime: expectedArrivalTime,
             ArrivalStatus: arrivalStatus,
             ArrivalPlatformName: arrivalPlatform,
@@ -131,7 +154,7 @@ const ResponseProcessor = {
         return {
           ...ResponseProcessor.getTimeInfo(expectedArrivalTime),
           destination: destinations[0].value,
-          status: ResponseProcessor.getStatus(arrivalStatus),
+          status: ResponseProcessor.getStatus(arrivalStatus, aimedArrivalTime, expectedArrivalTime),
           code: missionCode,
           info: ResponseProcessor.getGeneralInfo(arrivalPlatform, isVehicleAtStop),
         };

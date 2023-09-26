@@ -1,11 +1,14 @@
-/* @flow-disabled */
+/* @flow*/
 
 import moment from 'moment-timezone';
 import ResponseProcessor from './ResponseProcessor';
 
-const mockGetAllStationInfo = jest.fn();
+import type { StationConfiguration } from '../../types/Configuration';
+import type { DecodedRef, TransilienStopMonitoringResponse } from '../../types/Transport';
+
+const mockDecodeRefValue = jest.fn();
 jest.mock('../../support/railwayRepository', () => ({
-  getAllStationInfo: (infoQueries, config) => mockGetAllStationInfo(infoQueries, config),
+  decodeRefValue: (c) => mockDecodeRefValue(c),
 }));
 
 beforeAll(() => {
@@ -13,160 +16,205 @@ beforeAll(() => {
   ResponseProcessor.now = jest.fn(() => moment('2017-06-20T12:45:23.968Z'));
 });
 
-beforeEach(() => {
-  mockGetAllStationInfo.mockReset();
-  mockGetAllStationInfo.mockImplementation(() => ({
-    then: () => ({
-      catch: () => {},
-    }),
-  }));
-});
-
-const jsonData = {
-  passages:{
-    '$':{
-      gare:'87382002',
+const apiData: TransilienStopMonitoringResponse = {
+  Siri: {
+    ServiceDelivery: {
+      StopMonitoringDelivery: [{
+        MonitoredStopVisit: [{
+          MonitoredVehicleJourney: {
+            DestinationRef: {
+              value: 'dest-ref-value',
+            },
+            DestinationName: [{
+              value: 'dest-name',
+            }],
+            DirectionName: [{
+              value: 'dir-name',
+            }],
+            JourneyNote: [{
+              value: 'POPI',
+            }],
+            MonitoredCall: {
+              AimedArrivalTime: '2017-06-20T12:46:00.000Z',
+              ArrivalPlatformName: {
+                value: 'pf1',
+              },
+              ArrivalStatus: '',
+              DestinationDisplay: [{
+                value: 'dest-display-value',
+              }],
+              ExpectedArrivalTime: '2017-06-20T12:52:00.000Z',
+              ExpectedDepartureTime: '2017-06-20T12:52:00.000Z',
+              VehicleAtStop: false,
+            },
+            TrainNumbers: {
+              TrainNumberRef: [{
+                value: 'train-nb',
+              }],
+            },
+          },
+        }, {
+          MonitoredVehicleJourney: {
+            DestinationRef: {
+              value: 'dest-ref-value',
+            },
+            DestinationName: [{
+              value: 'dest-name',
+            }],
+            DirectionName: [{
+              value: 'dir-name',
+            }],
+            JourneyNote: [{
+              value: 'PEBU',
+            }],
+            MonitoredCall: {
+              AimedArrivalTime: '2017-06-20T13:41:00.000Z',
+              ArrivalPlatformName: {
+                value: 'pf2',
+              },
+              ArrivalStatus: 'onTime',
+              DestinationDisplay: [{
+                value: 'dest-display-value',
+              }],
+              ExpectedArrivalTime: '2017-06-20T13:41:00.000Z',
+              ExpectedDepartureTime: '2017-06-20T13:41:00.000Z',
+              VehicleAtStop: false,
+            },
+            TrainNumbers: {
+              TrainNumberRef: [{
+                value: 'train-nb',
+              }],
+            },
+          },
+        }, {
+          MonitoredVehicleJourney: {
+            DestinationRef: {
+              value: 'dest-ref-other-value',
+            },
+            DestinationName: [{
+              value: 'dest-other-name',
+            }],
+            DirectionName: [{
+              value: 'dir-other-name',
+            }],
+            JourneyNote: [{
+              value: 'POPE',
+            }],
+            MonitoredCall: {
+              AimedArrivalTime: '2017-06-20T13:51:00.000Z',
+              ArrivalPlatformName: {
+                value: 'pf3',
+              },
+              ArrivalStatus: 'onTime',
+              DestinationDisplay: [{
+                value: 'dest-display-other-value',
+              }],
+              ExpectedArrivalTime: '2017-06-20T13:51:00.000Z',
+              ExpectedDepartureTime: '2017-06-20T13:51:00.000Z',
+              VehicleAtStop: false,
+            },
+            TrainNumbers: {
+              TrainNumberRef: [{
+                value: 'train-nb',
+              }],
+            },
+          },
+        }],
+      }],
     },
-    train:[
-      {
-        date:{
-          '$':{
-            mode:'R',
-          },
-          _:'20/06/2017 12:46',
-        },
-        etat:'Retardé',
-        miss:'POPI',
-        num:'135140',
-        term:'87384008',
-      },
-      {
-        date:{
-          '$':{
-            mode:'T',
-          },
-          _:'20/06/2017 13:41',
-        },
-        miss:'PEBU',
-        num:'134626',
-        term:'87384008',
-      },
-    ],
   },
 };
 
-describe.skip('dataToSchedule function', () => {
-  const stationInfos = [{
-    index: 0,
-    stationInfo: {
-      libelle: 'Label for UIC 87384008(1)',
-      code_uic: '87384008',
-    },
-  },{
-    index: 1,
-    stationInfo: {
-      libelle: 'Label for UIC 87384008(2)',
-      code_uic: '87384008',
-    },
-  }];
-  const stopConfig = {
-    type: 'transiliens',
-    station: 'becon',
-    destination: 'paris saint lazare',
-    uic: {
-      station: '87382002',
-      destination: '87384008',
-    },
-    label: 'Becon L (trans)',
-  };
-
-  it('should convert data correctly', () => {
-    // given-when
-    const actual = ResponseProcessor.dataToSchedule(jsonData, stopConfig, stationInfos);
-    // then
-    const expected = {
-      id: 'gare/87382002/87384008/depart',
-      lastUpdate: '2017-06-20T12:45:23.968Z',
-      schedules: [
-        {
-          destination: 'Label for UIC 87384008(1)',
-          code: 'POPI',
-          status: 'DELAYED',
-          time: '2017-06-20T12:46:00.000Z',
-          timeMode: 'REALTIME',
-        },{
-          destination: 'Label for UIC 87384008(2)',
-          code: 'PEBU',
-          status: 'ON_TIME',
-          time: '2017-06-20T13:41:00.000Z',
-          timeMode: 'THEORICAL',
-        },
-      ],
-    };
-    expect(actual).toEqual(expected);
-  });
-
-  it('should return all schedules with given destination', () => {
-    // given-when
-    const actual = ResponseProcessor.dataToSchedule(jsonData, stopConfig, stationInfos);
-    // then
-    // $FlowFixMe: always valid
-    expect(actual.schedules.length).toEqual(2);
-  });
-
-  it('should return no schedule with given destination', () => {
-    // given
-    const stopConfigFiltered = {
+describe('ResponseProcessor for transiliens', () => {
+  describe('dataToSchedule private function', () => {
+    const stopConfig: StationConfiguration = {
       type: 'transiliens',
       station: 'becon',
-      destination: 'nanterre prefecture',
-      uic: {
-        station: '87382002',
-        destination: '87386318',
+      destination: 'paris saint lazare',
+      line: 'L',
+      transilienRefData: {
+        destinationRef: 'dest-ref',
+        stopAreaRef: 'stop-ref',
+        lineRef: 'line-ref',
       },
       label: 'Becon L (trans)',
     };
-    // when
-    const actual = ResponseProcessor.dataToSchedule(jsonData, stopConfigFiltered, stationInfos);
-    // then
-    // $FlowFixMe: always valid
-    expect(actual.schedules.length).toEqual(0);
+
+    beforeEach(() => {
+      mockDecodeRefValue.mockReset();
+    });    
+  
+    it('should convert data correctly', () => {
+      // given
+      const decodedRef: DecodedRef = {
+        owner: 'OWNER',
+        ref: 'dest-ref',
+        type: 'TYPE',
+        subType: 'SUB_TYPE',
+      };             
+      const decodedRefOther: DecodedRef = {
+        owner: 'OWNER',
+        ref: 'dest-other-ref',
+        type: 'TYPE',
+        subType: 'SUB_TYPE',
+      };             
+      mockDecodeRefValue.mockImplementation(code => {
+        if (code === 'dest-ref-value') {
+          return decodedRef;
+        }
+        return decodedRefOther;
+      });
+
+      // when
+      const actual = ResponseProcessor.dataToSchedule(apiData, stopConfig);
+
+      // then
+      const expected = {
+        id: 'ligne/line-ref/gare/stop-ref/dest-ref/stop-monitoring',
+        lastUpdate: '2017-06-20T12:45:23.968Z',
+        schedules: [
+          {
+            destination: 'dest-name',
+            code: 'POPI',
+            info: 'Train heading to platform pf1',
+            status: 'DELAYED',
+            time: '2017-06-20T12:52:00.000Z',
+            timeMode: 'REALTIME',
+          }, {
+            destination: 'dest-name',
+            code: 'PEBU',
+            info: 'Train heading to platform pf2',
+            status: 'ON_TIME',
+            time: '2017-06-20T13:41:00.000Z',
+            timeMode: 'REALTIME',
+          },
+        ],
+      };
+      expect(actual).toEqual(expected);
+    });
+  
+    it('should return ANY schedule with non existing destination', () => {
+      // given
+      const filteredStopConfig: StationConfiguration = {
+        ...stopConfig,
+        destination: 'foo',
+        transilienRefData: undefined,
+      };
+      const decodedRef: DecodedRef = {
+        owner: 'OWNER',
+        ref:'dest-ref-bar',
+        type: 'TYPE',
+        subType: 'SUB_TYPE',
+      };             
+      mockDecodeRefValue.mockReturnValue(decodedRef);
+
+      // when
+      const actual = ResponseProcessor.dataToSchedule(apiData, filteredStopConfig);
+
+      // then
+      // $FlowFixMe: always valid
+      expect(actual.schedules.length).toEqual(3);
+    });
   });
 });
 
-describe.skip('processTransportTransilien function', () => {
-  const stopConfig = {
-    type: 'transiliens',
-    station: 'becon',
-    destination: 'paris saint lazare',
-    uic: {
-      station: '87382002',
-      destination: '87384008',
-    },
-    label: 'Becon L (trans)',
-  };
-  const context = { config: { debug: false }};
-  const expectedQueries = [{
-    index: 0,
-    stationValue: '87384008',
-  }, {
-    index: 1,
-    stationValue: '87384008',
-  }];
-
-  it('should process XML data correctly', () => {
-    // given
-    const xmlData = '<?xml version="1.0" encoding="UTF-8"?><passages gare="87384008"><train><date mode="R">20/06/2017 12:46</date><num>135140</num><miss>POPI</miss><term>87384008</term><etat>Retardé</etat></train><train><date mode="R">20/06/2017 12:46</date><num>135140</num><miss>POPI</miss><term>87384008</term><etat>Retardé</etat></train></passages>';
-    // when
-    ResponseProcessor.processTransportTransilien(xmlData, context, stopConfig);
-    // then
-    expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, context.config);
-  });
-
-  it('should process JSON data correctly', () => {
-    // given-when
-    ResponseProcessor.processTransportTransilien(jsonData, context, stopConfig);
-    // then
-    expect(mockGetAllStationInfo).toHaveBeenCalledWith(expectedQueries, context.config);
-  });
-});
