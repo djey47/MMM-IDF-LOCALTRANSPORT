@@ -1,6 +1,6 @@
 # MMM-IDF-LOCALTRANSPORT
 [ ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](http://choosealicense.com/licenses/mit)
-![Build status](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/actions/workflows/mm2-idf.js.yml/badge.svg?branch=master&event=push)
+![Build status](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/actions/workflows/mm2-idf.js.yml/badge.svg?branch=fix/transilien-2023&event=push)
 
 MichMich's MagicMirror2 module to display next transportation means for a configured list of stations/destinations.
 
