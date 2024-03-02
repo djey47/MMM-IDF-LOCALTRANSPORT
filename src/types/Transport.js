@@ -37,21 +37,24 @@ export type ServerVelibResponse = {
   loaded: boolean,
 };
 
-export type StationInfoQuery = {
-  index: number,
+export type RefDataQuery = {
   stationValue: string,
   destinationValue?: ?string,
+  lineValue: string,
 };
 
-export type StationInfoResult = {
-  index: number,
-  stationInfo: SNCFStationInfo,
-  destinationInfo?: ?SNCFStationInfo,
+export type RefDataResponse = {
+  lineRef?: string,
+  stopAreaRef?: string,
+  destinationRef?: string,
 };
 
-export type StationInfoHandlerFunction = (resolve: Function, reject: Function) => void;
-
-export type StationInfoResolverFunction = (stationInfo: ?StationInfoResult) => void;
+export type DecodedRef = {
+  owner: string,
+  type: string,
+  subType?: string,
+  ref: string,
+};
 
 /* Legacy API defs */
 
@@ -86,41 +89,41 @@ export type LegacyTrafficInfo = {
 
 /* Transilien API defs */
 
-export type TransilienTrain = {
-  date: {
-    _: string,
-    $: {
-      mode: string,
-    },
-  },
-  term: string,
-  miss: string,
-  etat?: string,
-};
-
-export type TransilienPassage = {
-  train: Array<TransilienTrain>,
+export type TransilienValue = {
+  value: string,
 }
 
-export type TransilienResponse = {
-  passages: TransilienPassage,
+export type TransilienMonitoredVisit = {
+  MonitoredVehicleJourney: {
+    DestinationRef: TransilienValue,
+    DestinationName: TransilienValue[],
+    DirectionName: TransilienValue[],
+    JourneyNote: TransilienValue[],
+    MonitoredCall: {
+      DestinationDisplay: TransilienValue[],
+      ExpectedArrivalTime: string,
+      ExpectedDepartureTime: string,
+      AimedArrivalTime: string,
+      ArrivalPlatformName: TransilienValue,
+      ArrivalStatus: string,
+      VehicleAtStop: boolean,
+    },
+    TrainNumbers: {
+      TrainNumberRef: TransilienValue[],
+    }
+  }
 };
 
-/* SNCF Gares API defs */
-
-export type SNCFStationInfo = {
-  code_uic: string,
-  libelle: string,
+export type TransilienStopMonitoringDelivery = {
+  MonitoredStopVisit: Array<TransilienMonitoredVisit>,
 };
 
-export type SNCFStationRecord = {
-  fields: SNCFStationInfo,
-};
-
-export type SNCFStationResponse = {
-  data: {
-    records: Array<SNCFStationRecord>,
-  },
+export type TransilienStopMonitoringResponse = {
+  Siri: {
+    ServiceDelivery: {
+      StopMonitoringDelivery: Array<TransilienStopMonitoringDelivery>,
+    }
+  }
 };
 
 /* Velib API defs */

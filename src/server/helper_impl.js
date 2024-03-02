@@ -1,7 +1,7 @@
 /* @flow */
 
 import axios from 'axios';
-import TransilienResponseProcessor from './transilien/ResponseProcessor';
+import TransilienResponseProcessor from './transilien-idf-mobi/ResponseProcessor';
 import LegacyResponseProcessor from './legacy/ResponseProcessor';
 import TrafficResponseProcessor from './legacy/TrafficResponseProcessor';
 import TransilienTrafficResponseProcessor from './citymapper/ResponseProcessor';
@@ -31,7 +31,7 @@ const {
   getScheduleUrl,
 } = LegacyApi;
 
-const { getTransilienDepartUrl } = Transilien;
+const { getTransilienStopMonitoringUrl } = Transilien;
 
 const { getTransilienRouteInfoUrl } = Citymapper;
 
@@ -145,15 +145,16 @@ module.exports = {
    * @private
    */
   getResponse: function(url: string, processFunction: Function, authToken: string, stopConfig: StationConfiguration) {
-    const { debug } = this.config.debug;
+    const { debug } = this.config;
     const headers: Object = {
       Accept: 'application/json;charset=utf-8',
     };
     if (authToken) {
       headers.Authorization = authToken;
+      headers.apiKey = authToken;
     }
 
-    if (debug) console.log (` *** fetching: ${url}`);
+    if (debug) console.log (` *** fetching: ${url} with token ${authToken}`);
 
     axios.get(url, { headers })
       .then((response => this.handleAPIResponse(url, processFunction, response, stopConfig)).bind(this))
@@ -198,7 +199,7 @@ module.exports = {
           break;
         case TYPE_TRANSILIEN:
           this.getResponse(
-            getTransilienDepartUrl(apiTransilien, stopConfig),
+            getTransilienStopMonitoringUrl(apiTransilien, stopConfig),
             TransilienResponseProcessor.processTransportTransilien,
             transilienToken,
             stopConfig);

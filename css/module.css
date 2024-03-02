@@ -68,7 +68,8 @@
   left: 100%;
   height: inherit;
   white-space: nowrap;
-  animation: marquee 20s linear infinite;
+
+  /* Animation parameters handled from JS */
 }
 
 @keyframes marquee {

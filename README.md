@@ -15,11 +15,12 @@ A module to display:
 # Screenshots
 ![screenshot](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/blob/master/images/MMM-IDF-LOCALTRANSPORT1.png)
 ![screenshot](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/blob/master/images/MMM-IDF-LOCALTRANSPORT2.png)
+![screenshot](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/blob/master/images/MMM-IDF-LOCALTRANSPORT-TRANSILIEN-2023.png)
 
 # API
 API examples are provided into `api` subdirectory, as [POSTMAN collections](https://www.getpostman.com/).
 * RERs, Metros, Buses and Tramways infos are provided by [P.Grimaud's API](https://github.com/pgrimaud/horaires-ratp-api) via RATP services
-* Transilien infos are based on the REST API provided by [TRANSILIEN](https://ressources.data.sncf.com/explore/dataset/api-temps-reel-transilien/) and [SNCF](https://ressources.data.sncf.com)
+* Transilien infos are based on the REST API provided by [IDF Mobilités](https://data.iledefrance-mobilites.fr/pages/home/)
 * Traffic data for transilien comes from [Citymapper API](https://citymapper.com/paris)
 * It also uses [Paris Open Data for Velib](https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/) (use it to get the 5 digits stations you will need for the configuration)
 
@@ -30,12 +31,10 @@ To use this API you need to request credentials, please create account [HERE](ht
 
 Once key has been given to you back, you've just to enter it in configuration file for `citymapperToken` value.
 
-## Transilien realtime API
-To use this API you need to request credentials, please ask by sending email [HERE](mailto:innovation-transilien@sncf.fr?subject=Demande%20acc%C3%A8s%20API%20prochains%20d%C3%A9parts&body=nom,%20pr%C3%A9nom,organisation,utilisation).
+## Transilien realtime API with IDF Mobilités
+To use this API you need to create an account and request a dynamic token, please submit it [HERE](https://prim.iledefrance-mobilites.fr/fr/mes-jetons-authentification).
 
-Once login/password have been given to you back, generate token value: open a browser window, press F12 and execute following code in console: `window.btoa(unescape(encodeURIComponent('LOGIN:PASSWORD')))`. Copy result to clipboard.
-
-Finally, `transilienToken` value to be entered in configuration file will be `Basic <pasted value from keyboard>`.
+Finally, `transilienToken` value to be entered in configuration file will be the generated token value.
 
 # Install
 
@@ -73,24 +72,24 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
   - `line`: Mandatory for 'bus', 'rers', and 'tramways': typically the official name but you can check through:
     - 'bus-metros-rers-tramways': https://api-ratp.pierre-grimaud.fr/v3/lines/bus, https://api-ratp.pierre-grimaud.fr/v3/lines/rers, https://api-ratp.pierre-grimaud.fr/v3/lines/tramways, https://api-ratp.pierre-grimaud.fr/v3/lines/metros
     - traffic: https://api-ratp.pierre-grimaud.fr/v3/traffic, set the line as: [type, line], such as: ['metros', 6], ['rers', 'A']...
-    - transiliensTraffic: set the line as code, such as: 'L', 'J'...
-    - not used for 'transiliens' and 'transiliensTraffic' .
+    - transiliens and transiliensTraffic: set the line as code, such as: 'L', 'J'...
   - `station`: Mandatory: [name of the station] ->
     - for 'bus-rers-tramways-metros', https://api-ratp.pierre-grimaud.fr/v3/stations/{type}/{line}
     - for 'velib', you can search here: https://opendata.paris.fr/explore/dataset/stations-velib-disponibilites-en-temps-reel/
-    - for 'transiliens', https://ressources.data.sncf.com/explore/dataset/referentiel-gares-voyageurs/?sort=intitule_gare
+    - for 'transiliens', valid stations names are listed [HERE](https://data.iledefrance-mobilites.fr/explore/dataset/arrets/export/?refine.arrtype=rail) and line names are [HERE](https://data.iledefrance-mobilites.fr/explore/dataset/referentiel-des-lignes/export/?disjunctive.transportmode&disjunctive.transportsubmode&disjunctive.operatorname&disjunctive.networkname&refine.transportmode=rail)
     - not used for 'traffic' and 'transiliensTraffic'.
   - `destination`: 
     - Mandatory for 'metros', 'bus', 'rers' & 'tramways': either 'A' or 'R'
     - Optional for 'velib': ['leaving', 'arriving', '']: indicate if only one value is needed //not in use yet
     - Optional for 'transiliens': shows train matching this destination only (see station repository above)
     - not used for 'traffic' and 'transiliensTraffic'.
-  - `uic`: ('transiliens' only) : UIC codes for station and destination (useful when names are not sufficient to identify)
-    - Optional, if not provided, station and destination codes will be resolved from names provided above
-    - `station` element: code
-    - `destination` element (optional): code
+  - `transilienRefData`: ('transiliens' only) : reference data codes for line, station (stop area) and destination (useful when names are not sufficient to identify)
+    - Optional, if not provided, line, station and destination codes will be resolved from names provided above
+    - `lineRef` element: code from 'id_line'
+    - `stopAreaRef` element: code from 'zdaid'
+    - `destinationRef` element (optional): code fomr 'arrid'
   - `label`: Optional, to rename the line differently if needed.
-* `transilienToken`: 'Basic xxxxxxxx' : mandatory to access transilien realtime API (account required, see section above)
+* `transilienToken`: 'xxxxxxxx' : mandatory to access transilien realtime API (account required, see section above)
 * `citymapperToken`: 'xxxxxxxx' : mandatory to access citymapper realtime API (account required, see section above)
 * `messages`: (Optional, see example below) : key-values to convert generic messages to your preferred language
   - If not provided, some default messages are used (in english)
@@ -98,7 +97,7 @@ Finally, `transilienToken` value to be entered in configuration file will be `Ba
 
 Example:
 ```javascript
-transilienToken: 'Basic bG9naW46cGFzc3dvcmQ=',
+transilienToken: 'bG9naW46cGFzc3dvcmQ',
 
 stations: [
   // Next transport at stops (bus, metros, rers, tramways)
@@ -109,11 +108,11 @@ stations: [
   
   // Next transport at stops (transiliens)
   // With station name only to catch all destinations:
-  {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L'},
+  {type: 'transiliens', station: 'BECON LES BRUYERES', label: 'Becon L', line: 'L'},
   // With station and destination names to filter:
-  {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'NANTERRE UNIVERSITE'},
-  // With UIC codes:
-  {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'SAINT NOM LA BRETECHE', uic: { station: '87382002', destination: '87382481'} },
+  {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'NANTERRE UNIVERSITE', line 'L'},
+  // With reference data codes:
+  {type: 'transiliens', station: 'BECON LES BRUYERES', destination: 'SAINT NOM LA BRETECHE', transilienRefData: { lineRef: 'C01740', stopAreaRef: '87382002', destinationRef: '471811'} },
 
   // Traffic status (bus, metros, rers, tramways)
   {type: 'traffic', line: ['rers', 'B']},

@@ -1,14 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renderHeader function should return correct header when complete configuration 1`] = `"Connections, {nextUpdate} 45{units.seconds} @ 10:23:40"`;
+exports[`Module renderer renderHeader function should return correct header when complete configuration 1`] = `"Connections, {nextUpdate} 45{units.seconds} @ 10:23:40"`;
 
-exports[`renderHeader function should return correct header when incomplete configuration 1 1`] = `"Connections, {nextUpdate} 45{units.seconds}"`;
+exports[`Module renderer renderHeader function should return correct header when incomplete configuration 1 1`] = `"Connections, {nextUpdate} 45{units.seconds}"`;
 
-exports[`renderHeader function should return correct header when incomplete configuration 2 1`] = `"Connections @ 10:23:40"`;
+exports[`Module renderer renderHeader function should return correct header when incomplete configuration 2 1`] = `"Connections @ 10:23:40"`;
 
-exports[`renderHeader function should return simple string when silent configuration 1`] = `"Connections"`;
+exports[`Module renderer renderHeader function should return simple string when silent configuration 1`] = `"Connections"`;
 
-exports[`renderNoInfoVelib function should return correct HTML for table cell when no label 1`] = `
+exports[`Module renderer renderNoInfoVelib function should return correct HTML for table cell when no label 1`] = `
 "<tr>
    <td class=\\"bright\\">
       Stations {notYet}
@@ -16,7 +16,7 @@ exports[`renderNoInfoVelib function should return correct HTML for table cell wh
 </tr>"
 `;
 
-exports[`renderNoInfoVelib function should return correct HTML for table row when label 1`] = `
+exports[`Module renderer renderNoInfoVelib function should return correct HTML for table row when label 1`] = `
 "<tr>
    <td class=\\"bright\\">
       Ulbach {notYet}
@@ -24,7 +24,7 @@ exports[`renderNoInfoVelib function should return correct HTML for table row whe
 </tr>"
 `;
 
-exports[`renderPublicTransport function should return correct HTML when no schedule 1`] = `
+exports[`Module renderer renderPublicTransport function should return correct HTML when no schedule 1`] = `
 "<table>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\">
@@ -45,7 +45,7 @@ exports[`renderPublicTransport function should return correct HTML when no sched
 </table>"
 `;
 
-exports[`renderPublicTransport function should return correct HTML when no schedule and no custom label for transilien 1`] = `
+exports[`Module renderer renderPublicTransport function should return correct HTML when no schedule and no custom label for transilien 1`] = `
 "<table>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\">
@@ -66,7 +66,7 @@ exports[`renderPublicTransport function should return correct HTML when no sched
 </table>"
 `;
 
-exports[`renderPublicTransport function should return correct HTML when schedule 1`] = `
+exports[`Module renderer renderPublicTransport function should return correct HTML when schedule 1`] = `
 "<table>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\">
@@ -101,7 +101,7 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
-exports[`renderPublicTransport function should return correct HTML when schedule and concatenate arrivals 1`] = `
+exports[`Module renderer renderPublicTransport function should return correct HTML when schedule and concatenate arrivals 1`] = `
 "<table>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\">
@@ -139,7 +139,7 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
-exports[`renderPublicTransport function should return correct HTML when schedule and convert to waiting time 1`] = `
+exports[`Module renderer renderPublicTransport function should return correct HTML when schedule and convert to waiting time 1`] = `
 "<table>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\">
@@ -174,7 +174,7 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
-exports[`renderPublicTransport function should return correct HTML when schedule and mission code 1`] = `
+exports[`Module renderer renderPublicTransport function should return correct HTML when schedule and mission code 1`] = `
 "<table>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\">
@@ -197,7 +197,7 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
-exports[`renderPublicTransport function should return correct HTML when schedule and status info 1`] = `
+exports[`Module renderer renderPublicTransport function should return correct HTML when schedule and status info 1`] = `
 "<table>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\">
@@ -220,7 +220,7 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
-exports[`renderPublicTransport function should return correct HTML when schedule and theorical time mode 1`] = `
+exports[`Module renderer renderPublicTransport function should return correct HTML when schedule and theorical time mode 1`] = `
 "<table>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\">
@@ -241,7 +241,7 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
-exports[`renderPublicTransport function should return correct HTML when schedules and concatenate arrivals for transilien 1`] = `
+exports[`Module renderer renderPublicTransport function should return correct HTML when schedules and concatenate arrivals for transilien 1`] = `
 "<table>
    <tr class=\\"Schedules__item bright\\">
       <td class=\\"align-right\\">
@@ -270,7 +270,7 @@ exports[`renderPublicTransport function should return correct HTML when schedule
 </table>"
 `;
 
-exports[`renderTrafficLegacy function should return correct HTML for table row 1`] = `
+exports[`Module renderer renderTrafficLegacy function should return correct HTML for table row 1`] = `
 "<tr class=\\"Traffic__item bright is-ok-with-work\\">
    <td class=\\"align-right\\">
       Ulbach Label
@@ -289,7 +289,7 @@ exports[`renderTrafficLegacy function should return correct HTML for table row 1
 </tr>"
 `;
 
-exports[`renderTrafficTransilien function should return correct HTML for table row when message 1`] = `
+exports[`Module renderer renderTrafficTransilien function should return correct HTML for table row when message 1`] = `
 "<tr class=\\"Traffic__item bright\\">
    <td class=\\"align-right\\">
       L Label
@@ -308,7 +308,7 @@ exports[`renderTrafficTransilien function should return correct HTML for table r
 </tr>"
 `;
 
-exports[`renderTrafficTransilien function should return correct HTML for table row when no message 1`] = `
+exports[`Module renderer renderTrafficTransilien function should return correct HTML for table row when no message 1`] = `
 "<tr class=\\"Traffic__item bright\\">
    <td class=\\"align-right\\">
       L Label
@@ -325,9 +325,9 @@ exports[`renderTrafficTransilien function should return correct HTML for table r
 </tr>"
 `;
 
-exports[`renderVelib function should return correct HTML when history with trend 1`] = `"<tr></tr>"`;
+exports[`Module renderer renderVelib function should return correct HTML when history with trend 1`] = `"<tr></tr>"`;
 
-exports[`renderVelib function should return correct HTML when history without trend 1`] = `
+exports[`Module renderer renderVelib function should return correct HTML when history without trend 1`] = `
 "<tr>
    <td class=\\"align-left\\">
       10
@@ -342,7 +342,7 @@ exports[`renderVelib function should return correct HTML when history without tr
 </tr>"
 `;
 
-exports[`renderVelib function should return correct HTML when no history 1`] = `
+exports[`Module renderer renderVelib function should return correct HTML when no history 1`] = `
 "<tr>
    <td class=\\"bright\\">
       Opera Bis {notYet}
@@ -350,9 +350,9 @@ exports[`renderVelib function should return correct HTML when no history 1`] = `
 </tr>"
 `;
 
-exports[`renderWrapper function should return correct HTML when loaded 1`] = `"<div class=\\"IDFTransportWrapper\\"></div>"`;
+exports[`Module renderer renderWrapper function should return correct HTML when loaded 1`] = `"<div class=\\"IDFTransportWrapper\\"></div>"`;
 
-exports[`renderWrapper function should return correct HTML when not loaded 1`] = `
+exports[`Module renderer renderWrapper function should return correct HTML when not loaded 1`] = `
 "<div class=\\"dimmed light small\\">
    {loading}
 </div>"

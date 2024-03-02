@@ -1,21 +1,18 @@
 /* @flow */
 
-import axios from 'axios';
-import _get from 'lodash/get';
+import { normalizeText } from 'normalize-text';
 import {
-  getInfoFromCache,
-  putInfoInCache,
+  getRefDataFromCache,
+  putRefDataInCache,
 } from './cache';
+import linesRefData from './api/static/lines-ref.json';
+import stopRefData from './api/static/stops-ref.json';
 
 import type {
-  StationInfoQuery,
-  StationInfoResult,
-  SNCFStationInfo,
-  SNCFStationResponse,
-  StationInfoHandlerFunction,
-  StationInfoResolverFunction,
+  DecodedRef,
+  RefDataQuery,
+  RefDataResponse,
 } from '../types/Transport';
-import type { ModuleConfiguration } from '../types/Configuration';
 
 export const axiosConfig = {
   headers: {
@@ -24,122 +21,75 @@ export const axiosConfig = {
 };
 
 /**
- * @private
+ * Relies upon a static configuration from now on (synchronous request)
  */
-const getInfoUrl = function (apiSncfData: string, query: string): string {
-  return encodeURI(`${apiSncfData}search?q=${query}&dataset=sncf-gares-et-arrets-transilien-ile-de-france&sort=libelle`);
-};
+export const resolveRefData = (query: RefDataQuery): RefDataResponse => {
+  const { lineValue, stationValue, destinationValue }  = query;
 
-/**
- * @private
- */
-const isInfoReceived = function (response: SNCFStationResponse): boolean {
-  return !!_get(response, 'data.records.length');
-};
+  // Stop
+  const stopAreaRef = resolveStopRef(stationValue, true);
 
-/**
- * @private
- */
-export const handleInfoResponsesOnSuccess = function (responses:  Array<SNCFStationResponse>, resolveCallback: StationInfoResolverFunction, infoQuery: StationInfoQuery, debug: boolean): void {
-  const { index, stationValue, destinationValue } = infoQuery;
-  const [ stationResponse, destinationResponse ] = responses;
+  // Destination
+  const destinationRef = destinationValue ? resolveStopRef(destinationValue, false) : undefined;
 
-  if (debug) {
-    console.log('** Station info responses from SNCF', responses);
-  }
+  // Line
+  const lineRef = resolveLineRef(lineValue);
 
-  if (isInfoReceived(stationResponse)) {
-    const isDestinationInfoReceived = isInfoReceived(destinationResponse);
-    
-    if (debug) {
-      console.log(`** Info found for station '${stationValue}'`);
-      if (isDestinationInfoReceived) console.log(`** Info found for destination '${destinationValue || ''}'`);
-    }
-
-    const stationInfo = stationResponse.data.records[0].fields;
-    putInfoInCache(stationValue, stationInfo);
-  
-    const destinationInfo = isDestinationInfoReceived ? destinationResponse.data.records[0].fields : null;
-    if (destinationValue && destinationInfo) putInfoInCache(destinationValue, destinationInfo);
-
-    resolveCallback({
-      index,
-      stationInfo,
-      destinationInfo,
-    });
-  } else {
-  
-    if (debug) console.log(`** No station info found for '${stationValue}'`);
-
-    resolveCallback(null);
-  }
-};
-
-/**
- * @private
- */
-const getCachedCallbackForStationInfo = function(index: number, stationInfo: SNCFStationInfo, destinationInfo: ?SNCFStationInfo): StationInfoHandlerFunction {
-  return (resolve) => {
-    // Station info or Station+Destination info already in cache
-    resolve({
-      index,
-      stationInfo,
-      destinationInfo: destinationInfo || null,
-    });
+  return {
+    lineRef,
+    stopAreaRef,
+    destinationRef,
   };
 };
 
 /**
- * @private 
+ * Converts encoded ref values from the STIF repository: <OWNER>:<TYPE>:[<SUBTYPE>]:REF
+ * e.g STIF:StopArea:SP:42587: 
+ * @returns the decoded items
  */
-const getCallbackForStationInfo = function(query: StationInfoQuery, config: ModuleConfiguration): StationInfoHandlerFunction {
-  const { stationValue, destinationValue } = query;  
-  const { apiSncfData, debug } = config;
-  return (resolve, reject) => {
-    const axiosPromises = [];
-    // Mandatory: station
-    axiosPromises.push(axios.get(getInfoUrl(apiSncfData, stationValue), axiosConfig));
-    // Not mandatory: destination
-    if (destinationValue) axiosPromises.push(axios.get(getInfoUrl(apiSncfData, destinationValue), axiosConfig));
-
-    axios.all(axiosPromises)
-      .then(
-        (responses) => handleInfoResponsesOnSuccess(responses, resolve, query, debug),
-        (error) => {
-          console.error('** Error invoking API for:');
-          console.error(query);
-          console.error(error);
-
-          reject(error);
-        });
+export const decodeRefValue = (fullCode: string): DecodedRef => {
+  const [owner, type, subType, ref] = fullCode.split(':');
+  return {
+    owner,
+    type,
+    subType,
+    ref,
   };
 };
 
-/**
- * @param {StationInfoQuery} query Object with index and stationValue, destinationValue attributes (index is the index within stations array from config)
- * @param {ModuleConfiguration} config
- * @returns {Promise} first station/destination info matching provided query (label or UIC), or null if it does not exist
- */
-export const getStationInfo = function(query: StationInfoQuery, config: ModuleConfiguration): Promise<StationInfoResult> {
-  const { index, stationValue, destinationValue } = query;
-  
-  const stationInfo = getInfoFromCache(stationValue);
-  const destinationInfo = destinationValue ? getInfoFromCache(destinationValue) : null;
-  let callback;
-  if ( stationInfo && (!destinationValue || destinationInfo) ) {
-    callback = getCachedCallbackForStationInfo(index, stationInfo, destinationInfo);
-  } else {
-    callback = getCallbackForStationInfo(query, config);
+const resolveStopRef = (name: string, isStopArea: boolean) => {
+  const cachedValue = getRefDataFromCache('STOP', name, { isStopArea });
+  if (cachedValue) {
+    return cachedValue;
   }
 
-  return new Promise(callback);
+  const match = stopRefData.find((srd) => normalizeText(srd.arrname) === normalizeText(name));
+  if (match) {
+    const resolved = isStopArea ? match.zdaid : match.arrid;
+    putRefDataInCache('STOP', name, { isStopArea }, resolved);
+    return resolved;
+  }
+
+  console.error(' *** Unable to resolve reference data for transilien stop', { name, isStopArea });
+
+  return undefined;
 };
 
-/**
- * @param {StationInfoQuery[]} queries requests to get info for
- * @param {ModuleConfiguration} config
- * @returns Promise to all first station info matching provided query (label or UIC), or null if it does not exist
- */
-export const getAllStationInfo = (queries: Array<StationInfoQuery>, config: ModuleConfiguration): Promise<Array<StationInfoResult>> => {
-  return Promise.all(queries.map(query => getStationInfo(query, config)));
+const resolveLineRef = (name: string) => {
+  // Query cache
+  const cachedValue = getRefDataFromCache('LINE', name);
+  if (cachedValue) {
+    return cachedValue;
+  }
+
+  const match = linesRefData.find((lrd) => normalizeText(lrd.name_line) === normalizeText(name));
+  if (match) {
+    const resolved = match.id_line;
+    putRefDataInCache('LINE', name, undefined, resolved);
+    return resolved;
+  }
+
+  console.error('Unable to resolve reference data for transilien line', name);
+
+  return undefined;
 };
