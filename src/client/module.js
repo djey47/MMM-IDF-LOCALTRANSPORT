@@ -2,7 +2,7 @@
 
 /* Timetable for Paris local transport Module */
 
-/* Magic Mirror
+/* MagicMirror²
  * Module: MMM-IDF-LOCALTRANSPORT
  *
  * Based on script by da4throux
