@@ -62,10 +62,10 @@ describe('configuration support functions', () => {
       const currentConfig = {...defaults, stations };
       // when
       enhanceConfiguration(currentConfig, mockSendSocketNotification);
-      // then
+      // then: expected zdaid for 'la defense' destination
       const { stations: [station] } = currentConfig;
       expect(station.transilienRefData).not.toBeUndefined();
-      if (station.transilienRefData) expect(station.transilienRefData.destinationRef).toBe('473935');
+      if (station.transilienRefData) expect(station.transilienRefData.destinationRef).toBe('470549');
     });
   
     it('should not fetch station info from repository when all REFs provided', () => {
