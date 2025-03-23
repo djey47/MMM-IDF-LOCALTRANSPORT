@@ -1,7 +1,7 @@
 const pathResolve = require('path').resolve;
 const appRootPath = require('app-root-dir').get();
 const dyson = require('dyson');
-const colors = require('colors/safe');
+const colors = require('ansis');
 
 const config = require('config');
 const { mocksDirectory, port } = config.get('dev-server');

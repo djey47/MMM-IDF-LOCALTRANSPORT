@@ -2,7 +2,7 @@
 [ ![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](http://choosealicense.com/licenses/mit)
 ![Build status](https://github.com/djey47/MMM-IDF-LOCALTRANSPORT/actions/workflows/mm2-idf.js.yml/badge.svg?branch=master&event=push)
 
-MichMich's MagicMirror2 module to display next transportation means for a configured list of stations/destinations.
+**MMM-IDF-LOCALTRANSPORT** is a module for [MagicMirror²](https://github.com/MichMich/MagicMirror) to display next transportation means for a configured list of stations/destinations.
 
 Forked from MMM-Paris-RATP-PG see more detailed information on [github](https://github.com/da4throux/MMM-Paris-RATP-PG).
 

@@ -1,6 +1,6 @@
 /* @flow */
 
-/* Magic Mirror
+/* MagicMirror²
  * Module: MMM-IDF-LOCALTRANSPORT
  * Server side part of module.
  */
