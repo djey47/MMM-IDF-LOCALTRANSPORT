@@ -29,8 +29,8 @@ export const resolveRefData = (query: RefDataQuery): RefDataResponse => {
   // Stop
   const stopAreaRef = resolveStopRef(stationValue, true);
 
-  // Destination
-  const destinationRef = destinationValue ? resolveStopRef(destinationValue, false) : undefined;
+  // Destination: handles a single area ref for now
+  const destinationAreaRef = destinationValue ? resolveStopRef(destinationValue, true) : undefined;
 
   // Line
   const lineRef = resolveLineRef(lineValue);
@@ -38,7 +38,7 @@ export const resolveRefData = (query: RefDataQuery): RefDataResponse => {
   return {
     lineRef,
     stopAreaRef,
-    destinationRef,
+    destinationRef: destinationAreaRef,
   };
 };
 
@@ -82,7 +82,7 @@ const resolveLineRef = (name: string) => {
     return cachedValue;
   }
 
-  const match = linesRefData.find((lrd) => normalizeText(lrd.name_line) === normalizeText(name));
+  const match = linesRefData.find((lrd) => lrd.transportmode === 'rail' && normalizeText(lrd.name_line) === normalizeText(name));
   if (match) {
     const resolved = match.id_line;
     putRefDataInCache('LINE', name, undefined, resolved);
